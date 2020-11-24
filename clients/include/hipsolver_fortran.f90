@@ -8,10 +8,6 @@ module hipsolver_interface
 
     contains
 
-    !---------!
-    !   Aux   !
-    !---------!
-
     !------------!
     !   LAPACK   !
     !------------!
