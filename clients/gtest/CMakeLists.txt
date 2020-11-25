@@ -42,7 +42,8 @@ set(hipsolver_test_source
 )
 
 set( hipsolver_test_common
-
+  ../common/hipsolver_datatype2string.cpp
+  ../common/utility.cpp
 )
 
 add_executable( hipsolver-test ${hipsolver_f90_source} ${hipsolver_test_source} ${hipsolver_test_common} )
