@@ -21,7 +21,8 @@ if( NOT TARGET hipsolver )
 endif( )
 
 set(hipsolver_benchmark_common
-
+  ../common/hipsolver_datatype2string.cpp
+  ../common/utility.cpp
 )
 
 add_executable( hipsolver-bench client.cpp ${hipsolver_benchmark_common} )
