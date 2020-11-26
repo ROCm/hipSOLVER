@@ -109,6 +109,93 @@ hipsolverStatus_t hipsolverGetStream(hipsolverHandle_t handle, hipStream_t* stre
     return cuda2hip_status(cusolverDnGetStream((cusolverDnHandle_t)handle, streamId));
 }
 
+// getrf
+hipsolverStatus_t hipsolverSgetrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
+{
+    return cuda2hip_status(
+        cusolverDnSgetrf_bufferSize((cusolverDnHandle_t)handle, m, n, A, lda, lwork));
+}
+
+hipsolverStatus_t hipsolverDgetrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork)
+{
+    return cuda2hip_status(
+        cusolverDnDgetrf_bufferSize((cusolverDnHandle_t)handle, m, n, A, lda, lwork));
+}
+
+hipsolverStatus_t hipsolverCgetrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork)
+{
+    return cuda2hip_status(
+        cusolverDnCgetrf_bufferSize((cusolverDnHandle_t)handle, m, n, (cuComplex*)A, lda, lwork));
+}
+
+hipsolverStatus_t hipsolverZgetrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork)
+{
+    return cuda2hip_status(cusolverDnZgetrf_bufferSize(
+        (cusolverDnHandle_t)handle, m, n, (cuDoubleComplex*)A, lda, lwork));
+}
+
+hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
+                                  int               m,
+                                  int               n,
+                                  float*            A,
+                                  int               lda,
+                                  float*            work,
+                                  int*              devIpiv,
+                                  int*              devInfo)
+{
+    return cuda2hip_status(
+        cusolverDnSgetrf((cusolverDnHandle_t)handle, m, n, A, lda, work, devIpiv, devInfo));
+}
+
+hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
+                                  int               m,
+                                  int               n,
+                                  double*           A,
+                                  int               lda,
+                                  double*           work,
+                                  int*              devIpiv,
+                                  int*              devInfo)
+{
+    return cuda2hip_status(
+        cusolverDnDgetrf((cusolverDnHandle_t)handle, m, n, A, lda, work, devIpiv, devInfo));
+}
+
+hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
+                                  int               m,
+                                  int               n,
+                                  hipsolverComplex* A,
+                                  int               lda,
+                                  hipsolverComplex* work,
+                                  int*              devIpiv,
+                                  int*              devInfo)
+{
+    return cuda2hip_status(cusolverDnCgetrf(
+        (cusolverDnHandle_t)handle, m, n, (cuComplex*)A, lda, (cuComplex*)work, devIpiv, devInfo));
+}
+
+hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
+                                  int                     m,
+                                  int                     n,
+                                  hipsolverDoubleComplex* A,
+                                  int                     lda,
+                                  hipsolverDoubleComplex* work,
+                                  int*                    devIpiv,
+                                  int*                    devInfo)
+{
+    return cuda2hip_status(cusolverDnZgetrf((cusolverDnHandle_t)handle,
+                                            m,
+                                            n,
+                                            (cuDoubleComplex*)A,
+                                            lda,
+                                            (cuDoubleComplex*)work,
+                                            devIpiv,
+                                            devInfo));
+}
+
 #ifdef __cplusplus
 }
 #endif

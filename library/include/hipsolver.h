@@ -109,6 +109,7 @@ public:
         , y(i)
     {
     }
+
     double real() const
     {
         return x;
@@ -188,6 +189,55 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSetStream(hipsolverHandle_t handle,
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverGetStream(hipsolverHandle_t handle,
                                                       hipStream_t*      streamId);
+
+// getrf
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgetrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgetrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgetrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
+                                                   int               m,
+                                                   int               n,
+                                                   float*            A,
+                                                   int               lda,
+                                                   float*            work,
+                                                   int*              devIpiv,
+                                                   int*              devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
+                                                   int               m,
+                                                   int               n,
+                                                   double*           A,
+                                                   int               lda,
+                                                   double*           work,
+                                                   int*              devIpiv,
+                                                   int*              devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
+                                                   int               m,
+                                                   int               n,
+                                                   hipsolverComplex* A,
+                                                   int               lda,
+                                                   hipsolverComplex* work,
+                                                   int*              devIpiv,
+                                                   int*              devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
+                                                   int                     m,
+                                                   int                     n,
+                                                   hipsolverDoubleComplex* A,
+                                                   int                     lda,
+                                                   hipsolverDoubleComplex* work,
+                                                   int*                    devIpiv,
+                                                   int*                    devInfo);
 
 #ifdef __cplusplus
 }

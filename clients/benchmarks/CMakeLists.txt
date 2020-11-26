@@ -21,6 +21,7 @@ if( NOT TARGET hipsolver )
 endif( )
 
 set(hipsolver_benchmark_common
+  ../common/cblas_interface.cpp
   ../common/hipsolver_datatype2string.cpp
   ../common/utility.cpp
 )

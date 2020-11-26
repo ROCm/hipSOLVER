@@ -38,6 +38,21 @@ char hipsolver2char_fill(hipsolverFillMode_t value)
 /* ============================================================================================ */
 /*  Convert lapack char constants to hipsolver type. */
 
+hipsolverStatus_t string2hipsolver_status(const std::string& value)
+{
+    return value == "HIPSOLVER_STATUS_SUCCESS"             ? HIPSOLVER_STATUS_SUCCESS
+           : value == "HIPSOLVER_STATUS_NOT_INITIALIZED"   ? HIPSOLVER_STATUS_NOT_INITIALIZED
+           : value == "HIPSOLVER_STATUS_ALLOC_FAILED"      ? HIPSOLVER_STATUS_ALLOC_FAILED
+           : value == "HIPSOLVER_STATUS_INVALID_VALUE"     ? HIPSOLVER_STATUS_INVALID_VALUE
+           : value == "HIPSOLVER_STATUS_MAPPING_ERROR"     ? HIPSOLVER_STATUS_MAPPING_ERROR
+           : value == "HIPSOLVER_STATUS_EXECUTION_FAILED"  ? HIPSOLVER_STATUS_EXECUTION_FAILED
+           : value == "HIPSOLVER_STATUS_INTERNAL_ERROR"    ? HIPSOLVER_STATUS_INTERNAL_ERROR
+           : value == "HIPSOLVER_STATUS_NOT_SUPPORTED"     ? HIPSOLVER_STATUS_NOT_SUPPORTED
+           : value == "HIPSOLVER_STATUS_ARCH_MISMATCH"     ? HIPSOLVER_STATUS_ARCH_MISMATCH
+           : value == "HIPSOLVER_STATUS_HANDLE_IS_NULLPTR" ? HIPSOLVER_STATUS_HANDLE_IS_NULLPTR
+                                                           : static_cast<hipsolverStatus_t>(-1);
+}
+
 hipsolverOperation_t char2hipsolver_operation(char value)
 {
     switch(value)

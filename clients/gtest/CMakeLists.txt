@@ -39,9 +39,11 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 set(hipsolver_test_source
   hipsolver_gtest_main.cpp
+  getrf_gtest.cpp
 )
 
 set( hipsolver_test_common
+  ../common/cblas_interface.cpp
   ../common/hipsolver_datatype2string.cpp
   ../common/utility.cpp
 )
