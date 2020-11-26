@@ -7,3 +7,6 @@
   - auxiliary
     - hipsolverCreate, hipsolverDestroy
     - hipsolverSetStream, hipsolverGetStream
+  - getrf
+    - hipsolverSgetrf_bufferSize, hipsolverDgetrf_bufferSize, hipsolverCgetrf_bufferSize, hipsolverZgetrf_bufferSize
+    - hipsolverSgetrf, hipsolverDgetrf, hipsolverCgetrf, hipsolverZgetrf

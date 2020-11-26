@@ -26,6 +26,23 @@
  * \brief provide data initialization, timing, hipsolver type <-> lapack char conversion utilities.
  */
 
+#ifdef GOOGLE_TEST
+
+#include <gtest/gtest.h>
+
+#define CHECK_HIP_ERROR(error) ASSERT_EQ(error, hipSuccess)
+
+inline void hipsolver_expect_status(hipsolverStatus_t status, hipsolverStatus_t expected)
+{
+    if(status != HIPSOLVER_STATUS_NOT_SUPPORTED)
+        ASSERT_EQ(status, expected);
+}
+
+#define EXPECT_ROCBLAS_STATUS(status, expected) hipsolver_expect_status(status, expected)
+#define CHECK_ROCBLAS_ERROR(status) hipsolver_expect_status(status, HIPSOLVER_STATUS_SUCCESS)
+
+#else
+
 #define CHECK_HIP_ERROR(error)                    \
     do                                            \
     {                                             \
@@ -41,7 +58,61 @@
         }                                         \
     } while(0)
 
+inline void hipsolver_expect_status(hipsolverStatus_t status, hipsolverStatus_t expected)
+{
+    if(status != expected && status != HIPSOLVER_STATUS_NOT_SUPPORTED)
+    {
+        fprintf(stderr,
+                "hipSOLVER status error: Expected: %s, Actual: %s\n",
+                hipsolver2string_status(expected),
+                hipsolver2string_status(status));
+        if(expected == HIPSOLVER_STATUS_SUCCESS)
+            exit(EXIT_FAILURE);
+    }
+}
+
+#define EXPECT_ROCBLAS_STATUS(status, expected) hipsolver_expect_status(status, expected)
+#define CHECK_ROCBLAS_ERROR(status) hipsolver_expect_status(status, HIPSOLVER_STATUS_SUCCESS)
+
+#endif
+
 #ifdef __cplusplus
+
+/* ============================================================================================
+ */
+/*! \brief  local handle which is automatically created and destroyed  */
+class hipsolver_local_handle
+{
+    hipsolverHandle_t m_handle;
+
+public:
+    hipsolver_local_handle()
+    {
+        hipsolverCreate(&m_handle);
+    }
+    ~hipsolver_local_handle()
+    {
+        hipsolverDestroy(m_handle);
+    }
+
+    hipsolver_local_handle(const hipsolver_local_handle&) = delete;
+    hipsolver_local_handle(hipsolver_local_handle&&)      = delete;
+    hipsolver_local_handle& operator=(const hipsolver_local_handle&) = delete;
+    hipsolver_local_handle& operator=(hipsolver_local_handle&&) = delete;
+
+    // Allow hipsolver_local_handle to be used anywhere hipsolverHandle_t is expected
+    operator hipsolverHandle_t&()
+    {
+        return m_handle;
+    }
+    operator const hipsolverHandle_t&() const
+    {
+        return m_handle;
+    }
+};
+
+/* ============================================================================================
+ */
 
 // Return true if value is NaN
 template <typename T>

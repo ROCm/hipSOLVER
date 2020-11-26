@@ -88,5 +88,142 @@ module hipsolver
     !------------!
     !   LAPACK   !
     !------------!
+
+    ! getrf
+    interface
+        function hipsolverSgetrf_bufferSize(handle, m, n, A, lda, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSgetrf_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: lwork
+        end function hipsolverSgetrf_bufferSize
+    end interface
+    
+    interface
+        function hipsolverDgetrf_bufferSize(handle, m, n, A, lda, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDgetrf_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: lwork
+        end function hipsolverDgetrf_bufferSize
+    end interface
+    
+    interface
+        function hipsolverCgetrf_bufferSize(handle, m, n, A, lda, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCgetrf_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: lwork
+        end function hipsolverCgetrf_bufferSize
+    end interface
+    
+    interface
+        function hipsolverZgetrf_bufferSize(handle, m, n, A, lda, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZgetrf_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: lwork
+        end function hipsolverZgetrf_bufferSize
+    end interface
+
+    interface
+        function hipsolverSgetrf(handle, m, n, A, lda, work, ipiv, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSgetrf')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: work
+            type(c_ptr), value :: ipiv
+            type(c_ptr), value :: info
+        end function hipsolverSgetrf
+    end interface
+    
+    interface
+        function hipsolverDgetrf(handle, m, n, A, lda, work, ipiv, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDgetrf')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: work
+            type(c_ptr), value :: ipiv
+            type(c_ptr), value :: info
+        end function hipsolverDgetrf
+    end interface
+    
+    interface
+        function hipsolverCgetrf(handle, m, n, A, lda, work, ipiv, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCgetrf')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: work
+            type(c_ptr), value :: ipiv
+            type(c_ptr), value :: info
+        end function hipsolverCgetrf
+    end interface
+    
+    interface
+        function hipsolverZgetrf(handle, m, n, A, lda, work, ipiv, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZgetrf')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: work
+            type(c_ptr), value :: ipiv
+            type(c_ptr), value :: info
+        end function hipsolverZgetrf
+    end interface
     
 end module hipsolver

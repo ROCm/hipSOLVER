@@ -10,4 +10,9 @@
 #include "../rocsolvercommon/rocsolver_arguments.hpp"
 #include "../rocsolvercommon/rocsolver_test.hpp"
 
+#include "cblas_interface.h"
+#include "hipsolver.hpp"
+
+using namespace std;
+
 #endif

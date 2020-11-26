@@ -5,7 +5,6 @@
 #ifndef S_TEST_H
 #define S_TEST_H
 
-#include <boost/format.hpp>
 #include <cstdarg>
 #include <limits>
 
@@ -43,13 +42,15 @@ inline void rocsolver_bench_output()
     std::cerr << std::endl;
 }
 
+template <typename T>
+inline void rocsolver_bench_output(T arg)
+{
+    std::cerr << arg << std::endl;
+}
 template <typename T, typename... Ts>
 inline void rocsolver_bench_output(T arg, Ts... args)
 {
-    using boost::format;
-    format f("%|-15|");
-
-    std::cerr << f % arg;
+    std::cerr << arg << ", ";
     rocsolver_bench_output(args...);
 }
 

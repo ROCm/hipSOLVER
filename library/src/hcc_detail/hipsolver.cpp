@@ -120,4 +120,101 @@ hipsolverStatus_t hipsolverGetStream(hipsolverHandle_t handle, hipStream_t* stre
 
     return rocblas2hip_status(rocblas_get_stream((rocblas_handle)handle, streamId));
 }
+
+// getrf
+hipsolverStatus_t hipsolverSgetrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
+{
+    *lwork = 0;
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+
+hipsolverStatus_t hipsolverDgetrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork)
+{
+    *lwork = 0;
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+
+hipsolverStatus_t hipsolverCgetrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork)
+{
+    *lwork = 0;
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+
+hipsolverStatus_t hipsolverZgetrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork)
+{
+    *lwork = 0;
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+
+hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
+                                  int               m,
+                                  int               n,
+                                  float*            A,
+                                  int               lda,
+                                  float*            work,
+                                  int*              devIpiv,
+                                  int*              devInfo)
+{
+    if(devIpiv != nullptr)
+        return rocblas2hip_status(
+            rocsolver_sgetrf((rocblas_handle)handle, m, n, A, lda, devIpiv, devInfo));
+    else
+        return rocblas2hip_status(
+            rocsolver_sgetrf_npvt((rocblas_handle)handle, m, n, A, lda, devInfo));
+}
+
+hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
+                                  int               m,
+                                  int               n,
+                                  double*           A,
+                                  int               lda,
+                                  double*           work,
+                                  int*              devIpiv,
+                                  int*              devInfo)
+{
+    if(devIpiv != nullptr)
+        return rocblas2hip_status(
+            rocsolver_dgetrf((rocblas_handle)handle, m, n, A, lda, devIpiv, devInfo));
+    else
+        return rocblas2hip_status(
+            rocsolver_dgetrf_npvt((rocblas_handle)handle, m, n, A, lda, devInfo));
+}
+
+hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
+                                  int               m,
+                                  int               n,
+                                  hipsolverComplex* A,
+                                  int               lda,
+                                  hipsolverComplex* work,
+                                  int*              devIpiv,
+                                  int*              devInfo)
+{
+    if(devIpiv != nullptr)
+        return rocblas2hip_status(rocsolver_cgetrf(
+            (rocblas_handle)handle, m, n, (rocblas_float_complex*)A, lda, devIpiv, devInfo));
+    else
+        return rocblas2hip_status(rocsolver_cgetrf_npvt(
+            (rocblas_handle)handle, m, n, (rocblas_float_complex*)A, lda, devInfo));
+}
+
+hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
+                                  int                     m,
+                                  int                     n,
+                                  hipsolverDoubleComplex* A,
+                                  int                     lda,
+                                  hipsolverDoubleComplex* work,
+                                  int*                    devIpiv,
+                                  int*                    devInfo)
+{
+    if(devIpiv != nullptr)
+        return rocblas2hip_status(rocsolver_zgetrf(
+            (rocblas_handle)handle, m, n, (rocblas_double_complex*)A, lda, devIpiv, devInfo));
+    else
+        return rocblas2hip_status(rocsolver_zgetrf_npvt(
+            (rocblas_handle)handle, m, n, (rocblas_double_complex*)A, lda, devInfo));
+}
 }
