@@ -109,7 +109,7 @@ hipsolverStatus_t hipsolverGetStream(hipsolverHandle_t handle, hipStream_t* stre
     return cuda2hip_status(cusolverDnGetStream((cusolverDnHandle_t)handle, streamId));
 }
 
-// getrf
+/******************** GETRF ********************/
 hipsolverStatus_t hipsolverSgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
 {
