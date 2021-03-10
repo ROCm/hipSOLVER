@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #include "hipsolver.h"
@@ -9,6 +9,8 @@
 #include <functional>
 #include <iostream>
 #include <math.h>
+
+using namespace std;
 
 extern "C" {
 
@@ -126,52 +128,72 @@ hipsolverStatus_t hipsolverGetStream(hipsolverHandle_t handle, hipStream_t* stre
 hipsolverStatus_t hipsolverSgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
 {
-    size_t sz;
+    size_t sz1, sz2;
+
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocblas_status status
         = rocsolver_sgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz1);
 
-    *lwork = (int)sz;
+    rocblas_start_device_memory_size_query((rocblas_handle)handle);
+    rocsolver_sgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz2);
+
+    *lwork = (int)max(sz1, sz2);
     return rocblas2hip_status(status);
 }
 
 hipsolverStatus_t hipsolverDgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork)
 {
-    size_t sz;
+    size_t sz1, sz2;
+
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocblas_status status
         = rocsolver_dgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz1);
 
-    *lwork = (int)sz;
+    rocblas_start_device_memory_size_query((rocblas_handle)handle);
+    rocsolver_dgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz2);
+
+    *lwork = (int)max(sz1, sz2);
     return rocblas2hip_status(status);
 }
 
 hipsolverStatus_t hipsolverCgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork)
 {
-    size_t sz;
+    size_t sz1, sz2;
+
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocblas_status status
         = rocsolver_cgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz1);
 
-    *lwork = (int)sz;
+    rocblas_start_device_memory_size_query((rocblas_handle)handle);
+    rocsolver_cgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz2);
+
+    *lwork = (int)max(sz1, sz2);
     return rocblas2hip_status(status);
 }
 
 hipsolverStatus_t hipsolverZgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork)
 {
-    size_t sz;
+    size_t sz1, sz2;
+
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocblas_status status
         = rocsolver_zgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz1);
 
-    *lwork = (int)sz;
+    rocblas_start_device_memory_size_query((rocblas_handle)handle);
+    rocsolver_zgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz2);
+
+    *lwork = (int)max(sz1, sz2);
     return rocblas2hip_status(status);
 }
 
@@ -184,12 +206,18 @@ hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
                                   int*              devIpiv,
                                   int*              devInfo)
 {
-    size_t sz;
-    rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocsolver_sgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+    if(work != nullptr)
+    {
+        size_t sz;
+        rocblas_start_device_memory_size_query((rocblas_handle)handle);
+        if(devIpiv != nullptr)
+            rocsolver_sgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
+        else
+            rocsolver_sgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
+        rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    rocblas_set_workspace((rocblas_handle)handle, (void*)work, sz);
+        rocblas_set_workspace((rocblas_handle)handle, (void*)work, sz);
+    }
 
     if(devIpiv != nullptr)
         return rocblas2hip_status(
@@ -208,12 +236,18 @@ hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
                                   int*              devIpiv,
                                   int*              devInfo)
 {
-    size_t sz;
-    rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocsolver_dgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+    if(work != nullptr)
+    {
+        size_t sz;
+        rocblas_start_device_memory_size_query((rocblas_handle)handle);
+        if(devIpiv != nullptr)
+            rocsolver_dgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
+        else
+            rocsolver_dgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
+        rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    rocblas_set_workspace((rocblas_handle)handle, (void*)work, sz);
+        rocblas_set_workspace((rocblas_handle)handle, (void*)work, sz);
+    }
 
     if(devIpiv != nullptr)
         return rocblas2hip_status(
@@ -232,12 +266,18 @@ hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
                                   int*              devIpiv,
                                   int*              devInfo)
 {
-    size_t sz;
-    rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocsolver_cgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+    if(work != nullptr)
+    {
+        size_t sz;
+        rocblas_start_device_memory_size_query((rocblas_handle)handle);
+        if(devIpiv != nullptr)
+            rocsolver_cgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
+        else
+            rocsolver_cgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
+        rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    rocblas_set_workspace((rocblas_handle)handle, (void*)work, sz);
+        rocblas_set_workspace((rocblas_handle)handle, (void*)work, sz);
+    }
 
     if(devIpiv != nullptr)
         return rocblas2hip_status(rocsolver_cgetrf(
@@ -256,12 +296,18 @@ hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
                                   int*                    devIpiv,
                                   int*                    devInfo)
 {
-    size_t sz;
-    rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocsolver_zgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+    if(work != nullptr)
+    {
+        size_t sz;
+        rocblas_start_device_memory_size_query((rocblas_handle)handle);
+        if(devIpiv != nullptr)
+            rocsolver_zgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
+        else
+            rocsolver_zgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
+        rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    rocblas_set_workspace((rocblas_handle)handle, (void*)work, sz);
+        rocblas_set_workspace((rocblas_handle)handle, (void*)work, sz);
+    }
 
     if(devIpiv != nullptr)
         return rocblas2hip_status(rocsolver_zgetrf(
