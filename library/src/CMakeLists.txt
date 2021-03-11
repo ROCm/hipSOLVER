@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright 2016-2020 Advanced Micro Devices, Inc.
+# Copyright 2016-2021 Advanced Micro Devices, Inc.
 # ########################################################################
 
 # ########################################################################
@@ -21,7 +21,7 @@ endfunction( )
 # ########################################################################
 prepend_path( ".." hipsolver_headers_public relative_hipsolver_headers_public )
 
-if( NOT CUDA_FOUND )
+if( NOT USE_CUDA )
   set( hipsolver_source "${CMAKE_CURRENT_SOURCE_DIR}/hcc_detail/hipsolver.cpp" )
 else( )
   set( hipsolver_source "${CMAKE_CURRENT_SOURCE_DIR}/nvcc_detail/hipsolver.cpp" )
@@ -47,7 +47,7 @@ target_include_directories( hipsolver
 )
 
 # Build hipsolver from source on AMD platform
-if( NOT CUDA_FOUND )
+if( NOT USE_CUDA )
   if( NOT TARGET rocblas )
     if( CUSTOM_ROCBLAS )
       set ( ENV{rocblas_DIR} ${CUSTOM_ROCBLAS})
@@ -61,14 +61,10 @@ if( NOT CUDA_FOUND )
     find_package( rocsolver REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocsolver /usr/local/rocsolver )
   endif( )
 
-  target_compile_definitions( hipsolver PRIVATE __HIP_PLATFORM_HCC__ )
-
-  target_link_libraries( hipsolver PRIVATE roc::rocblas roc::rocsolver )
+  target_link_libraries( hipsolver PRIVATE roc::rocblas roc::rocsolver hip::host )
 
   if( CUSTOM_TARGET )
     target_link_libraries( hipsolver PRIVATE hip::${CUSTOM_TARGET} )
-  else( )
-    target_link_libraries( hipsolver PRIVATE hip::host )
   endif( )
 
 else( )

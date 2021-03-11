@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright 2016-2020 Advanced Micro Devices, Inc.
+# Copyright 2016-2021 Advanced Micro Devices, Inc.
 # ########################################################################
 
 # This is incremented when the ABI to the library changes
@@ -74,7 +74,7 @@ endif( )
 set( CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION "\${CPACK_PACKAGING_INSTALL_PREFIX}" "\${CPACK_PACKAGING_INSTALL_PREFIX}/include" "\${CPACK_PACKAGING_INSTALL_PREFIX}/lib" )
 
 # Give hipsolver compiled for CUDA backend a different name
-if( NOT CUDA_FOUND )
+if( NOT USE_CUDA )
     set( package_name hipsolver )
 else( )
     set( package_name hipsolver-alt )

@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright 2016-2020 Advanced Micro Devices, Inc.
+# Copyright 2016-2021 Advanced Micro Devices, Inc.
 # ########################################################################
 
 add_executable( example-c-basic example_basic.c )
@@ -33,13 +33,11 @@ foreach( exe example-c-basic;example-cpp-basic; )
 
   target_link_libraries( ${exe} PRIVATE roc::hipsolver )
 
-  if( NOT CUDA_FOUND )
-    target_compile_definitions( ${exe} PRIVATE __HIP_PLATFORM_HCC__ )
+  if( NOT USE_CUDA )
+    target_link_libraries( ${exe} PRIVATE hip::host )
 
     if( CUSTOM_TARGET )
-      target_link_libraries( ${exe} PRIVATE hip::${CUSTOM_TARGET} hip::host )
-    else( )
-      target_link_libraries( ${exe} PRIVATE hip::host )
+      target_link_libraries( ${exe} PRIVATE hip::${CUSTOM_TARGET} )
     endif( )
 
   else( )
