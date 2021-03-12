@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  *
  * ************************************************************************ */
 
@@ -74,164 +74,121 @@ Arguments getrf_setup_arguments(getrf_tuple tup)
     return arg;
 }
 
-class GETRF : public ::TestWithParam<getrf_tuple>
+template <bool FORTRAN, bool NPVT>
+class GETRF_BASE : public ::TestWithParam<getrf_tuple>
 {
 protected:
-    GETRF() {}
+    GETRF_BASE() {}
     virtual void SetUp() {}
     virtual void TearDown() {}
+
+    template <bool BATCHED, bool STRIDED, typename T>
+    void run_tests()
+    {
+        Arguments arg = getrf_setup_arguments(GetParam());
+
+        arg.batch_count = 1;
+        if(!NPVT)
+            testing_getrf<FORTRAN, BATCHED, STRIDED, T>(arg);
+        else
+            testing_getrf_npvt<FORTRAN, BATCHED, STRIDED, T>(arg);
+    }
 };
 
-class GETRF_FORTRAN : public ::TestWithParam<getrf_tuple>
+class GETRF : public GETRF_BASE<false, false>
 {
-protected:
-    GETRF_FORTRAN() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
 };
 
-class GETRF_NPVT : public ::TestWithParam<getrf_tuple>
+class GETRF_FORTRAN : public GETRF_BASE<true, false>
 {
-protected:
-    GETRF_NPVT() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
 };
 
-class GETRF_NPVT_FORTRAN : public ::TestWithParam<getrf_tuple>
+class GETRF_NPVT : public GETRF_BASE<false, true>
 {
-protected:
-    GETRF_NPVT_FORTRAN() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+};
+
+class GETRF_NPVT_FORTRAN : public GETRF_BASE<true, true>
+{
 };
 
 // non-batch tests
 TEST_P(GETRF, __float)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf<false, false, false, float>(arg);
+    run_tests<false, false, float>();
 }
 
 TEST_P(GETRF, __double)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf<false, false, false, double>(arg);
+    run_tests<false, false, double>();
 }
 
 TEST_P(GETRF, __float_complex)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf<false, false, false, hipsolverComplex>(arg);
+    run_tests<false, false, hipsolverComplex>();
 }
 
 TEST_P(GETRF, __double_complex)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf<false, false, false, hipsolverDoubleComplex>(arg);
+    run_tests<false, false, hipsolverDoubleComplex>();
 }
 
 TEST_P(GETRF_FORTRAN, __float)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf<true, false, false, float>(arg);
+    run_tests<false, false, float>();
 }
 
 TEST_P(GETRF_FORTRAN, __double)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf<true, false, false, double>(arg);
+    run_tests<false, false, double>();
 }
 
 TEST_P(GETRF_FORTRAN, __float_complex)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf<true, false, false, hipsolverComplex>(arg);
+    run_tests<false, false, hipsolverComplex>();
 }
 
 TEST_P(GETRF_FORTRAN, __double_complex)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf<true, false, false, hipsolverDoubleComplex>(arg);
+    run_tests<false, false, hipsolverDoubleComplex>();
 }
 TEST_P(GETRF_NPVT, __float)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf_npvt<false, false, false, float>(arg);
+    run_tests<false, false, float>();
 }
 
 TEST_P(GETRF_NPVT, __double)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf_npvt<false, false, false, double>(arg);
+    run_tests<false, false, double>();
 }
 
 TEST_P(GETRF_NPVT, __float_complex)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf_npvt<false, false, false, hipsolverComplex>(arg);
+    run_tests<false, false, hipsolverComplex>();
 }
 
 TEST_P(GETRF_NPVT, __double_complex)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf_npvt<false, false, false, hipsolverDoubleComplex>(arg);
+    run_tests<false, false, hipsolverDoubleComplex>();
 }
 
 TEST_P(GETRF_NPVT_FORTRAN, __float)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf_npvt<true, false, false, float>(arg);
+    run_tests<false, false, float>();
 }
 
 TEST_P(GETRF_NPVT_FORTRAN, __double)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf_npvt<true, false, false, double>(arg);
+    run_tests<false, false, double>();
 }
 
 TEST_P(GETRF_NPVT_FORTRAN, __float_complex)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf_npvt<true, false, false, hipsolverComplex>(arg);
+    run_tests<false, false, hipsolverComplex>();
 }
 
 TEST_P(GETRF_NPVT_FORTRAN, __double_complex)
 {
-    Arguments arg = getrf_setup_arguments(GetParam());
-
-    arg.batch_count = 1;
-    testing_getrf_npvt<true, false, false, hipsolverDoubleComplex>(arg);
+    run_tests<false, false, hipsolverDoubleComplex>();
 }
 
 INSTANTIATE_TEST_SUITE_P(daily_lapack,
