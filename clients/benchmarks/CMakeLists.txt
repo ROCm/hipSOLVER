@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright 2016-2020 Advanced Micro Devices, Inc.
+# Copyright 2016-2021 Advanced Micro Devices, Inc.
 # ########################################################################
 
 set( THREADS_PREFER_PTHREAD_FLAG ON )
@@ -21,7 +21,7 @@ if( NOT TARGET hipsolver )
 endif( )
 
 set(hipsolver_benchmark_common
-  ../common/cblas_interface.cpp
+  ../common/lapack_host_reference.cpp
   ../common/hipsolver_datatype2string.cpp
   ../common/utility.cpp
 )
