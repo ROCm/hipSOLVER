@@ -1,12 +1,14 @@
 /* ************************************************************************
- * Copyright 2018-2020 Advanced Micro Devices, Inc.
+ * Copyright 2018-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #ifndef S_TEST_H
 #define S_TEST_H
 
 #include <cstdarg>
+#include <iomanip>
 #include <limits>
+#include <sstream>
 
 #define ROCSOLVER_BENCH_INFORM(case)                                    \
     do                                                                  \
@@ -42,15 +44,15 @@ inline void rocsolver_bench_output()
     std::cerr << std::endl;
 }
 
-template <typename T>
-inline void rocsolver_bench_output(T arg)
-{
-    std::cerr << arg << std::endl;
-}
 template <typename T, typename... Ts>
 inline void rocsolver_bench_output(T arg, Ts... args)
 {
-    std::cerr << arg << ", ";
+    std::stringstream ss;
+    ss << std::left << std::setw(15) << arg;
+
+    std::cerr << ss.str();
+    if(sizeof...(Ts) > 0)
+        std::cerr << ' ';
     rocsolver_bench_output(args...);
 }
 

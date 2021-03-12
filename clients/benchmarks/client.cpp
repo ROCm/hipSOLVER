@@ -1,9 +1,8 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
-#include "../include/testing_getrf.hpp"
-#include "../include/testing_getrf_npvt.hpp"
+#include "../include/hipsolver_dispatcher.hpp"
 #include "../rocblascommon/program_options.hpp"
 
 using rocblas_int    = int;
@@ -265,18 +264,7 @@ try
         throw std::invalid_argument("Invalid value for --workmode");
 
     // select and dispatch function test/benchmark
-    // (TODO) MOVE THIS TO A SEPARATE IMPROVED DISPATCH FUNCTION
-    if(function == "getrf")
-    {
-        if(precision == 's')
-            testing_getrf<false, false, false, float>(argus);
-        else if(precision == 'd')
-            testing_getrf<false, false, false, double>(argus);
-        else if(precision == 'c')
-            testing_getrf<false, false, false, hipsolverComplex>(argus);
-        else if(precision == 'z')
-            testing_getrf<false, false, false, hipsolverDoubleComplex>(argus);
-    }
+    hipsolver_dispatcher::invoke(function, precision, argus);
 }
 
 catch(const std::invalid_argument& exp)

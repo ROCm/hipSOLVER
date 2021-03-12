@@ -1,9 +1,11 @@
 /* ************************************************************************
- * Copyright 2018-2020 Advanced Micro Devices, Inc.
+ * Copyright 2018-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #ifndef ARGUMENTS_H
 #define ARGUMENTS_H
+
+#include <stddef.h>
 
 using rocblas_int    = int;
 using rocblas_stride = ptrdiff_t;
