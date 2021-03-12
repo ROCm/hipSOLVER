@@ -5,8 +5,8 @@
 # - run this script in master branch
 # - after running this script merge master into develop
 
-OLD_HIPSOLVER_VERSION="0.2.0"
-NEW_HIPSOLVER_VERSION="0.3.0"
+OLD_HIPSOLVER_VERSION="1.0.0"
+NEW_HIPSOLVER_VERSION="1.1.0"
 
 OLD_MINIMUM_ROCBLAS_VERSION="2.39.0"
 NEW_MINIMUM_ROCBLAS_VERSION="2.40.0"
