@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright 2016-2020 Advanced Micro Devices, Inc.
+# Copyright 2016-2021 Advanced Micro Devices, Inc.
 # ########################################################################
 
 # The ROCm platform requires Ubuntu 16.04 or Fedora 24, which has cmake 3.5
@@ -49,7 +49,7 @@ include( ROCMInstallTargets )
 include( ROCMPackageConfigHelpers )
 include( ROCMInstallSymlinks )
 
-set ( VERSION_STRING "0.1.0" )
+set ( VERSION_STRING "1.0.0" )
 rocm_setup_version( VERSION ${VERSION_STRING} )
 
 if( NOT DEFINED $ENV{HIP_PATH})
@@ -70,16 +70,15 @@ option( BUILD_VERBOSE "Output additional build information" OFF )
 # BUILD_SHARED_LIBS is a cmake built-in; we make it an explicit option such that it shows in cmake-gui
 option( BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON )
 
-# Quietly look for CUDA, but if not found it's not an error
-# The presense of hip is not sufficient to determine if we want a rocm or cuda backend
-option( USE_CUDA "Look for CUDA and use that as a backend if found" ON )
-if( USE_CUDA )
-    find_package( CUDA QUIET )
+# Find CUDA if the user wants a CUDA version.
+option(USE_CUDA "Look for CUDA and use that as a backend if found" OFF)
+if (USE_CUDA)
+    find_package( CUDA REQUIRED )
 endif()
 
 # Hip headers required of all clients; clients use hip to allocate device memory
 if( USE_CUDA)
-    find_package( HIP REQUIRED )
+    find_package( HIP MODULE REQUIRED )
 else( )
     find_package( hip REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm )
 endif( )

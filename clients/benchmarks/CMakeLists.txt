@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright 2016-2020 Advanced Micro Devices, Inc.
+# Copyright 2016-2021 Advanced Micro Devices, Inc.
 # ########################################################################
 
 set( THREADS_PREFER_PTHREAD_FLAG ON )
@@ -48,13 +48,11 @@ target_link_libraries( hipsolver-bench PRIVATE hipsolver_fortran_client roc::hip
 # need mf16c flag for float->half convertion
 target_compile_options( hipsolver-bench PRIVATE -mf16c)
 
-if( NOT CUDA_FOUND )
-  target_compile_definitions( hipsolver-bench PRIVATE __HIP_PLATFORM_HCC__ )
+if( NOT USE_CUDA )
+  target_link_libraries( hipsolver-bench PRIVATE hip::host )
 
   if( CUSTOM_TARGET )
-    target_link_libraries( hipsolver-bench PRIVATE hip::${CUSTOM_TARGET} hip::host )
-  else( )
-    target_link_libraries( hipsolver-bench PRIVATE hip::host )
+    target_link_libraries( hipsolver-bench PRIVATE hip::${CUSTOM_TARGET} )
   endif( )
 
   if( CMAKE_CXX_COMPILER MATCHES ".*/hcc$|.*/hipcc$" )
