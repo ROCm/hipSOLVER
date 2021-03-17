@@ -7,7 +7,7 @@
 
 using rocblas_int    = int;
 using rocblas_stride = ptrdiff_t;
-using namespace roc::boost;
+using namespace roc;
 
 // clang-format off
 const char* help_str = R"HELP_STR(

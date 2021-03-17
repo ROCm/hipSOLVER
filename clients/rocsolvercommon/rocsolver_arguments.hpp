@@ -10,8 +10,8 @@
 
 using rocblas_int    = int;
 using rocblas_stride = ptrdiff_t;
-using variables_map  = roc::boost::variables_map;
-using variable_value = roc::boost::variable_value;
+using variables_map  = roc::variables_map;
+using variable_value = roc::variable_value;
 
 class Arguments : private std::map<std::string, variable_value>
 {
