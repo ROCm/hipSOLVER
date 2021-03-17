@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright 2016-2020 Advanced Micro Devices, Inc.
+# Copyright 2016-2021 Advanced Micro Devices, Inc.
 # ########################################################################
 
 # ########################################################################
@@ -58,7 +58,12 @@ if( NOT CUDA_FOUND )
   endif( )
 
   if( NOT TARGET rocsolver )
-    find_package( rocsolver REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocsolver /usr/local/rocsolver )
+    if( CUSTOM_ROCSOLVER )
+      set ( ENV{rocsolver_DIR} ${CUSTOM_ROCSOLVER})
+      find_package( rocsolver REQUIRED CONFIG NO_CMAKE_PATH )
+    else( )
+      find_package( rocsolver REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocsolver /usr/local/rocsolver )
+    endif( )
   endif( )
 
   target_compile_definitions( hipsolver PRIVATE __HIP_PLATFORM_HCC__ )

@@ -59,17 +59,14 @@ Arguments getrf_setup_arguments(getrf_tuple tup)
 
     Arguments arg;
 
-    arg.M   = matrix_size[0];
-    arg.N   = n_size;
-    arg.lda = matrix_size[1];
+    arg.set<int>("m", matrix_size[0]);
+    arg.set<int>("lda", matrix_size[1]);
 
-    arg.timing   = 0;
-    arg.singular = matrix_size[2];
+    arg.set<int>("n", n_size);
 
-    // only testing standard use case for strides
-    // strides are ignored in normal and batched tests
-    arg.bsp = min(arg.M, arg.N);
-    arg.bsa = arg.lda * arg.N;
+    // only testing standard use case/defaults for strides
+
+    arg.timing = 0;
 
     return arg;
 }

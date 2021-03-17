@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #include "clientcommon.hpp"
@@ -188,13 +188,14 @@ void testing_getrf_npvt(Arguments argus)
 {
     // get arguments
     hipsolver_local_handle handle;
-    int                    m         = argus.M;
-    int                    n         = argus.N;
-    int                    lda       = argus.lda;
-    int                    stA       = argus.bsa;
-    int                    stP       = argus.bsp;
-    int                    bc        = argus.batch_count;
-    int                    hot_calls = argus.iters;
+    int                    m   = argus.get<int>("m");
+    int                    n   = argus.get<int>("n");
+    int                    lda = argus.get<int>("lda", m);
+    int                    stA = argus.get<int>("strideA", lda * n);
+    int                    stP = argus.get<int>("strideP", min(m, n));
+
+    int bc        = argus.batch_count;
+    int hot_calls = argus.iters;
 
     int stARes = (argus.unit_check || argus.norm_check) ? stA : 0;
 
@@ -420,4 +421,7 @@ void testing_getrf_npvt(Arguments argus)
                 rocsolver_bench_output(gpu_time_used);
         }
     }
+
+    // ensure all arguments were consumed
+    argus.validate_consumed();
 }
