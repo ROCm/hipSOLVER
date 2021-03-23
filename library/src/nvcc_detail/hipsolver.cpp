@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #include "hipsolver.h"
@@ -85,8 +85,9 @@ hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     case CUSOLVER_STATUS_ARCH_MISMATCH:
         return HIPSOLVER_STATUS_ARCH_MISMATCH;
+    default:
+        throw "Unimplemented status";
     }
-    throw "Unimplemented status";
 }
 
 hipsolverStatus_t hipsolverCreate(hipsolverHandle_t* handle)

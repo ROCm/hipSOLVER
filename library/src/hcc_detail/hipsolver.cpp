@@ -90,8 +90,9 @@ hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
         return HIPSOLVER_STATUS_ALLOC_FAILED;
     case rocblas_status_internal_error:
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
+    default:
+        throw "Unimplemented status";
     }
-    throw "Unimplemented status";
 }
 
 hipsolverStatus_t hipsolverCreate(hipsolverHandle_t* handle)
