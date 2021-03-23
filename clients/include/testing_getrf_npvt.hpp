@@ -189,7 +189,7 @@ void testing_getrf_npvt(Arguments argus)
     // get arguments
     hipsolver_local_handle handle;
     int                    m   = argus.get<int>("m");
-    int                    n   = argus.get<int>("n");
+    int                    n   = argus.get<int>("n", m);
     int                    lda = argus.get<int>("lda", m);
     int                    stA = argus.get<int>("strideA", lda * n);
     int                    stP = argus.get<int>("strideP", min(m, n));
