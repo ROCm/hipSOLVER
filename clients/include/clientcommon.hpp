@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #ifndef CLIENTCOMMON_HPP
@@ -10,8 +10,8 @@
 #include "../rocsolvercommon/rocsolver_arguments.hpp"
 #include "../rocsolvercommon/rocsolver_test.hpp"
 
-#include "cblas_interface.h"
 #include "hipsolver.hpp"
+#include "lapack_host_reference.hpp"
 
 using namespace std;
 

@@ -21,7 +21,7 @@ if( NOT TARGET hipsolver )
 endif( )
 
 set(hipsolver_benchmark_common
-  ../common/cblas_interface.cpp
+  ../common/lapack_host_reference.cpp
   ../common/hipsolver_datatype2string.cpp
   ../common/utility.cpp
 )

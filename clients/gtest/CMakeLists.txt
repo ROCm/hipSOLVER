@@ -43,7 +43,7 @@ set(hipsolver_test_source
 )
 
 set( hipsolver_test_common
-  ../common/cblas_interface.cpp
+  ../common/lapack_host_reference.cpp
   ../common/hipsolver_datatype2string.cpp
   ../common/utility.cpp
 )
