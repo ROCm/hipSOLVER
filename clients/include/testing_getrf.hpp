@@ -160,10 +160,10 @@ void getrf_getPerfData(const hipsolverHandle_t handle,
             handle, m, n, dA, lda, stA, dIpiv, stP, dInfo, bc, hA, hIpiv, hInfo);
 
         // cpu-lapack performance (only if not in perf mode)
-        *cpu_time_used = get_time_us();
+        *cpu_time_used = get_time_us_no_sync();
         for(int b = 0; b < bc; ++b)
             cblas_getrf<T>(m, n, hA[b], lda, hIpiv[b], hInfo[b]);
-        *cpu_time_used = get_time_us() - *cpu_time_used;
+        *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 
     getrf_initData<true, false, T>(
@@ -191,13 +191,16 @@ void getrf_getPerfData(const hipsolverHandle_t handle,
     }
 
     // gpu-lapack performance
+    hipStream_t stream;
+    CHECK_ROCBLAS_ERROR(hipsolverGetStream(handle, &stream));
     double start;
+
     for(int iter = 0; iter < hot_calls; iter++)
     {
         getrf_initData<false, true, T>(
             handle, m, n, dA, lda, stA, dIpiv, stP, dInfo, bc, hA, hIpiv, hInfo);
 
-        start = get_time_us();
+        start = get_time_us_sync(stream);
         hipsolver_getrf(FORTRAN,
                         false,
                         handle,
@@ -211,7 +214,7 @@ void getrf_getPerfData(const hipsolverHandle_t handle,
                         stP,
                         dInfo.data(),
                         bc);
-        *gpu_time_used += get_time_us() - start;
+        *gpu_time_used += get_time_us_sync(stream) - start;
     }
     *gpu_time_used /= hot_calls;
 }
@@ -426,7 +429,7 @@ void testing_getrf(Arguments& argus)
     // validate results for rocsolver-test
     // using min(m,n) * machine_precision as tolerance
     if(argus.unit_check)
-        rocsolver_test_check<T>(max_error, min(m, n));
+        ROCSOLVER_TEST_CHECK(T, max_error, min(m, n));
 
     // output results for rocsolver-bench
     if(argus.timing)
