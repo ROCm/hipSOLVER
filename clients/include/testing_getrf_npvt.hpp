@@ -184,7 +184,7 @@ void getrf_npvt_getPerfData(const hipsolverHandle_t handle,
 }
 
 template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
-void testing_getrf_npvt(Arguments argus)
+void testing_getrf_npvt(Arguments& argus)
 {
     // get arguments
     hipsolver_local_handle handle;

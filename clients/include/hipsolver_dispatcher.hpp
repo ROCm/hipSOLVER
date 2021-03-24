@@ -19,14 +19,14 @@ struct str_less
     }
 };
 
-// Map from const char* to function taking const Arguments& using comparison above
-using func_map = std::map<const char*, void (*)(Arguments), str_less>;
+// Map from const char* to function taking Arguments& using lexicographical comparison
+using func_map = std::map<const char*, void (*)(Arguments&), str_less>;
 
 // Function dispatcher for hipSOLVER tests
 class hipsolver_dispatcher
 {
     template <typename T>
-    static hipsolverStatus_t run_function(const char* name, Arguments argus)
+    static hipsolverStatus_t run_function(const char* name, Arguments& argus)
     {
         // Map for functions that support all precisions
         static const func_map map = {
@@ -45,7 +45,7 @@ class hipsolver_dispatcher
     }
 
     template <typename T, std::enable_if_t<!is_complex<T>, int> = 0>
-    static hipsolverStatus_t run_function_limited_precision(const char* name, Arguments argus)
+    static hipsolverStatus_t run_function_limited_precision(const char* name, Arguments& argus)
     {
         // Map for functions that support single and double precisions
         static const func_map map_real = {};
@@ -62,7 +62,7 @@ class hipsolver_dispatcher
     }
 
     template <typename T, std::enable_if_t<is_complex<T>, int> = 0>
-    static hipsolverStatus_t run_function_limited_precision(const char* name, Arguments argus)
+    static hipsolverStatus_t run_function_limited_precision(const char* name, Arguments& argus)
     {
         // Map for functions that support single complex and double complex precisions
         static const func_map map_complex = {};

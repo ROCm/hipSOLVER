@@ -217,7 +217,7 @@ void getrf_getPerfData(const hipsolverHandle_t handle,
 }
 
 template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
-void testing_getrf(Arguments argus)
+void testing_getrf(Arguments& argus)
 {
     // get arguments
     hipsolver_local_handle handle;
