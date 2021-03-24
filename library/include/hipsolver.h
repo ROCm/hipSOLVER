@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 //! HIP = Heterogeneous-compute Interface for Portability
@@ -173,7 +173,6 @@ typedef enum
 {
     HIPSOLVER_FILL_MODE_UPPER = 121,
     HIPSOLVER_FILL_MODE_LOWER = 122,
-    HIPSOLVER_FILL_MODE_FULL  = 123,
 } hipsolverFillMode_t;
 
 #ifdef __cplusplus
