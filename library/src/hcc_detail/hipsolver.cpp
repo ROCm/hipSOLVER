@@ -12,7 +12,9 @@
 
 using namespace std;
 
+#ifdef __cplusplus
 extern "C" {
+#endif
 
 rocblas_operation_ hip2rocblas_operation(hipsolverOperation_t op)
 {
@@ -317,4 +319,144 @@ hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
         return rocblas2hip_status(rocsolver_zgetrf_npvt(
             (rocblas_handle)handle, m, n, (rocblas_double_complex*)A, lda, devInfo));
 }
+
+/******************** POTRF ********************/
+hipsolverStatus_t hipsolverSpotrf_bufferSize(
+    hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, float* A, int lda, int* lwork)
+{
+    size_t sz;
+
+    rocblas_start_device_memory_size_query((rocblas_handle)handle);
+    rocblas_status status = rocsolver_spotrf(
+        (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+
+    *lwork = (int)sz;
+    return rocblas2hip_status(status);
 }
+
+hipsolverStatus_t hipsolverDpotrf_bufferSize(
+    hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, double* A, int lda, int* lwork)
+{
+    size_t sz;
+
+    rocblas_start_device_memory_size_query((rocblas_handle)handle);
+    rocblas_status status = rocsolver_dpotrf(
+        (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+
+    *lwork = (int)sz;
+    return rocblas2hip_status(status);
+}
+
+hipsolverStatus_t hipsolverCpotrf_bufferSize(hipsolverHandle_t   handle,
+                                             hipsolverFillMode_t uplo,
+                                             int                 n,
+                                             hipsolverComplex*   A,
+                                             int                 lda,
+                                             int*                lwork)
+{
+    size_t sz;
+
+    rocblas_start_device_memory_size_query((rocblas_handle)handle);
+    rocblas_status status = rocsolver_cpotrf(
+        (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+
+    *lwork = (int)sz;
+    return rocblas2hip_status(status);
+}
+
+hipsolverStatus_t hipsolverZpotrf_bufferSize(hipsolverHandle_t       handle,
+                                             hipsolverFillMode_t     uplo,
+                                             int                     n,
+                                             hipsolverDoubleComplex* A,
+                                             int                     lda,
+                                             int*                    lwork)
+{
+    size_t sz;
+
+    rocblas_start_device_memory_size_query((rocblas_handle)handle);
+    rocblas_status status = rocsolver_zpotrf(
+        (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+
+    *lwork = (int)sz;
+    return rocblas2hip_status(status);
+}
+
+hipsolverStatus_t hipsolverSpotrf(hipsolverHandle_t   handle,
+                                  hipsolverFillMode_t uplo,
+                                  int                 n,
+                                  float*              A,
+                                  int                 lda,
+                                  float*              work,
+                                  int                 lwork,
+                                  int*                devInfo)
+{
+    if(work != nullptr)
+        rocblas_set_workspace((rocblas_handle)handle, (void*)work, lwork);
+
+    return rocblas2hip_status(
+        rocsolver_spotrf((rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, devInfo));
+}
+
+hipsolverStatus_t hipsolverDpotrf(hipsolverHandle_t   handle,
+                                  hipsolverFillMode_t uplo,
+                                  int                 n,
+                                  double*             A,
+                                  int                 lda,
+                                  double*             work,
+                                  int                 lwork,
+                                  int*                devInfo)
+{
+    if(work != nullptr)
+        rocblas_set_workspace((rocblas_handle)handle, (void*)work, lwork);
+
+    return rocblas2hip_status(
+        rocsolver_dpotrf((rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, devInfo));
+}
+
+hipsolverStatus_t hipsolverCpotrf(hipsolverHandle_t   handle,
+                                  hipsolverFillMode_t uplo,
+                                  int                 n,
+                                  hipsolverComplex*   A,
+                                  int                 lda,
+                                  hipsolverComplex*   work,
+                                  int                 lwork,
+                                  int*                devInfo)
+{
+    if(work != nullptr)
+        rocblas_set_workspace((rocblas_handle)handle, (void*)work, lwork);
+
+    return rocblas2hip_status(rocsolver_cpotrf((rocblas_handle)handle,
+                                               hip2rocblas_fill(uplo),
+                                               n,
+                                               (rocblas_float_complex*)A,
+                                               lda,
+                                               devInfo));
+}
+
+hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t       handle,
+                                  hipsolverFillMode_t     uplo,
+                                  int                     n,
+                                  hipsolverDoubleComplex* A,
+                                  int                     lda,
+                                  hipsolverDoubleComplex* work,
+                                  int                     lwork,
+                                  int*                    devInfo)
+{
+    if(work != nullptr)
+        rocblas_set_workspace((rocblas_handle)handle, (void*)work, lwork);
+
+    return rocblas2hip_status(rocsolver_zpotrf((rocblas_handle)handle,
+                                               hip2rocblas_fill(uplo),
+                                               n,
+                                               (rocblas_double_complex*)A,
+                                               lda,
+                                               devInfo));
+}
+
+#ifdef __cplusplus
+}
+#endif
