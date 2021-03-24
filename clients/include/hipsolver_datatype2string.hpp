@@ -1,9 +1,8 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
-#ifndef HIPSOLVER_DATATYPE2STRING_H_
-#define HIPSOLVER_DATATYPE2STRING_H_
+#pragma once
 
 #include "hipsolver.h"
 #include <ostream>
@@ -65,5 +64,3 @@ hipsolverStatus_t string2hipsolver_status(const std::string& value);
 hipsolverOperation_t char2hipsolver_operation(char value);
 
 hipsolverFillMode_t char2hipsolver_fill(char value);
-
-#endif
