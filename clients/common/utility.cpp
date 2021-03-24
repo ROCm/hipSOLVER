@@ -1,8 +1,8 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
-#include "utility.h"
+#include "utility.hpp"
 #include "hipsolver.h"
 #include <sys/time.h>
 

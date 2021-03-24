@@ -24,6 +24,8 @@ function display_help()
   echo "    [-v|--rocm-dev] Set specific rocm-dev version"
   echo "    [-b|--rocblas] Set specific rocblas version"
   echo "    [--rocblas-path] Set specific path to custom built rocblas"
+  echo "    [-s|--rocsolver] Set specific rocsolver version"
+  echo "    [--rocsolver-path] Set specific path to custom built rocsolver"
   echo "    [--static] Create static library instead of shared library"
 }
 
@@ -166,10 +168,24 @@ install_packages( )
       fi
     fi
 
-    library_dependencies_ubuntu+=( "rocsolver" )
-    library_dependencies_centos+=( "rocsolver" )
-    library_dependencies_fedora+=( "rocsolver" )
-    library_dependencies_sles+=( "rocsolver" )
+    # Custom rocsolver installation
+    # Do not install rocsolver if --rocsolver_path flag is set,
+    # as we will be building against our own rocsolver intead.
+    if [[ -z ${rocsolver_path+foo} ]]; then
+      if [[ -z ${custom_rocsolver+foo} ]]; then
+        # Install base rocsolver package unless -s/--rocsolver flag is passed
+        library_dependencies_ubuntu+=( "rocsolver" )
+        library_dependencies_centos+=( "rocsolver" )
+        library_dependencies_fedora+=( "rocsolver" )
+        library_dependencies_sles+=( "rocsolver" )
+      else
+        # Install rocm-specific rocsolver package
+        library_dependencies_ubuntu+=( "${custom_rocsolver}" )
+        library_dependencies_centos+=( "${custom_rocsolver}" )
+        library_dependencies_fedora+=( "${custom_rocsolver}" )
+        library_dependencies_sles+=( "${custom_rocsolver}" )
+      fi
+    fi
   fi
 
   local client_dependencies_ubuntu=( "gfortran" "libboost-program-options-dev" )
@@ -289,7 +305,7 @@ build_static=false
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,clients,no-solver,dependencies,debug,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,custom-target: --options rhicndgp:v:b: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,clients,no-solver,dependencies,debug,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target: --options rhicndgp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -352,6 +368,12 @@ while true; do
          shift 2;;
     --rocblas-path)
         rocblas_path=${2}
+        shift 2 ;;
+    -s|--rocsolver)
+         custom_rocsolver=${2}
+         shift 2;;
+    --rocsolver-path)
+        rocsolver_path=${2}
         shift 2 ;;
     --prefix)
         install_prefix=${2}
@@ -461,6 +483,11 @@ pushd .
   # custom rocblas
   if [[ ${rocblas_path+foo} ]]; then
     cmake_common_options="${cmake_common_options} -DCUSTOM_ROCBLAS=${rocblas_path}"
+  fi
+
+  # custom rocsolver
+  if [[ ${rocsolver_path+foo} ]]; then
+    cmake_common_options="${cmake_common_options} -DCUSTOM_ROCSOLVER=${rocsolver_path}"
   fi
 
   # Build library

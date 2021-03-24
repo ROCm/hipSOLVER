@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2018-2020 Advanced Micro Devices, Inc.
+ * Copyright 2018-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #ifndef ROCBLAS_INIT_H
@@ -9,7 +9,7 @@
 //#include "rocblas_ostream.hpp"
 // #include "rocblas_math.hpp"
 // #include "rocblas_random.hpp"
-#include "../include/utility.h"
+#include "../include/utility.hpp"
 #include <cinttypes>
 #include <iostream>
 #include <vector>

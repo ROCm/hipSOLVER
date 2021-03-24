@@ -58,7 +58,12 @@ if( NOT USE_CUDA )
   endif( )
 
   if( NOT TARGET rocsolver )
-    find_package( rocsolver REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocsolver /usr/local/rocsolver )
+    if( CUSTOM_ROCSOLVER )
+      set ( ENV{rocsolver_DIR} ${CUSTOM_ROCSOLVER})
+      find_package( rocsolver REQUIRED CONFIG NO_CMAKE_PATH )
+    else( )
+      find_package( rocsolver REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocsolver /usr/local/rocsolver )
+    endif( )
   endif( )
 
   target_link_libraries( hipsolver PRIVATE roc::rocblas roc::rocsolver hip::host )

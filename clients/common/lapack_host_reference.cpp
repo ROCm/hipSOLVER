@@ -1,8 +1,8 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************/
 
-#include "../include/cblas_interface.h"
+#include "../include/lapack_host_reference.hpp"
 #include "cblas.h"
 #include "hipsolver.h"
 
