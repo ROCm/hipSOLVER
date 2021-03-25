@@ -90,7 +90,7 @@ hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
     case CUSOLVER_STATUS_ARCH_MISMATCH:
         return HIPSOLVER_STATUS_ARCH_MISMATCH;
     default:
-        throw std::invalid_argument("Unimplemented status");
+        return HIPSOLVER_STATUS_UNKNOWN;
     }
 }
 

@@ -91,7 +91,7 @@ hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
     case rocblas_status_internal_error:
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
     default:
-        throw std::invalid_argument("Unimplemented status");
+        return HIPSOLVER_STATUS_UNKNOWN;
     }
 }
 
