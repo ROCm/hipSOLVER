@@ -18,6 +18,7 @@ def runCI =
 
     // customize for project
     prj.paths.build_command = './install.sh -c'
+    prj.libraryDependencies = ['rocBLAS-internal', 'rocSOLVER']
 
     // Define test architectures, optional rocm version argument is available
     def nodes = new dockerNodes(nodeDetails, jobName, prj)
