@@ -40,6 +40,7 @@ target_include_directories( hipsolver-bench
 # External header includes included as system files
 target_include_directories( hipsolver-bench
   SYSTEM PRIVATE
+    $<BUILD_INTERFACE:${CBLAS_INCLUDE_DIRS}>
     $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
 )
 
