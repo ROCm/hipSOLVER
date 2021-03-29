@@ -12,12 +12,12 @@ import java.nio.file.Path
 
 def runCI =
 {
-    nodeDetails, jobName->
+    nodeDetails, jobName, buildCommand, label->
 
     def prj = new rocProject('hipSOLVER', 'Debug')
 
     // customize for project
-    prj.paths.build_command = './install.sh -c'
+    prj.paths.build_command = buildCommand
     prj.libraryDependencies = ['rocBLAS-internal', 'rocSOLVER']
 
     // Define test architectures, optional rocm version argument is available
@@ -45,7 +45,7 @@ def runCI =
     {
         platform, project->
 
-        commonGroovy.runPackageCommand(platform, project)
+        commonGroovy.runPackageCommand(platform, project, jobName, label)
     }
 
     buildProject(prj, formatCheck, nodes.dockerArray, compileCommand, testCommand, packageCommand)
@@ -75,8 +75,8 @@ ci: {
     {
         jobName, nodeDetails->
         if (urlJobName == jobName)
-            stage(jobName) {
-                runCI(nodeDetails, jobName)
+            stage(label + ' ' + jobName) {
+                runCI(nodeDetails, jobName, buildCommand, label)
             }
     }
 
@@ -85,7 +85,7 @@ ci: {
     {
         properties(auxiliary.addCommonProperties([pipelineTriggers([cron('0 5 * * *')])]))
         stage(urlJobName) {
-            runCI([ubuntu18:['gfx906']], urlJobName)
+            runCI([ubuntu18:['gfx906']], urlJobName, buildCommand, label)
         }
     }
 }
