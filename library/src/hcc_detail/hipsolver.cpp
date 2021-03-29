@@ -331,6 +331,81 @@ hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
             (rocblas_handle)handle, m, n, (rocblas_double_complex*)A, lda, devInfo));
 }
 
+/******************** GETRS ********************/
+hipsolverStatus_t hipsolverSgetrs(hipsolverHandle_t    handle,
+                                  hipsolverOperation_t trans,
+                                  int                  n,
+                                  int                  nrhs,
+                                  float*               A,
+                                  int                  lda,
+                                  int*                 devIpiv,
+                                  float*               B,
+                                  int                  ldb,
+                                  int*                 devInfo)
+{
+    return rocblas2hip_status(rocsolver_sgetrs(
+        (rocblas_handle)handle, hip2rocblas_operation(trans), n, nrhs, A, lda, devIpiv, B, ldb));
+}
+
+hipsolverStatus_t hipsolverDgetrs(hipsolverHandle_t    handle,
+                                  hipsolverOperation_t trans,
+                                  int                  n,
+                                  int                  nrhs,
+                                  double*              A,
+                                  int                  lda,
+                                  int*                 devIpiv,
+                                  double*              B,
+                                  int                  ldb,
+                                  int*                 devInfo)
+{
+    return rocblas2hip_status(rocsolver_dgetrs(
+        (rocblas_handle)handle, hip2rocblas_operation(trans), n, nrhs, A, lda, devIpiv, B, ldb));
+}
+
+hipsolverStatus_t hipsolverCgetrs(hipsolverHandle_t    handle,
+                                  hipsolverOperation_t trans,
+                                  int                  n,
+                                  int                  nrhs,
+                                  hipsolverComplex*    A,
+                                  int                  lda,
+                                  int*                 devIpiv,
+                                  hipsolverComplex*    B,
+                                  int                  ldb,
+                                  int*                 devInfo)
+{
+    return rocblas2hip_status(rocsolver_cgetrs((rocblas_handle)handle,
+                                               hip2rocblas_operation(trans),
+                                               n,
+                                               nrhs,
+                                               (rocblas_float_complex*)A,
+                                               lda,
+                                               devIpiv,
+                                               (rocblas_float_complex*)B,
+                                               ldb));
+}
+
+hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t       handle,
+                                  hipsolverOperation_t    trans,
+                                  int                     n,
+                                  int                     nrhs,
+                                  hipsolverDoubleComplex* A,
+                                  int                     lda,
+                                  int*                    devIpiv,
+                                  hipsolverDoubleComplex* B,
+                                  int                     ldb,
+                                  int*                    devInfo)
+{
+    return rocblas2hip_status(rocsolver_zgetrs((rocblas_handle)handle,
+                                               hip2rocblas_operation(trans),
+                                               n,
+                                               nrhs,
+                                               (rocblas_double_complex*)A,
+                                               lda,
+                                               devIpiv,
+                                               (rocblas_double_complex*)B,
+                                               ldb));
+}
+
 /******************** POTRF ********************/
 hipsolverStatus_t hipsolverSpotrf_bufferSize(
     hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, float* A, int lda, int* lwork)

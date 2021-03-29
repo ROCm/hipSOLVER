@@ -199,6 +199,99 @@ hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
                                             devInfo));
 }
 
+/******************** GETRS ********************/
+hipsolverStatus_t hipsolverSgetrs(hipsolverHandle_t    handle,
+                                  hipsolverOperation_t trans,
+                                  int                  n,
+                                  int                  nrhs,
+                                  float*               A,
+                                  int                  lda,
+                                  int*                 devIpiv,
+                                  float*               B,
+                                  int                  ldb,
+                                  int*                 devInfo)
+{
+    return cuda2hip_status(cusolverDnSgetrs((cusolverDnHandle_t)handle,
+                                            hip2cuda_operation(trans),
+                                            n,
+                                            nrhs,
+                                            A,
+                                            lda,
+                                            devIpiv,
+                                            B,
+                                            ldb,
+                                            devInfo));
+}
+
+hipsolverStatus_t hipsolverDgetrs(hipsolverHandle_t    handle,
+                                  hipsolverOperation_t trans,
+                                  int                  n,
+                                  int                  nrhs,
+                                  double*              A,
+                                  int                  lda,
+                                  int*                 devIpiv,
+                                  double*              B,
+                                  int                  ldb,
+                                  int*                 devInfo)
+{
+    return cuda2hip_status(cusolverDnDgetrs((cusolverDnHandle_t)handle,
+                                            hip2cuda_operation(trans),
+                                            n,
+                                            nrhs,
+                                            A,
+                                            lda,
+                                            devIpiv,
+                                            B,
+                                            ldb,
+                                            devInfo));
+}
+
+hipsolverStatus_t hipsolverCgetrs(hipsolverHandle_t    handle,
+                                  hipsolverOperation_t trans,
+                                  int                  n,
+                                  int                  nrhs,
+                                  hipsolverComplex*    A,
+                                  int                  lda,
+                                  int*                 devIpiv,
+                                  hipsolverComplex*    B,
+                                  int                  ldb,
+                                  int*                 devInfo)
+{
+    return cuda2hip_status(cusolverDnCgetrs((cusolverDnHandle_t)handle,
+                                            hip2cuda_operation(trans),
+                                            n,
+                                            nrhs,
+                                            (cuComplex*)A,
+                                            lda,
+                                            devIpiv,
+                                            (cuComplex*)B,
+                                            ldb,
+                                            devInfo));
+}
+
+hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t       handle,
+                                  hipsolverOperation_t    trans,
+                                  int                     n,
+                                  int                     nrhs,
+                                  hipsolverDoubleComplex* A,
+                                  int                     lda,
+                                  int*                    devIpiv,
+                                  hipsolverDoubleComplex* B,
+                                  int                     ldb,
+                                  int*                    devInfo)
+{
+    return cuda2hip_status(cusolverDnZgetrs((cusolverDnHandle_t)handle,
+                                            hip2cuda_operation(trans),
+                                            n,
+                                            nrhs,
+                                            (cuDoubleComplex*)A,
+                                            lda,
+                                            devIpiv,
+                                            (cuDoubleComplex*)B,
+                                            ldb,
+                                            devInfo));
+}
+
 /******************** POTRF ********************/
 hipsolverStatus_t hipsolverSpotrf_bufferSize(
     hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, float* A, int lda, int* lwork)
