@@ -51,6 +51,150 @@ inline testMarshal_t bool2marshal(bool FORTRAN, bool STRIDED, bool ALT = false)
         return FORTRAN_STRIDED_ALT;
 }
 
+/******************** GEQRF ********************/
+// normal and strided_batched
+inline hipsolverStatus_t hipsolver_geqrf_bufferSize(
+    bool FORTRAN, hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
+{
+    if(!FORTRAN)
+        return hipsolverSgeqrf_bufferSize(handle, m, n, A, lda, lwork);
+    else
+        return hipsolverSgeqrf_bufferSizeFortran(handle, m, n, A, lda, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_geqrf_bufferSize(
+    bool FORTRAN, hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork)
+{
+    if(!FORTRAN)
+        return hipsolverDgeqrf_bufferSize(handle, m, n, A, lda, lwork);
+    else
+        return hipsolverDgeqrf_bufferSizeFortran(handle, m, n, A, lda, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_geqrf_bufferSize(
+    bool FORTRAN, hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork)
+{
+    if(!FORTRAN)
+        return hipsolverCgeqrf_bufferSize(handle, m, n, A, lda, lwork);
+    else
+        return hipsolverCgeqrf_bufferSizeFortran(handle, m, n, A, lda, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_geqrf_bufferSize(bool                    FORTRAN,
+                                                    hipsolverHandle_t       handle,
+                                                    int                     m,
+                                                    int                     n,
+                                                    hipsolverDoubleComplex* A,
+                                                    int                     lda,
+                                                    int*                    lwork)
+{
+    if(!FORTRAN)
+        return hipsolverZgeqrf_bufferSize(handle, m, n, A, lda, lwork);
+    else
+        return hipsolverZgeqrf_bufferSizeFortran(handle, m, n, A, lda, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_geqrf(bool              FORTRAN,
+                                         hipsolverHandle_t handle,
+                                         int               m,
+                                         int               n,
+                                         float*            A,
+                                         int               lda,
+                                         int               stA,
+                                         float*            tau,
+                                         int               stT,
+                                         float*            work,
+                                         int               lwork,
+                                         int*              info,
+                                         int               bc)
+{
+    switch(bool2marshal(FORTRAN, bc != 1))
+    {
+    case C_NORMAL:
+        return hipsolverSgeqrf(handle, m, n, A, lda, tau, work, lwork, info);
+    case FORTRAN_NORMAL:
+        return hipsolverSgeqrfFortran(handle, m, n, A, lda, tau, work, lwork, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_geqrf(bool              FORTRAN,
+                                         hipsolverHandle_t handle,
+                                         int               m,
+                                         int               n,
+                                         double*           A,
+                                         int               lda,
+                                         int               stA,
+                                         double*           tau,
+                                         int               stT,
+                                         double*           work,
+                                         int               lwork,
+                                         int*              info,
+                                         int               bc)
+{
+    switch(bool2marshal(FORTRAN, bc != 1))
+    {
+    case C_NORMAL:
+        return hipsolverDgeqrf(handle, m, n, A, lda, tau, work, lwork, info);
+    case FORTRAN_NORMAL:
+        return hipsolverDgeqrfFortran(handle, m, n, A, lda, tau, work, lwork, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_geqrf(bool              FORTRAN,
+                                         hipsolverHandle_t handle,
+                                         int               m,
+                                         int               n,
+                                         hipsolverComplex* A,
+                                         int               lda,
+                                         int               stA,
+                                         hipsolverComplex* tau,
+                                         int               stT,
+                                         hipsolverComplex* work,
+                                         int               lwork,
+                                         int*              info,
+                                         int               bc)
+{
+    switch(bool2marshal(FORTRAN, bc != 1))
+    {
+    case C_NORMAL:
+        return hipsolverCgeqrf(handle, m, n, A, lda, tau, work, lwork, info);
+    case FORTRAN_NORMAL:
+        return hipsolverCgeqrfFortran(handle, m, n, A, lda, tau, work, lwork, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_geqrf(bool                    FORTRAN,
+                                         hipsolverHandle_t       handle,
+                                         int                     m,
+                                         int                     n,
+                                         hipsolverDoubleComplex* A,
+                                         int                     lda,
+                                         int                     stA,
+                                         hipsolverDoubleComplex* tau,
+                                         int                     stT,
+                                         hipsolverDoubleComplex* work,
+                                         int                     lwork,
+                                         int*                    info,
+                                         int                     bc)
+{
+    switch(bool2marshal(FORTRAN, bc != 1))
+    {
+    case C_NORMAL:
+        return hipsolverZgeqrf(handle, m, n, A, lda, tau, work, lwork, info);
+    case FORTRAN_NORMAL:
+        return hipsolverZgeqrfFortran(handle, m, n, A, lda, tau, work, lwork, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+/********************************************************/
+
 /******************** GETRF ********************/
 // normal and strided_batched
 inline hipsolverStatus_t hipsolver_getrf_bufferSize(

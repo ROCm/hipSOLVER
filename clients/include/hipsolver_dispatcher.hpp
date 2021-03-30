@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 
+#include "testing_geqrf.hpp"
 #include "testing_getrf.hpp"
 #include "testing_getrf_npvt.hpp"
 #include "testing_potrf.hpp"
@@ -31,6 +32,7 @@ class hipsolver_dispatcher
     {
         // Map for functions that support all precisions
         static const func_map map = {
+            {"geqrf", testing_geqrf<false, false, false, T>},
             {"getrf", testing_getrf<false, false, false, T>},
             {"potrf", testing_potrf<false, false, false, T>},
         };
