@@ -25,6 +25,8 @@ def runCI =
 
     boolean formatCheck = false
 
+    def commonGroovy
+
     def compileCommand =
     {
         platform, project->
@@ -37,8 +39,7 @@ def runCI =
     {
         platform, project->
 
-        def gfilter = '*checkin_lapack*'
-        commonGroovy.runTestCommand(platform, project, gfilter)
+        commonGroovy.runTestCommand(platform, project)
     }
 
     def packageCommand =
@@ -49,27 +50,11 @@ def runCI =
     }
 
     buildProject(prj, formatCheck, nodes.dockerArray, compileCommand, testCommand, packageCommand)
-
 }
 
-ci: {
-    String urlJobName = auxiliary.getTopJobName(env.BUILD_URL)
-
-    def propertyList = ["compute-rocm-dkms-no-npi":[pipelineTriggers([cron('0 1 * * 6')])],
-                        "compute-rocm-dkms-no-npi-hipclang":[pipelineTriggers([cron('0 1 * * 6')])],
-                        "rocm-docker":[]]
-    propertyList = auxiliary.appendPropertyList(propertyList)
-
-    def jobNameList = ["compute-rocm-dkms-no-npi-hipclang":([ubuntu18:['gfx900']])]
-
+def setupCI(urlJobName, jobNameList, buildCommand, runCI, label)
+{
     jobNameList = auxiliary.appendJobNameList(jobNameList)
-
-    propertyList.each
-    {
-        jobName, property->
-        if (urlJobName == jobName)
-            properties(auxiliary.addCommonProperties(property))
-    }
 
     jobNameList.each
     {
@@ -83,10 +68,31 @@ ci: {
     // For url job names that are not listed by the jobNameList i.e. compute-rocm-dkms-no-npi-1901
     if(!jobNameList.keySet().contains(urlJobName))
     {
-        properties(auxiliary.addCommonProperties([pipelineTriggers([cron('0 5 * * *')])]))
-        stage(urlJobName) {
+        properties(auxiliary.addCommonProperties([pipelineTriggers([cron('0 1 * * *')])]))
+        stage(label + ' ' + urlJobName) {
             runCI([ubuntu18:['gfx906']], urlJobName, buildCommand, label)
         }
     }
+
 }
 
+ci: {
+    String urlJobName = auxiliary.getTopJobName(env.BUILD_URL)
+
+    def propertyList = ["compute-rocm-dkms-no-npi-hipclang":[pipelineTriggers([cron('0 1 * * 0')])],
+                        "rocm-docker":[]]
+    propertyList = auxiliary.appendPropertyList(propertyList)
+
+    def jobNameList = ["compute-rocm-dkms-no-npi-hipclang":([ubuntu18:['gfx900']])]
+    jobNameList = auxiliary.appendJobNameList(jobNameList)
+
+    propertyList.each
+    {
+        jobName, property->
+        if (urlJobName == jobName)
+            properties(auxiliary.addCommonProperties(property))
+    }
+
+    String hostBuildCommand = './install.sh -c --compiler=g++'
+    setupCI(urlJobName, jobNameList, hostBuildCommand, runCI, 'g++')
+}
