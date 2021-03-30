@@ -27,17 +27,18 @@ def runCompileCommand(platform, project, jobName, boolean sameOrg=false)
     platform.runCommand(this, command)
 }
 
-def runTestCommand (platform, project)
+def runTestCommand(platform, project)
 {
     String sudo = auxiliary.sudo(platform.jenkinsLabel)
+    String buildType = project.buildName.contains('Debug') ? "debug" : "release"
     def command = """#!/usr/bin/env bash
                     set -x
-                    cd ${project.paths.project_build_prefix}/build/release/clients/staging
+                    cd ${project.paths.project_build_prefix}/build/${buildType}/clients/staging
                     ${sudo} LD_LIBRARY_PATH=/opt/rocm/lib GTEST_LISTENER=NO_PASS_LINE_IN_LOG ./hipsolver-test --gtest_output=xml --gtest_color=yes
                 """
 
     platform.runCommand(this, command)
-    junit "${project.paths.project_build_prefix}/build/release/clients/staging/*.xml"
+    junit "${project.paths.project_build_prefix}/build/${buildType}/clients/staging/*.xml"
 }
 
 def runPackageCommand(platform, project, jobName, label='')
@@ -46,7 +47,7 @@ def runPackageCommand(platform, project, jobName, label='')
 
     label = label != '' ? '-' + label.toLowerCase() : ''
     String ext = platform.jenkinsLabel.contains('ubuntu') ? "deb" : "rpm"
-    String dir = jobName.contains('Debug') ? "debug" : "release"
+    String dir = project.buildName.contains('Debug') ? "debug" : "release"
 
     command = """
             set -x
