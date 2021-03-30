@@ -13,7 +13,7 @@ module hipsolver_interface
     !   LAPACK   !
     !------------!
 
-    ! getrf
+    ! ******************** GETRF ********************
     function hipsolverSgetrf_bufferSizeFortran(handle, m, n, A, lda, lwork) &
             result(res) &
             bind(c, name = 'hipsolverSgetrf_bufferSizeFortran')
@@ -150,7 +150,7 @@ module hipsolver_interface
         res = hipsolverZgetrf(handle, m, n, A, lda, work, ipiv, info)
     end function hipsolverZgetrfFortran
 
-    ! potrf
+    ! ******************** POTRF ********************
     function hipsolverSpotrf_bufferSizeFortran(handle, uplo, n, A, lda, lwork) &
             result(res) &
             bind(c, name = 'hipsolverSpotrf_bufferSizeFortran')

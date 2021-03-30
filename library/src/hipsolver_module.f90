@@ -88,7 +88,7 @@ module hipsolver
     !   LAPACK   !
     !------------!
 
-    ! getrf
+    ! ******************** GETRF ********************
     interface
         function hipsolverSgetrf_bufferSize(handle, m, n, A, lda, lwork) &
                 result(c_int) &
@@ -225,7 +225,7 @@ module hipsolver
         end function hipsolverZgetrf
     end interface
 
-    ! potrf
+    ! ******************** POTRF ********************
     interface
         function hipsolverSpotrf_bufferSize(handle, uplo, n, A, lda, lwork) &
                 result(c_int) &
