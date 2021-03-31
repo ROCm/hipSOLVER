@@ -54,11 +54,11 @@ try
     desc.add_options()("help,h", "Produces this help message.")
 
         // test options
-        // ("batch_count",
-        //  value<rocblas_int>(&argus.batch_count)->default_value(1),
-        //     "Number of matrices or problem instances in the batch.\n"
-        //     "                           Only applicable to batch routines.\n"
-        //     "                           ")
+        ("batch_count",
+         value<rocblas_int>(&argus.batch_count)->default_value(1),
+            "Number of matrices or problem instances in the batch.\n"
+            "                           Only applicable to batch routines.\n"
+            "                           ")
 
         ("device",
          value<rocblas_int>(&device_id)->default_value(0),
@@ -68,7 +68,7 @@ try
         ("function,f",
          value<std::string>(&function)->default_value("getrf"),
             "The LAPACK function to test.\n"
-            "                           Options are: getrf, potrf.\n"
+            "                           Options are: getrf, potrf, potrf_batched, etc.\n"
             "                           ")
 
         ("iters,i",

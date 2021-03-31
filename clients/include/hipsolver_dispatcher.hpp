@@ -33,6 +33,7 @@ class hipsolver_dispatcher
         static const func_map map = {
             {"getrf", testing_getrf<false, false, false, T>},
             {"potrf", testing_potrf<false, false, false, T>},
+            {"potrf_batched", testing_potrf<false, true, false, T>},
         };
 
         // Grab function from the map and execute

@@ -362,7 +362,7 @@ module hipsolver
         end function hipsolverZpotrf
     end interface
     
-    ! ******************** POTRF ********************
+    ! ******************** POTRF_BATCHED ********************
     interface
         function hipsolverSpotrfBatched(handle, uplo, n, A, lda, info, batch_count) &
                 result(c_int) &
