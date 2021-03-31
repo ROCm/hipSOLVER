@@ -4,7 +4,6 @@
 
 module hipsolver_interface
     use iso_c_binding
-    use hipsolver_enums
     use hipsolver
 
     contains

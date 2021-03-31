@@ -18,9 +18,6 @@ typedef std::tuple<vector<int>, char> potrf_tuple;
 
 // each uplo_range is a {uplo}
 
-// case when n = 0 and uplo = L will also execute the bad arguments test
-// (null handle, null pointers and invalid values)
-
 const vector<char> uplo_range = {'L', 'U'};
 
 // for checkin_lapack tests
