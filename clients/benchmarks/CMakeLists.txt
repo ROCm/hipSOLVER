@@ -45,6 +45,8 @@ target_include_directories( hipsolver-bench
 
 target_link_libraries( hipsolver-bench PRIVATE hipsolver_fortran_client roc::hipsolver cblas lapack)
 
+add_armor_flags( hipsolver-bench "${ARMOR_LEVEL}" )
+
 # need mf16c flag for float->half convertion
 target_compile_options( hipsolver-bench PRIVATE -mf16c)
 

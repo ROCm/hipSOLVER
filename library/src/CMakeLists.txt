@@ -40,6 +40,8 @@ add_library( hipsolver
 )
 add_library( roc::hipsolver ALIAS hipsolver )
 
+add_armor_flags( hipsolver "${ARMOR_LEVEL}" )
+
 # External header includes included as system files
 target_include_directories( hipsolver
   SYSTEM PRIVATE
