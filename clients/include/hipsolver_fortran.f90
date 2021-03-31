@@ -12,6 +12,191 @@ module hipsolver_interface
     !   LAPACK   !
     !------------!
 
+    ! ******************** ORMQR/UNMQR ********************
+    function hipsolverSormqr_bufferSizeFortran(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverSormqr_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(kind(HIPSOLVER_OP_N)), value :: trans
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: C
+        integer(c_int), value :: ldc
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverSormqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork)
+    end function hipsolverSormqr_bufferSizeFortran
+    
+    function hipsolverDormqr_bufferSizeFortran(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverDormqr_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(kind(HIPSOLVER_OP_N)), value :: trans
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: C
+        integer(c_int), value :: ldc
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverDormqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork)
+    end function hipsolverDormqr_bufferSizeFortran
+    
+    function hipsolverCunmqr_bufferSizeFortran(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverCunmqr_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(kind(HIPSOLVER_OP_N)), value :: trans
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: C
+        integer(c_int), value :: ldc
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverCunmqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork)
+    end function hipsolverCunmqr_bufferSizeFortran
+    
+    function hipsolverZunmqr_bufferSizeFortran(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverZunmqr_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(kind(HIPSOLVER_OP_N)), value :: trans
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: C
+        integer(c_int), value :: ldc
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverZunmqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork)
+    end function hipsolverZunmqr_bufferSizeFortran
+    
+    function hipsolverSormqrFortran(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverSormqrFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(kind(HIPSOLVER_OP_N)), value :: trans
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: C
+        integer(c_int), value :: ldc
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverSormqr(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info)
+    end function hipsolverSormqrFortran
+    
+    function hipsolverDormqrFortran(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverDormqrFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(kind(HIPSOLVER_OP_N)), value :: trans
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: C
+        integer(c_int), value :: ldc
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverDormqr(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info)
+    end function hipsolverDormqrFortran
+    
+    function hipsolverCunmqrFortran(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverCunmqrFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(kind(HIPSOLVER_OP_N)), value :: trans
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: C
+        integer(c_int), value :: ldc
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverCunmqr(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info)
+    end function hipsolverCunmqrFortran
+    
+    function hipsolverZunmqrFortran(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverZunmqrFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(kind(HIPSOLVER_OP_N)), value :: trans
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: C
+        integer(c_int), value :: ldc
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverZunmqr(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info)
+    end function hipsolverZunmqrFortran
+
     ! ******************** GEQRF ********************
     function hipsolverSgeqrf_bufferSizeFortran(handle, m, n, A, lda, lwork) &
             result(res) &
