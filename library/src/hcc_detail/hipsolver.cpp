@@ -111,8 +111,8 @@ hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
     case rocblas_status_not_implemented:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     case rocblas_status_invalid_pointer:
-        return HIPSOLVER_STATUS_INVALID_VALUE;
     case rocblas_status_invalid_size:
+    case rocblas_status_invalid_value:
         return HIPSOLVER_STATUS_INVALID_VALUE;
     case rocblas_status_memory_error:
         return HIPSOLVER_STATUS_ALLOC_FAILED;
