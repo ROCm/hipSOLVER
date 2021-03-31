@@ -21,6 +21,11 @@ module hipsolver_enums
     end enum
 
     enum, bind(c)
+        enumerator :: HIPSOLVER_SIDE_LEFT  = 141
+        enumerator :: HIPSOLVER_SIDE_RIGHT = 142
+    end enum
+
+    enum, bind(c)
         enumerator :: HIPSOLVER_STATUS_SUCCESS           = 0
         enumerator :: HIPSOLVER_STATUS_NOT_INITIALIZED   = 1
         enumerator :: HIPSOLVER_STATUS_ALLOC_FAILED      = 2

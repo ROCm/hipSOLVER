@@ -66,6 +66,32 @@ hipsolverFillMode_t cuda2hip_fill(cublasFillMode_t fill)
     }
 }
 
+cublasSideMode_t hip2cuda_side(hipsolverSideMode_t side)
+{
+    switch(side)
+    {
+    case HIPSOLVER_SIDE_LEFT:
+        return CUBLAS_SIDE_LEFT;
+    case HIPSOLVER_SIDE_RIGHT:
+        return CUBLAS_SIDE_RIGHT;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+hipsolverSideMode_t cuda2hip_side(cublasSideMode_t side)
+{
+    switch(side)
+    {
+    case CUBLAS_SIDE_LEFT:
+        return HIPSOLVER_SIDE_LEFT;
+    case CUBLAS_SIDE_RIGHT:
+        return HIPSOLVER_SIDE_RIGHT;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
 hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
 {
     switch(cuStatus)

@@ -72,6 +72,32 @@ hipsolverFillMode_t rocblas2hip_fill(rocblas_fill_ fill)
     }
 }
 
+rocblas_side_ hip2rocblas_side(hipsolverSideMode_t side)
+{
+    switch(side)
+    {
+    case HIPSOLVER_SIDE_LEFT:
+        return rocblas_side_left;
+    case HIPSOLVER_SIDE_RIGHT:
+        return rocblas_side_right;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+hipsolverSideMode_t rocblas2hip_side(rocblas_side_ side)
+{
+    switch(side)
+    {
+    case rocblas_side_left:
+        return HIPSOLVER_SIDE_LEFT;
+    case rocblas_side_right:
+        return HIPSOLVER_SIDE_RIGHT;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
 hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
 {
     switch(error)

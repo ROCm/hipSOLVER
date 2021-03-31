@@ -177,6 +177,12 @@ typedef enum
     HIPSOLVER_FILL_MODE_LOWER = 122,
 } hipsolverFillMode_t;
 
+typedef enum
+{
+    HIPSOLVER_SIDE_LEFT  = 141,
+    HIPSOLVER_SIDE_RIGHT = 142,
+} hipsolverSideMode_t;
+
 #ifdef __cplusplus
 extern "C" {
 #endif

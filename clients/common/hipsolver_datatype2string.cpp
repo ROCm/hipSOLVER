@@ -33,6 +33,18 @@ char hipsolver2char_fill(hipsolverFillMode_t value)
     return '\0';
 }
 
+char hipsolver2char_side(hipsolverSideMode_t value)
+{
+    switch(value)
+    {
+    case HIPSOLVER_SIDE_LEFT:
+        return 'L';
+    case HIPSOLVER_SIDE_RIGHT:
+        return 'R';
+    }
+    return '\0';
+}
+
 /* ============================================================================================ */
 /*  Convert lapack char constants to hipsolver type. */
 
@@ -87,4 +99,20 @@ hipsolverFillMode_t char2hipsolver_fill(char value)
         return HIPSOLVER_FILL_MODE_LOWER;
     }
     return HIPSOLVER_FILL_MODE_LOWER;
+}
+
+hipsolverSideMode_t char2hipsolver_side(char value)
+{
+    switch(value)
+    {
+    case 'L':
+        return HIPSOLVER_SIDE_LEFT;
+    case 'R':
+        return HIPSOLVER_SIDE_RIGHT;
+    case 'l':
+        return HIPSOLVER_SIDE_LEFT;
+    case 'r':
+        return HIPSOLVER_SIDE_RIGHT;
+    }
+    return HIPSOLVER_SIDE_LEFT;
 }
