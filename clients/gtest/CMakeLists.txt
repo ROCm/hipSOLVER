@@ -59,6 +59,8 @@ set( THREADS_PREFER_PTHREAD_FLAG ON )
 find_package( Threads REQUIRED )
 target_link_libraries( hipsolver-test PRIVATE Threads::Threads )
 
+add_armor_flags( hipsolver-test "${ARMOR_LEVEL}" )
+
 target_compile_definitions( hipsolver-test PRIVATE GOOGLE_TEST )
 
 # External header includes included as SYSTEM files

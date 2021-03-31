@@ -70,6 +70,14 @@ option( BUILD_VERBOSE "Output additional build information" OFF )
 # BUILD_SHARED_LIBS is a cmake built-in; we make it an explicit option such that it shows in cmake-gui
 option( BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON )
 
+if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+  set( DEFAULT_ARMOR_LEVEL 1 )
+else( )
+  set( DEFAULT_ARMOR_LEVEL 0 )
+endif( )
+set( ARMOR_LEVEL "${DEFAULT_ARMOR_LEVEL}" CACHE STRING "Enables increasingly expensive runtime correctness checks" )
+include( armor-config )
+
 # Find CUDA if the user wants a CUDA version.
 option(USE_CUDA "Look for CUDA and use that as a backend if found" OFF)
 if (USE_CUDA)

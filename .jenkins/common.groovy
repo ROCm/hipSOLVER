@@ -14,6 +14,7 @@ def runCompileCommand(platform, project, jobName, boolean sameOrg=false)
         }
     }
 
+    String debug = project.buildName.contains('Debug') ? '-g' : ''
     String centos = platform.jenkinsLabel.contains('centos') ? 'source scl_source enable devtoolset-7' : ':'
 
     def command = """#!/usr/bin/env bash
@@ -21,22 +22,24 @@ def runCompileCommand(platform, project, jobName, boolean sameOrg=false)
                 cd ${project.paths.project_build_prefix}
                 ${getDependenciesCommand}
                 ${centos}
-                LD_LIBRARY_PATH=/opt/rocm/lib ${project.paths.build_command}
+                LD_LIBRARY_PATH=/opt/rocm/lib ${project.paths.build_command} ${debug}
                 """
     platform.runCommand(this, command)
 }
 
-def runTestCommand (platform, project)
+def runTestCommand(platform, project)
 {
     String sudo = auxiliary.sudo(platform.jenkinsLabel)
+    String buildType = project.buildName.contains('Debug') ? "debug" : "release"
+    String testExe = project.buildName.contains('Debug') ? "hipsolver-test-d" : "hipsolver-test"
     def command = """#!/usr/bin/env bash
                     set -x
-                    cd ${project.paths.project_build_prefix}/build/release/clients/staging
-                    ${sudo} LD_LIBRARY_PATH=/opt/rocm/lib GTEST_LISTENER=NO_PASS_LINE_IN_LOG ./hipsolver-test --gtest_output=xml --gtest_color=yes
+                    cd ${project.paths.project_build_prefix}/build/${buildType}/clients/staging
+                    ${sudo} LD_LIBRARY_PATH=/opt/rocm/lib GTEST_LISTENER=NO_PASS_LINE_IN_LOG ./${testExe} --gtest_output=xml --gtest_color=yes
                 """
 
     platform.runCommand(this, command)
-    junit "${project.paths.project_build_prefix}/build/release/clients/staging/*.xml"
+    junit "${project.paths.project_build_prefix}/build/${buildType}/clients/staging/*.xml"
 }
 
 def runPackageCommand(platform, project, jobName, label='')
@@ -45,7 +48,7 @@ def runPackageCommand(platform, project, jobName, label='')
 
     label = label != '' ? '-' + label.toLowerCase() : ''
     String ext = platform.jenkinsLabel.contains('ubuntu') ? "deb" : "rpm"
-    String dir = jobName.contains('Debug') ? "debug" : "release"
+    String dir = project.buildName.contains('Debug') ? "debug" : "release"
 
     command = """
             set -x
