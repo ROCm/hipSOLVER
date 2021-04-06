@@ -2,8 +2,7 @@
  * Copyright 2018-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
-#ifndef ROCBLAS_INIT_H
-#define ROCBLAS_INIT_H
+#pragma once
 
 #include "hipsolver.h"
 //#include "rocblas_ostream.hpp"
@@ -267,5 +266,3 @@ void rocblas_copy_matrix(const T* A,
             for(size_t j = 0; j < N; ++j)
                 B[i + j * ldb + i_batch * strideb] = A[i + j * lda + i_batch * stridea];
 }
-
-#endif

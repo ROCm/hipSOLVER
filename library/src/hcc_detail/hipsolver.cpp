@@ -24,8 +24,9 @@ rocblas_operation_ hip2rocblas_operation(hipsolverOperation_t op)
         return rocblas_operation_transpose;
     case HIPSOLVER_OP_C:
         return rocblas_operation_conjugate_transpose;
+    default:
+        throw std::invalid_argument("Non existent OP");
     }
-    throw "Non existent OP";
 }
 
 hipsolverOperation_t rocblas2hip_operation(rocblas_operation_ op)
@@ -38,8 +39,9 @@ hipsolverOperation_t rocblas2hip_operation(rocblas_operation_ op)
         return HIPSOLVER_OP_T;
     case rocblas_operation_conjugate_transpose:
         return HIPSOLVER_OP_C;
+    default:
+        throw std::invalid_argument("Non existent OP");
     }
-    throw "Non existent OP";
 }
 
 rocblas_fill_ hip2rocblas_fill(hipsolverFillMode_t fill)
@@ -50,10 +52,9 @@ rocblas_fill_ hip2rocblas_fill(hipsolverFillMode_t fill)
         return rocblas_fill_upper;
     case HIPSOLVER_FILL_MODE_LOWER:
         return rocblas_fill_lower;
-    case HIPSOLVER_FILL_MODE_FULL:
-        return rocblas_fill_full;
+    default:
+        throw std::invalid_argument("Non existent FILL");
     }
-    throw "Non existent FILL";
 }
 
 hipsolverFillMode_t rocblas2hip_fill(rocblas_fill_ fill)
@@ -64,10 +65,9 @@ hipsolverFillMode_t rocblas2hip_fill(rocblas_fill_ fill)
         return HIPSOLVER_FILL_MODE_UPPER;
     case rocblas_fill_lower:
         return HIPSOLVER_FILL_MODE_LOWER;
-    case rocblas_fill_full:
-        return HIPSOLVER_FILL_MODE_FULL;
+    default:
+        throw std::invalid_argument("Non existent FILL");
     }
-    throw "Non existent FILL";
 }
 
 hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
@@ -91,7 +91,7 @@ hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
     case rocblas_status_internal_error:
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
     default:
-        throw "Unimplemented status";
+        return HIPSOLVER_STATUS_UNKNOWN;
     }
 }
 

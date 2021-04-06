@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #include "../include/hipsolver_datatype2string.hpp"
@@ -29,8 +29,6 @@ char hipsolver2char_fill(hipsolverFillMode_t value)
         return 'U';
     case HIPSOLVER_FILL_MODE_LOWER:
         return 'L';
-    case HIPSOLVER_FILL_MODE_FULL:
-        return 'F';
     }
     return '\0';
 }
