@@ -3,8 +3,6 @@
  * ************************************************************************ */
 
 #pragma once
-#ifndef TESTING_UTILITY_H
-#define TESTING_UTILITY_H
 
 #include "hipsolver.h"
 
@@ -376,5 +374,3 @@ double get_time_us_sync(hipStream_t stream);
 #endif
 
 /* ============================================================================================ */
-
-#endif

@@ -1,10 +1,8 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
-#ifndef HIPSOLVER_HPP
-#define HIPSOLVER_HPP
 
 #include "hipsolver.h"
 #include "hipsolver_fortran.hpp"
@@ -212,5 +210,3 @@ inline hipsolverStatus_t hipsolver_getrf(bool                    FORTRAN,
     }
 }
 /********************************************************/
-
-#endif

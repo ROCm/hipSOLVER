@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 //! HIP = Heterogeneous-compute Interface for Portability
@@ -150,15 +150,16 @@ static_assert(sizeof(hipsolverComplex) == sizeof(float) * 2
 typedef enum
 {
     HIPSOLVER_STATUS_SUCCESS           = 0, // Function succeeds
-    HIPSOLVER_STATUS_NOT_INITIALIZED   = 1, // HIPSOLVER library not initialized
+    HIPSOLVER_STATUS_NOT_INITIALIZED   = 1, // hipSOLVER library not initialized
     HIPSOLVER_STATUS_ALLOC_FAILED      = 2, // resource allocation failed
     HIPSOLVER_STATUS_INVALID_VALUE     = 3, // unsupported numerical value was passed to function
     HIPSOLVER_STATUS_MAPPING_ERROR     = 4, // access to GPU memory space failed
     HIPSOLVER_STATUS_EXECUTION_FAILED  = 5, // GPU program failed to execute
-    HIPSOLVER_STATUS_INTERNAL_ERROR    = 6, // an internal HIPSOLVER operation failed
+    HIPSOLVER_STATUS_INTERNAL_ERROR    = 6, // an internal hipSOLVER operation failed
     HIPSOLVER_STATUS_NOT_SUPPORTED     = 7, // function not implemented
     HIPSOLVER_STATUS_ARCH_MISMATCH     = 8,
     HIPSOLVER_STATUS_HANDLE_IS_NULLPTR = 9, // hipSOLVER handle is null pointer
+    HIPSOLVER_STATUS_UNKNOWN           = 10, // back-end returned an unsupported status code
 } hipsolverStatus_t;
 
 // set the values of enum constants to be the same as those used in cblas
@@ -173,7 +174,6 @@ typedef enum
 {
     HIPSOLVER_FILL_MODE_UPPER = 121,
     HIPSOLVER_FILL_MODE_LOWER = 122,
-    HIPSOLVER_FILL_MODE_FULL  = 123,
 } hipsolverFillMode_t;
 
 #ifdef __cplusplus

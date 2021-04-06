@@ -2,8 +2,7 @@
  * Copyright 2018-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
-#ifndef S_TEST_H
-#define S_TEST_H
+#pragma once
 
 #include <cstdarg>
 #include <iomanip>
@@ -97,5 +96,3 @@ inline void rocsolver_bench_output(T arg, Ts... args)
 // {
 //     return os << x.data;
 // }
-
-#endif

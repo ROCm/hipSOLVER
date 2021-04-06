@@ -21,8 +21,9 @@ cublasOperation_t hip2cuda_operation(hipsolverOperation_t op)
         return CUBLAS_OP_T;
     case HIPSOLVER_OP_C:
         return CUBLAS_OP_C;
+    default:
+        throw std::invalid_argument("Non existent OP");
     }
-    throw "Non existent OP";
 }
 
 hipsolverOperation_t cuda2hip_operation(cublasOperation_t op)
@@ -35,8 +36,9 @@ hipsolverOperation_t cuda2hip_operation(cublasOperation_t op)
         return HIPSOLVER_OP_T;
     case CUBLAS_OP_C:
         return HIPSOLVER_OP_C;
+    default:
+        throw std::invalid_argument("Non existent OP");
     }
-    throw "Non existent OP";
 }
 
 cublasFillMode_t hip2cuda_fill(hipsolverFillMode_t fill)
@@ -47,8 +49,9 @@ cublasFillMode_t hip2cuda_fill(hipsolverFillMode_t fill)
         return CUBLAS_FILL_MODE_UPPER;
     case HIPSOLVER_FILL_MODE_LOWER:
         return CUBLAS_FILL_MODE_LOWER;
+    default:
+        throw std::invalid_argument("Non existent FILL");
     }
-    throw "Non existent FILL";
 }
 
 hipsolverFillMode_t cuda2hip_fill(cublasFillMode_t fill)
@@ -59,8 +62,9 @@ hipsolverFillMode_t cuda2hip_fill(cublasFillMode_t fill)
         return HIPSOLVER_FILL_MODE_UPPER;
     case CUBLAS_FILL_MODE_LOWER:
         return HIPSOLVER_FILL_MODE_LOWER;
+    default:
+        throw std::invalid_argument("Non existent FILL");
     }
-    throw "Non existent FILL";
 }
 
 hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
@@ -86,7 +90,7 @@ hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
     case CUSOLVER_STATUS_ARCH_MISMATCH:
         return HIPSOLVER_STATUS_ARCH_MISMATCH;
     default:
-        throw "Unimplemented status";
+        return HIPSOLVER_STATUS_UNKNOWN;
     }
 }
 

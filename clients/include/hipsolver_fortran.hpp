@@ -1,9 +1,8 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
-#ifndef HIPSOLVER_FORTRAN_HPP
-#define HIPSOLVER_FORTRAN_HPP
+#pragma once
 
 #include "hipsolver.h"
 
@@ -72,5 +71,3 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrfFortran(hipsolverHandle_t     
                                                           int*                    devIpiv,
                                                           int*                    devInfo);
 }
-
-#endif

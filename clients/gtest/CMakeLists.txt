@@ -2,23 +2,6 @@
 # Copyright 2016-2021 Advanced Micro Devices, Inc.
 # ########################################################################
 
-# set( Boost_DEBUG ON )
-set( Boost_USE_MULTITHREADED ON )
-set( Boost_DETAILED_FAILURE_MSG ON )
-set( Boost_ADDITIONAL_VERSIONS 1.64.0 1.64 )
-set( Boost_USE_STATIC_LIBS OFF )
-find_package( Boost COMPONENTS program_options )
-
-if( NOT Boost_FOUND )
-  message( STATUS "Dynamic boost libraries not found. Attempting to find static libraries " )
-  set( Boost_USE_STATIC_LIBS ON )
-  find_package( Boost COMPONENTS program_options )
-
-  if( NOT Boost_FOUND )
-    message( FATAL_ERROR "boost is a required dependency and is not found;  try adding boost path to CMAKE_PREFIX_PATH" )
-  endif( )
-endif( )
-
 # Linking lapack library requires fortran flags
 enable_language( Fortran )
 find_package( cblas CONFIG REQUIRED )
@@ -66,7 +49,7 @@ target_compile_definitions( hipsolver-test PRIVATE GOOGLE_TEST )
 # External header includes included as SYSTEM files
 target_include_directories( hipsolver-test
   SYSTEM PRIVATE
-    $<BUILD_INTERFACE:${Boost_INCLUDE_DIRS}>
+    $<BUILD_INTERFACE:${CBLAS_INCLUDE_DIRS}>
     $<BUILD_INTERFACE:${GTEST_INCLUDE_DIRS}>
     $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
     ${ROCM_PATH}/hsa/include

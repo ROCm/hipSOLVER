@@ -1,10 +1,8 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
-#ifndef NORM_HPP
-#define NORM_HPP
 
 // #include "clientcommon.hpp"
 // #include "rocblas.h"
@@ -179,5 +177,3 @@ S snorm(char norm_type, rocblas_int m, rocblas_int n, T* A, rocblas_int lda)
 {
     return xlange(&norm_type, &m, &n, A, &lda, (S*)nullptr);
 }
-
-#endif

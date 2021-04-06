@@ -188,11 +188,11 @@ install_packages( )
     fi
   fi
 
-  local client_dependencies_ubuntu=( "gfortran" "libboost-program-options-dev" )
-  local client_dependencies_centos=( "devtoolset-7-gcc-gfortran" "boost-devel" )
-  local client_dependencies_centos8=( "gcc-gfortran" "boost-devel" )
-  local client_dependencies_fedora=( "gcc-gfortran" "boost-devel" )
-  local client_dependencies_sles=( "libboost_program_options1_66_0-devel" "pkg-config" "dpkg" )
+  local client_dependencies_ubuntu=( "gfortran" )
+  local client_dependencies_centos=( "devtoolset-7-gcc-gfortran" )
+  local client_dependencies_centos8=( "gcc-gfortran" )
+  local client_dependencies_fedora=( "gcc-gfortran" )
+  local client_dependencies_sles=(  "pkg-config" "dpkg" )
 
   case "${ID}" in
     ubuntu)

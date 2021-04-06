@@ -1,9 +1,8 @@
 /* ************************************************************************
- * Copyright 2020 Advanced Micro Devices, Inc.
+ * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
-#ifndef HIPSOLVER_COMPLEX_HPP
-#define HIPSOLVER_COMPLEX_HPP
+#pragma once
 
 #include "hipsolver.h"
 #include <complex>
@@ -206,5 +205,3 @@ namespace std
         return r;
     }
 }
-
-#endif

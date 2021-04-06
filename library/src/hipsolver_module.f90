@@ -18,7 +18,6 @@ module hipsolver_enums
     enum, bind(c)
         enumerator :: HIPSOLVER_FILL_MODE_UPPER = 121
         enumerator :: HIPSOLVER_FILL_MODE_LOWER = 122
-        enumerator :: HIPSOLVER_FILL_MODE_FULL  = 123
     end enum
 
     enum, bind(c)
