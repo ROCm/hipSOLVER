@@ -31,14 +31,14 @@ const vector<vector<int>> matrix_size_range = {
     {50, 50},
     {70, 80}};
 
-// for daily_lapack tests
-const vector<vector<int>> large_matrix_size_range = {
-    {192, 192},
-    {640, 960},
-    {1000, 1000},
-    {1024, 1024},
-    {2000, 2000},
-};
+// // for daily_lapack tests
+// const vector<vector<int>> large_matrix_size_range = {
+//     {192, 192},
+//     {640, 960},
+//     {1000, 1000},
+//     {1024, 1024},
+//     {2000, 2000},
+// };
 
 Arguments potrf_setup_arguments(potrf_tuple tup)
 {
@@ -126,17 +126,17 @@ TEST_P(POTRF_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         POTRF,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          POTRF,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          POTRF,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(uplo_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         POTRF_FORTRAN,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          POTRF_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          POTRF_FORTRAN,
