@@ -95,6 +95,159 @@ module hipsolver
     !   LAPACK   !
     !------------!
     
+    ! ******************** ORGQR/UNGQR ********************
+    interface
+        function hipsolverSorgqr_bufferSize(handle, m, n, k, A, lda, tau, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSorgqr_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: k
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: lwork
+        end function hipsolverSorgqr_bufferSize
+    end interface
+    
+    interface
+        function hipsolverDorgqr_bufferSize(handle, m, n, k, A, lda, tau, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDorgqr_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: k
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: lwork
+        end function hipsolverDorgqr_bufferSize
+    end interface
+    
+    interface
+        function hipsolverCungqr_bufferSize(handle, m, n, k, A, lda, tau, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCungqr_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: k
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: lwork
+        end function hipsolverCungqr_bufferSize
+    end interface
+    
+    interface
+        function hipsolverZungqr_bufferSize(handle, m, n, k, A, lda, tau, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZungqr_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: k
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: lwork
+        end function hipsolverZungqr_bufferSize
+    end interface
+    
+    interface
+        function hipsolverSorgqr(handle, m, n, k, A, lda, tau, work, lwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSorgqr')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: k
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+        end function hipsolverSorgqr
+    end interface
+    
+    interface
+        function hipsolverDorgqr(handle, m, n, k, A, lda, tau, work, lwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDorgqr')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: k
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+        end function hipsolverDorgqr
+    end interface
+    
+    interface
+        function hipsolverCungqr(handle, m, n, k, A, lda, tau, work, lwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCungqr')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: k
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+        end function hipsolverCungqr
+    end interface
+    
+    interface
+        function hipsolverZungqr(handle, m, n, k, A, lda, tau, work, lwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZungqr')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: k
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+        end function hipsolverZungqr
+    end interface
+    
     ! ******************** ORMQR/UNMQR ********************
     interface
         function hipsolverSormqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork) &
