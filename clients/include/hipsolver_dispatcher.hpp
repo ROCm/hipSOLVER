@@ -12,6 +12,7 @@
 #include "testing_getrf.hpp"
 #include "testing_getrf_npvt.hpp"
 #include "testing_getrs.hpp"
+#include "testing_orgqr_ungqr.hpp"
 #include "testing_ormqr_unmqr.hpp"
 #include "testing_potrf.hpp"
 
@@ -57,6 +58,7 @@ class hipsolver_dispatcher
     {
         // Map for functions that support single and double precisions
         static const func_map map_real = {
+            {"orgqr", testing_orgqr_ungqr<false, T>},
             {"ormqr", testing_ormqr_unmqr<false, T>},
         };
 
@@ -76,6 +78,7 @@ class hipsolver_dispatcher
     {
         // Map for functions that support single complex and double complex precisions
         static const func_map map_complex = {
+            {"ungqr", testing_orgqr_ungqr<false, T>},
             {"unmqr", testing_ormqr_unmqr<false, T>},
         };
 
