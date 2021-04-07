@@ -56,9 +56,9 @@ const vector<vector<int>> size_range = {
     {45, 40, 30},
     {50, 50, 20}};
 
-// for daily_lapack tests
-const vector<vector<int>> large_size_range
-    = {{100, 100, 100}, {150, 100, 80}, {300, 400, 300}, {1024, 1000, 950}, {1500, 1500, 1000}};
+// // for daily_lapack tests
+// const vector<vector<int>> large_size_range
+//     = {{100, 100, 100}, {150, 100, 80}, {300, 400, 300}, {1024, 1000, 950}, {1500, 1500, 1000}};
 
 Arguments ormqr_setup_arguments(ormqr_tuple tup)
 {
@@ -162,29 +162,29 @@ TEST_P(UNMQR_FORTRAN, __double_complex)
     run_tests<rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         ORMQR,
-                         Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          ORMQR,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack, ORMQR, Combine(ValuesIn(size_range), ValuesIn(op_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         UNMQR,
-                         Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          UNMQR,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack, UNMQR, Combine(ValuesIn(size_range), ValuesIn(op_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         ORMQR_FORTRAN,
-                         Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          ORMQR_FORTRAN,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          ORMQR_FORTRAN,
                          Combine(ValuesIn(size_range), ValuesIn(op_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         UNMQR_FORTRAN,
-                         Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          UNMQR_FORTRAN,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          UNMQR_FORTRAN,
