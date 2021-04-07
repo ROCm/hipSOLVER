@@ -40,7 +40,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'hipSOLVER'
-copyright = u'2020, Advanced Micro Devices'
+copyright = u'2021, Advanced Micro Devices'
 author = u'Advanced Micro Devices'
 
 # The version info for the project you're documenting, acts as replacement for
