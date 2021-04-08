@@ -28,12 +28,12 @@ const vector<vector<int>> matrix_size_range = {
     {130, 130},
     {150, 200}};
 
-// for daily_lapack tests
-const vector<vector<int>> large_matrix_size_range = {
-    {152, 152},
-    {640, 640},
-    {1000, 1024},
-};
+// // for daily_lapack tests
+// const vector<vector<int>> large_matrix_size_range = {
+//     {152, 152},
+//     {640, 640},
+//     {1000, 1024},
+// };
 
 Arguments sytrd_setup_arguments(sytrd_tuple tup)
 {
@@ -130,33 +130,33 @@ TEST_P(HETRD_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         SYTRD,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          SYTRD,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          SYTRD,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(uplo_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         HETRD,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          HETRD,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          HETRD,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(uplo_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         SYTRD_FORTRAN,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          SYTRD_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          SYTRD_FORTRAN,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(uplo_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         HETRD_FORTRAN,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          HETRD_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          HETRD_FORTRAN,
