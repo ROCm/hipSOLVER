@@ -7,9 +7,7 @@
 #include <cusolverDn.h>
 #include <hip/hip_runtime.h>
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 cublasOperation_t hip2cuda_operation(hipsolverOperation_t op)
 {
@@ -302,6 +300,4 @@ hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t       handle,
                                             devInfo));
 }
 
-#ifdef __cplusplus
-}
-#endif
+} // extern C

@@ -12,9 +12,7 @@
 
 using namespace std;
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 rocblas_operation_ hip2rocblas_operation(hipsolverOperation_t op)
 {
@@ -219,7 +217,7 @@ hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
             rocsolver_sgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
         rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-        rocblas_set_workspace((rocblas_handle)handle, (void*)work, sz);
+        rocblas_set_workspace((rocblas_handle)handle, work, sz);
     }
 
     if(devIpiv != nullptr)
@@ -249,7 +247,7 @@ hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
             rocsolver_dgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
         rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-        rocblas_set_workspace((rocblas_handle)handle, (void*)work, sz);
+        rocblas_set_workspace((rocblas_handle)handle, work, sz);
     }
 
     if(devIpiv != nullptr)
@@ -279,7 +277,7 @@ hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
             rocsolver_cgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
         rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-        rocblas_set_workspace((rocblas_handle)handle, (void*)work, sz);
+        rocblas_set_workspace((rocblas_handle)handle, work, sz);
     }
 
     if(devIpiv != nullptr)
@@ -309,7 +307,7 @@ hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
             rocsolver_zgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
         rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-        rocblas_set_workspace((rocblas_handle)handle, (void*)work, sz);
+        rocblas_set_workspace((rocblas_handle)handle, work, sz);
     }
 
     if(devIpiv != nullptr)
@@ -395,7 +393,7 @@ hipsolverStatus_t hipsolverSpotrf(hipsolverHandle_t   handle,
                                   int*                devInfo)
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, (void*)work, lwork);
+        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
 
     return rocblas2hip_status(
         rocsolver_spotrf((rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, devInfo));
@@ -411,7 +409,7 @@ hipsolverStatus_t hipsolverDpotrf(hipsolverHandle_t   handle,
                                   int*                devInfo)
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, (void*)work, lwork);
+        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
 
     return rocblas2hip_status(
         rocsolver_dpotrf((rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, devInfo));
@@ -427,7 +425,7 @@ hipsolverStatus_t hipsolverCpotrf(hipsolverHandle_t   handle,
                                   int*                devInfo)
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, (void*)work, lwork);
+        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
 
     return rocblas2hip_status(rocsolver_cpotrf((rocblas_handle)handle,
                                                hip2rocblas_fill(uplo),
@@ -447,7 +445,7 @@ hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t       handle,
                                   int*                    devInfo)
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, (void*)work, lwork);
+        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
 
     return rocblas2hip_status(rocsolver_zpotrf((rocblas_handle)handle,
                                                hip2rocblas_fill(uplo),
@@ -457,6 +455,4 @@ hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t       handle,
                                                devInfo));
 }
 
-#ifdef __cplusplus
-}
-#endif
+} // extern C
