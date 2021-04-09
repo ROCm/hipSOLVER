@@ -18,6 +18,9 @@ typedef std::tuple<vector<int>, char> potrf_tuple;
 
 // each uplo_range is a {uplo}
 
+// case when n = 0 and uplo = L will also execute the bad arguments test
+// (null handle, null pointers and invalid values)
+
 const vector<char> uplo_range = {'L', 'U'};
 
 // for checkin_lapack tests
@@ -71,6 +74,9 @@ protected:
     void run_tests()
     {
         Arguments arg = potrf_setup_arguments(GetParam());
+
+        if(arg.peek<char>("uplo") == 'L' && arg.peek<int>("n") == 0)
+            testing_potrf_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
         testing_potrf<FORTRAN, BATCHED, STRIDED, T>(arg);

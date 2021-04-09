@@ -6,6 +6,87 @@
 
 #include "clientcommon.hpp"
 
+template <bool FORTRAN, typename T, typename U, typename V>
+void potrf_checkBadArgs(const hipsolverHandle_t   handle,
+                        const hipsolverFillMode_t uplo,
+                        const int                 n,
+                        T                         dA,
+                        const int                 lda,
+                        const int                 stA,
+                        U                         dWork,
+                        const int                 lwork,
+                        V                         dinfo,
+                        const int                 bc)
+{
+    // handle
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_potrf(FORTRAN, nullptr, uplo, n, dA, lda, stA, dWork, lwork, dinfo, bc),
+        HIPSOLVER_STATUS_NOT_INITIALIZED);
+
+    // values
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_potrf(
+            FORTRAN, handle, hipsolverFillMode_t(-1), n, dA, lda, stA, dWork, lwork, dinfo, bc),
+        HIPSOLVER_STATUS_INVALID_VALUE);
+
+    // pointers
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_potrf(FORTRAN, handle, uplo, n, (T) nullptr, lda, stA, dWork, lwork, dinfo, bc),
+        HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_potrf(FORTRAN, handle, uplo, n, dA, lda, stA, dWork, lwork, (V) nullptr, bc),
+        HIPSOLVER_STATUS_INVALID_VALUE);
+}
+
+template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+void testing_potrf_bad_arg()
+{
+    // safe arguments
+    hipsolver_local_handle handle;
+    hipsolverFillMode_t    uplo = HIPSOLVER_FILL_MODE_UPPER;
+    int                    n    = 1;
+    int                    lda  = 1;
+    int                    stA  = 1;
+    int                    bc   = 1;
+
+    if(BATCHED)
+    {
+        // // memory allocations
+        // device_batch_vector<T>           dA(1, 1, 1);
+        // device_strided_batch_vector<int> dinfo(1, 1, 1, 1);
+        // CHECK_HIP_ERROR(dA.memcheck());
+        // CHECK_HIP_ERROR(dinfo.memcheck());
+
+        // int size_W;
+        // hipsolver_potrf_bufferSize(FORTRAN, handle, uplo, n, dA.data(), lda, &size_W);
+        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        // if(size_W)
+        //     CHECK_HIP_ERROR(dWork.memcheck());
+
+        // // check bad arguments
+        // potrf_checkBadArgs<FORTRAN>(
+        //     handle, uplo, n, dA.data(), lda, stA, dWork.data(), size_W, dinfo.data(), bc);
+    }
+    else
+    {
+        // memory allocations
+        device_strided_batch_vector<T>   dA(1, 1, 1, 1);
+        device_strided_batch_vector<int> dinfo(1, 1, 1, 1);
+        CHECK_HIP_ERROR(dA.memcheck());
+        CHECK_HIP_ERROR(dinfo.memcheck());
+
+        int size_W;
+        hipsolver_potrf_bufferSize(FORTRAN, handle, uplo, n, dA.data(), lda, &size_W);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        if(size_W)
+            CHECK_HIP_ERROR(dWork.memcheck());
+
+        // check bad arguments
+        potrf_checkBadArgs<FORTRAN>(
+            handle, uplo, n, dA.data(), lda, stA, dWork.data(), size_W, dinfo.data(), bc);
+    }
+}
+
 template <bool CPU, bool GPU, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void potrf_initData(const hipsolverHandle_t   handle,
                     const hipsolverFillMode_t uplo,
