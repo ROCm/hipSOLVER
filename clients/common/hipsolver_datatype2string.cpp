@@ -48,6 +48,8 @@ hipsolverStatus_t string2hipsolver_status(const std::string& value)
            : value == "HIPSOLVER_STATUS_NOT_SUPPORTED"     ? HIPSOLVER_STATUS_NOT_SUPPORTED
            : value == "HIPSOLVER_STATUS_ARCH_MISMATCH"     ? HIPSOLVER_STATUS_ARCH_MISMATCH
            : value == "HIPSOLVER_STATUS_HANDLE_IS_NULLPTR" ? HIPSOLVER_STATUS_HANDLE_IS_NULLPTR
+           : value == "HIPSOLVER_STATUS_INVALID_ENUM"      ? HIPSOLVER_STATUS_INVALID_ENUM
+           : value == "HIPSOLVER_STATUS_UNKNOWN"           ? HIPSOLVER_STATUS_UNKNOWN
                                                            : static_cast<hipsolverStatus_t>(-1);
 }
 
