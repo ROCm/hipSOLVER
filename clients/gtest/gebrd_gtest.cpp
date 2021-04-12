@@ -35,14 +35,14 @@ const vector<int> n_size_range = {
     120,
     150};
 
-// for daily_lapack tests
-const vector<vector<int>> large_matrix_size_range = {
-    {152, 152},
-    {640, 640},
-    {1000, 1024},
-};
+// // for daily_lapack tests
+// const vector<vector<int>> large_matrix_size_range = {
+//     {152, 152},
+//     {640, 640},
+//     {1000, 1024},
+// };
 
-const vector<int> large_n_size_range = {64, 98, 130, 220};
+// const vector<int> large_n_size_range = {64, 98, 130, 220};
 
 Arguments gebrd_setup_arguments(gebrd_tuple tup)
 {
@@ -130,17 +130,17 @@ TEST_P(GEBRD_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         GEBRD,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(large_n_size_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GEBRD,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(large_n_size_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GEBRD,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(n_size_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         GEBRD_FORTRAN,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(large_n_size_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GEBRD_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(large_n_size_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GEBRD_FORTRAN,
