@@ -51,13 +51,13 @@ const vector<vector<int>> size_range = {
     {50, 50, 50},
     {100, 100, 50}};
 
-// for daily_lapack tests
-const vector<vector<int>> large_size_range = {{150, 150, 100},
-                                              {270, 270, 270},
-                                              {400, 400, 400},
-                                              {800, 800, 300},
-                                              {1000, 1000, 1000},
-                                              {1500, 1500, 800}};
+// // for daily_lapack tests
+// const vector<vector<int>> large_size_range = {{150, 150, 100},
+//                                               {270, 270, 270},
+//                                               {400, 400, 400},
+//                                               {800, 800, 300},
+//                                               {1000, 1000, 1000},
+//                                               {1500, 1500, 800}};
 
 Arguments orgbr_setup_arguments(orgbr_tuple tup)
 {
@@ -153,33 +153,33 @@ TEST_P(UNGBR_FORTRAN, __double_complex)
     run_tests<rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         ORGBR,
-                         Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          ORGBR,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          ORGBR,
                          Combine(ValuesIn(size_range), ValuesIn(store_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         UNGBR,
-                         Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          UNGBR,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          UNGBR,
                          Combine(ValuesIn(size_range), ValuesIn(store_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         ORGBR_FORTRAN,
-                         Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          ORGBR_FORTRAN,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          ORGBR_FORTRAN,
                          Combine(ValuesIn(size_range), ValuesIn(store_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         UNGBR_FORTRAN,
-                         Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          UNGBR_FORTRAN,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          UNGBR_FORTRAN,
