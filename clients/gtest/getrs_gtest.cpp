@@ -41,16 +41,17 @@ const vector<vector<int>> matrix_sizeB_range = {
     {30, 2},
 };
 
-// for daily_lapack tests
-const vector<vector<int>> large_matrix_sizeA_range
-    = {{70, 70, 100}, {192, 192, 192}, {600, 700, 645}, {1000, 1000, 1000}, {1000, 2000, 2000}};
-const vector<vector<int>> large_matrix_sizeB_range = {
-    {100, 0},
-    {150, 0},
-    {200, 1},
-    {524, 2},
-    {1000, 2},
-};
+// // for daily_lapack tests
+// const vector<vector<int>> large_matrix_sizeA_range
+//     = {{70, 70, 100}, {192, 192, 192}, {600, 700, 645}, {1000, 1000, 1000}, {1000, 2000, 2000}};
+
+// const vector<vector<int>> large_matrix_sizeB_range = {
+//     {100, 0},
+//     {150, 0},
+//     {200, 1},
+//     {524, 2},
+//     {1000, 2},
+// };
 
 Arguments getrs_setup_arguments(getrs_tuple tup)
 {
@@ -146,19 +147,19 @@ TEST_P(GETRS_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         GETRS,
-                         Combine(ValuesIn(large_matrix_sizeA_range),
-                                 ValuesIn(large_matrix_sizeB_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GETRS,
+//                          Combine(ValuesIn(large_matrix_sizeA_range),
+//                                  ValuesIn(large_matrix_sizeB_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GETRS,
                          Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         GETRS_FORTRAN,
-                         Combine(ValuesIn(large_matrix_sizeA_range),
-                                 ValuesIn(large_matrix_sizeB_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GETRS_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_sizeA_range),
+//                                  ValuesIn(large_matrix_sizeB_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GETRS_FORTRAN,
