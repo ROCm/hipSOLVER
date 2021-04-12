@@ -102,6 +102,8 @@ hipsolverSgetrf(hipsolverHandle_t handle,
 
 | Function | single | double | single complex | double complex |
 | -------- | ------ | ------ | -------------- | -------------- |
+| hipsolverXgeqrf_bufferSize | x | x | x | x |
+| hipsolverXgeqrf | x | x | x | x |
 | hipsolverXgetrf_bufferSize | x | x | x | x |
 | hipsolverXgetrf | x | x | x | x |
 | hipsolverXpotrf_bufferSize | x | x | x | x |
