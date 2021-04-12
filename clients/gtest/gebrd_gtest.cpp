@@ -32,8 +32,8 @@ const vector<int> n_size_range = {
     // normal (valid) samples
     16,
     20,
-    120,
-    150};
+    40,
+    50};
 
 // // for daily_lapack tests
 // const vector<vector<int>> large_matrix_size_range = {
@@ -42,7 +42,7 @@ const vector<int> n_size_range = {
 //     {1000, 1024},
 // };
 
-// const vector<int> large_n_size_range = {64, 98, 130, 220};
+// const vector<int> large_n_size_range = {64, 98, 130, 152};
 
 Arguments gebrd_setup_arguments(gebrd_tuple tup)
 {
