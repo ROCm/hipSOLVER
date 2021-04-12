@@ -6,6 +6,7 @@
 #include "rocblas.h"
 #include "rocsolver.h"
 #include <algorithm>
+#include <climits>
 #include <functional>
 #include <iostream>
 #include <math.h>
@@ -140,6 +141,9 @@ hipsolverStatus_t hipsolverSgetrf_bufferSize(
     rocsolver_sgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz2);
 
+    if(max(sz1, sz2) > INT_MAX)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+
     *lwork = (int)max(sz1, sz2);
     return rocblas2hip_status(status);
 }
@@ -157,6 +161,9 @@ hipsolverStatus_t hipsolverDgetrf_bufferSize(
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocsolver_dgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz2);
+
+    if(max(sz1, sz2) > INT_MAX)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)max(sz1, sz2);
     return rocblas2hip_status(status);
@@ -176,6 +183,9 @@ hipsolverStatus_t hipsolverCgetrf_bufferSize(
     rocsolver_cgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz2);
 
+    if(max(sz1, sz2) > INT_MAX)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+
     *lwork = (int)max(sz1, sz2);
     return rocblas2hip_status(status);
 }
@@ -193,6 +203,9 @@ hipsolverStatus_t hipsolverZgetrf_bufferSize(
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocsolver_zgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz2);
+
+    if(max(sz1, sz2) > INT_MAX)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)max(sz1, sz2);
     return rocblas2hip_status(status);
@@ -329,6 +342,9 @@ hipsolverStatus_t hipsolverSpotrf_bufferSize(
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    if(sz > INT_MAX)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+
     *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
@@ -342,6 +358,9 @@ hipsolverStatus_t hipsolverDpotrf_bufferSize(
     rocblas_status status = rocsolver_dpotrf(
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+
+    if(sz > INT_MAX)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
     return rocblas2hip_status(status);
@@ -361,6 +380,9 @@ hipsolverStatus_t hipsolverCpotrf_bufferSize(hipsolverHandle_t   handle,
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    if(sz > INT_MAX)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+
     *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
@@ -378,6 +400,9 @@ hipsolverStatus_t hipsolverZpotrf_bufferSize(hipsolverHandle_t       handle,
     rocblas_status status = rocsolver_zpotrf(
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+
+    if(sz > INT_MAX)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
     return rocblas2hip_status(status);
