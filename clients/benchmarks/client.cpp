@@ -68,7 +68,7 @@ try
         ("function,f",
          value<std::string>(&function)->default_value("getrf"),
             "The LAPACK function to test.\n"
-            "                           Options are: getrf.\n"
+            "                           Options are: getrf, potrf.\n"
             "                           ")
 
         ("iters,i",
@@ -336,12 +336,11 @@ try
         //     "                           Indicates if a matrix should be transposed.\n"
         //     "                           ")
 
-        // ("uplo",
-        //  value<char>()->default_value('U'),
-        //     "U = upper, L = lower.\n"
-        //     "                           Indicates where the data for a triangular or symmetric/hermitian matrix is stored.\n"
-        //     "                           ")
-        ;
+        ("uplo",
+         value<char>()->default_value('U'),
+            "U = upper, L = lower.\n"
+            "                           Indicates where the data for a triangular or symmetric/hermitian matrix is stored.\n"
+            "                           ");
     // clang-format on
 
     variables_map vm;
@@ -370,7 +369,7 @@ try
     argus.validate_precision("precision");
     // argus.validate_operation("trans");
     // argus.validate_side("side");
-    // argus.validate_fill("uplo");
+    argus.validate_fill("uplo");
     // argus.validate_direct("direct");
     // argus.validate_storev("storev");
     // argus.validate_svect("left_svect");

@@ -7,9 +7,7 @@
 #include <cusolverDn.h>
 #include <hip/hip_runtime.h>
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 cublasOperation_t hip2cuda_operation(hipsolverOperation_t op)
 {
@@ -201,6 +199,105 @@ hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
                                             devInfo));
 }
 
-#ifdef __cplusplus
+/******************** POTRF ********************/
+hipsolverStatus_t hipsolverSpotrf_bufferSize(
+    hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, float* A, int lda, int* lwork)
+{
+    return cuda2hip_status(cusolverDnSpotrf_bufferSize(
+        (cusolverDnHandle_t)handle, hip2cuda_fill(uplo), n, A, lda, lwork));
 }
-#endif
+
+hipsolverStatus_t hipsolverDpotrf_bufferSize(
+    hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, double* A, int lda, int* lwork)
+{
+    return cuda2hip_status(cusolverDnDpotrf_bufferSize(
+        (cusolverDnHandle_t)handle, hip2cuda_fill(uplo), n, A, lda, lwork));
+}
+
+hipsolverStatus_t hipsolverCpotrf_bufferSize(hipsolverHandle_t   handle,
+                                             hipsolverFillMode_t uplo,
+                                             int                 n,
+                                             hipsolverComplex*   A,
+                                             int                 lda,
+                                             int*                lwork)
+{
+    return cuda2hip_status(cusolverDnCpotrf_bufferSize(
+        (cusolverDnHandle_t)handle, hip2cuda_fill(uplo), n, (cuComplex*)A, lda, lwork));
+}
+
+hipsolverStatus_t hipsolverZpotrf_bufferSize(hipsolverHandle_t       handle,
+                                             hipsolverFillMode_t     uplo,
+                                             int                     n,
+                                             hipsolverDoubleComplex* A,
+                                             int                     lda,
+                                             int*                    lwork)
+{
+    return cuda2hip_status(cusolverDnZpotrf_bufferSize(
+        (cusolverDnHandle_t)handle, hip2cuda_fill(uplo), n, (cuDoubleComplex*)A, lda, lwork));
+}
+
+hipsolverStatus_t hipsolverSpotrf(hipsolverHandle_t   handle,
+                                  hipsolverFillMode_t uplo,
+                                  int                 n,
+                                  float*              A,
+                                  int                 lda,
+                                  float*              work,
+                                  int                 lwork,
+                                  int*                devInfo)
+{
+    return cuda2hip_status(cusolverDnSpotrf(
+        (cusolverDnHandle_t)handle, hip2cuda_fill(uplo), n, A, lda, work, lwork, devInfo));
+}
+
+hipsolverStatus_t hipsolverDpotrf(hipsolverHandle_t   handle,
+                                  hipsolverFillMode_t uplo,
+                                  int                 n,
+                                  double*             A,
+                                  int                 lda,
+                                  double*             work,
+                                  int                 lwork,
+                                  int*                devInfo)
+{
+    return cuda2hip_status(cusolverDnDpotrf(
+        (cusolverDnHandle_t)handle, hip2cuda_fill(uplo), n, A, lda, work, lwork, devInfo));
+}
+
+hipsolverStatus_t hipsolverCpotrf(hipsolverHandle_t   handle,
+                                  hipsolverFillMode_t uplo,
+                                  int                 n,
+                                  hipsolverComplex*   A,
+                                  int                 lda,
+                                  hipsolverComplex*   work,
+                                  int                 lwork,
+                                  int*                devInfo)
+{
+    return cuda2hip_status(cusolverDnCpotrf((cusolverDnHandle_t)handle,
+                                            hip2cuda_fill(uplo),
+                                            n,
+                                            (cuComplex*)A,
+                                            lda,
+                                            (cuComplex*)work,
+                                            lwork,
+                                            devInfo));
+}
+
+hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t       handle,
+                                  hipsolverFillMode_t     uplo,
+                                  int                     n,
+                                  hipsolverDoubleComplex* A,
+                                  int                     lda,
+                                  hipsolverDoubleComplex* work,
+                                  int                     lwork,
+                                  int*                    devInfo)
+{
+    return cuda2hip_status(cusolverDnZpotrf((cusolverDnHandle_t)handle,
+                                            hip2cuda_fill(uplo),
+                                            n,
+                                            (cuDoubleComplex*)A,
+                                            lda,
+                                            (cuDoubleComplex*)work,
+                                            lwork,
+                                            devInfo));
+}
+
+} // extern C

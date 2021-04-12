@@ -239,6 +239,63 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handl
                                                    int*                    devIpiv,
                                                    int*                    devInfo);
 
+// potrf
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpotrf_bufferSize(
+    hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, float* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDpotrf_bufferSize(
+    hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, double* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCpotrf_bufferSize(hipsolverHandle_t   handle,
+                                                              hipsolverFillMode_t uplo,
+                                                              int                 n,
+                                                              hipsolverComplex*   A,
+                                                              int                 lda,
+                                                              int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrf_bufferSize(hipsolverHandle_t       handle,
+                                                              hipsolverFillMode_t     uplo,
+                                                              int                     n,
+                                                              hipsolverDoubleComplex* A,
+                                                              int                     lda,
+                                                              int*                    lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpotrf(hipsolverHandle_t   handle,
+                                                   hipsolverFillMode_t uplo,
+                                                   int                 n,
+                                                   float*              A,
+                                                   int                 lda,
+                                                   float*              work,
+                                                   int                 lwork,
+                                                   int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDpotrf(hipsolverHandle_t   handle,
+                                                   hipsolverFillMode_t uplo,
+                                                   int                 n,
+                                                   double*             A,
+                                                   int                 lda,
+                                                   double*             work,
+                                                   int                 lwork,
+                                                   int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCpotrf(hipsolverHandle_t   handle,
+                                                   hipsolverFillMode_t uplo,
+                                                   int                 n,
+                                                   hipsolverComplex*   A,
+                                                   int                 lda,
+                                                   hipsolverComplex*   work,
+                                                   int                 lwork,
+                                                   int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t       handle,
+                                                   hipsolverFillMode_t     uplo,
+                                                   int                     n,
+                                                   hipsolverDoubleComplex* A,
+                                                   int                     lda,
+                                                   hipsolverDoubleComplex* work,
+                                                   int                     lwork,
+                                                   int*                    devInfo);
+
 #ifdef __cplusplus
 }
 #endif
