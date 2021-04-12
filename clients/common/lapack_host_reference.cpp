@@ -18,6 +18,39 @@
 extern "C" {
 #endif
 
+void clacgv_(int* n, hipsolverComplex* x, int* incx);
+void zlacgv_(int* n, hipsolverDoubleComplex* x, int* incx);
+
+void slarf_(
+    char* side, int* m, int* n, float* x, int* incx, float* alpha, float* A, int* lda, float* work);
+void dlarf_(char*   side,
+            int*    m,
+            int*    n,
+            double* x,
+            int*    incx,
+            double* alpha,
+            double* A,
+            int*    lda,
+            double* work);
+void clarf_(char*             side,
+            int*              m,
+            int*              n,
+            hipsolverComplex* x,
+            int*              incx,
+            hipsolverComplex* alpha,
+            hipsolverComplex* A,
+            int*              lda,
+            hipsolverComplex* work);
+void zlarf_(char*                   side,
+            int*                    m,
+            int*                    n,
+            hipsolverDoubleComplex* x,
+            int*                    incx,
+            hipsolverDoubleComplex* alpha,
+            hipsolverDoubleComplex* A,
+            int*                    lda,
+            hipsolverDoubleComplex* work);
+
 void sormqr_(char*  side,
              char*  trans,
              int*   m,
@@ -69,6 +102,51 @@ void zunmqr_(char*                   side,
              int*                    ldc,
              hipsolverDoubleComplex* work,
              int*                    sizeW,
+             int*                    info);
+
+void sgebrd_(int*   m,
+             int*   n,
+             float* A,
+             int*   lda,
+             float* D,
+             float* E,
+             float* tauq,
+             float* taup,
+             float* work,
+             int*   size_w,
+             int*   info);
+void dgebrd_(int*    m,
+             int*    n,
+             double* A,
+             int*    lda,
+             double* D,
+             double* E,
+             double* tauq,
+             double* taup,
+             double* work,
+             int*    size_w,
+             int*    info);
+void cgebrd_(int*              m,
+             int*              n,
+             hipsolverComplex* A,
+             int*              lda,
+             float*            D,
+             float*            E,
+             hipsolverComplex* tauq,
+             hipsolverComplex* taup,
+             hipsolverComplex* work,
+             int*              size_w,
+             int*              info);
+void zgebrd_(int*                    m,
+             int*                    n,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             double*                 D,
+             double*                 E,
+             hipsolverDoubleComplex* tauq,
+             hipsolverDoubleComplex* taup,
+             hipsolverDoubleComplex* work,
+             int*                    size_w,
              int*                    info);
 
 void sgeqrf_(int* m, int* n, float* A, int* lda, float* ipiv, float* work, int* lwork, int* info);
@@ -131,6 +209,80 @@ void zpotrf_(char* uplo, int* m, hipsolverDoubleComplex* A, int* lda, int* info)
 
 /************************************************************************/
 // These are templated functions used in hipSOLVER clients code
+
+// lacgv
+template <>
+void cblas_lacgv<hipsolverComplex>(int n, hipsolverComplex* x, int incx)
+{
+    clacgv_(&n, x, &incx);
+}
+
+template <>
+void cblas_lacgv<hipsolverDoubleComplex>(int n, hipsolverDoubleComplex* x, int incx)
+{
+    zlacgv_(&n, x, &incx);
+}
+
+// larf
+template <>
+void cblas_larf<float>(hipsolverSideMode_t sideR,
+                       int                 m,
+                       int                 n,
+                       float*              x,
+                       int                 incx,
+                       float*              alpha,
+                       float*              A,
+                       int                 lda,
+                       float*              work)
+{
+    char side = hipsolver2char_side(sideR);
+    slarf_(&side, &m, &n, x, &incx, alpha, A, &lda, work);
+}
+
+template <>
+void cblas_larf<double>(hipsolverSideMode_t sideR,
+                        int                 m,
+                        int                 n,
+                        double*             x,
+                        int                 incx,
+                        double*             alpha,
+                        double*             A,
+                        int                 lda,
+                        double*             work)
+{
+    char side = hipsolver2char_side(sideR);
+    dlarf_(&side, &m, &n, x, &incx, alpha, A, &lda, work);
+}
+
+template <>
+void cblas_larf<hipsolverComplex>(hipsolverSideMode_t sideR,
+                                  int                 m,
+                                  int                 n,
+                                  hipsolverComplex*   x,
+                                  int                 incx,
+                                  hipsolverComplex*   alpha,
+                                  hipsolverComplex*   A,
+                                  int                 lda,
+                                  hipsolverComplex*   work)
+{
+    char side = hipsolver2char_side(sideR);
+    clarf_(&side, &m, &n, x, &incx, alpha, A, &lda, work);
+}
+
+template <>
+void cblas_larf<hipsolverDoubleComplex>(hipsolverSideMode_t     sideR,
+                                        int                     m,
+                                        int                     n,
+                                        hipsolverDoubleComplex* x,
+                                        int                     incx,
+                                        hipsolverDoubleComplex* alpha,
+                                        hipsolverDoubleComplex* A,
+                                        int                     lda,
+                                        hipsolverDoubleComplex* work)
+{
+    char side = hipsolver2char_side(sideR);
+    zlarf_(&side, &m, &n, x, &incx, alpha, A, &lda, work);
+}
 
 // gemm
 template <>
@@ -340,6 +492,71 @@ void cblas_ormqr_unmqr<hipsolverDoubleComplex>(hipsolverSideMode_t     side,
     char transC = hipsolver2char_operation(trans);
 
     zunmqr_(&sideC, &transC, &m, &n, &k, A, &lda, ipiv, C, &ldc, work, &lwork, &info);
+}
+
+// gebrd
+template <>
+void cblas_gebrd<float, float>(int    m,
+                               int    n,
+                               float* A,
+                               int    lda,
+                               float* D,
+                               float* E,
+                               float* tauq,
+                               float* taup,
+                               float* work,
+                               int    size_w)
+{
+    int info;
+    sgebrd_(&m, &n, A, &lda, D, E, tauq, taup, work, &size_w, &info);
+}
+
+template <>
+void cblas_gebrd<double, double>(int     m,
+                                 int     n,
+                                 double* A,
+                                 int     lda,
+                                 double* D,
+                                 double* E,
+                                 double* tauq,
+                                 double* taup,
+                                 double* work,
+                                 int     size_w)
+{
+    int info;
+    dgebrd_(&m, &n, A, &lda, D, E, tauq, taup, work, &size_w, &info);
+}
+
+template <>
+void cblas_gebrd<hipsolverComplex, float>(int               m,
+                                          int               n,
+                                          hipsolverComplex* A,
+                                          int               lda,
+                                          float*            D,
+                                          float*            E,
+                                          hipsolverComplex* tauq,
+                                          hipsolverComplex* taup,
+                                          hipsolverComplex* work,
+                                          int               size_w)
+{
+    int info;
+    cgebrd_(&m, &n, A, &lda, D, E, tauq, taup, work, &size_w, &info);
+}
+
+template <>
+void cblas_gebrd<hipsolverDoubleComplex, double>(int                     m,
+                                                 int                     n,
+                                                 hipsolverDoubleComplex* A,
+                                                 int                     lda,
+                                                 double*                 D,
+                                                 double*                 E,
+                                                 hipsolverDoubleComplex* tauq,
+                                                 hipsolverDoubleComplex* taup,
+                                                 hipsolverDoubleComplex* work,
+                                                 int                     size_w)
+{
+    int info;
+    zgebrd_(&m, &n, A, &lda, D, E, tauq, taup, work, &size_w, &info);
 }
 
 // geqrf

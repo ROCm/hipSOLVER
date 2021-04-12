@@ -8,6 +8,13 @@
 #include "hipsolver_datatype2string.hpp"
 
 template <typename T>
+void cblas_lacgv(int n, T* x, int incx);
+
+template <typename T>
+void cblas_larf(
+    hipsolverSideMode_t side, int m, int n, T* x, int incx, T* alpha, T* A, int lda, T* work);
+
+template <typename T>
 void cblas_gemm(hipsolverOperation_t transA,
                 hipsolverOperation_t transB,
                 int                  m,
@@ -35,6 +42,9 @@ void cblas_ormqr_unmqr(hipsolverSideMode_t  side,
                        int                  ldc,
                        T*                   work,
                        int                  sizeW);
+
+template <typename T, typename S>
+void cblas_gebrd(int m, int n, T* A, int lda, S* D, S* E, T* tauq, T* taup, T* work, int size_w);
 
 template <typename T>
 void cblas_geqrf(int m, int n, T* A, int lda, T* ipiv, T* work, int sizeW);

@@ -135,6 +135,79 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZunmqrFortran(hipsolverHandle_t     
                                                           int                     lwork,
                                                           int*                    devInfo);
 
+// gebrd
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgebrd_bufferSizeFortran(hipsolverHandle_t handle,
+                                                                     int               m,
+                                                                     int               n,
+                                                                     int*              lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgebrd_bufferSizeFortran(hipsolverHandle_t handle,
+                                                                     int               m,
+                                                                     int               n,
+                                                                     int*              lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgebrd_bufferSizeFortran(hipsolverHandle_t handle,
+                                                                     int               m,
+                                                                     int               n,
+                                                                     int*              lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgebrd_bufferSizeFortran(hipsolverHandle_t handle,
+                                                                     int               m,
+                                                                     int               n,
+                                                                     int*              lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgebrdFortran(hipsolverHandle_t handle,
+                                                          int               m,
+                                                          int               n,
+                                                          float*            A,
+                                                          int               lda,
+                                                          float*            D,
+                                                          float*            E,
+                                                          float*            tauq,
+                                                          float*            taup,
+                                                          float*            work,
+                                                          int               lwork,
+                                                          int*              devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgebrdFortran(hipsolverHandle_t handle,
+                                                          int               m,
+                                                          int               n,
+                                                          double*           A,
+                                                          int               lda,
+                                                          double*           D,
+                                                          double*           E,
+                                                          double*           tauq,
+                                                          double*           taup,
+                                                          double*           work,
+                                                          int               lwork,
+                                                          int*              devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgebrdFortran(hipsolverHandle_t handle,
+                                                          int               m,
+                                                          int               n,
+                                                          hipsolverComplex* A,
+                                                          int               lda,
+                                                          float*            D,
+                                                          float*            E,
+                                                          hipsolverComplex* tauq,
+                                                          hipsolverComplex* taup,
+                                                          hipsolverComplex* work,
+                                                          int               lwork,
+                                                          int*              devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgebrdFortran(hipsolverHandle_t       handle,
+                                                          int                     m,
+                                                          int                     n,
+                                                          hipsolverDoubleComplex* A,
+                                                          int                     lda,
+                                                          double*                 D,
+                                                          double*                 E,
+                                                          hipsolverDoubleComplex* tauq,
+                                                          hipsolverDoubleComplex* taup,
+                                                          hipsolverDoubleComplex* work,
+                                                          int                     lwork,
+                                                          int*                    devInfo);
+
 // geqrf
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgeqrf_bufferSizeFortran(
     hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork);
