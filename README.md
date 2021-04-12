@@ -104,5 +104,6 @@ hipsolverSgetrf(hipsolverHandle_t handle,
 | -------- | ------ | ------ | -------------- | -------------- |
 | hipsolverXgetrf_bufferSize | x | x | x | x |
 | hipsolverXgetrf | x | x | x | x |
+| hipsolverXgetrs | x | x | x | x |
 | hipsolverXpotrf_bufferSize | x | x | x | x |
 | hipsolverXpotrf | x | x | x | x |

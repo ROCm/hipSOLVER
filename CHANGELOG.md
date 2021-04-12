@@ -4,6 +4,8 @@
 ## [(Unreleased) hipSOLVER 1.0.0 for ROCm 4.3]
 ### Added
 - Added functions
+  - getrs
+    - hipsolverSgetrs, hipsolverDgetrs, hipsolverCgetrs, hipsolverZgetrs
   - potrf
     - hipsolverSpotrf_bufferSize, hipsolverDpotrf_bufferSize, hipsolverCpotrf_bufferSize, hipsolverZpotrf_bufferSize
     - hipsolverSpotrf, hipsolverDpotrf, hipsolverCpotrf, hipsolverZpotrf
