@@ -83,23 +83,33 @@ extern "C" {
 /* ============================================================================================ */
 /*  timing:*/
 
-/*! \brief  CPU Timer(in microsecond): synchronize with the default device and return wall time */
-double get_time_us(void)
+/*! \brief  CPU Timer(in microsecond): synchronize with the default device and
+ * return wall time */
+double get_time_us()
 {
     hipDeviceSynchronize();
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return (tv.tv_sec * 1000 * 1000) + tv.tv_usec;
-};
+    struct timespec tv;
+    clock_gettime(CLOCK_MONOTONIC, &tv);
+    return tv.tv_sec * 1'000'000llu + (tv.tv_nsec + 500llu) / 1000;
+}
 
-/*! \brief  CPU Timer(in microsecond): synchronize with given queue/stream and return wall time */
+/*! \brief  CPU Timer(in microsecond): synchronize with given queue/stream and
+ * return wall time */
 double get_time_us_sync(hipStream_t stream)
 {
     hipStreamSynchronize(stream);
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return (tv.tv_sec * 1000 * 1000) + tv.tv_usec;
-};
+    struct timespec tv;
+    clock_gettime(CLOCK_MONOTONIC, &tv);
+    return tv.tv_sec * 1'000'000llu + (tv.tv_nsec + 500llu) / 1000;
+}
+
+/*! \brief  CPU Timer(in microsecond): no GPU synchronization */
+double get_time_us_no_sync()
+{
+    struct timespec tv;
+    clock_gettime(CLOCK_MONOTONIC, &tv);
+    return tv.tv_sec * 1'000'000llu + (tv.tv_nsec + 500llu) / 1000;
+}
 
 /* ============================================================================================ */
 /*  device query and print out their ID and name; return number of compute-capable devices. */
