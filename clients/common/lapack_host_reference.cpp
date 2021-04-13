@@ -74,6 +74,27 @@ void zungqr_(int*                    m,
              int*                    lwork,
              int*                    info);
 
+void sorgtr_(
+    char* uplo, int* n, float* A, int* lda, float* Ipiv, float* work, int* size_w, int* info);
+void dorgtr_(
+    char* uplo, int* n, double* A, int* lda, double* Ipiv, double* work, int* size_w, int* info);
+void cungtr_(char*             uplo,
+             int*              n,
+             hipsolverComplex* A,
+             int*              lda,
+             hipsolverComplex* Ipiv,
+             hipsolverComplex* work,
+             int*              size_w,
+             int*              info);
+void zungtr_(char*                   uplo,
+             int*                    n,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             hipsolverDoubleComplex* Ipiv,
+             hipsolverDoubleComplex* work,
+             int*                    size_w,
+             int*                    info);
+
 void sormqr_(char*  side,
              char*  trans,
              int*   m,
@@ -516,6 +537,53 @@ void cblas_orgqr_ungqr<hipsolverDoubleComplex>(int                     m,
 {
     int info;
     zungqr_(&m, &n, &k, A, &lda, ipiv, work, &lwork, &info);
+}
+
+// orgtr & ungtr
+template <>
+void cblas_orgtr_ungtr<float>(
+    hipsolverFillMode_t uplo, int n, float* A, int lda, float* Ipiv, float* work, int size_w)
+{
+    int  info;
+    char uploC = hipsolver2char_fill(uplo);
+    sorgtr_(&uploC, &n, A, &lda, Ipiv, work, &size_w, &info);
+}
+
+template <>
+void cblas_orgtr_ungtr<double>(
+    hipsolverFillMode_t uplo, int n, double* A, int lda, double* Ipiv, double* work, int size_w)
+{
+    int  info;
+    char uploC = hipsolver2char_fill(uplo);
+    dorgtr_(&uploC, &n, A, &lda, Ipiv, work, &size_w, &info);
+}
+
+template <>
+void cblas_orgtr_ungtr<hipsolverComplex>(hipsolverFillMode_t uplo,
+                                         int                 n,
+                                         hipsolverComplex*   A,
+                                         int                 lda,
+                                         hipsolverComplex*   Ipiv,
+                                         hipsolverComplex*   work,
+                                         int                 size_w)
+{
+    int  info;
+    char uploC = hipsolver2char_fill(uplo);
+    cungtr_(&uploC, &n, A, &lda, Ipiv, work, &size_w, &info);
+}
+
+template <>
+void cblas_orgtr_ungtr<hipsolverDoubleComplex>(hipsolverFillMode_t     uplo,
+                                               int                     n,
+                                               hipsolverDoubleComplex* A,
+                                               int                     lda,
+                                               hipsolverDoubleComplex* Ipiv,
+                                               hipsolverDoubleComplex* work,
+                                               int                     size_w)
+{
+    int  info;
+    char uploC = hipsolver2char_fill(uplo);
+    zungtr_(&uploC, &n, A, &lda, Ipiv, work, &size_w, &info);
 }
 
 // ormqr & unmqr
