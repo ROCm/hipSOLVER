@@ -28,8 +28,8 @@ const vector<vector<int>> size_range = {
     {70, 100},
     {100, 150}};
 
-// for daily_lapack tests
-const vector<vector<int>> large_size_range = {{192, 192}, {500, 600}, {640, 640}, {1000, 1024}};
+// // for daily_lapack tests
+// const vector<vector<int>> large_size_range = {{192, 192}, {500, 600}, {640, 640}, {1000, 1024}};
 
 Arguments orgtr_setup_arguments(orgtr_tuple tup)
 {
@@ -123,25 +123,25 @@ TEST_P(UNGTR_FORTRAN, __double_complex)
     run_tests<rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack, ORGTR, Combine(ValuesIn(large_size_range), ValuesIn(uplo)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack, ORGTR, Combine(ValuesIn(large_size_range), ValuesIn(uplo)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack, ORGTR, Combine(ValuesIn(size_range), ValuesIn(uplo)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack, UNGTR, Combine(ValuesIn(large_size_range), ValuesIn(uplo)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack, UNGTR, Combine(ValuesIn(large_size_range), ValuesIn(uplo)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack, UNGTR, Combine(ValuesIn(size_range), ValuesIn(uplo)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         ORGTR_FORTRAN,
-                         Combine(ValuesIn(large_size_range), ValuesIn(uplo)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          ORGTR_FORTRAN,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(uplo)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          ORGTR_FORTRAN,
                          Combine(ValuesIn(size_range), ValuesIn(uplo)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         UNGTR_FORTRAN,
-                         Combine(ValuesIn(large_size_range), ValuesIn(uplo)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          UNGTR_FORTRAN,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(uplo)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          UNGTR_FORTRAN,
