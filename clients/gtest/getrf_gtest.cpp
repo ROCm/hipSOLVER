@@ -16,7 +16,7 @@ typedef std::tuple<vector<int>, int> getrf_tuple;
 
 // each matrix_size_range vector is a {m, lda}
 
-// case when m = n = 0 will also execute the bad arguments test
+// case when m = -1 and n = -1 will also execute the bad arguments test
 // (null handle, null pointers and invalid values)
 
 // for checkin_lapack tests
@@ -87,7 +87,7 @@ protected:
     {
         Arguments arg = getrf_setup_arguments(GetParam());
 
-        if(arg.peek<rocblas_int>("m") == 0 && arg.peek<rocblas_int>("n") == 0)
+        if(arg.peek<rocblas_int>("m") == -1 && arg.peek<rocblas_int>("n") == -1)
         {
             if(!NPVT)
                 testing_getrf_bad_arg<FORTRAN, BATCHED, STRIDED, T>();

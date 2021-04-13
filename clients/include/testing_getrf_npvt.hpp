@@ -65,7 +65,7 @@ void testing_getrf_npvt_bad_arg()
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check bad arguments
-        // getrf_checkBadArgs<FORTRAN>(
+        // getrf_npvt_checkBadArgs<FORTRAN>(
         //     handle, m, n, dA.data(), lda, stA, dWork.data(), dIpiv.data(), stP, dInfo.data(), bc);
     }
     else
@@ -85,7 +85,7 @@ void testing_getrf_npvt_bad_arg()
             CHECK_HIP_ERROR(dWork.memcheck());
 
         // check bad arguments
-        getrf_checkBadArgs<FORTRAN>(
+        getrf_npvt_checkBadArgs<FORTRAN>(
             handle, m, n, dA.data(), lda, stA, dWork.data(), dIpiv.data(), stP, dInfo.data(), bc);
     }
 }

@@ -27,7 +27,7 @@ void potrf_checkBadArgs(const hipsolverHandle_t   handle,
     EXPECT_ROCBLAS_STATUS(
         hipsolver_potrf(
             FORTRAN, handle, hipsolverFillMode_t(-1), n, dA, lda, stA, dWork, lwork, dinfo, bc),
-        HIPSOLVER_STATUS_INVALID_VALUE);
+        HIPSOLVER_STATUS_INVALID_ENUM);
 
     // pointers
     EXPECT_ROCBLAS_STATUS(
