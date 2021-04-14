@@ -64,14 +64,14 @@ const vector<vector<int>> size_range = {
     {70, 40},
 };
 
-// for daily_lapack tests
-const vector<vector<int>> large_size_range = {
-    {200, 150},
-    {270, 270},
-    {400, 400},
-    {800, 500},
-    {1500, 1000},
-};
+// // for daily_lapack tests
+// const vector<vector<int>> large_size_range = {
+//     {200, 150},
+//     {270, 270},
+//     {400, 400},
+//     {800, 500},
+//     {1500, 1000},
+// };
 
 Arguments ormtr_setup_arguments(ormtr_tuple tup)
 {
@@ -173,33 +173,33 @@ TEST_P(UNMTR_FORTRAN, __double_complex)
     run_tests<rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         ORMTR,
-                         Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          ORMTR,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          ORMTR,
                          Combine(ValuesIn(size_range), ValuesIn(store_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         UNMTR,
-                         Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          UNMTR,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          UNMTR,
                          Combine(ValuesIn(size_range), ValuesIn(store_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         ORMTR_FORTRAN,
-                         Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          ORMTR_FORTRAN,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          ORMTR_FORTRAN,
                          Combine(ValuesIn(size_range), ValuesIn(store_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         UNMTR_FORTRAN,
-                         Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          UNMTR_FORTRAN,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          UNMTR_FORTRAN,
