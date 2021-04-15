@@ -61,16 +61,16 @@ const vector<vector<int>> opt_range = {
     {0, 0, 0, 0, 2},
     {0, 0, 0, 0, 1}};
 
-// for daily_lapack tests
-const vector<vector<int>> large_size_range = {{120, 100, 0}, {300, 120, 0}, {300, 120, 1}};
+// // for daily_lapack tests
+// const vector<vector<int>> large_size_range = {{120, 100, 0}, {300, 120, 0}, {300, 120, 1}};
 
-const vector<vector<int>> large_opt_range = {{0, 0, 0, 3, 3},
-                                             {1, 0, 0, 0, 1},
-                                             {0, 1, 0, 1, 0},
-                                             {0, 0, 1, 1, 1},
-                                             {0, 0, 0, 3, 0},
-                                             {0, 0, 0, 1, 3},
-                                             {0, 0, 0, 3, 2}};
+// const vector<vector<int>> large_opt_range = {{0, 0, 0, 3, 3},
+//                                              {1, 0, 0, 0, 1},
+//                                              {0, 1, 0, 1, 0},
+//                                              {0, 0, 1, 1, 1},
+//                                              {0, 0, 0, 3, 0},
+//                                              {0, 0, 0, 1, 3},
+//                                              {0, 0, 0, 3, 2}};
 
 Arguments gesvd_setup_arguments(gesvd_tuple tup)
 {
@@ -193,15 +193,15 @@ TEST_P(GESVD_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         GESVD,
-                         Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GESVD,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack, GESVD, Combine(ValuesIn(size_range), ValuesIn(opt_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         GESVD_FORTRAN,
-                         Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GESVD_FORTRAN,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GESVD_FORTRAN,
