@@ -343,6 +343,9 @@ hipsolverStatus_t hipsolverSgetrs(hipsolverHandle_t    handle,
                                   int                  ldb,
                                   int*                 devInfo)
 {
+    if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+        rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+
     return rocblas2hip_status(rocsolver_sgetrs(
         (rocblas_handle)handle, hip2rocblas_operation(trans), n, nrhs, A, lda, devIpiv, B, ldb));
 }
@@ -358,6 +361,9 @@ hipsolverStatus_t hipsolverDgetrs(hipsolverHandle_t    handle,
                                   int                  ldb,
                                   int*                 devInfo)
 {
+    if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+        rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+
     return rocblas2hip_status(rocsolver_dgetrs(
         (rocblas_handle)handle, hip2rocblas_operation(trans), n, nrhs, A, lda, devIpiv, B, ldb));
 }
@@ -373,6 +379,9 @@ hipsolverStatus_t hipsolverCgetrs(hipsolverHandle_t    handle,
                                   int                  ldb,
                                   int*                 devInfo)
 {
+    if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+        rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+
     return rocblas2hip_status(rocsolver_cgetrs((rocblas_handle)handle,
                                                hip2rocblas_operation(trans),
                                                n,
@@ -395,6 +404,9 @@ hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t       handle,
                                   int                     ldb,
                                   int*                    devInfo)
 {
+    if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+        rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+
     return rocblas2hip_status(rocsolver_zgetrs((rocblas_handle)handle,
                                                hip2rocblas_operation(trans),
                                                n,
