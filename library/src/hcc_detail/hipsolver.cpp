@@ -274,6 +274,11 @@ try
 
         rocblas_set_workspace((rocblas_handle)handle, work, sz);
     }
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     if(devIpiv != nullptr)
         return rocblas2hip_status(
@@ -308,6 +313,11 @@ try
         rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
         rocblas_set_workspace((rocblas_handle)handle, work, sz);
+    }
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
     }
 
     if(devIpiv != nullptr)
@@ -344,6 +354,11 @@ try
 
         rocblas_set_workspace((rocblas_handle)handle, work, sz);
     }
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     if(devIpiv != nullptr)
         return rocblas2hip_status(rocsolver_cgetrf(
@@ -378,6 +393,11 @@ try
         rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
         rocblas_set_workspace((rocblas_handle)handle, work, sz);
+    }
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
     }
 
     if(devIpiv != nullptr)
@@ -501,6 +521,11 @@ try
 {
     if(work != nullptr)
         rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     return rocblas2hip_status(
         rocsolver_spotrf((rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, devInfo));
@@ -522,6 +547,11 @@ try
 {
     if(work != nullptr)
         rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     return rocblas2hip_status(
         rocsolver_dpotrf((rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, devInfo));
@@ -543,6 +573,11 @@ try
 {
     if(work != nullptr)
         rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     return rocblas2hip_status(rocsolver_cpotrf((rocblas_handle)handle,
                                                hip2rocblas_fill(uplo),
@@ -568,6 +603,11 @@ try
 {
     if(work != nullptr)
         rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     return rocblas2hip_status(rocsolver_zpotrf((rocblas_handle)handle,
                                                hip2rocblas_fill(uplo),
