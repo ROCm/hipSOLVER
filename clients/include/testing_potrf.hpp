@@ -96,7 +96,10 @@ void potrf_getError(const hipsolverHandle_t   handle,
         // (TODO: For now, the algorithm is modifying the whole input matrix even when
         //  it is not positive definite. So we only check the principal nn-by-nn submatrix.
         //  Once this is corrected, nn could be always equal to n.)
-        err      = norm_error('F', nn, nn, lda, hA[b], hARes[b]);
+        if(uplo == HIPSOLVER_FILL_MODE_UPPER)
+            err = norm_error_upperTr('F', nn, nn, lda, hA[b], hARes[b]);
+        else
+            err = norm_error_lowerTr('F', nn, nn, lda, hA[b], hARes[b]);
         *max_err = err > *max_err ? err : *max_err;
     }
 
