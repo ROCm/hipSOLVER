@@ -150,6 +150,7 @@ catch(...)
 /******************** GEQRF ********************/
 hipsolverStatus_t hipsolverSgeqrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
+try
 {
     size_t sz;
 
@@ -163,9 +164,14 @@ hipsolverStatus_t hipsolverSgeqrf_bufferSize(
     *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDgeqrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork)
+try
 {
     size_t sz;
 
@@ -179,9 +185,14 @@ hipsolverStatus_t hipsolverDgeqrf_bufferSize(
     *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverCgeqrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork)
+try
 {
     size_t sz;
 
@@ -195,9 +206,14 @@ hipsolverStatus_t hipsolverCgeqrf_bufferSize(
     *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverZgeqrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork)
+try
 {
     size_t sz;
 
@@ -211,6 +227,10 @@ hipsolverStatus_t hipsolverZgeqrf_bufferSize(
     *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverSgeqrf(hipsolverHandle_t handle,
                                   int               m,
@@ -221,6 +241,7 @@ hipsolverStatus_t hipsolverSgeqrf(hipsolverHandle_t handle,
                                   float*            work,
                                   int               lwork,
                                   int*              devInfo)
+try
 {
     if(work != nullptr)
         rocblas_set_workspace((rocblas_handle)handle, work, lwork);
@@ -232,6 +253,10 @@ hipsolverStatus_t hipsolverSgeqrf(hipsolverHandle_t handle,
 
     return rocblas2hip_status(rocsolver_sgeqrf((rocblas_handle)handle, m, n, A, lda, tau));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDgeqrf(hipsolverHandle_t handle,
                                   int               m,
@@ -242,6 +267,7 @@ hipsolverStatus_t hipsolverDgeqrf(hipsolverHandle_t handle,
                                   double*           work,
                                   int               lwork,
                                   int*              devInfo)
+try
 {
     if(work != nullptr)
         rocblas_set_workspace((rocblas_handle)handle, work, lwork);
@@ -253,6 +279,10 @@ hipsolverStatus_t hipsolverDgeqrf(hipsolverHandle_t handle,
 
     return rocblas2hip_status(rocsolver_dgeqrf((rocblas_handle)handle, m, n, A, lda, tau));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverCgeqrf(hipsolverHandle_t handle,
                                   int               m,
@@ -263,6 +293,7 @@ hipsolverStatus_t hipsolverCgeqrf(hipsolverHandle_t handle,
                                   hipsolverComplex* work,
                                   int               lwork,
                                   int*              devInfo)
+try
 {
     if(work != nullptr)
         rocblas_set_workspace((rocblas_handle)handle, work, lwork);
@@ -275,6 +306,10 @@ hipsolverStatus_t hipsolverCgeqrf(hipsolverHandle_t handle,
     return rocblas2hip_status(rocsolver_cgeqrf(
         (rocblas_handle)handle, m, n, (rocblas_float_complex*)A, lda, (rocblas_float_complex*)tau));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverZgeqrf(hipsolverHandle_t       handle,
                                   int                     m,
@@ -285,6 +320,7 @@ hipsolverStatus_t hipsolverZgeqrf(hipsolverHandle_t       handle,
                                   hipsolverDoubleComplex* work,
                                   int                     lwork,
                                   int*                    devInfo)
+try
 {
     if(work != nullptr)
         rocblas_set_workspace((rocblas_handle)handle, work, lwork);
@@ -300,6 +336,10 @@ hipsolverStatus_t hipsolverZgeqrf(hipsolverHandle_t       handle,
                                                (rocblas_double_complex*)A,
                                                lda,
                                                (rocblas_double_complex*)tau));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 /******************** GETRF ********************/

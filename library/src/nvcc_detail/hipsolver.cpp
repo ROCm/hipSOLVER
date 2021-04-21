@@ -136,30 +136,50 @@ catch(...)
 /******************** GEQRF ********************/
 hipsolverStatus_t hipsolverSgeqrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
+try
 {
     return cuda2hip_status(
         cusolverDnSgeqrf_bufferSize((cusolverDnHandle_t)handle, m, n, A, lda, lwork));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDgeqrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork)
+try
 {
     return cuda2hip_status(
         cusolverDnDgeqrf_bufferSize((cusolverDnHandle_t)handle, m, n, A, lda, lwork));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverCgeqrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork)
+try
 {
     return cuda2hip_status(
         cusolverDnCgeqrf_bufferSize((cusolverDnHandle_t)handle, m, n, (cuComplex*)A, lda, lwork));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverZgeqrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork)
+try
 {
     return cuda2hip_status(cusolverDnZgeqrf_bufferSize(
         (cusolverDnHandle_t)handle, m, n, (cuDoubleComplex*)A, lda, lwork));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverSgeqrf(hipsolverHandle_t handle,
@@ -171,9 +191,14 @@ hipsolverStatus_t hipsolverSgeqrf(hipsolverHandle_t handle,
                                   float*            work,
                                   int               lwork,
                                   int*              devInfo)
+try
 {
     return cuda2hip_status(
         cusolverDnSgeqrf((cusolverDnHandle_t)handle, m, n, A, lda, tau, work, lwork, devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDgeqrf(hipsolverHandle_t handle,
@@ -185,9 +210,14 @@ hipsolverStatus_t hipsolverDgeqrf(hipsolverHandle_t handle,
                                   double*           work,
                                   int               lwork,
                                   int*              devInfo)
+try
 {
     return cuda2hip_status(
         cusolverDnDgeqrf((cusolverDnHandle_t)handle, m, n, A, lda, tau, work, lwork, devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverCgeqrf(hipsolverHandle_t handle,
@@ -199,6 +229,7 @@ hipsolverStatus_t hipsolverCgeqrf(hipsolverHandle_t handle,
                                   hipsolverComplex* work,
                                   int               lwork,
                                   int*              devInfo)
+try
 {
     return cuda2hip_status(cusolverDnCgeqrf((cusolverDnHandle_t)handle,
                                             m,
@@ -210,6 +241,10 @@ hipsolverStatus_t hipsolverCgeqrf(hipsolverHandle_t handle,
                                             lwork,
                                             devInfo));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverZgeqrf(hipsolverHandle_t       handle,
                                   int                     m,
@@ -220,6 +255,7 @@ hipsolverStatus_t hipsolverZgeqrf(hipsolverHandle_t       handle,
                                   hipsolverDoubleComplex* work,
                                   int                     lwork,
                                   int*                    devInfo)
+try
 {
     return cuda2hip_status(cusolverDnZgeqrf((cusolverDnHandle_t)handle,
                                             m,
@@ -230,6 +266,10 @@ hipsolverStatus_t hipsolverZgeqrf(hipsolverHandle_t       handle,
                                             (cuDoubleComplex*)work,
                                             lwork,
                                             devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 /******************** GETRF ********************/
