@@ -31,6 +31,8 @@ module hipsolver_enums
         enumerator :: HIPSOLVER_STATUS_NOT_SUPPORTED     = 7
         enumerator :: HIPSOLVER_STATUS_ARCH_MISMATCH     = 8
         enumerator :: HIPSOLVER_STATUS_HANDLE_IS_NULLPTR = 9
+        enumerator :: HIPSOLVER_STATUS_INVALID_ENUM      = 10
+        enumerator :: HIPSOLVER_STATUS_UNKNOWN           = 11
     end enum
 
 end module hipsolver_enums

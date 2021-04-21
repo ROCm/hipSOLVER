@@ -48,6 +48,10 @@ inline constexpr auto hipsolver2string_status(hipsolverStatus_t value)
         return "HIPSOLVER_STATUS_ARCH_MISMATCH";
     case HIPSOLVER_STATUS_HANDLE_IS_NULLPTR:
         return "HIPSOLVER_STATUS_HANDLE_IS_NULLPTR";
+    case HIPSOLVER_STATUS_INVALID_ENUM:
+        return "HIPSOLVER_STATUS_INVALID_ENUM";
+    case HIPSOLVER_STATUS_UNKNOWN:
+        return "HIPSOLVER_STATUS_UNKNOWN";
     }
     return "invalid";
 }

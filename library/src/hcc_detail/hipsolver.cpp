@@ -3,6 +3,7 @@
  * ************************************************************************ */
 
 #include "hipsolver.h"
+#include "exceptions.hpp"
 #include "rocblas.h"
 #include "rocsolver.h"
 #include <algorithm>
@@ -26,7 +27,7 @@ rocblas_operation_ hip2rocblas_operation(hipsolverOperation_t op)
     case HIPSOLVER_OP_C:
         return rocblas_operation_conjugate_transpose;
     default:
-        throw std::invalid_argument("Non existent OP");
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
     }
 }
 
@@ -41,7 +42,7 @@ hipsolverOperation_t rocblas2hip_operation(rocblas_operation_ op)
     case rocblas_operation_conjugate_transpose:
         return HIPSOLVER_OP_C;
     default:
-        throw std::invalid_argument("Non existent OP");
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
     }
 }
 
@@ -54,7 +55,7 @@ rocblas_fill_ hip2rocblas_fill(hipsolverFillMode_t fill)
     case HIPSOLVER_FILL_MODE_LOWER:
         return rocblas_fill_lower;
     default:
-        throw std::invalid_argument("Non existent FILL");
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
     }
 }
 
@@ -67,7 +68,7 @@ hipsolverFillMode_t rocblas2hip_fill(rocblas_fill_ fill)
     case rocblas_fill_lower:
         return HIPSOLVER_FILL_MODE_LOWER;
     default:
-        throw std::invalid_argument("Non existent FILL");
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
     }
 }
 
@@ -97,6 +98,7 @@ hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
 }
 
 hipsolverStatus_t hipsolverCreate(hipsolverHandle_t* handle)
+try
 {
     if(!handle)
         return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
@@ -104,31 +106,51 @@ hipsolverStatus_t hipsolverCreate(hipsolverHandle_t* handle)
     // Create the rocBLAS handle
     return rocblas2hip_status(rocblas_create_handle((rocblas_handle*)handle));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDestroy(hipsolverHandle_t handle)
+try
 {
     return rocblas2hip_status(rocblas_destroy_handle((rocblas_handle)handle));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverSetStream(hipsolverHandle_t handle, hipStream_t streamId)
+try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return rocblas2hip_status(rocblas_set_stream((rocblas_handle)handle, streamId));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverGetStream(hipsolverHandle_t handle, hipStream_t* streamId)
+try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return rocblas2hip_status(rocblas_get_stream((rocblas_handle)handle, streamId));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 /******************** GETRF ********************/
 hipsolverStatus_t hipsolverSgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
+try
 {
     size_t sz1, sz2;
 
@@ -147,9 +169,14 @@ hipsolverStatus_t hipsolverSgetrf_bufferSize(
     *lwork = (int)max(sz1, sz2);
     return rocblas2hip_status(status);
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork)
+try
 {
     size_t sz1, sz2;
 
@@ -168,9 +195,14 @@ hipsolverStatus_t hipsolverDgetrf_bufferSize(
     *lwork = (int)max(sz1, sz2);
     return rocblas2hip_status(status);
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverCgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork)
+try
 {
     size_t sz1, sz2;
 
@@ -189,9 +221,14 @@ hipsolverStatus_t hipsolverCgetrf_bufferSize(
     *lwork = (int)max(sz1, sz2);
     return rocblas2hip_status(status);
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverZgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork)
+try
 {
     size_t sz1, sz2;
 
@@ -210,6 +247,10 @@ hipsolverStatus_t hipsolverZgetrf_bufferSize(
     *lwork = (int)max(sz1, sz2);
     return rocblas2hip_status(status);
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
                                   int               m,
@@ -219,6 +260,7 @@ hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
                                   float*            work,
                                   int*              devIpiv,
                                   int*              devInfo)
+try
 {
     if(work != nullptr)
     {
@@ -232,6 +274,11 @@ hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
 
         rocblas_set_workspace((rocblas_handle)handle, work, sz);
     }
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     if(devIpiv != nullptr)
         return rocblas2hip_status(
@@ -239,6 +286,10 @@ hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
     else
         return rocblas2hip_status(
             rocsolver_sgetrf_npvt((rocblas_handle)handle, m, n, A, lda, devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
@@ -249,6 +300,7 @@ hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
                                   double*           work,
                                   int*              devIpiv,
                                   int*              devInfo)
+try
 {
     if(work != nullptr)
     {
@@ -262,6 +314,11 @@ hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
 
         rocblas_set_workspace((rocblas_handle)handle, work, sz);
     }
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     if(devIpiv != nullptr)
         return rocblas2hip_status(
@@ -269,6 +326,10 @@ hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
     else
         return rocblas2hip_status(
             rocsolver_dgetrf_npvt((rocblas_handle)handle, m, n, A, lda, devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
@@ -279,6 +340,7 @@ hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
                                   hipsolverComplex* work,
                                   int*              devIpiv,
                                   int*              devInfo)
+try
 {
     if(work != nullptr)
     {
@@ -292,6 +354,11 @@ hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
 
         rocblas_set_workspace((rocblas_handle)handle, work, sz);
     }
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     if(devIpiv != nullptr)
         return rocblas2hip_status(rocsolver_cgetrf(
@@ -299,6 +366,10 @@ hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
     else
         return rocblas2hip_status(rocsolver_cgetrf_npvt(
             (rocblas_handle)handle, m, n, (rocblas_float_complex*)A, lda, devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
@@ -309,6 +380,7 @@ hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
                                   hipsolverDoubleComplex* work,
                                   int*                    devIpiv,
                                   int*                    devInfo)
+try
 {
     if(work != nullptr)
     {
@@ -322,6 +394,11 @@ hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
 
         rocblas_set_workspace((rocblas_handle)handle, work, sz);
     }
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     if(devIpiv != nullptr)
         return rocblas2hip_status(rocsolver_zgetrf(
@@ -329,6 +406,10 @@ hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
     else
         return rocblas2hip_status(rocsolver_zgetrf_npvt(
             (rocblas_handle)handle, m, n, (rocblas_double_complex*)A, lda, devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 /******************** GETRS ********************/
@@ -421,6 +502,7 @@ hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t       handle,
 /******************** POTRF ********************/
 hipsolverStatus_t hipsolverSpotrf_bufferSize(
     hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, float* A, int lda, int* lwork)
+try
 {
     size_t sz;
 
@@ -435,9 +517,14 @@ hipsolverStatus_t hipsolverSpotrf_bufferSize(
     *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDpotrf_bufferSize(
     hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, double* A, int lda, int* lwork)
+try
 {
     size_t sz;
 
@@ -452,6 +539,10 @@ hipsolverStatus_t hipsolverDpotrf_bufferSize(
     *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverCpotrf_bufferSize(hipsolverHandle_t   handle,
                                              hipsolverFillMode_t uplo,
@@ -459,6 +550,7 @@ hipsolverStatus_t hipsolverCpotrf_bufferSize(hipsolverHandle_t   handle,
                                              hipsolverComplex*   A,
                                              int                 lda,
                                              int*                lwork)
+try
 {
     size_t sz;
 
@@ -473,6 +565,10 @@ hipsolverStatus_t hipsolverCpotrf_bufferSize(hipsolverHandle_t   handle,
     *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverZpotrf_bufferSize(hipsolverHandle_t       handle,
                                              hipsolverFillMode_t     uplo,
@@ -480,6 +576,7 @@ hipsolverStatus_t hipsolverZpotrf_bufferSize(hipsolverHandle_t       handle,
                                              hipsolverDoubleComplex* A,
                                              int                     lda,
                                              int*                    lwork)
+try
 {
     size_t sz;
 
@@ -494,6 +591,10 @@ hipsolverStatus_t hipsolverZpotrf_bufferSize(hipsolverHandle_t       handle,
     *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverSpotrf(hipsolverHandle_t   handle,
                                   hipsolverFillMode_t uplo,
@@ -503,12 +604,22 @@ hipsolverStatus_t hipsolverSpotrf(hipsolverHandle_t   handle,
                                   float*              work,
                                   int                 lwork,
                                   int*                devInfo)
+try
 {
     if(work != nullptr)
         rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     return rocblas2hip_status(
         rocsolver_spotrf((rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDpotrf(hipsolverHandle_t   handle,
@@ -519,12 +630,22 @@ hipsolverStatus_t hipsolverDpotrf(hipsolverHandle_t   handle,
                                   double*             work,
                                   int                 lwork,
                                   int*                devInfo)
+try
 {
     if(work != nullptr)
         rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     return rocblas2hip_status(
         rocsolver_dpotrf((rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverCpotrf(hipsolverHandle_t   handle,
@@ -535,9 +656,15 @@ hipsolverStatus_t hipsolverCpotrf(hipsolverHandle_t   handle,
                                   hipsolverComplex*   work,
                                   int                 lwork,
                                   int*                devInfo)
+try
 {
     if(work != nullptr)
         rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     return rocblas2hip_status(rocsolver_cpotrf((rocblas_handle)handle,
                                                hip2rocblas_fill(uplo),
@@ -545,6 +672,10 @@ hipsolverStatus_t hipsolverCpotrf(hipsolverHandle_t   handle,
                                                (rocblas_float_complex*)A,
                                                lda,
                                                devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t       handle,
@@ -555,9 +686,15 @@ hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t       handle,
                                   hipsolverDoubleComplex* work,
                                   int                     lwork,
                                   int*                    devInfo)
+try
 {
     if(work != nullptr)
         rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+    else
+    {
+        if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
+            rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
+    }
 
     return rocblas2hip_status(rocsolver_zpotrf((rocblas_handle)handle,
                                                hip2rocblas_fill(uplo),
@@ -565,6 +702,10 @@ hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t       handle,
                                                (rocblas_double_complex*)A,
                                                lda,
                                                devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 } // extern C
