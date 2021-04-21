@@ -87,14 +87,6 @@ protected:
     {
         Arguments arg = getrf_setup_arguments(GetParam());
 
-        if(arg.peek<rocblas_int>("m") == -1 && arg.peek<rocblas_int>("n") == -1)
-        {
-            if(!NPVT)
-                testing_getrf_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
-            else
-                testing_getrf_npvt_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
-        }
-
         arg.batch_count = 1;
         if(!NPVT)
             testing_getrf<FORTRAN, BATCHED, STRIDED, T>(arg);
