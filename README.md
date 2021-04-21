@@ -7,15 +7,15 @@ hipSOLVER is a LAPACK marshalling library, with multiple supported backends.  It
 Download pre-built packages either from [ROCm's package servers](https://rocmdocs.amd.com/en/latest/Installation_Guide/Installation-Guide.html) or by clicking the github releases tab and manually downloading, which could be newer.  Release notes are available for each release on the releases tab.
 * `sudo apt update && sudo apt install hipsolver`
 
-### Build & install library Using Script (Ubuntu only)
+### Build & Install Library Using Script (Ubuntu only)
 The root of this repository has a helper bash script `install.sh` to build and install hipSOLVER on Ubuntu with a single command.  It does not take a lot of options and hard-codes configuration that can be specified through invoking cmake directly, but it's a great way to get started quickly and can serve as an example of how to build/install.  A few commands in the script need sudo access, so it may prompt you for a password.
 * `./install.sh -id` -- build library, build dependencies, and install (-d flag only needs to be passed once on a system).
 * `./install.sh -ic` -- build library, build clients (tests, benchmarks, and samples), and install.
 
-To see more options use the help of the install script
+To see more options, use the help option of the install script.
 * `./install.sh -h`
 
-### Build & install library Manually
+### Build & Install Library Manually
 For a standard library installation, follow these steps:
 
 ```sh
@@ -23,11 +23,11 @@ mkdir -p <HIPSOLVER_BUILD_DIR_PATH>/release
 cd <HIPSOLVER_BUILD_DIR_PATH>/release
 CXX=/opt/rocm/bin/hipcc cmake <HIPSOLVER_SOURCE_DIR_PATH>
 make -j$(nproc)
-sudo make install   
+sudo make install
 ```
 sudo is required if installing into a system directory such as /opt/rocm, which is the default option.
-Use `-DCMAKE_INSTALL_PREFIX=<other\_path>` to specify other directory. Default build configuration is 'Release'. 
-Use `-DCMAKE_BUILD_TYPE=<other\_configuration>` to specify other configuratiuon such as 'Debug', for example. 
+Use `-DCMAKE_INSTALL_PREFIX=<other\_path>` to specify a different install directory.
+Use `-DCMAKE_BUILD_TYPE=<other\_configuration>` to specify a build configuration, such as 'Debug'. The default build configuration is 'Release'.
 
 ### Build Library + Tests + Benchmarks + Samples Manually
 The repository contains source code for client programs that serve as tests, benchmarks, and samples. Client source code can be found in the clients subdirectory.
@@ -62,7 +62,7 @@ make -j$(nproc)
 sudo make install   # sudo required if installing into system directory such as /opt/rocm
 ```
 
-## Using hipSOLVER Interface
+## Using the hipSOLVER Interface
 The hipSOLVER interface is compatible with rocSOLVER and cuBLAS-v11 APIs. Porting a CUDA application that originally calls the cuSOLVER API to an application calling the hipSOLVER API should be relatively straightforward. For example, the hipSOLVER SGETRF interface is
 
 ```c
@@ -89,7 +89,7 @@ hipsolverSgetrf(hipsolverHandle_t handle,
 
 ## Supported Fuctionality
 For a complete description of all the supported functions, see the corresponding backends' documentation
-at [rocSOLVER API](https://rocsolver.readthedocs.io/en/latest/userguide_api.html) and/or [cuSOLVER API](https://docs.nvidia.com/cuda/cusolver/index.html#cuds-api). 
+at [rocSOLVER API](https://rocsolver.readthedocs.io/en/latest/userguide_api.html) and/or [cuSOLVER API](https://docs.nvidia.com/cuda/cusolver/index.html#cuds-api).
 
 ### Auxiliary functions
 
