@@ -4,7 +4,7 @@ hipSOLVER is a LAPACK marshalling library, with multiple supported backends.  It
 ## Installing hipSOLVER
 
 ### Install Pre-built Packages
-Download pre-built packages either from [ROCm's package servers](https://rocmdocs.amd.com/en/latest/Installation_Guide/Installation-Guide.html) or by clicking the github releases tab and manually downloading, which could be newer.  Release notes are available for each release on the releases tab.
+Download pre-built packages from [ROCm's package servers](https://rocmdocs.amd.com/en/latest/Installation_Guide/Installation-Guide.html). Release notes are available on the releases tab of the [library's github page](https://github.com/ROCmSoftwarePlatform/hipSOLVER).
 * `sudo apt update && sudo apt install hipsolver`
 
 ### Build & Install Library Using Script (Ubuntu only)
