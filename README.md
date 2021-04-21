@@ -26,8 +26,8 @@ make -j$(nproc)
 sudo make install
 ```
 sudo is required if installing into a system directory such as /opt/rocm, which is the default option.
-Use `-DCMAKE_INSTALL_PREFIX=<other\_path>` to specify a different install directory.
-Use `-DCMAKE_BUILD_TYPE=<other\_configuration>` to specify a build configuration, such as 'Debug'. The default build configuration is 'Release'.
+* Use `-DCMAKE_INSTALL_PREFIX=<other_path>` to specify a different install directory.
+* Use `-DCMAKE_BUILD_TYPE=<other_configuration>` to specify a build configuration, such as 'Debug'. The default build configuration is 'Release'.
 
 ### Build Library + Tests + Benchmarks + Samples Manually
 The repository contains source code for client programs that serve as tests, benchmarks, and samples. Client source code can be found in the clients subdirectory.
