@@ -629,12 +629,17 @@ hipsolverStatus_t hipsolverSpotrfBatched(hipsolverHandle_t   handle,
                                          int                 lda,
                                          int*                devInfo,
                                          int                 batch_count)
+try
 {
     if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
         rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
 
     return rocblas2hip_status(rocsolver_spotrf_batched(
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, devInfo, batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDpotrfBatched(hipsolverHandle_t   handle,
@@ -644,12 +649,17 @@ hipsolverStatus_t hipsolverDpotrfBatched(hipsolverHandle_t   handle,
                                          int                 lda,
                                          int*                devInfo,
                                          int                 batch_count)
+try
 {
     if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
         rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
 
     return rocblas2hip_status(rocsolver_dpotrf_batched(
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, devInfo, batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverCpotrfBatched(hipsolverHandle_t   handle,
@@ -659,6 +669,7 @@ hipsolverStatus_t hipsolverCpotrfBatched(hipsolverHandle_t   handle,
                                          int                 lda,
                                          int*                devInfo,
                                          int                 batch_count)
+try
 {
     if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
         rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
@@ -671,6 +682,10 @@ hipsolverStatus_t hipsolverCpotrfBatched(hipsolverHandle_t   handle,
                                                        devInfo,
                                                        batch_count));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverZpotrfBatched(hipsolverHandle_t       handle,
                                          hipsolverFillMode_t     uplo,
@@ -679,6 +694,7 @@ hipsolverStatus_t hipsolverZpotrfBatched(hipsolverHandle_t       handle,
                                          int                     lda,
                                          int*                    devInfo,
                                          int                     batch_count)
+try
 {
     if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
         rocblas_set_workspace((rocblas_handle)handle, nullptr, 0);
@@ -690,6 +706,10 @@ hipsolverStatus_t hipsolverZpotrfBatched(hipsolverHandle_t       handle,
                                                        lda,
                                                        devInfo,
                                                        batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 } // extern C
