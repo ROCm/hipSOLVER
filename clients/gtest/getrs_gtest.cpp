@@ -20,6 +20,9 @@ typedef std::tuple<vector<int>, vector<int>> getrs_tuple;
 // if trans = 1 then transpose
 // if trans = 2 then conjugate transpose
 
+// case when N = nrhs = -1 will also execute the bad arguments test
+// (null handle, null pointers and invalid values)
+
 // for checkin_lapack tests
 const vector<vector<int>> matrix_sizeA_range = {
     // invalid
@@ -91,6 +94,9 @@ protected:
     void run_tests()
     {
         Arguments arg = getrs_setup_arguments(GetParam());
+
+        if(arg.peek<rocblas_int>("n") == -1 && arg.peek<rocblas_int>("nrhs") == -1)
+            testing_getrs_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
         testing_getrs<FORTRAN, BATCHED, STRIDED, T>(arg);

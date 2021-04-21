@@ -6,6 +6,170 @@
 
 #include "clientcommon.hpp"
 
+template <bool FORTRAN, typename T, typename U>
+void getrs_checkBadArgs(const hipsolverHandle_t    handle,
+                        const hipsolverOperation_t trans,
+                        const int                  m,
+                        const int                  nrhs,
+                        T                          dA,
+                        const int                  lda,
+                        const int                  stA,
+                        U                          dIpiv,
+                        const int                  stP,
+                        T                          dB,
+                        const int                  ldb,
+                        const int                  stB,
+                        U                          dInfo,
+                        const int                  bc)
+{
+    // handle
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_getrs(
+            FORTRAN, nullptr, trans, m, nrhs, dA, lda, stA, dIpiv, stP, dB, ldb, stB, dInfo, bc),
+        HIPSOLVER_STATUS_NOT_INITIALIZED);
+
+    // values
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrs(FORTRAN,
+                                          handle,
+                                          hipsolverOperation_t(-1),
+                                          m,
+                                          nrhs,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dIpiv,
+                                          stP,
+                                          dB,
+                                          ldb,
+                                          stB,
+                                          dInfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_ENUM);
+
+    // pointers
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrs(FORTRAN,
+                                          handle,
+                                          trans,
+                                          m,
+                                          nrhs,
+                                          (T) nullptr,
+                                          lda,
+                                          stA,
+                                          dIpiv,
+                                          stP,
+                                          dB,
+                                          ldb,
+                                          stB,
+                                          dInfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrs(FORTRAN,
+                                          handle,
+                                          trans,
+                                          m,
+                                          nrhs,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          (U) nullptr,
+                                          stP,
+                                          dB,
+                                          ldb,
+                                          stB,
+                                          dInfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrs(FORTRAN,
+                                          handle,
+                                          trans,
+                                          m,
+                                          nrhs,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dIpiv,
+                                          stP,
+                                          (T) nullptr,
+                                          ldb,
+                                          stB,
+                                          dInfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+}
+
+template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+void testing_getrs_bad_arg()
+{
+    // safe arguments
+    hipsolver_local_handle handle;
+    int                    m     = 1;
+    int                    nrhs  = 1;
+    int                    lda   = 1;
+    int                    ldb   = 1;
+    int                    stA   = 1;
+    int                    stP   = 1;
+    int                    stB   = 1;
+    int                    bc    = 1;
+    hipsolverOperation_t   trans = HIPSOLVER_OP_N;
+
+    if(BATCHED)
+    {
+        // // memory allocations
+        // device_batch_vector<T>           dA(1, 1, 1);
+        // device_batch_vector<T>           dB(1, 1, 1);
+        // device_strided_batch_vector<int> dIpiv(1, 1, 1, 1);
+        // device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
+        // CHECK_HIP_ERROR(dA.memcheck());
+        // CHECK_HIP_ERROR(dB.memcheck());
+        // CHECK_HIP_ERROR(dIpiv.memcheck());
+        // CHECK_HIP_ERROR(dInfo.memcheck());
+
+        // // check bad arguments
+        // getrs_checkBadArgs<FORTRAN>(handle,
+        //                             trans,
+        //                             m,
+        //                             nrhs,
+        //                             dA.data(),
+        //                             lda,
+        //                             stA,
+        //                             dIpiv.data(),
+        //                             stP,
+        //                             dB.data(),
+        //                             ldb,
+        //                             stB,
+        //                             dInfo.data(),
+        //                             bc);
+    }
+    else
+    {
+        // memory allocations
+        device_strided_batch_vector<T>   dA(1, 1, 1, 1);
+        device_strided_batch_vector<T>   dB(1, 1, 1, 1);
+        device_strided_batch_vector<int> dIpiv(1, 1, 1, 1);
+        device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
+        CHECK_HIP_ERROR(dA.memcheck());
+        CHECK_HIP_ERROR(dB.memcheck());
+        CHECK_HIP_ERROR(dIpiv.memcheck());
+        CHECK_HIP_ERROR(dInfo.memcheck());
+
+        // check bad arguments
+        getrs_checkBadArgs<FORTRAN>(handle,
+                                    trans,
+                                    m,
+                                    nrhs,
+                                    dA.data(),
+                                    lda,
+                                    stA,
+                                    dIpiv.data(),
+                                    stP,
+                                    dB.data(),
+                                    ldb,
+                                    stB,
+                                    dInfo.data(),
+                                    bc);
+    }
+}
+
 template <bool CPU, bool GPU, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void getrs_initData(const hipsolverHandle_t    handle,
                     const hipsolverOperation_t trans,
