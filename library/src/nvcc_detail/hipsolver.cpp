@@ -271,6 +271,7 @@ hipsolverStatus_t hipsolverSgetrs(hipsolverHandle_t    handle,
                                   float*               B,
                                   int                  ldb,
                                   int*                 devInfo)
+try
 {
     return cuda2hip_status(cusolverDnSgetrs((cusolverDnHandle_t)handle,
                                             hip2cuda_operation(trans),
@@ -283,6 +284,10 @@ hipsolverStatus_t hipsolverSgetrs(hipsolverHandle_t    handle,
                                             ldb,
                                             devInfo));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDgetrs(hipsolverHandle_t    handle,
                                   hipsolverOperation_t trans,
@@ -294,6 +299,7 @@ hipsolverStatus_t hipsolverDgetrs(hipsolverHandle_t    handle,
                                   double*              B,
                                   int                  ldb,
                                   int*                 devInfo)
+try
 {
     return cuda2hip_status(cusolverDnDgetrs((cusolverDnHandle_t)handle,
                                             hip2cuda_operation(trans),
@@ -306,6 +312,10 @@ hipsolverStatus_t hipsolverDgetrs(hipsolverHandle_t    handle,
                                             ldb,
                                             devInfo));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverCgetrs(hipsolverHandle_t    handle,
                                   hipsolverOperation_t trans,
@@ -317,6 +327,7 @@ hipsolverStatus_t hipsolverCgetrs(hipsolverHandle_t    handle,
                                   hipsolverComplex*    B,
                                   int                  ldb,
                                   int*                 devInfo)
+try
 {
     return cuda2hip_status(cusolverDnCgetrs((cusolverDnHandle_t)handle,
                                             hip2cuda_operation(trans),
@@ -329,6 +340,10 @@ hipsolverStatus_t hipsolverCgetrs(hipsolverHandle_t    handle,
                                             ldb,
                                             devInfo));
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t       handle,
                                   hipsolverOperation_t    trans,
@@ -340,6 +355,7 @@ hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t       handle,
                                   hipsolverDoubleComplex* B,
                                   int                     ldb,
                                   int*                    devInfo)
+try
 {
     return cuda2hip_status(cusolverDnZgetrs((cusolverDnHandle_t)handle,
                                             hip2cuda_operation(trans),
@@ -351,6 +367,10 @@ hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t       handle,
                                             (cuDoubleComplex*)B,
                                             ldb,
                                             devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 /******************** POTRF ********************/
