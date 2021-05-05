@@ -29,6 +29,7 @@ void potrf_checkBadArgs(const hipsolverHandle_t   handle,
             FORTRAN, handle, hipsolverFillMode_t(-1), n, dA, lda, stA, dWork, lwork, dinfo, bc),
         HIPSOLVER_STATUS_INVALID_ENUM);
 
+#ifndef __HIP_PLATFORM_NVCC__
     // pointers
     EXPECT_ROCBLAS_STATUS(
         hipsolver_potrf(FORTRAN, handle, uplo, n, (T) nullptr, lda, stA, dWork, lwork, dinfo, bc),
@@ -36,6 +37,7 @@ void potrf_checkBadArgs(const hipsolverHandle_t   handle,
     EXPECT_ROCBLAS_STATUS(
         hipsolver_potrf(FORTRAN, handle, uplo, n, dA, lda, stA, dWork, lwork, (V) nullptr, bc),
         HIPSOLVER_STATUS_INVALID_VALUE);
+#endif
 }
 
 template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>

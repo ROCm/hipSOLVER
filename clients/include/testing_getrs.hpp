@@ -46,6 +46,7 @@ void getrs_checkBadArgs(const hipsolverHandle_t    handle,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_ENUM);
 
+#ifndef __HIP_PLATFORM_NVCC__
     // pointers
     EXPECT_ROCBLAS_STATUS(hipsolver_getrs(FORTRAN,
                                           handle,
@@ -95,6 +96,7 @@ void getrs_checkBadArgs(const hipsolverHandle_t    handle,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
+#endif
 }
 
 template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
