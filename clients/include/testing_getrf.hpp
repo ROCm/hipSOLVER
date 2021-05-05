@@ -4,6 +4,92 @@
 
 #include "clientcommon.hpp"
 
+template <bool FORTRAN, typename T, typename U, typename V>
+void getrf_checkBadArgs(const hipsolverHandle_t handle,
+                        const int               m,
+                        const int               n,
+                        T                       dA,
+                        const int               lda,
+                        const int               stA,
+                        U                       dWork,
+                        V                       dIpiv,
+                        const int               stP,
+                        V                       dinfo,
+                        const int               bc)
+{
+    // handle
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_getrf(FORTRAN, false, nullptr, m, n, dA, lda, stA, dWork, dIpiv, stP, dinfo, bc),
+        HIPSOLVER_STATUS_NOT_INITIALIZED);
+
+    // values
+    // N/A
+
+    // pointers
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_getrf(
+            FORTRAN, false, handle, m, n, (T) nullptr, lda, stA, dWork, dIpiv, stP, dinfo, bc),
+        HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_getrf(
+            FORTRAN, false, handle, m, n, dA, lda, stA, dWork, dIpiv, stP, (V) nullptr, bc),
+        HIPSOLVER_STATUS_INVALID_VALUE);
+}
+
+template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+void testing_getrf_bad_arg()
+{
+    // safe arguments
+    hipsolver_local_handle handle;
+    int                    m   = 1;
+    int                    n   = 1;
+    int                    lda = 1;
+    int                    stA = 1;
+    int                    stP = 1;
+    int                    bc  = 1;
+
+    if(BATCHED)
+    {
+        // // memory allocations
+        // device_batch_vector<T>           dA(1, 1, 1);
+        // device_strided_batch_vector<int> dIpiv(1, 1, 1, 1);
+        // device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
+        // CHECK_HIP_ERROR(dA.memcheck());
+        // CHECK_HIP_ERROR(dIpiv.memcheck());
+        // CHECK_HIP_ERROR(dInfo.memcheck());
+
+        // int size_W;
+        // hipsolver_getrf_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        // if(size_W)
+        //     CHECK_HIP_ERROR(dWork.memcheck());
+
+        // // check bad arguments
+        // getrf_checkBadArgs<FORTRAN>(
+        //     handle, m, n, dA.data(), lda, stA, dWork.data(), dIpiv.data(), stP, dInfo.data(), bc);
+    }
+    else
+    {
+        // memory allocations
+        device_strided_batch_vector<T>   dA(1, 1, 1, 1);
+        device_strided_batch_vector<int> dIpiv(1, 1, 1, 1);
+        device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
+        CHECK_HIP_ERROR(dA.memcheck());
+        CHECK_HIP_ERROR(dIpiv.memcheck());
+        CHECK_HIP_ERROR(dInfo.memcheck());
+
+        int size_W;
+        hipsolver_getrf_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        if(size_W)
+            CHECK_HIP_ERROR(dWork.memcheck());
+
+        // check bad arguments
+        getrf_checkBadArgs<FORTRAN>(
+            handle, m, n, dA.data(), lda, stA, dWork.data(), dIpiv.data(), stP, dInfo.data(), bc);
+    }
+}
+
 template <bool CPU, bool GPU, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void getrf_initData(const hipsolverHandle_t handle,
                     const int               m,

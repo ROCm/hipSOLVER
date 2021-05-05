@@ -18,11 +18,24 @@ void potrf_checkBadArgs(const hipsolverHandle_t   handle,
                         V                         dinfo,
                         const int                 bc)
 {
+    // handle
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_potrf(FORTRAN, nullptr, uplo, n, dA, lda, stA, dWork, lwork, dinfo, bc),
+        HIPSOLVER_STATUS_NOT_INITIALIZED);
+
     // values
     EXPECT_ROCBLAS_STATUS(
         hipsolver_potrf(
             FORTRAN, handle, hipsolverFillMode_t(-1), n, dA, lda, stA, dWork, lwork, dinfo, bc),
         HIPSOLVER_STATUS_INVALID_ENUM);
+
+    // pointers
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_potrf(FORTRAN, handle, uplo, n, (T) nullptr, lda, stA, dWork, lwork, dinfo, bc),
+        HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_potrf(FORTRAN, handle, uplo, n, dA, lda, stA, dWork, lwork, (V) nullptr, bc),
+        HIPSOLVER_STATUS_INVALID_VALUE);
 }
 
 template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>

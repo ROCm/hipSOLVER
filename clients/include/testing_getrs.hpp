@@ -22,6 +22,12 @@ void getrs_checkBadArgs(const hipsolverHandle_t    handle,
                         U                          dInfo,
                         const int                  bc)
 {
+    // handle
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_getrs(
+            FORTRAN, nullptr, trans, m, nrhs, dA, lda, stA, dIpiv, stP, dB, ldb, stB, dInfo, bc),
+        HIPSOLVER_STATUS_NOT_INITIALIZED);
+
     // values
     EXPECT_ROCBLAS_STATUS(hipsolver_getrs(FORTRAN,
                                           handle,
@@ -39,6 +45,56 @@ void getrs_checkBadArgs(const hipsolverHandle_t    handle,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_ENUM);
+
+    // pointers
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrs(FORTRAN,
+                                          handle,
+                                          trans,
+                                          m,
+                                          nrhs,
+                                          (T) nullptr,
+                                          lda,
+                                          stA,
+                                          dIpiv,
+                                          stP,
+                                          dB,
+                                          ldb,
+                                          stB,
+                                          dInfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrs(FORTRAN,
+                                          handle,
+                                          trans,
+                                          m,
+                                          nrhs,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          (U) nullptr,
+                                          stP,
+                                          dB,
+                                          ldb,
+                                          stB,
+                                          dInfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrs(FORTRAN,
+                                          handle,
+                                          trans,
+                                          m,
+                                          nrhs,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dIpiv,
+                                          stP,
+                                          (T) nullptr,
+                                          ldb,
+                                          stB,
+                                          dInfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
 }
 
 template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
