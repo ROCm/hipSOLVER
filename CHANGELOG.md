@@ -1,7 +1,7 @@
 # Change Log for hipSOLVER
 
 
-## [(Unreleased) hipSOLVER 1.0.0 for ROCm 4.3]
+## [(Unreleased) hipSOLVER 1.0.0 for ROCm 4.4]
 ### Added
 - Added functions
   - getrs
