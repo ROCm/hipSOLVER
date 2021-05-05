@@ -17,7 +17,7 @@ void getrf_npvt_checkBadArgs(const hipsolverHandle_t handle,
                              V                       dinfo,
                              const int               bc)
 {
-#ifndef __HIP_PLATFORM_NVCC__
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // handle
     EXPECT_ROCBLAS_STATUS(
         hipsolver_getrf(FORTRAN, true, nullptr, m, n, dA, lda, stA, dWork, dIpiv, stP, dinfo, bc),

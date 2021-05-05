@@ -29,7 +29,7 @@ void potrf_checkBadArgs(const hipsolverHandle_t   handle,
             FORTRAN, handle, hipsolverFillMode_t(-1), n, dA, lda, stA, dWork, lwork, dinfo, bc),
         HIPSOLVER_STATUS_INVALID_ENUM);
 
-#ifndef __HIP_PLATFORM_NVCC__
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // pointers
     EXPECT_ROCBLAS_STATUS(
         hipsolver_potrf(FORTRAN, handle, uplo, n, (T) nullptr, lda, stA, dWork, lwork, dinfo, bc),

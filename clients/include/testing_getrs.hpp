@@ -46,7 +46,7 @@ void getrs_checkBadArgs(const hipsolverHandle_t    handle,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_ENUM);
 
-#ifndef __HIP_PLATFORM_NVCC__
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // pointers
     EXPECT_ROCBLAS_STATUS(hipsolver_getrs(FORTRAN,
                                           handle,
