@@ -71,6 +71,51 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrfFortran(hipsolverHandle_t     
                                                           int*                    devIpiv,
                                                           int*                    devInfo);
 
+// getrs
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgetrsFortran(hipsolverHandle_t    handle,
+                                                          hipsolverOperation_t trans,
+                                                          int                  n,
+                                                          int                  nrhs,
+                                                          float*               A,
+                                                          int                  lda,
+                                                          int*                 devIpiv,
+                                                          float*               B,
+                                                          int                  ldb,
+                                                          int*                 devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgetrsFortran(hipsolverHandle_t    handle,
+                                                          hipsolverOperation_t trans,
+                                                          int                  n,
+                                                          int                  nrhs,
+                                                          double*              A,
+                                                          int                  lda,
+                                                          int*                 devIpiv,
+                                                          double*              B,
+                                                          int                  ldb,
+                                                          int*                 devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgetrsFortran(hipsolverHandle_t    handle,
+                                                          hipsolverOperation_t trans,
+                                                          int                  n,
+                                                          int                  nrhs,
+                                                          hipsolverComplex*    A,
+                                                          int                  lda,
+                                                          int*                 devIpiv,
+                                                          hipsolverComplex*    B,
+                                                          int                  ldb,
+                                                          int*                 devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrsFortran(hipsolverHandle_t       handle,
+                                                          hipsolverOperation_t    trans,
+                                                          int                     n,
+                                                          int                     nrhs,
+                                                          hipsolverDoubleComplex* A,
+                                                          int                     lda,
+                                                          int*                    devIpiv,
+                                                          hipsolverDoubleComplex* B,
+                                                          int                     ldb,
+                                                          int*                    devInfo);
+
 // potrf
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpotrf_bufferSizeFortran(
     hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, float* A, int lda, int* lwork);

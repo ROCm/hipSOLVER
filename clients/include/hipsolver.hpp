@@ -211,6 +211,117 @@ inline hipsolverStatus_t hipsolver_getrf(bool                    FORTRAN,
 }
 /********************************************************/
 
+/******************** GETRS ********************/
+// normal and strided_batched
+inline hipsolverStatus_t hipsolver_getrs(bool                 FORTRAN,
+                                         hipsolverHandle_t    handle,
+                                         hipsolverOperation_t trans,
+                                         int                  n,
+                                         int                  nrhs,
+                                         float*               A,
+                                         int                  lda,
+                                         int                  stA,
+                                         int*                 ipiv,
+                                         int                  stP,
+                                         float*               B,
+                                         int                  ldb,
+                                         int                  stB,
+                                         int*                 info,
+                                         int                  bc)
+{
+    switch(bool2marshal(FORTRAN, bc != 1))
+    {
+    case C_NORMAL:
+        return hipsolverSgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
+    case FORTRAN_NORMAL:
+        return hipsolverSgetrsFortran(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_getrs(bool                 FORTRAN,
+                                         hipsolverHandle_t    handle,
+                                         hipsolverOperation_t trans,
+                                         int                  n,
+                                         int                  nrhs,
+                                         double*              A,
+                                         int                  lda,
+                                         int                  stA,
+                                         int*                 ipiv,
+                                         int                  stP,
+                                         double*              B,
+                                         int                  ldb,
+                                         int                  stB,
+                                         int*                 info,
+                                         int                  bc)
+{
+    switch(bool2marshal(FORTRAN, bc != 1))
+    {
+    case C_NORMAL:
+        return hipsolverDgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
+    case FORTRAN_NORMAL:
+        return hipsolverDgetrsFortran(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_getrs(bool                 FORTRAN,
+                                         hipsolverHandle_t    handle,
+                                         hipsolverOperation_t trans,
+                                         int                  n,
+                                         int                  nrhs,
+                                         hipsolverComplex*    A,
+                                         int                  lda,
+                                         int                  stA,
+                                         int*                 ipiv,
+                                         int                  stP,
+                                         hipsolverComplex*    B,
+                                         int                  ldb,
+                                         int                  stB,
+                                         int*                 info,
+                                         int                  bc)
+{
+    switch(bool2marshal(FORTRAN, bc != 1))
+    {
+    case C_NORMAL:
+        return hipsolverCgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
+    case FORTRAN_NORMAL:
+        return hipsolverCgetrsFortran(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_getrs(bool                    FORTRAN,
+                                         hipsolverHandle_t       handle,
+                                         hipsolverOperation_t    trans,
+                                         int                     n,
+                                         int                     nrhs,
+                                         hipsolverDoubleComplex* A,
+                                         int                     lda,
+                                         int                     stA,
+                                         int*                    ipiv,
+                                         int                     stP,
+                                         hipsolverDoubleComplex* B,
+                                         int                     ldb,
+                                         int                     stB,
+                                         int*                    info,
+                                         int                     bc)
+{
+    switch(bool2marshal(FORTRAN, bc != 1))
+    {
+    case C_NORMAL:
+        return hipsolverZgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
+    case FORTRAN_NORMAL:
+        return hipsolverZgetrsFortran(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+/********************************************************/
+
 /******************** POTRF ********************/
 // normal and strided_batched
 inline hipsolverStatus_t hipsolver_potrf_bufferSize(bool                FORTRAN,

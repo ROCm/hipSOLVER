@@ -23,6 +23,29 @@ void dgetrf_(int* m, int* n, double* A, int* lda, int* ipiv, int* info);
 void cgetrf_(int* m, int* n, hipsolverComplex* A, int* lda, int* ipiv, int* info);
 void zgetrf_(int* m, int* n, hipsolverDoubleComplex* A, int* lda, int* ipiv, int* info);
 
+void sgetrs_(
+    char* trans, int* n, int* nrhs, float* A, int* lda, int* ipiv, float* B, int* ldb, int* info);
+void dgetrs_(
+    char* trans, int* n, int* nrhs, double* A, int* lda, int* ipiv, double* B, int* ldb, int* info);
+void cgetrs_(char*             trans,
+             int*              n,
+             int*              nrhs,
+             hipsolverComplex* A,
+             int*              lda,
+             int*              ipiv,
+             hipsolverComplex* B,
+             int*              ldb,
+             int*              info);
+void zgetrs_(char*                   trans,
+             int*                    n,
+             int*                    nrhs,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             int*                    ipiv,
+             hipsolverDoubleComplex* B,
+             int*                    ldb,
+             int*                    info);
+
 void spotrf_(char* uplo, int* m, float* A, int* lda, int* info);
 void dpotrf_(char* uplo, int* m, double* A, int* lda, int* info);
 void cpotrf_(char* uplo, int* m, hipsolverComplex* A, int* lda, int* info);
@@ -185,6 +208,55 @@ void cblas_getrf<hipsolverDoubleComplex>(
     int m, int n, hipsolverDoubleComplex* A, int lda, int* ipiv, int* info)
 {
     zgetrf_(&m, &n, A, &lda, ipiv, info);
+}
+
+// getrs
+template <>
+void cblas_getrs<float>(
+    hipsolverOperation_t trans, int n, int nrhs, float* A, int lda, int* ipiv, float* B, int ldb)
+{
+    int  info;
+    char transC = hipsolver2char_operation(trans);
+    sgetrs_(&transC, &n, &nrhs, A, &lda, ipiv, B, &ldb, &info);
+}
+
+template <>
+void cblas_getrs<double>(
+    hipsolverOperation_t trans, int n, int nrhs, double* A, int lda, int* ipiv, double* B, int ldb)
+{
+    int  info;
+    char transC = hipsolver2char_operation(trans);
+    dgetrs_(&transC, &n, &nrhs, A, &lda, ipiv, B, &ldb, &info);
+}
+
+template <>
+void cblas_getrs<hipsolverComplex>(hipsolverOperation_t trans,
+                                   int                  n,
+                                   int                  nrhs,
+                                   hipsolverComplex*    A,
+                                   int                  lda,
+                                   int*                 ipiv,
+                                   hipsolverComplex*    B,
+                                   int                  ldb)
+{
+    int  info;
+    char transC = hipsolver2char_operation(trans);
+    cgetrs_(&transC, &n, &nrhs, A, &lda, ipiv, B, &ldb, &info);
+}
+
+template <>
+void cblas_getrs<hipsolverDoubleComplex>(hipsolverOperation_t    trans,
+                                         int                     n,
+                                         int                     nrhs,
+                                         hipsolverDoubleComplex* A,
+                                         int                     lda,
+                                         int*                    ipiv,
+                                         hipsolverDoubleComplex* B,
+                                         int                     ldb)
+{
+    int  info;
+    char transC = hipsolver2char_operation(trans);
+    zgetrs_(&transC, &n, &nrhs, A, &lda, ipiv, B, &ldb, &info);
 }
 
 // potrf
