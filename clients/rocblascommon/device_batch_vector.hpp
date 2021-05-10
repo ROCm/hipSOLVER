@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2018-2020 Advanced Micro Devices, Inc.
+ * Copyright 2018-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 #pragma once
 
@@ -135,7 +135,7 @@ public:
         return this->m_device_data;
     }
 
-    T* const* data()
+    T** data()
     {
         return this->m_device_data;
     }

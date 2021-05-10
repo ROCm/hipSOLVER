@@ -78,7 +78,7 @@ protected:
         if(arg.peek<char>("uplo") == 'L' && arg.peek<int>("n") == -1)
             testing_potrf_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
 
-        arg.batch_count = 1;
+        arg.batch_count = (BATCHED || STRIDED ? 3 : 1);
         testing_potrf<FORTRAN, BATCHED, STRIDED, T>(arg);
     }
 };
@@ -130,6 +130,47 @@ TEST_P(POTRF_FORTRAN, __float_complex)
 TEST_P(POTRF_FORTRAN, __double_complex)
 {
     run_tests<false, false, rocblas_double_complex>();
+}
+
+// batched tests
+TEST_P(POTRF, batched__float)
+{
+    run_tests<true, false, float>();
+}
+
+TEST_P(POTRF, batched__double)
+{
+    run_tests<true, false, double>();
+}
+
+TEST_P(POTRF, batched__float_complex)
+{
+    run_tests<true, false, rocblas_float_complex>();
+}
+
+TEST_P(POTRF, batched__double_complex)
+{
+    run_tests<true, false, rocblas_double_complex>();
+}
+
+TEST_P(POTRF_FORTRAN, batched__float)
+{
+    run_tests<true, false, float>();
+}
+
+TEST_P(POTRF_FORTRAN, batched__double)
+{
+    run_tests<true, false, double>();
+}
+
+TEST_P(POTRF_FORTRAN, batched__float_complex)
+{
+    run_tests<true, false, rocblas_float_complex>();
+}
+
+TEST_P(POTRF_FORTRAN, batched__double_complex)
+{
+    run_tests<true, false, rocblas_double_complex>();
 }
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
