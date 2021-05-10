@@ -10,6 +10,7 @@
 
 #include "testing_getrf.hpp"
 #include "testing_getrf_npvt.hpp"
+#include "testing_getrs.hpp"
 #include "testing_potrf.hpp"
 
 struct str_less
@@ -32,6 +33,7 @@ class hipsolver_dispatcher
         // Map for functions that support all precisions
         static const func_map map = {
             {"getrf", testing_getrf<false, false, false, T>},
+            {"getrs", testing_getrs<false, false, false, T>},
             {"potrf", testing_potrf<false, false, false, T>},
         };
 
