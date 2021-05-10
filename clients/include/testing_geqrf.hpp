@@ -6,6 +6,115 @@
 
 #include "clientcommon.hpp"
 
+template <bool FORTRAN, typename T, typename U, typename V>
+void geqrf_checkBadArgs(const hipsolverHandle_t handle,
+                        const int               m,
+                        const int               n,
+                        T                       dA,
+                        const int               lda,
+                        const int               stA,
+                        U                       dIpiv,
+                        const int               stP,
+                        U                       dWork,
+                        const int               lwork,
+                        V                       dInfo,
+                        const int               bc)
+{
+    // handle
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_geqrf(FORTRAN, nullptr, m, n, dA, lda, stA, dIpiv, stP, dWork, lwork, dInfo, bc),
+        HIPSOLVER_STATUS_NOT_INITIALIZED);
+
+    // values
+    // N/A
+
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
+    // pointers
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_geqrf(
+            FORTRAN, handle, m, n, (T) nullptr, lda, stA, dIpiv, stP, dWork, lwork, dInfo, bc),
+        HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_geqrf(
+            FORTRAN, handle, m, n, dA, lda, stA, (U) nullptr, stP, dWork, lwork, dInfo, bc),
+        HIPSOLVER_STATUS_INVALID_VALUE);
+#endif
+}
+
+template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+void testing_geqrf_bad_arg()
+{
+    // safe arguments
+    hipsolver_local_handle handle;
+    int                    m   = 1;
+    int                    n   = 1;
+    int                    lda = 1;
+    int                    stA = 1;
+    int                    stP = 1;
+    int                    bc  = 1;
+
+    if(BATCHED)
+    {
+        // // memory allocations
+        // device_batch_vector<T>           dA(1, 1, 1);
+        // device_strided_batch_vector<T>   dIpiv(1, 1, 1, 1);
+        // device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
+        // CHECK_HIP_ERROR(dA.memcheck());
+        // CHECK_HIP_ERROR(dIpiv.memcheck());
+        // CHECK_HIP_ERROR(dInfo.memcheck());
+
+        // int size_W;
+        // hipsolver_geqrf_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        // if(size_W)
+        //     CHECK_HIP_ERROR(dWork.memcheck());
+
+        // // check bad arguments
+        // geqrf_checkBadArgs<FORTRAN>(handle,
+        //                             m,
+        //                             n,
+        //                             dA.data(),
+        //                             lda,
+        //                             stA,
+        //                             dIpiv.data(),
+        //                             stP,
+        //                             dWork.data(),
+        //                             size_W,
+        //                             dInfo.data(),
+        //                             bc);
+    }
+    else
+    {
+        // memory allocations
+        device_strided_batch_vector<T>   dA(1, 1, 1, 1);
+        device_strided_batch_vector<T>   dIpiv(1, 1, 1, 1);
+        device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
+        CHECK_HIP_ERROR(dA.memcheck());
+        CHECK_HIP_ERROR(dIpiv.memcheck());
+        CHECK_HIP_ERROR(dInfo.memcheck());
+
+        int size_W;
+        hipsolver_geqrf_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        if(size_W)
+            CHECK_HIP_ERROR(dWork.memcheck());
+
+        // check bad arguments
+        geqrf_checkBadArgs<FORTRAN>(handle,
+                                    m,
+                                    n,
+                                    dA.data(),
+                                    lda,
+                                    stA,
+                                    dIpiv.data(),
+                                    stP,
+                                    dWork.data(),
+                                    size_W,
+                                    dInfo.data(),
+                                    bc);
+    }
+}
+
 template <bool CPU, bool GPU, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void geqrf_initData(const hipsolverHandle_t handle,
                     const int               m,
