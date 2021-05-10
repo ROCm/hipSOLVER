@@ -29,4 +29,8 @@ template <typename T>
 void cblas_getrf(int m, int n, T* A, int lda, int* ipiv, int* info);
 
 template <typename T>
+void cblas_getrs(
+    hipsolverOperation_t trans, int n, int nrhs, T* A, int lda, int* ipiv, T* B, int ldb);
+
+template <typename T>
 void cblas_potrf(hipsolverFillMode_t uplo, int n, T* A, int lda, int* info);

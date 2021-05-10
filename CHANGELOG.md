@@ -1,12 +1,14 @@
 # Change Log for hipSOLVER
 
 
-## [(Unreleased) hipSOLVER 1.0.0 for ROCm 4.3]
+## [(Unreleased) hipSOLVER 1.0.0 for ROCm 4.4]
 ### Added
 - Added functions
   - geqrf
     - hipsolverSgeqrf_bufferSize, hipsolverDgeqrf_bufferSize, hipsolverCgeqrf_bufferSize, hipsolverZgeqrf_bufferSize
     - hipsolverSgeqrf, hipsolverDgeqrf, hipsolverCgeqrf, hipsolverZgeqrf
+  - getrs
+    - hipsolverSgetrs, hipsolverDgetrs, hipsolverCgetrs, hipsolverZgetrs
   - potrf
     - hipsolverSpotrf_bufferSize, hipsolverDpotrf_bufferSize, hipsolverCpotrf_bufferSize, hipsolverZpotrf_bufferSize
     - hipsolverSpotrf, hipsolverDpotrf, hipsolverCpotrf, hipsolverZpotrf

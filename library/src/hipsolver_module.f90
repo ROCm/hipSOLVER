@@ -368,6 +368,87 @@ module hipsolver
         end function hipsolverZgetrf
     end interface
 
+    ! ******************** GETRS ********************
+    interface
+        function hipsolverSgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSgetrs')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: ipiv
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: info
+        end function hipsolverSgetrs
+    end interface
+    
+    interface
+        function hipsolverDgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDgetrs')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: ipiv
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: info
+        end function hipsolverDgetrs
+    end interface
+    
+    interface
+        function hipsolverCgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCgetrs')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: ipiv
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: info
+        end function hipsolverCgetrs
+    end interface
+    
+    interface
+        function hipsolverZgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZgetrs')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: ipiv
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: info
+        end function hipsolverZgetrs
+    end interface
+
     ! ******************** POTRF ********************
     interface
         function hipsolverSpotrf_bufferSize(handle, uplo, n, A, lda, lwork) &
