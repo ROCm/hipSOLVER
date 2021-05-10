@@ -445,4 +445,73 @@ module hipsolver
         end function hipsolverZpotrf
     end interface
     
+    ! ******************** POTRF_BATCHED ********************
+    interface
+        function hipsolverSpotrfBatched(handle, uplo, n, A, lda, info, batch_count) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSpotrfBatched')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: info
+            integer(c_int), value :: batch_count
+        end function hipsolverSpotrfBatched
+    end interface
+    
+    interface
+        function hipsolverDpotrfBatched(handle, uplo, n, A, lda, info, batch_count) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDpotrfBatched')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: info
+            integer(c_int), value :: batch_count
+        end function hipsolverDpotrfBatched
+    end interface
+    
+    interface
+        function hipsolverCpotrfBatched(handle, uplo, n, A, lda, info, batch_count) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCpotrfBatched')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: info
+            integer(c_int), value :: batch_count
+        end function hipsolverCpotrfBatched
+    end interface
+    
+    interface
+        function hipsolverZpotrfBatched(handle, uplo, n, A, lda, info, batch_count) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZpotrfBatched')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: info
+            integer(c_int), value :: batch_count
+        end function hipsolverZpotrfBatched
+    end interface
+    
 end module hipsolver
