@@ -68,7 +68,7 @@ try
         ("function,f",
          value<std::string>(&function)->default_value("getrf"),
             "The LAPACK function to test.\n"
-            "                           Options are: getrf, potrf, potrf_batched, etc.\n"
+            "                           Options are: getrf, getrs, potrf, potrf_batched, etc.\n"
             "                           ")
 
         ("iters,i",
@@ -122,11 +122,11 @@ try
             "                           or the order of a system or transformation.\n"
             "                           ")
 
-        // ("nrhs",
-        //  value<rocblas_int>(),
-        //     "Matrix/vector size parameter.\n"
-        //     "                           Typically, the number of columns of a matrix on the right-hand side of a problem.\n"
-        //     "                           ")
+        ("nrhs",
+         value<rocblas_int>(),
+            "Matrix/vector size parameter.\n"
+            "                           Typically, the number of columns of a matrix on the right-hand side of a problem.\n"
+            "                           ")
 
         // leading dimension options
         ("lda",
@@ -135,11 +135,11 @@ try
             "                           Leading dimension of matrices A.\n"
             "                           ")
 
-        // ("ldb",
-        //  value<rocblas_int>(),
-        //     "Matrix size parameter.\n"
-        //     "                           Leading dimension of matrices B.\n"
-        //     "                           ")
+        ("ldb",
+         value<rocblas_int>(),
+            "Matrix size parameter.\n"
+            "                           Leading dimension of matrices B.\n"
+            "                           ")
 
         // ("ldc",
         //  value<rocblas_int>(),
@@ -330,11 +330,11 @@ try
         //     "                           Indicates whether data is stored column-wise or row-wise.\n"
         //     "                           ")
 
-        // ("trans",
-        //  value<char>()->default_value('N'),
-        //     "N = no transpose, T = transpose, C = conjugate transpose.\n"
-        //     "                           Indicates if a matrix should be transposed.\n"
-        //     "                           ")
+        ("trans",
+         value<char>()->default_value('N'),
+            "N = no transpose, T = transpose, C = conjugate transpose.\n"
+            "                           Indicates if a matrix should be transposed.\n"
+            "                           ")
 
         ("uplo",
          value<char>()->default_value('U'),
@@ -367,7 +367,7 @@ try
 
     // catch invalid arguments
     argus.validate_precision("precision");
-    // argus.validate_operation("trans");
+    argus.validate_operation("trans");
     // argus.validate_side("side");
     argus.validate_fill("uplo");
     // argus.validate_direct("direct");

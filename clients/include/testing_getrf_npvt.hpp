@@ -17,6 +17,7 @@ void getrf_npvt_checkBadArgs(const hipsolverHandle_t handle,
                              V                       dinfo,
                              const int               bc)
 {
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // handle
     EXPECT_ROCBLAS_STATUS(
         hipsolver_getrf(FORTRAN, true, nullptr, m, n, dA, lda, stA, dWork, dIpiv, stP, dinfo, bc),
@@ -34,6 +35,7 @@ void getrf_npvt_checkBadArgs(const hipsolverHandle_t handle,
         hipsolver_getrf(
             FORTRAN, true, handle, m, n, dA, lda, stA, dWork, dIpiv, stP, (V) nullptr, bc),
         HIPSOLVER_STATUS_INVALID_VALUE);
+#endif
 }
 
 template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
