@@ -53,21 +53,21 @@ void testing_potrf_bad_arg()
 
     if(BATCHED)
     {
-        // // memory allocations
-        // device_batch_vector<T>           dA(1, 1, 1);
-        // device_strided_batch_vector<int> dinfo(1, 1, 1, 1);
-        // CHECK_HIP_ERROR(dA.memcheck());
-        // CHECK_HIP_ERROR(dinfo.memcheck());
+        // memory allocations
+        device_batch_vector<T>           dA(1, 1, 1);
+        device_strided_batch_vector<int> dinfo(1, 1, 1, 1);
+        CHECK_HIP_ERROR(dA.memcheck());
+        CHECK_HIP_ERROR(dinfo.memcheck());
 
-        // int size_W;
+        int size_W = 0;
         // hipsolver_potrf_bufferSize(FORTRAN, handle, uplo, n, dA.data(), lda, &size_W);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        // if(size_W)
-        //     CHECK_HIP_ERROR(dWork.memcheck());
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        if(size_W)
+            CHECK_HIP_ERROR(dWork.memcheck());
 
-        // // check bad arguments
-        // potrf_checkBadArgs<FORTRAN>(
-        //     handle, uplo, n, dA.data(), lda, stA, dWork.data(), size_W, dinfo.data(), bc);
+        // check bad arguments
+        potrf_checkBadArgs<FORTRAN>(
+            handle, uplo, n, dA.data(), lda, stA, dWork.data(), size_W, dinfo.data(), bc);
     }
     else
     {
