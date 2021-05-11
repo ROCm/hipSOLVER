@@ -28,27 +28,17 @@ typedef enum
     FORTRAN_STRIDED_ALT
 } testMarshal_t;
 
-inline testMarshal_t bool2marshal(bool FORTRAN, bool STRIDED, bool ALT = false)
+inline testMarshal_t bool2marshal(bool FORTRAN, bool ALT)
 {
     if(!FORTRAN)
-        if(!STRIDED)
-            if(!ALT)
-                return C_NORMAL;
-            else
-                return C_NORMAL_ALT;
-        else if(!ALT)
-            return C_STRIDED;
-        else
-            return C_STRIDED_ALT;
-    else if(!STRIDED)
         if(!ALT)
-            return FORTRAN_NORMAL;
+            return C_NORMAL;
         else
-            return FORTRAN_NORMAL_ALT;
+            return C_NORMAL_ALT;
     else if(!ALT)
-        return FORTRAN_STRIDED;
+        return FORTRAN_NORMAL;
     else
-        return FORTRAN_STRIDED_ALT;
+        return FORTRAN_NORMAL_ALT;
 }
 
 /******************** GEQRF ********************/
@@ -108,15 +98,10 @@ inline hipsolverStatus_t hipsolver_geqrf(bool              FORTRAN,
                                          int*              info,
                                          int               bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverSgeqrf(handle, m, n, A, lda, tau, work, lwork, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverSgeqrfFortran(handle, m, n, A, lda, tau, work, lwork, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 
 inline hipsolverStatus_t hipsolver_geqrf(bool              FORTRAN,
@@ -133,15 +118,10 @@ inline hipsolverStatus_t hipsolver_geqrf(bool              FORTRAN,
                                          int*              info,
                                          int               bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverDgeqrf(handle, m, n, A, lda, tau, work, lwork, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverDgeqrfFortran(handle, m, n, A, lda, tau, work, lwork, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 
 inline hipsolverStatus_t hipsolver_geqrf(bool              FORTRAN,
@@ -158,15 +138,10 @@ inline hipsolverStatus_t hipsolver_geqrf(bool              FORTRAN,
                                          int*              info,
                                          int               bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverCgeqrf(handle, m, n, A, lda, tau, work, lwork, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverCgeqrfFortran(handle, m, n, A, lda, tau, work, lwork, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 
 inline hipsolverStatus_t hipsolver_geqrf(bool                    FORTRAN,
@@ -183,15 +158,10 @@ inline hipsolverStatus_t hipsolver_geqrf(bool                    FORTRAN,
                                          int*                    info,
                                          int                     bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverZgeqrf(handle, m, n, A, lda, tau, work, lwork, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverZgeqrfFortran(handle, m, n, A, lda, tau, work, lwork, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 /********************************************************/
 
@@ -252,7 +222,7 @@ inline hipsolverStatus_t hipsolver_getrf(bool              FORTRAN,
                                          int*              info,
                                          int               bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1, NPVT))
+    switch(bool2marshal(FORTRAN, NPVT))
     {
     case C_NORMAL:
         return hipsolverSgetrf(handle, m, n, A, lda, work, ipiv, info);
@@ -281,7 +251,7 @@ inline hipsolverStatus_t hipsolver_getrf(bool              FORTRAN,
                                          int*              info,
                                          int               bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1, NPVT))
+    switch(bool2marshal(FORTRAN, NPVT))
     {
     case C_NORMAL:
         return hipsolverDgetrf(handle, m, n, A, lda, work, ipiv, info);
@@ -310,7 +280,7 @@ inline hipsolverStatus_t hipsolver_getrf(bool              FORTRAN,
                                          int*              info,
                                          int               bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1, NPVT))
+    switch(bool2marshal(FORTRAN, NPVT))
     {
     case C_NORMAL:
         return hipsolverCgetrf(handle, m, n, A, lda, work, ipiv, info);
@@ -339,7 +309,7 @@ inline hipsolverStatus_t hipsolver_getrf(bool                    FORTRAN,
                                          int*                    info,
                                          int                     bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1, NPVT))
+    switch(bool2marshal(FORTRAN, NPVT))
     {
     case C_NORMAL:
         return hipsolverZgetrf(handle, m, n, A, lda, work, ipiv, info);
@@ -373,15 +343,10 @@ inline hipsolverStatus_t hipsolver_getrs(bool                 FORTRAN,
                                          int*                 info,
                                          int                  bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverSgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverSgetrsFortran(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 
 inline hipsolverStatus_t hipsolver_getrs(bool                 FORTRAN,
@@ -400,15 +365,10 @@ inline hipsolverStatus_t hipsolver_getrs(bool                 FORTRAN,
                                          int*                 info,
                                          int                  bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverDgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverDgetrsFortran(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 
 inline hipsolverStatus_t hipsolver_getrs(bool                 FORTRAN,
@@ -427,15 +387,10 @@ inline hipsolverStatus_t hipsolver_getrs(bool                 FORTRAN,
                                          int*                 info,
                                          int                  bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverCgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverCgetrsFortran(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 
 inline hipsolverStatus_t hipsolver_getrs(bool                    FORTRAN,
@@ -454,15 +409,10 @@ inline hipsolverStatus_t hipsolver_getrs(bool                    FORTRAN,
                                          int*                    info,
                                          int                     bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverZgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverZgetrsFortran(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 /********************************************************/
 
@@ -536,15 +486,10 @@ inline hipsolverStatus_t hipsolver_potrf(bool                FORTRAN,
                                          int*                info,
                                          int                 bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverSpotrf(handle, uplo, n, A, lda, work, lwork, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverSpotrfFortran(handle, uplo, n, A, lda, work, lwork, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 
 inline hipsolverStatus_t hipsolver_potrf(bool                FORTRAN,
@@ -559,15 +504,10 @@ inline hipsolverStatus_t hipsolver_potrf(bool                FORTRAN,
                                          int*                info,
                                          int                 bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverDpotrf(handle, uplo, n, A, lda, work, lwork, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverDpotrfFortran(handle, uplo, n, A, lda, work, lwork, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 
 inline hipsolverStatus_t hipsolver_potrf(bool                FORTRAN,
@@ -582,15 +522,10 @@ inline hipsolverStatus_t hipsolver_potrf(bool                FORTRAN,
                                          int*                info,
                                          int                 bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverCpotrf(handle, uplo, n, A, lda, work, lwork, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverCpotrfFortran(handle, uplo, n, A, lda, work, lwork, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 
 inline hipsolverStatus_t hipsolver_potrf(bool                    FORTRAN,
@@ -605,15 +540,10 @@ inline hipsolverStatus_t hipsolver_potrf(bool                    FORTRAN,
                                          int*                    info,
                                          int                     bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverZpotrf(handle, uplo, n, A, lda, work, lwork, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverZpotrfFortran(handle, uplo, n, A, lda, work, lwork, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 
 // batched
