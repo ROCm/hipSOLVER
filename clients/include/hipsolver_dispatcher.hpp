@@ -37,6 +37,7 @@ class hipsolver_dispatcher
             {"getrf", testing_getrf<false, false, false, T>},
             {"getrs", testing_getrs<false, false, false, T>},
             {"potrf", testing_potrf<false, false, false, T>},
+            {"potrf_batched", testing_potrf<false, true, false, T>},
         };
 
         // Grab function from the map and execute

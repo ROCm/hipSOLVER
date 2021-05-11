@@ -615,4 +615,77 @@ inline hipsolverStatus_t hipsolver_potrf(bool                    FORTRAN,
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
+
+// batched
+inline hipsolverStatus_t hipsolver_potrf(bool                FORTRAN,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverFillMode_t uplo,
+                                         int                 n,
+                                         float*              A[],
+                                         int                 lda,
+                                         int                 stA,
+                                         float*              work,
+                                         int                 lwork,
+                                         int*                info,
+                                         int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverSpotrfBatched(handle, uplo, n, A, lda, info, bc);
+    else
+        return hipsolverSpotrfBatchedFortran(handle, uplo, n, A, lda, info, bc);
+}
+
+inline hipsolverStatus_t hipsolver_potrf(bool                FORTRAN,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverFillMode_t uplo,
+                                         int                 n,
+                                         double*             A[],
+                                         int                 lda,
+                                         int                 stA,
+                                         double*             work,
+                                         int                 lwork,
+                                         int*                info,
+                                         int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverDpotrfBatched(handle, uplo, n, A, lda, info, bc);
+    else
+        return hipsolverDpotrfBatchedFortran(handle, uplo, n, A, lda, info, bc);
+}
+
+inline hipsolverStatus_t hipsolver_potrf(bool                FORTRAN,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverFillMode_t uplo,
+                                         int                 n,
+                                         hipsolverComplex*   A[],
+                                         int                 lda,
+                                         int                 stA,
+                                         hipsolverComplex*   work,
+                                         int                 lwork,
+                                         int*                info,
+                                         int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverCpotrfBatched(handle, uplo, n, A, lda, info, bc);
+    else
+        return hipsolverCpotrfBatchedFortran(handle, uplo, n, A, lda, info, bc);
+}
+
+inline hipsolverStatus_t hipsolver_potrf(bool                    FORTRAN,
+                                         hipsolverHandle_t       handle,
+                                         hipsolverFillMode_t     uplo,
+                                         int                     n,
+                                         hipsolverDoubleComplex* A[],
+                                         int                     lda,
+                                         int                     stA,
+                                         hipsolverDoubleComplex* work,
+                                         int                     lwork,
+                                         int*                    info,
+                                         int                     bc)
+{
+    if(!FORTRAN)
+        return hipsolverZpotrfBatched(handle, uplo, n, A, lda, info, bc);
+    else
+        return hipsolverZpotrfBatchedFortran(handle, uplo, n, A, lda, info, bc);
+}
 /********************************************************/
