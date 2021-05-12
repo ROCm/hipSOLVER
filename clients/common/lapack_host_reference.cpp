@@ -18,6 +18,26 @@
 extern "C" {
 #endif
 
+void sgeqrf_(int* m, int* n, float* A, int* lda, float* ipiv, float* work, int* lwork, int* info);
+void dgeqrf_(
+    int* m, int* n, double* A, int* lda, double* ipiv, double* work, int* lwork, int* info);
+void cgeqrf_(int*              m,
+             int*              n,
+             hipsolverComplex* A,
+             int*              lda,
+             hipsolverComplex* ipiv,
+             hipsolverComplex* work,
+             int*              lwork,
+             int*              info);
+void zgeqrf_(int*                    m,
+             int*                    n,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             hipsolverDoubleComplex* ipiv,
+             hipsolverDoubleComplex* work,
+             int*                    lwork,
+             int*                    info);
+
 void sgetrf_(int* m, int* n, float* A, int* lda, int* ipiv, int* info);
 void dgetrf_(int* m, int* n, double* A, int* lda, int* ipiv, int* info);
 void cgetrf_(int* m, int* n, hipsolverComplex* A, int* lda, int* ipiv, int* info);
@@ -182,6 +202,47 @@ void cblas_gemm<hipsolverDoubleComplex>(hipsolverOperation_t    transA,
                 &beta,
                 C,
                 ldc);
+}
+
+// geqrf
+template <>
+void cblas_geqrf<float>(int m, int n, float* A, int lda, float* ipiv, float* work, int lwork)
+{
+    int info;
+    sgeqrf_(&m, &n, A, &lda, ipiv, work, &lwork, &info);
+}
+
+template <>
+void cblas_geqrf<double>(int m, int n, double* A, int lda, double* ipiv, double* work, int lwork)
+{
+    int info;
+    dgeqrf_(&m, &n, A, &lda, ipiv, work, &lwork, &info);
+}
+
+template <>
+void cblas_geqrf<hipsolverComplex>(int               m,
+                                   int               n,
+                                   hipsolverComplex* A,
+                                   int               lda,
+                                   hipsolverComplex* ipiv,
+                                   hipsolverComplex* work,
+                                   int               lwork)
+{
+    int info;
+    cgeqrf_(&m, &n, A, &lda, ipiv, work, &lwork, &info);
+}
+
+template <>
+void cblas_geqrf<hipsolverDoubleComplex>(int                     m,
+                                         int                     n,
+                                         hipsolverDoubleComplex* A,
+                                         int                     lda,
+                                         hipsolverDoubleComplex* ipiv,
+                                         hipsolverDoubleComplex* work,
+                                         int                     lwork)
+{
+    int info;
+    zgeqrf_(&m, &n, A, &lda, ipiv, work, &lwork, &info);
 }
 
 // getrf

@@ -191,6 +191,59 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSetStream(hipsolverHandle_t handle,
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverGetStream(hipsolverHandle_t handle,
                                                       hipStream_t*      streamId);
 
+// geqrf
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgeqrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgeqrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgeqrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgeqrf_bufferSize(
+    hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgeqrf(hipsolverHandle_t handle,
+                                                   int               m,
+                                                   int               n,
+                                                   float*            A,
+                                                   int               lda,
+                                                   float*            tau,
+                                                   float*            work,
+                                                   int               lwork,
+                                                   int*              devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgeqrf(hipsolverHandle_t handle,
+                                                   int               m,
+                                                   int               n,
+                                                   double*           A,
+                                                   int               lda,
+                                                   double*           tau,
+                                                   double*           work,
+                                                   int               lwork,
+                                                   int*              devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgeqrf(hipsolverHandle_t handle,
+                                                   int               m,
+                                                   int               n,
+                                                   hipsolverComplex* A,
+                                                   int               lda,
+                                                   hipsolverComplex* tau,
+                                                   hipsolverComplex* work,
+                                                   int               lwork,
+                                                   int*              devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgeqrf(hipsolverHandle_t       handle,
+                                                   int                     m,
+                                                   int                     n,
+                                                   hipsolverDoubleComplex* A,
+                                                   int                     lda,
+                                                   hipsolverDoubleComplex* tau,
+                                                   hipsolverDoubleComplex* work,
+                                                   int                     lwork,
+                                                   int*                    devInfo);
+
 // getrf
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork);

@@ -23,6 +23,9 @@ void cblas_gemm(hipsolverOperation_t transA,
                 int                  ldc);
 
 template <typename T>
+void cblas_geqrf(int m, int n, T* A, int lda, T* ipiv, T* work, int sizeW);
+
+template <typename T>
 void cblas_getrf(int m, int n, T* A, int lda, int* ipiv, int* info);
 
 template <typename T>
