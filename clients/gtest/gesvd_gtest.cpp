@@ -26,6 +26,9 @@ typedef std::tuple<vector<int>, vector<int>> gesvd_tuple;
 // if leftsv (rightsv) = 2 then compute all orthogonal matrix
 // if leftsv (rightsv) = 3 then no singular vectors are computed
 
+// case when m = -1, n = 1, and rightsv = leftsv = 3 will also execute the bad
+// arguments test (null handle, null pointers and invalid values)
+
 // for checkin_lapack tests
 const vector<vector<int>> size_range = {
     // invalid
@@ -137,6 +140,10 @@ protected:
     void run_tests()
     {
         Arguments arg = gesvd_setup_arguments(GetParam());
+
+        if(arg.peek<rocblas_int>("m") == -1 && arg.peek<rocblas_int>("n") == 1
+           && arg.peek<char>("jobu") == 'N' && arg.peek<char>("jobv") == 'N')
+            testing_gesvd_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
         testing_gesvd<FORTRAN, BATCHED, STRIDED, T>(arg);

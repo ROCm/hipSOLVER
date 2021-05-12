@@ -6,6 +6,375 @@
 
 #include "clientcommon.hpp"
 
+template <bool FORTRAN, typename T, typename TT, typename W, typename U>
+void gesvd_checkBadArgs(const hipsolverHandle_t handle,
+                        const char              left_svect,
+                        const char              right_svect,
+                        const int               m,
+                        const int               n,
+                        W                       dA,
+                        const int               lda,
+                        const int               stA,
+                        TT                      dS,
+                        const int               stS,
+                        T                       dU,
+                        const int               ldu,
+                        const int               stU,
+                        T                       dV,
+                        const int               ldv,
+                        const int               stV,
+                        T                       dWork,
+                        const int               lwork,
+                        TT                      dE,
+                        const int               stE,
+                        U                       dinfo,
+                        const int               bc)
+{
+    // handle
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+                                          nullptr,
+                                          left_svect,
+                                          right_svect,
+                                          m,
+                                          n,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dS,
+                                          stS,
+                                          dU,
+                                          ldu,
+                                          stU,
+                                          dV,
+                                          ldv,
+                                          stV,
+                                          dWork,
+                                          lwork,
+                                          dE,
+                                          stE,
+                                          dinfo,
+                                          bc),
+                          HIPSOLVER_STATUS_NOT_INITIALIZED);
+
+    // values
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+                                          handle,
+                                          '\0',
+                                          right_svect,
+                                          m,
+                                          n,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dS,
+                                          stS,
+                                          dU,
+                                          ldu,
+                                          stU,
+                                          dV,
+                                          ldv,
+                                          stV,
+                                          dWork,
+                                          lwork,
+                                          dE,
+                                          stE,
+                                          dinfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+                                          handle,
+                                          left_svect,
+                                          '\0',
+                                          m,
+                                          n,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dS,
+                                          stS,
+                                          dU,
+                                          ldu,
+                                          stU,
+                                          dV,
+                                          ldv,
+                                          stV,
+                                          dWork,
+                                          lwork,
+                                          dE,
+                                          stE,
+                                          dinfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+                                          handle,
+                                          'O',
+                                          'O',
+                                          m,
+                                          n,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dS,
+                                          stS,
+                                          dU,
+                                          ldu,
+                                          stU,
+                                          dV,
+                                          ldv,
+                                          stV,
+                                          dWork,
+                                          lwork,
+                                          dE,
+                                          stE,
+                                          dinfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
+    // pointers
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+                                          handle,
+                                          left_svect,
+                                          right_svect,
+                                          m,
+                                          n,
+                                          (W) nullptr,
+                                          lda,
+                                          stA,
+                                          dS,
+                                          stS,
+                                          dU,
+                                          ldu,
+                                          stU,
+                                          dV,
+                                          ldv,
+                                          stV,
+                                          dWork,
+                                          lwork,
+                                          dE,
+                                          stE,
+                                          dinfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+                                          handle,
+                                          left_svect,
+                                          right_svect,
+                                          m,
+                                          n,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          (TT) nullptr,
+                                          stS,
+                                          dU,
+                                          ldu,
+                                          stU,
+                                          dV,
+                                          ldv,
+                                          stV,
+                                          dWork,
+                                          lwork,
+                                          dE,
+                                          stE,
+                                          dinfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+                                          handle,
+                                          left_svect,
+                                          right_svect,
+                                          m,
+                                          n,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dS,
+                                          stS,
+                                          (T) nullptr,
+                                          ldu,
+                                          stU,
+                                          dV,
+                                          ldv,
+                                          stV,
+                                          dWork,
+                                          lwork,
+                                          dE,
+                                          stE,
+                                          dinfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+                                          handle,
+                                          left_svect,
+                                          right_svect,
+                                          m,
+                                          n,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dS,
+                                          stS,
+                                          dU,
+                                          ldu,
+                                          stU,
+                                          (T) nullptr,
+                                          ldv,
+                                          stV,
+                                          dWork,
+                                          lwork,
+                                          dE,
+                                          stE,
+                                          dinfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+                                          handle,
+                                          left_svect,
+                                          right_svect,
+                                          m,
+                                          n,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dS,
+                                          stS,
+                                          dU,
+                                          ldu,
+                                          stU,
+                                          dV,
+                                          ldv,
+                                          stV,
+                                          dWork,
+                                          lwork,
+                                          (TT) nullptr,
+                                          stE,
+                                          dinfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+                                          handle,
+                                          left_svect,
+                                          right_svect,
+                                          m,
+                                          n,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dS,
+                                          stS,
+                                          dU,
+                                          ldu,
+                                          stU,
+                                          dV,
+                                          ldv,
+                                          stV,
+                                          dWork,
+                                          lwork,
+                                          dE,
+                                          stE,
+                                          (U) nullptr,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+#endif
+}
+
+template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+void testing_gesvd_bad_arg()
+{
+    using S = decltype(std::real(T{}));
+
+    // safe arguments
+    hipsolver_local_handle handle;
+    char                   left_svect  = 'A';
+    char                   right_svect = 'A';
+    int                    m           = 2;
+    int                    n           = 2;
+    int                    lda         = 2;
+    int                    ldu         = 2;
+    int                    ldv         = 2;
+    int                    stA         = 2;
+    int                    stS         = 2;
+    int                    stU         = 2;
+    int                    stV         = 2;
+    int                    stE         = 2;
+    int                    bc          = 1;
+
+    if(BATCHED)
+    {
+        // // memory allocations
+        // device_batch_vector<T> dA(1, 1, 1);
+        // device_strided_batch_vector<S> dS(1, 1, 1, 1);
+        // device_strided_batch_vector<T> dU(1, 1, 1, 1);
+        // device_strided_batch_vector<T> dV(1, 1, 1, 1);
+        // device_strided_batch_vector<S> dE(1, 1, 1, 1);
+        // device_strided_batch_vector<int> dinfo(1, 1, 1, 1);
+        // CHECK_HIP_ERROR(dA.memcheck());
+        // CHECK_HIP_ERROR(dS.memcheck());
+        // CHECK_HIP_ERROR(dU.memcheck());
+        // CHECK_HIP_ERROR(dV.memcheck());
+        // CHECK_HIP_ERROR(dE.memcheck());
+        // CHECK_HIP_ERROR(dinfo.memcheck());
+
+        // int size_W;
+        // hipsolver_gesvd_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        // if(size_W)
+        //     CHECK_HIP_ERROR(dWork.memcheck());
+
+        // // check bad arguments
+        // gesvd_checkBadArgs<FORTRAN>(handle, left_svect, right_svect, m, n, dA.data(), lda, stA,
+        //                             dS.data(), stS, dU.data(), ldu, stU, dV.data(), ldv, stV,
+        //                             dWork.data(), size_W, dE.data(), stE, dinfo.data(), bc);
+    }
+    else
+    {
+        // memory allocations
+        device_strided_batch_vector<T>   dA(1, 1, 1, 1);
+        device_strided_batch_vector<S>   dS(1, 1, 1, 1);
+        device_strided_batch_vector<T>   dU(1, 1, 1, 1);
+        device_strided_batch_vector<T>   dV(1, 1, 1, 1);
+        device_strided_batch_vector<S>   dE(1, 1, 1, 1);
+        device_strided_batch_vector<int> dinfo(1, 1, 1, 1);
+        CHECK_HIP_ERROR(dA.memcheck());
+        CHECK_HIP_ERROR(dS.memcheck());
+        CHECK_HIP_ERROR(dU.memcheck());
+        CHECK_HIP_ERROR(dV.memcheck());
+        CHECK_HIP_ERROR(dE.memcheck());
+        CHECK_HIP_ERROR(dinfo.memcheck());
+
+        int size_W;
+        hipsolver_gesvd_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        if(size_W)
+            CHECK_HIP_ERROR(dWork.memcheck());
+
+        // check bad arguments
+        gesvd_checkBadArgs<FORTRAN>(handle,
+                                    left_svect,
+                                    right_svect,
+                                    m,
+                                    n,
+                                    dA.data(),
+                                    lda,
+                                    stA,
+                                    dS.data(),
+                                    stS,
+                                    dU.data(),
+                                    ldu,
+                                    stU,
+                                    dV.data(),
+                                    ldv,
+                                    stV,
+                                    dWork.data(),
+                                    size_W,
+                                    dE.data(),
+                                    stE,
+                                    dinfo.data(),
+                                    bc);
+    }
+}
+
 template <bool CPU, bool GPU, typename T, typename Td, typename Th>
 void gesvd_initData(const hipsolverHandle_t handle,
                     const char              left_svect,
