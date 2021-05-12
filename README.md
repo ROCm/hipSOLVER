@@ -104,6 +104,10 @@ at [rocSOLVER API](https://rocsolver.readthedocs.io/en/latest/userguide_api.html
 
 | Function | single | double | single complex | double complex |
 | -------- | ------ | ------ | -------------- | -------------- |
+| hipsolverXormqr_bufferSize | x | x |   |   |
+| hipsolverXormqr | x | x |   |   |
+| hipsolverXunmqr_bufferSize |   |   | x | x |
+| hipsolverXunmqr |   |   | x | x |
 | hipsolverXgeqrf_bufferSize | x | x | x | x |
 | hipsolverXgeqrf | x | x | x | x |
 | hipsolverXgetrf_bufferSize | x | x | x | x |
