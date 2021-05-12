@@ -28,6 +28,9 @@ typedef std::tuple<vector<int>, vector<int>> ormqr_tuple;
 // if t = 1, then trans = 'T'
 // if t = 2, then trans = 'C'
 
+// case when m = -1, side = L and trans = T will also execute the bad arguments
+// test (null handle, null pointers and invalid values)
+
 const vector<vector<int>> op_range = {
     // invalid
     {-1, 0, 0, 0},
@@ -99,6 +102,10 @@ protected:
     void run_tests()
     {
         Arguments arg = ormqr_setup_arguments(GetParam());
+
+        if(arg.peek<rocblas_int>("m") == -1 && arg.peek<char>("side") == 'L'
+           && arg.peek<char>("trans") == 'T')
+            testing_ormqr_unmqr_bad_arg<FORTRAN, T>();
 
         testing_ormqr_unmqr<FORTRAN, T>(arg);
     }
