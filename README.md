@@ -87,6 +87,9 @@ hipsolverSgetrf(hipsolverHandle_t handle,
                 int*              devInfo);
 ```
 
+## Workspace Management with the rocSOLVER Backend
+While many hipSOLVER functions (modeled after cuSOLVER functions) take a workspace pointer and size as arguments, rocSOLVER maintains its own internal device workspace by default. In order to take advantage of this feature, users may pass a null pointer for the `work` argument of any function when using the rocSOLVER backend, and the workspace will be automatically managed behind-the-scenes.
+
 ## Supported Fuctionality
 For a complete description of all the supported functions, see the corresponding backends' documentation
 at [rocSOLVER API](https://rocsolver.readthedocs.io/en/latest/userguide_api.html) and/or [cuSOLVER API](https://docs.nvidia.com/cuda/cusolver/index.html#cuds-api).
