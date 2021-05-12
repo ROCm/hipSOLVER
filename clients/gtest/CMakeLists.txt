@@ -22,8 +22,9 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 set(hipsolver_test_source
   hipsolver_gtest_main.cpp
-  getrf_gtest.cpp
   getrs_gtest.cpp
+  getrf_gtest.cpp
+  geqrf_gtest.cpp
   potrf_gtest.cpp
 )
 

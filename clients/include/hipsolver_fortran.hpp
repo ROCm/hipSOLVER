@@ -22,6 +22,59 @@ extern "C" {
  *   LAPACK
  * ========== */
 
+// geqrf
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgeqrf_bufferSizeFortran(
+    hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgeqrf_bufferSizeFortran(
+    hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgeqrf_bufferSizeFortran(
+    hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgeqrf_bufferSizeFortran(
+    hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgeqrfFortran(hipsolverHandle_t handle,
+                                                          int               m,
+                                                          int               n,
+                                                          float*            A,
+                                                          int               lda,
+                                                          float*            tau,
+                                                          float*            work,
+                                                          int               lwork,
+                                                          int*              devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgeqrfFortran(hipsolverHandle_t handle,
+                                                          int               m,
+                                                          int               n,
+                                                          double*           A,
+                                                          int               lda,
+                                                          double*           tau,
+                                                          double*           work,
+                                                          int               lwork,
+                                                          int*              devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgeqrfFortran(hipsolverHandle_t handle,
+                                                          int               m,
+                                                          int               n,
+                                                          hipsolverComplex* A,
+                                                          int               lda,
+                                                          hipsolverComplex* tau,
+                                                          hipsolverComplex* work,
+                                                          int               lwork,
+                                                          int*              devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgeqrfFortran(hipsolverHandle_t       handle,
+                                                          int                     m,
+                                                          int                     n,
+                                                          hipsolverDoubleComplex* A,
+                                                          int                     lda,
+                                                          hipsolverDoubleComplex* tau,
+                                                          hipsolverDoubleComplex* work,
+                                                          int                     lwork,
+                                                          int*                    devInfo);
+
 // getrf
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgetrf_bufferSizeFortran(
     hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork);
