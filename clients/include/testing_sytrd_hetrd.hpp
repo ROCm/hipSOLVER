@@ -6,6 +6,237 @@
 
 #include "clientcommon.hpp"
 
+template <bool FORTRAN, typename S, typename T, typename U, typename V>
+void sytrd_hetrd_checkBadArgs(const hipsolverHandle_t   handle,
+                              const hipsolverFillMode_t uplo,
+                              const int                 n,
+                              T                         dA,
+                              const int                 lda,
+                              const int                 stA,
+                              S                         dD,
+                              const int                 stD,
+                              S                         dE,
+                              const int                 stE,
+                              U                         dTau,
+                              const int                 stP,
+                              U                         dWork,
+                              const int                 lwork,
+                              V                         dInfo,
+                              const int                 bc)
+{
+    // handle
+    EXPECT_ROCBLAS_STATUS(hipsolver_sytrd_hetrd(FORTRAN,
+                                                nullptr,
+                                                uplo,
+                                                n,
+                                                dA,
+                                                lda,
+                                                stA,
+                                                dD,
+                                                stD,
+                                                dE,
+                                                stE,
+                                                dTau,
+                                                stP,
+                                                dWork,
+                                                lwork,
+                                                dInfo,
+                                                bc),
+                          HIPSOLVER_STATUS_NOT_INITIALIZED);
+
+    // values
+    EXPECT_ROCBLAS_STATUS(hipsolver_sytrd_hetrd(FORTRAN,
+                                                handle,
+                                                hipsolverFillMode_t(-1),
+                                                n,
+                                                dA,
+                                                lda,
+                                                stA,
+                                                dD,
+                                                stD,
+                                                dE,
+                                                stE,
+                                                dTau,
+                                                stP,
+                                                dWork,
+                                                lwork,
+                                                dInfo,
+                                                bc),
+                          HIPSOLVER_STATUS_INVALID_ENUM);
+
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
+    // pointers
+    EXPECT_ROCBLAS_STATUS(hipsolver_sytrd_hetrd(FORTRAN,
+                                                handle,
+                                                uplo,
+                                                n,
+                                                (T) nullptr,
+                                                lda,
+                                                stA,
+                                                dD,
+                                                stD,
+                                                dE,
+                                                stE,
+                                                dTau,
+                                                stP,
+                                                dWork,
+                                                lwork,
+                                                dInfo,
+                                                bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_sytrd_hetrd(FORTRAN,
+                                                handle,
+                                                uplo,
+                                                n,
+                                                dA,
+                                                lda,
+                                                stA,
+                                                (S) nullptr,
+                                                stD,
+                                                dE,
+                                                stE,
+                                                dTau,
+                                                stP,
+                                                dWork,
+                                                lwork,
+                                                dInfo,
+                                                bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_sytrd_hetrd(FORTRAN,
+                                                handle,
+                                                uplo,
+                                                n,
+                                                dA,
+                                                lda,
+                                                stA,
+                                                dD,
+                                                stD,
+                                                (S) nullptr,
+                                                stE,
+                                                dTau,
+                                                stP,
+                                                dWork,
+                                                lwork,
+                                                dInfo,
+                                                bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_sytrd_hetrd(FORTRAN,
+                                                handle,
+                                                uplo,
+                                                n,
+                                                dA,
+                                                lda,
+                                                stA,
+                                                dD,
+                                                stD,
+                                                dE,
+                                                stE,
+                                                (U) nullptr,
+                                                stP,
+                                                dWork,
+                                                lwork,
+                                                dInfo,
+                                                bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+#endif
+}
+
+template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+void testing_sytrd_hetrd_bad_arg()
+{
+    using S = decltype(std::real(T{}));
+
+    // safe arguments
+    hipsolver_local_handle handle;
+    hipsolverFillMode_t    uplo = HIPSOLVER_FILL_MODE_UPPER;
+    int                    n    = 1;
+    int                    lda  = 1;
+    int                    stA  = 1;
+    int                    stD  = 1;
+    int                    stE  = 1;
+    int                    stP  = 1;
+    int                    bc   = 1;
+
+    if(BATCHED)
+    {
+        // // memory allocations
+        // device_batch_vector<T>           dA(1, 1, 1);
+        // device_strided_batch_vector<S>   dD(1, 1, 1, 1);
+        // device_strided_batch_vector<S>   dE(1, 1, 1, 1);
+        // device_strided_batch_vector<T>   dTau(1, 1, 1, 1);
+        // device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
+        // CHECK_HIP_ERROR(dA.memcheck());
+        // CHECK_HIP_ERROR(dD.memcheck());
+        // CHECK_HIP_ERROR(dE.memcheck());
+        // CHECK_HIP_ERROR(dTau.memcheck());
+        // CHECK_HIP_ERROR(dInfo.memcheck());
+
+        // int size_W;
+        // hipsolver_sytrd_hetrd_bufferSize(
+        //     FORTRAN, handle, uplo, n, dA.data(), lda, dD.data(), dE.data(), dTau.data(), &size_W);
+        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        // if(size_W)
+        //     CHECK_HIP_ERROR(dWork.memcheck());
+
+        // // check bad arguments
+        // sytrd_hetrd_checkBadArgs<FORTRAN>(handle,
+        //                                   uplo,
+        //                                   n,
+        //                                   dA.data(),
+        //                                   lda,
+        //                                   stA,
+        //                                   dD.data(),
+        //                                   stD,
+        //                                   dE.data(),
+        //                                   stE,
+        //                                   dTau.data(),
+        //                                   stP,
+        //                                   dWork.data(),
+        //                                   size_W,
+        //                                   dInfo.data(),
+        //                                   bc);
+    }
+    else
+    {
+        // memory allocations
+        device_strided_batch_vector<T>   dA(1, 1, 1, 1);
+        device_strided_batch_vector<S>   dD(1, 1, 1, 1);
+        device_strided_batch_vector<S>   dE(1, 1, 1, 1);
+        device_strided_batch_vector<T>   dTau(1, 1, 1, 1);
+        device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
+        CHECK_HIP_ERROR(dA.memcheck());
+        CHECK_HIP_ERROR(dD.memcheck());
+        CHECK_HIP_ERROR(dE.memcheck());
+        CHECK_HIP_ERROR(dTau.memcheck());
+        CHECK_HIP_ERROR(dInfo.memcheck());
+
+        int size_W;
+        hipsolver_sytrd_hetrd_bufferSize(
+            FORTRAN, handle, uplo, n, dA.data(), lda, dD.data(), dE.data(), dTau.data(), &size_W);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        if(size_W)
+            CHECK_HIP_ERROR(dWork.memcheck());
+
+        // check bad arguments
+        sytrd_hetrd_checkBadArgs<FORTRAN>(handle,
+                                          uplo,
+                                          n,
+                                          dA.data(),
+                                          lda,
+                                          stA,
+                                          dD.data(),
+                                          stD,
+                                          dE.data(),
+                                          stE,
+                                          dTau.data(),
+                                          stP,
+                                          dWork.data(),
+                                          size_W,
+                                          dInfo.data(),
+                                          bc);
+    }
+}
+
 template <bool CPU,
           bool GPU,
           typename T,

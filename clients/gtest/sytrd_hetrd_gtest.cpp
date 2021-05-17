@@ -15,6 +15,9 @@ typedef std::tuple<vector<int>, char> sytrd_tuple;
 
 // each matrix_size_range is a {n, lda}
 
+// case when n = -1 and uplo = U will also execute the bad arguments test
+// (null handle, null pointers and invalid values)
+
 const vector<char> uplo_range = {'L', 'U'};
 
 // for checkin_lapack tests
@@ -66,6 +69,9 @@ protected:
     void run_tests()
     {
         Arguments arg = sytrd_setup_arguments(GetParam());
+
+        if(arg.peek<char>("uplo") == 'U' && arg.peek<rocblas_int>("n") == -1)
+            testing_sytrd_hetrd_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
         testing_sytrd_hetrd<FORTRAN, BATCHED, STRIDED, T>(arg);
