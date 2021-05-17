@@ -18,6 +18,59 @@
 extern "C" {
 #endif
 
+void sormqr_(char*  side,
+             char*  trans,
+             int*   m,
+             int*   n,
+             int*   k,
+             float* A,
+             int*   lda,
+             float* ipiv,
+             float* C,
+             int*   ldc,
+             float* work,
+             int*   sizeW,
+             int*   info);
+void dormqr_(char*   side,
+             char*   trans,
+             int*    m,
+             int*    n,
+             int*    k,
+             double* A,
+             int*    lda,
+             double* ipiv,
+             double* C,
+             int*    ldc,
+             double* work,
+             int*    sizeW,
+             int*    info);
+void cunmqr_(char*             side,
+             char*             trans,
+             int*              m,
+             int*              n,
+             int*              k,
+             hipsolverComplex* A,
+             int*              lda,
+             hipsolverComplex* ipiv,
+             hipsolverComplex* C,
+             int*              ldc,
+             hipsolverComplex* work,
+             int*              sizeW,
+             int*              info);
+void zunmqr_(char*                   side,
+             char*                   trans,
+             int*                    m,
+             int*                    n,
+             int*                    k,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             hipsolverDoubleComplex* ipiv,
+             hipsolverDoubleComplex* C,
+             int*                    ldc,
+             hipsolverDoubleComplex* work,
+             int*                    sizeW,
+             int*                    info);
+
 void sgeqrf_(int* m, int* n, float* A, int* lda, float* ipiv, float* work, int* lwork, int* info);
 void dgeqrf_(
     int* m, int* n, double* A, int* lda, double* ipiv, double* work, int* lwork, int* info);
@@ -261,6 +314,91 @@ void cblas_gemm<hipsolverDoubleComplex>(hipsolverOperation_t    transA,
                 &beta,
                 C,
                 ldc);
+}
+
+// ormqr & unmqr
+template <>
+void cblas_ormqr_unmqr<float>(hipsolverSideMode_t  side,
+                              hipsolverOperation_t trans,
+                              int                  m,
+                              int                  n,
+                              int                  k,
+                              float*               A,
+                              int                  lda,
+                              float*               ipiv,
+                              float*               C,
+                              int                  ldc,
+                              float*               work,
+                              int                  lwork)
+{
+    int  info;
+    char sideC  = hipsolver2char_side(side);
+    char transC = hipsolver2char_operation(trans);
+
+    sormqr_(&sideC, &transC, &m, &n, &k, A, &lda, ipiv, C, &ldc, work, &lwork, &info);
+}
+
+template <>
+void cblas_ormqr_unmqr<double>(hipsolverSideMode_t  side,
+                               hipsolverOperation_t trans,
+                               int                  m,
+                               int                  n,
+                               int                  k,
+                               double*              A,
+                               int                  lda,
+                               double*              ipiv,
+                               double*              C,
+                               int                  ldc,
+                               double*              work,
+                               int                  lwork)
+{
+    int  info;
+    char sideC  = hipsolver2char_side(side);
+    char transC = hipsolver2char_operation(trans);
+
+    dormqr_(&sideC, &transC, &m, &n, &k, A, &lda, ipiv, C, &ldc, work, &lwork, &info);
+}
+
+template <>
+void cblas_ormqr_unmqr<hipsolverComplex>(hipsolverSideMode_t  side,
+                                         hipsolverOperation_t trans,
+                                         int                  m,
+                                         int                  n,
+                                         int                  k,
+                                         hipsolverComplex*    A,
+                                         int                  lda,
+                                         hipsolverComplex*    ipiv,
+                                         hipsolverComplex*    C,
+                                         int                  ldc,
+                                         hipsolverComplex*    work,
+                                         int                  lwork)
+{
+    int  info;
+    char sideC  = hipsolver2char_side(side);
+    char transC = hipsolver2char_operation(trans);
+
+    cunmqr_(&sideC, &transC, &m, &n, &k, A, &lda, ipiv, C, &ldc, work, &lwork, &info);
+}
+
+template <>
+void cblas_ormqr_unmqr<hipsolverDoubleComplex>(hipsolverSideMode_t     side,
+                                               hipsolverOperation_t    trans,
+                                               int                     m,
+                                               int                     n,
+                                               int                     k,
+                                               hipsolverDoubleComplex* A,
+                                               int                     lda,
+                                               hipsolverDoubleComplex* ipiv,
+                                               hipsolverDoubleComplex* C,
+                                               int                     ldc,
+                                               hipsolverDoubleComplex* work,
+                                               int                     lwork)
+{
+    int  info;
+    char sideC  = hipsolver2char_side(side);
+    char transC = hipsolver2char_operation(trans);
+
+    zunmqr_(&sideC, &transC, &m, &n, &k, A, &lda, ipiv, C, &ldc, work, &lwork, &info);
 }
 
 // geqrf

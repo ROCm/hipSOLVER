@@ -13,6 +13,7 @@
 #include "testing_getrf.hpp"
 #include "testing_getrf_npvt.hpp"
 #include "testing_getrs.hpp"
+#include "testing_ormqr_unmqr.hpp"
 #include "testing_potrf.hpp"
 
 struct str_less
@@ -57,7 +58,9 @@ class hipsolver_dispatcher
     static hipsolverStatus_t run_function_limited_precision(const char* name, Arguments& argus)
     {
         // Map for functions that support single and double precisions
-        static const func_map map_real = {};
+        static const func_map map_real = {
+            {"ormqr", testing_ormqr_unmqr<false, T>},
+        };
 
         // Grab function from the map and execute
         auto match = map_real.find(name);
@@ -74,7 +77,9 @@ class hipsolver_dispatcher
     static hipsolverStatus_t run_function_limited_precision(const char* name, Arguments& argus)
     {
         // Map for functions that support single complex and double complex precisions
-        static const func_map map_complex = {};
+        static const func_map map_complex = {
+            {"unmqr", testing_ormqr_unmqr<false, T>},
+        };
 
         // Grab function from the map and execute
         auto match = map_complex.find(name);

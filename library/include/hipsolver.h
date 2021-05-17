@@ -177,6 +177,12 @@ typedef enum
     HIPSOLVER_FILL_MODE_LOWER = 122,
 } hipsolverFillMode_t;
 
+typedef enum
+{
+    HIPSOLVER_SIDE_LEFT  = 141,
+    HIPSOLVER_SIDE_RIGHT = 142,
+} hipsolverSideMode_t;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -190,6 +196,119 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSetStream(hipsolverHandle_t handle,
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverGetStream(hipsolverHandle_t handle,
                                                       hipStream_t*      streamId);
+
+// ormqr/unmqr
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSormqr_bufferSize(hipsolverHandle_t    handle,
+                                                              hipsolverSideMode_t  side,
+                                                              hipsolverOperation_t trans,
+                                                              int                  m,
+                                                              int                  n,
+                                                              int                  k,
+                                                              float*               A,
+                                                              int                  lda,
+                                                              float*               tau,
+                                                              float*               C,
+                                                              int                  ldc,
+                                                              int*                 lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDormqr_bufferSize(hipsolverHandle_t    handle,
+                                                              hipsolverSideMode_t  side,
+                                                              hipsolverOperation_t trans,
+                                                              int                  m,
+                                                              int                  n,
+                                                              int                  k,
+                                                              double*              A,
+                                                              int                  lda,
+                                                              double*              tau,
+                                                              double*              C,
+                                                              int                  ldc,
+                                                              int*                 lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCunmqr_bufferSize(hipsolverHandle_t    handle,
+                                                              hipsolverSideMode_t  side,
+                                                              hipsolverOperation_t trans,
+                                                              int                  m,
+                                                              int                  n,
+                                                              int                  k,
+                                                              hipsolverComplex*    A,
+                                                              int                  lda,
+                                                              hipsolverComplex*    tau,
+                                                              hipsolverComplex*    C,
+                                                              int                  ldc,
+                                                              int*                 lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZunmqr_bufferSize(hipsolverHandle_t       handle,
+                                                              hipsolverSideMode_t     side,
+                                                              hipsolverOperation_t    trans,
+                                                              int                     m,
+                                                              int                     n,
+                                                              int                     k,
+                                                              hipsolverDoubleComplex* A,
+                                                              int                     lda,
+                                                              hipsolverDoubleComplex* tau,
+                                                              hipsolverDoubleComplex* C,
+                                                              int                     ldc,
+                                                              int*                    lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSormqr(hipsolverHandle_t    handle,
+                                                   hipsolverSideMode_t  side,
+                                                   hipsolverOperation_t trans,
+                                                   int                  m,
+                                                   int                  n,
+                                                   int                  k,
+                                                   float*               A,
+                                                   int                  lda,
+                                                   float*               tau,
+                                                   float*               C,
+                                                   int                  ldc,
+                                                   float*               work,
+                                                   int                  lwork,
+                                                   int*                 devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDormqr(hipsolverHandle_t    handle,
+                                                   hipsolverSideMode_t  side,
+                                                   hipsolverOperation_t trans,
+                                                   int                  m,
+                                                   int                  n,
+                                                   int                  k,
+                                                   double*              A,
+                                                   int                  lda,
+                                                   double*              tau,
+                                                   double*              C,
+                                                   int                  ldc,
+                                                   double*              work,
+                                                   int                  lwork,
+                                                   int*                 devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCunmqr(hipsolverHandle_t    handle,
+                                                   hipsolverSideMode_t  side,
+                                                   hipsolverOperation_t trans,
+                                                   int                  m,
+                                                   int                  n,
+                                                   int                  k,
+                                                   hipsolverComplex*    A,
+                                                   int                  lda,
+                                                   hipsolverComplex*    tau,
+                                                   hipsolverComplex*    C,
+                                                   int                  ldc,
+                                                   hipsolverComplex*    work,
+                                                   int                  lwork,
+                                                   int*                 devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZunmqr(hipsolverHandle_t       handle,
+                                                   hipsolverSideMode_t     side,
+                                                   hipsolverOperation_t    trans,
+                                                   int                     m,
+                                                   int                     n,
+                                                   int                     k,
+                                                   hipsolverDoubleComplex* A,
+                                                   int                     lda,
+                                                   hipsolverDoubleComplex* tau,
+                                                   hipsolverDoubleComplex* C,
+                                                   int                     ldc,
+                                                   hipsolverDoubleComplex* work,
+                                                   int                     lwork,
+                                                   int*                    devInfo);
 
 // geqrf
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgeqrf_bufferSize(
