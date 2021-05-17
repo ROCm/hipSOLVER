@@ -6,6 +6,68 @@
 
 #include "clientcommon.hpp"
 
+template <bool FORTRAN, typename T, typename U>
+void orgqr_ungqr_checkBadArgs(const hipsolverHandle_t handle,
+                              const int               m,
+                              const int               n,
+                              const int               k,
+                              T                       dA,
+                              const int               lda,
+                              T                       dIpiv,
+                              T                       dWork,
+                              const int               lwork,
+                              U                       dInfo)
+{
+    // handle
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_orgqr_ungqr(FORTRAN, nullptr, m, n, k, dA, lda, dIpiv, dWork, lwork, dInfo),
+        HIPSOLVER_STATUS_NOT_INITIALIZED);
+
+    // values
+    // N/A
+
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
+    // pointers
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_orgqr_ungqr(
+            FORTRAN, handle, m, n, k, (T) nullptr, lda, dIpiv, dWork, lwork, dInfo),
+        HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_orgqr_ungqr(FORTRAN, handle, m, n, k, dA, lda, (T) nullptr, dWork, lwork, dInfo),
+        HIPSOLVER_STATUS_INVALID_VALUE);
+#endif
+}
+
+template <bool FORTRAN, typename T>
+void testing_orgqr_ungqr_bad_arg()
+{
+    // safe arguments
+    hipsolver_local_handle handle;
+    int                    k   = 1;
+    int                    m   = 1;
+    int                    n   = 1;
+    int                    lda = 1;
+
+    // memory allocation
+    device_strided_batch_vector<T>   dA(1, 1, 1, 1);
+    device_strided_batch_vector<T>   dIpiv(1, 1, 1, 1);
+    device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
+    CHECK_HIP_ERROR(dA.memcheck());
+    CHECK_HIP_ERROR(dIpiv.memcheck());
+    CHECK_HIP_ERROR(dInfo.memcheck());
+
+    int size_W;
+    hipsolver_orgqr_ungqr_bufferSize(
+        FORTRAN, handle, m, n, k, dA.data(), lda, dIpiv.data(), &size_W);
+    device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
+    if(size_W)
+        CHECK_HIP_ERROR(dWork.memcheck());
+
+    // check bad arguments
+    orgqr_ungqr_checkBadArgs<FORTRAN>(
+        handle, m, n, k, dA.data(), lda, dIpiv.data(), dWork.data(), size_W, dInfo.data());
+}
+
 template <bool CPU, bool GPU, typename T, typename Td, typename Th>
 void orgqr_ungqr_initData(const hipsolverHandle_t handle,
                           const int               m,

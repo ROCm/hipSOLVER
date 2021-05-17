@@ -17,6 +17,9 @@ typedef std::tuple<vector<int>, vector<int>> orgqr_tuple;
 
 // each n_size_range vector is a {N, K}
 
+// case when m = -1 and n = -1 will also execute the bad arguments test
+// (null handle, null pointers and invalid values)
+
 // for checkin_lapack tests
 const vector<vector<int>> m_size_range = {
     // always invalid
@@ -76,6 +79,9 @@ protected:
     void run_tests()
     {
         Arguments arg = orgqr_setup_arguments(GetParam());
+
+        if(arg.peek<rocblas_int>("m") == -1 && arg.peek<rocblas_int>("n") == -1)
+            testing_orgqr_ungqr_bad_arg<FORTRAN, T>();
 
         testing_orgqr_ungqr<FORTRAN, T>(arg);
     }
