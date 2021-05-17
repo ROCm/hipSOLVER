@@ -41,6 +41,189 @@ inline testMarshal_t bool2marshal(bool FORTRAN, bool ALT)
         return FORTRAN_NORMAL_ALT;
 }
 
+/******************** ORMQR/UNMQR ********************/
+// normal and strided_batched
+inline hipsolverStatus_t hipsolver_ormqr_unmqr_bufferSize(bool                 FORTRAN,
+                                                          hipsolverHandle_t    handle,
+                                                          hipsolverSideMode_t  side,
+                                                          hipsolverOperation_t trans,
+                                                          int                  m,
+                                                          int                  n,
+                                                          int                  k,
+                                                          float*               A,
+                                                          int                  lda,
+                                                          float*               tau,
+                                                          float*               C,
+                                                          int                  ldc,
+                                                          int*                 lwork)
+{
+    if(!FORTRAN)
+        return hipsolverSormqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
+    else
+        return hipsolverSormqr_bufferSizeFortran(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_ormqr_unmqr_bufferSize(bool                 FORTRAN,
+                                                          hipsolverHandle_t    handle,
+                                                          hipsolverSideMode_t  side,
+                                                          hipsolverOperation_t trans,
+                                                          int                  m,
+                                                          int                  n,
+                                                          int                  k,
+                                                          double*              A,
+                                                          int                  lda,
+                                                          double*              tau,
+                                                          double*              C,
+                                                          int                  ldc,
+                                                          int*                 lwork)
+{
+    if(!FORTRAN)
+        return hipsolverDormqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
+    else
+        return hipsolverDormqr_bufferSizeFortran(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_ormqr_unmqr_bufferSize(bool                 FORTRAN,
+                                                          hipsolverHandle_t    handle,
+                                                          hipsolverSideMode_t  side,
+                                                          hipsolverOperation_t trans,
+                                                          int                  m,
+                                                          int                  n,
+                                                          int                  k,
+                                                          hipsolverComplex*    A,
+                                                          int                  lda,
+                                                          hipsolverComplex*    tau,
+                                                          hipsolverComplex*    C,
+                                                          int                  ldc,
+                                                          int*                 lwork)
+{
+    if(!FORTRAN)
+        return hipsolverCunmqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
+    else
+        return hipsolverCunmqr_bufferSizeFortran(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_ormqr_unmqr_bufferSize(bool                    FORTRAN,
+                                                          hipsolverHandle_t       handle,
+                                                          hipsolverSideMode_t     side,
+                                                          hipsolverOperation_t    trans,
+                                                          int                     m,
+                                                          int                     n,
+                                                          int                     k,
+                                                          hipsolverDoubleComplex* A,
+                                                          int                     lda,
+                                                          hipsolverDoubleComplex* tau,
+                                                          hipsolverDoubleComplex* C,
+                                                          int                     ldc,
+                                                          int*                    lwork)
+{
+    if(!FORTRAN)
+        return hipsolverZunmqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
+    else
+        return hipsolverZunmqr_bufferSizeFortran(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_ormqr_unmqr(bool                 FORTRAN,
+                                               hipsolverHandle_t    handle,
+                                               hipsolverSideMode_t  side,
+                                               hipsolverOperation_t trans,
+                                               int                  m,
+                                               int                  n,
+                                               int                  k,
+                                               float*               A,
+                                               int                  lda,
+                                               float*               tau,
+                                               float*               C,
+                                               int                  ldc,
+                                               float*               work,
+                                               int                  lwork,
+                                               int*                 info)
+{
+    if(!FORTRAN)
+        return hipsolverSormqr(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info);
+    else
+        return hipsolverSormqrFortran(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_ormqr_unmqr(bool                 FORTRAN,
+                                               hipsolverHandle_t    handle,
+                                               hipsolverSideMode_t  side,
+                                               hipsolverOperation_t trans,
+                                               int                  m,
+                                               int                  n,
+                                               int                  k,
+                                               double*              A,
+                                               int                  lda,
+                                               double*              tau,
+                                               double*              C,
+                                               int                  ldc,
+                                               double*              work,
+                                               int                  lwork,
+                                               int*                 info)
+{
+    if(!FORTRAN)
+        return hipsolverDormqr(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info);
+    else
+        return hipsolverDormqrFortran(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_ormqr_unmqr(bool                 FORTRAN,
+                                               hipsolverHandle_t    handle,
+                                               hipsolverSideMode_t  side,
+                                               hipsolverOperation_t trans,
+                                               int                  m,
+                                               int                  n,
+                                               int                  k,
+                                               hipsolverComplex*    A,
+                                               int                  lda,
+                                               hipsolverComplex*    tau,
+                                               hipsolverComplex*    C,
+                                               int                  ldc,
+                                               hipsolverComplex*    work,
+                                               int                  lwork,
+                                               int*                 info)
+{
+    if(!FORTRAN)
+        return hipsolverCunmqr(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info);
+    else
+        return hipsolverCunmqrFortran(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_ormqr_unmqr(bool                    FORTRAN,
+                                               hipsolverHandle_t       handle,
+                                               hipsolverSideMode_t     side,
+                                               hipsolverOperation_t    trans,
+                                               int                     m,
+                                               int                     n,
+                                               int                     k,
+                                               hipsolverDoubleComplex* A,
+                                               int                     lda,
+                                               hipsolverDoubleComplex* tau,
+                                               hipsolverDoubleComplex* C,
+                                               int                     ldc,
+                                               hipsolverDoubleComplex* work,
+                                               int                     lwork,
+                                               int*                    info)
+{
+    if(!FORTRAN)
+        return hipsolverZunmqr(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info);
+    else
+        return hipsolverZunmqrFortran(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info);
+}
+/********************************************************/
+
 /******************** GEQRF ********************/
 // normal and strided_batched
 inline hipsolverStatus_t hipsolver_geqrf_bufferSize(

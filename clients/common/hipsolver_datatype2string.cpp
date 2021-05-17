@@ -17,8 +17,9 @@ char hipsolver2char_operation(hipsolverOperation_t value)
         return 'T';
     case HIPSOLVER_OP_C:
         return 'C';
+    default:
+        throw std::invalid_argument("Invalid enum");
     }
-    return '\0';
 }
 
 char hipsolver2char_fill(hipsolverFillMode_t value)
@@ -29,8 +30,22 @@ char hipsolver2char_fill(hipsolverFillMode_t value)
         return 'U';
     case HIPSOLVER_FILL_MODE_LOWER:
         return 'L';
+    default:
+        throw std::invalid_argument("Invalid enum");
     }
-    return '\0';
+}
+
+char hipsolver2char_side(hipsolverSideMode_t value)
+{
+    switch(value)
+    {
+    case HIPSOLVER_SIDE_LEFT:
+        return 'L';
+    case HIPSOLVER_SIDE_RIGHT:
+        return 'R';
+    default:
+        throw std::invalid_argument("Invalid enum");
+    }
 }
 
 /* ============================================================================================ */
@@ -57,34 +72,46 @@ hipsolverOperation_t char2hipsolver_operation(char value)
 {
     switch(value)
     {
+    case 'n':
     case 'N':
         return HIPSOLVER_OP_N;
+    case 't':
     case 'T':
         return HIPSOLVER_OP_T;
+    case 'c':
     case 'C':
         return HIPSOLVER_OP_C;
-    case 'n':
-        return HIPSOLVER_OP_N;
-    case 't':
-        return HIPSOLVER_OP_T;
-    case 'c':
-        return HIPSOLVER_OP_C;
+    default:
+        throw std::invalid_argument("Invalid character");
     }
-    return HIPSOLVER_OP_N;
 }
 
 hipsolverFillMode_t char2hipsolver_fill(char value)
 {
     switch(value)
     {
+    case 'u':
     case 'U':
         return HIPSOLVER_FILL_MODE_UPPER;
+    case 'l':
     case 'L':
         return HIPSOLVER_FILL_MODE_LOWER;
-    case 'u':
-        return HIPSOLVER_FILL_MODE_UPPER;
-    case 'l':
-        return HIPSOLVER_FILL_MODE_LOWER;
+    default:
+        throw std::invalid_argument("Invalid character");
     }
-    return HIPSOLVER_FILL_MODE_LOWER;
+}
+
+hipsolverSideMode_t char2hipsolver_side(char value)
+{
+    switch(value)
+    {
+    case 'l':
+    case 'L':
+        return HIPSOLVER_SIDE_LEFT;
+    case 'r':
+    case 'R':
+        return HIPSOLVER_SIDE_RIGHT;
+    default:
+        throw std::invalid_argument("Invalid character");
+    }
 }

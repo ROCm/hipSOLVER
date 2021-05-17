@@ -102,12 +102,12 @@ try
             "                           ")
 
         // size options
-        // ("k",
-        //  value<rocblas_int>(),
-        //     "Matrix/vector size parameter.\n"
-        //     "                           Represents a sub-dimension of a problem.\n"
-        //     "                           For example, the number of Householder reflections in a transformation.\n"
-        //     "                           ")
+        ("k",
+         value<rocblas_int>(),
+            "Matrix/vector size parameter.\n"
+            "                           Represents a sub-dimension of a problem.\n"
+            "                           For example, the number of Householder reflections in a transformation.\n"
+            "                           ")
 
         ("m",
          value<rocblas_int>(),
@@ -141,11 +141,11 @@ try
             "                           Leading dimension of matrices B.\n"
             "                           ")
 
-        // ("ldc",
-        //  value<rocblas_int>(),
-        //     "Matrix size parameter.\n"
-        //     "                           Leading dimension of matrices C.\n"
-        //     "                           ")
+        ("ldc",
+         value<rocblas_int>(),
+            "Matrix size parameter.\n"
+            "                           Leading dimension of matrices C.\n"
+            "                           ")
 
         // ("ldt",
         //  value<rocblas_int>(),
@@ -318,11 +318,11 @@ try
         //     "                           Problem type for generalized eigenproblems.\n"
         //     "                           ")
 
-        // ("side",
-        //  value<char>(),
-        //     "L = left, R = right.\n"
-        //     "                           The side from which a matrix should be multiplied.\n"
-        //     "                           ")
+        ("side",
+         value<char>(),
+            "L = left, R = right.\n"
+            "                           The side from which a matrix should be multiplied.\n"
+            "                           ")
 
         // ("storev",
         //  value<char>(),
@@ -368,7 +368,7 @@ try
     // catch invalid arguments
     argus.validate_precision("precision");
     argus.validate_operation("trans");
-    // argus.validate_side("side");
+    argus.validate_side("side");
     argus.validate_fill("uplo");
     // argus.validate_direct("direct");
     // argus.validate_storev("storev");

@@ -52,13 +52,16 @@ inline constexpr auto hipsolver2string_status(hipsolverStatus_t value)
         return "HIPSOLVER_STATUS_INVALID_ENUM";
     case HIPSOLVER_STATUS_UNKNOWN:
         return "HIPSOLVER_STATUS_UNKNOWN";
+    default:
+        throw std::invalid_argument("Invalid enum");
     }
-    return "invalid";
 }
 
 char hipsolver2char_operation(hipsolverOperation_t value);
 
 char hipsolver2char_fill(hipsolverFillMode_t value);
+
+char hipsolver2char_side(hipsolverSideMode_t value);
 
 /* ============================================================================================ */
 /*  Convert lapack char constants to hipsolver type. */
@@ -68,3 +71,5 @@ hipsolverStatus_t string2hipsolver_status(const std::string& value);
 hipsolverOperation_t char2hipsolver_operation(char value);
 
 hipsolverFillMode_t char2hipsolver_fill(char value);
+
+hipsolverSideMode_t char2hipsolver_side(char value);
