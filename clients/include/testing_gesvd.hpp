@@ -631,7 +631,7 @@ void gesvd_getError(const hipsolverHandle_t handle,
                 {
                     T tmp = 0;
                     for(int j = 0; j < n; ++j)
-                        tmp += A[b * lda * n + i + j * lda] * sconj(Vres[b][k + j * ldvres]);
+                        tmp += A[b * lda * n + i + j * lda] * std::conj(Vres[b][k + j * ldvres]);
                     tmp -= hSres[b][k] * Ures[b][i + k * ldures];
                     err += std::abs(tmp) * std::abs(tmp);
                 }

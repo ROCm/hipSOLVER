@@ -53,17 +53,17 @@ inline void rocsolver_bench_output(T arg, Ts... args)
     rocsolver_bench_output(args...);
 }
 
-template <typename T, std::enable_if_t<!is_complex<T>, int> = 0>
-inline T sconj(T scalar)
-{
-    return scalar;
-}
+// template <typename T, std::enable_if_t<!is_complex<T>, int> = 0>
+// inline T sconj(T scalar)
+// {
+//     return scalar;
+// }
 
-template <typename T, std::enable_if_t<is_complex<T>, int> = 0>
-inline T sconj(T scalar)
-{
-    return std::conj(scalar);
-}
+// template <typename T, std::enable_if_t<is_complex<T>, int> = 0>
+// inline T sconj(T scalar)
+// {
+//     return std::conj(scalar);
+// }
 
 // // A struct implicity convertable to and from char, used so we can customize
 // // Google Test printing for LAPACK char arguments without affecting the default
