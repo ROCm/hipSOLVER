@@ -52,8 +52,9 @@ inline constexpr auto hipsolver2string_status(hipsolverStatus_t value)
         return "HIPSOLVER_STATUS_INVALID_ENUM";
     case HIPSOLVER_STATUS_UNKNOWN:
         return "HIPSOLVER_STATUS_UNKNOWN";
+    default:
+        throw std::invalid_argument("Invalid enum");
     }
-    return "invalid";
 }
 
 char hipsolver2char_operation(hipsolverOperation_t value);
