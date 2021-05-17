@@ -26,6 +26,7 @@ set(hipsolver_test_source
   getrf_gtest.cpp
   geqrf_gtest.cpp
   potrf_gtest.cpp
+  ormqr_unmqr_gtest.cpp
 )
 
 set( hipsolver_test_common
