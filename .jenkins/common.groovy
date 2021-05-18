@@ -29,13 +29,12 @@ def runCompileCommand(platform, project, jobName, boolean sameOrg=false)
 
 def runTestCommand(platform, project)
 {
-    String sudo = auxiliary.sudo(platform.jenkinsLabel)
     String buildType = project.buildName.contains('Debug') ? "debug" : "release"
     String testExe = project.buildName.contains('Debug') ? "hipsolver-test-d" : "hipsolver-test"
     def command = """#!/usr/bin/env bash
                     set -x
                     cd ${project.paths.project_build_prefix}/build/${buildType}/clients/staging
-                    ${sudo} LD_LIBRARY_PATH=/opt/rocm/lib GTEST_LISTENER=NO_PASS_LINE_IN_LOG ./${testExe} --gtest_output=xml --gtest_color=yes
+                    LD_LIBRARY_PATH=/opt/rocm/lib GTEST_LISTENER=NO_PASS_LINE_IN_LOG ./${testExe} --gtest_output=xml --gtest_color=yes
                 """
 
     platform.runCommand(this, command)
