@@ -802,3 +802,170 @@ inline hipsolverStatus_t hipsolver_potrf(bool                    FORTRAN,
         return hipsolverZpotrfBatchedFortran(handle, uplo, n, A, lda, info, bc);
 }
 /********************************************************/
+
+/******************** SYTRD/HETRD ********************/
+// normal and strided_batched
+inline hipsolverStatus_t hipsolver_sytrd_hetrd_bufferSize(bool                FORTRAN,
+                                                          hipsolverHandle_t   handle,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          float*              A,
+                                                          int                 lda,
+                                                          float*              D,
+                                                          float*              E,
+                                                          float*              tau,
+                                                          int*                lwork)
+{
+    if(!FORTRAN)
+        return hipsolverSsytrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork);
+    else
+        return hipsolverSsytrd_bufferSizeFortran(handle, uplo, n, A, lda, D, E, tau, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_sytrd_hetrd_bufferSize(bool                FORTRAN,
+                                                          hipsolverHandle_t   handle,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          double*             A,
+                                                          int                 lda,
+                                                          double*             D,
+                                                          double*             E,
+                                                          double*             tau,
+                                                          int*                lwork)
+{
+    if(!FORTRAN)
+        return hipsolverDsytrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork);
+    else
+        return hipsolverDsytrd_bufferSizeFortran(handle, uplo, n, A, lda, D, E, tau, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_sytrd_hetrd_bufferSize(bool                FORTRAN,
+                                                          hipsolverHandle_t   handle,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          hipsolverComplex*   A,
+                                                          int                 lda,
+                                                          float*              D,
+                                                          float*              E,
+                                                          hipsolverComplex*   tau,
+                                                          int*                lwork)
+{
+    if(!FORTRAN)
+        return hipsolverChetrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork);
+    else
+        return hipsolverChetrd_bufferSizeFortran(handle, uplo, n, A, lda, D, E, tau, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_sytrd_hetrd_bufferSize(bool                    FORTRAN,
+                                                          hipsolverHandle_t       handle,
+                                                          hipsolverFillMode_t     uplo,
+                                                          int                     n,
+                                                          hipsolverDoubleComplex* A,
+                                                          int                     lda,
+                                                          double*                 D,
+                                                          double*                 E,
+                                                          hipsolverDoubleComplex* tau,
+                                                          int*                    lwork)
+{
+    if(!FORTRAN)
+        return hipsolverZhetrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork);
+    else
+        return hipsolverZhetrd_bufferSizeFortran(handle, uplo, n, A, lda, D, E, tau, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_sytrd_hetrd(bool                FORTRAN,
+                                               hipsolverHandle_t   handle,
+                                               hipsolverFillMode_t uplo,
+                                               int                 n,
+                                               float*              A,
+                                               int                 lda,
+                                               int                 stA,
+                                               float*              D,
+                                               int                 stD,
+                                               float*              E,
+                                               int                 stE,
+                                               float*              tau,
+                                               int                 stP,
+                                               float*              work,
+                                               int                 lwork,
+                                               int*                info,
+                                               int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverSsytrd(handle, uplo, n, A, lda, D, E, tau, work, lwork, info);
+    else
+        return hipsolverSsytrdFortran(handle, uplo, n, A, lda, D, E, tau, work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_sytrd_hetrd(bool                FORTRAN,
+                                               hipsolverHandle_t   handle,
+                                               hipsolverFillMode_t uplo,
+                                               int                 n,
+                                               double*             A,
+                                               int                 lda,
+                                               int                 stA,
+                                               double*             D,
+                                               int                 stD,
+                                               double*             E,
+                                               int                 stE,
+                                               double*             tau,
+                                               int                 stP,
+                                               double*             work,
+                                               int                 lwork,
+                                               int*                info,
+                                               int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverDsytrd(handle, uplo, n, A, lda, D, E, tau, work, lwork, info);
+    else
+        return hipsolverDsytrdFortran(handle, uplo, n, A, lda, D, E, tau, work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_sytrd_hetrd(bool                FORTRAN,
+                                               hipsolverHandle_t   handle,
+                                               hipsolverFillMode_t uplo,
+                                               int                 n,
+                                               hipsolverComplex*   A,
+                                               int                 lda,
+                                               int                 stA,
+                                               float*              D,
+                                               int                 stD,
+                                               float*              E,
+                                               int                 stE,
+                                               hipsolverComplex*   tau,
+                                               int                 stP,
+                                               hipsolverComplex*   work,
+                                               int                 lwork,
+                                               int*                info,
+                                               int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverChetrd(handle, uplo, n, A, lda, D, E, tau, work, lwork, info);
+    else
+        return hipsolverChetrdFortran(handle, uplo, n, A, lda, D, E, tau, work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_sytrd_hetrd(bool                    FORTRAN,
+                                               hipsolverHandle_t       handle,
+                                               hipsolverFillMode_t     uplo,
+                                               int                     n,
+                                               hipsolverDoubleComplex* A,
+                                               int                     lda,
+                                               int                     stA,
+                                               double*                 D,
+                                               int                     stD,
+                                               double*                 E,
+                                               int                     stE,
+                                               hipsolverDoubleComplex* tau,
+                                               int                     stP,
+                                               hipsolverDoubleComplex* work,
+                                               int                     lwork,
+                                               int*                    info,
+                                               int                     bc)
+{
+    if(!FORTRAN)
+        return hipsolverZhetrd(handle, uplo, n, A, lda, D, E, tau, work, lwork, info);
+    else
+        return hipsolverZhetrdFortran(handle, uplo, n, A, lda, D, E, tau, work, lwork, info);
+}
+/********************************************************/

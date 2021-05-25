@@ -14,6 +14,7 @@
 #include "testing_getrs.hpp"
 #include "testing_ormqr_unmqr.hpp"
 #include "testing_potrf.hpp"
+#include "testing_sytrd_hetrd.hpp"
 
 struct str_less
 {
@@ -58,6 +59,7 @@ class hipsolver_dispatcher
         // Map for functions that support single and double precisions
         static const func_map map_real = {
             {"ormqr", testing_ormqr_unmqr<false, T>},
+            {"sytrd", testing_sytrd_hetrd<false, false, false, T>},
         };
 
         // Grab function from the map and execute
@@ -77,6 +79,7 @@ class hipsolver_dispatcher
         // Map for functions that support single complex and double complex precisions
         static const func_map map_complex = {
             {"unmqr", testing_ormqr_unmqr<false, T>},
+            {"hetrd", testing_sytrd_hetrd<false, false, false, T>},
         };
 
         // Grab function from the map and execute
