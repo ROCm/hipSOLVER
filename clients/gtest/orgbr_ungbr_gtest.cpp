@@ -22,6 +22,9 @@ typedef std::tuple<vector<int>, vector<int>> orgbr_tuple;
 // if st = 0, then side = 'L'
 // if st = 1, then side = 'R'
 
+// case when m = -1, n = 1 and side = 'L' will also execute the bad arguments
+// test (null handle, null pointers and invalid values)
+
 const vector<vector<int>> store_range = {
     // always invalid
     {-1, 0},
@@ -90,6 +93,10 @@ protected:
     void run_tests()
     {
         Arguments arg = orgbr_setup_arguments(GetParam());
+
+        if(arg.peek<rocblas_int>("m") == -1 && arg.peek<rocblas_int>("n") == 1
+           && arg.get<char>("side") == 'L')
+            testing_orgbr_ungbr_bad_arg<FORTRAN, T>();
 
         testing_orgbr_ungbr<FORTRAN, T>(arg);
     }
