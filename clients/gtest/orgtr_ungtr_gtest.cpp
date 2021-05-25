@@ -15,6 +15,9 @@ typedef std::tuple<vector<int>, int> orgtr_tuple;
 
 // each size_range vector is a {n, lda}
 
+// case when n = -1 and uplo = 'U' will also execute the bad arguments test
+// (null handle, null pointers and invalid values)
+
 const vector<int> uplo = {0, 1};
 
 // for checkin_lapack tests
@@ -60,6 +63,9 @@ protected:
     void run_tests()
     {
         Arguments arg = orgtr_setup_arguments(GetParam());
+
+        if(arg.peek<rocblas_int>("n") == -1 && arg.peek<char>("uplo") == 'U')
+            testing_orgtr_ungtr_bad_arg<FORTRAN, T>();
 
         testing_orgtr_ungtr<FORTRAN, T>(arg);
     }
