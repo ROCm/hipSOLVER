@@ -121,6 +121,8 @@ at [rocSOLVER API](https://rocsolver.readthedocs.io/en/latest/userguide_api.html
 | hipsolverXormqr | x | x |   |   |
 | hipsolverXunmqr_bufferSize |   |   | x | x |
 | hipsolverXunmqr |   |   | x | x |
+| hipsolverXgebrd_bufferSize | x | x | x | x |
+| hipsolverXgebrd | x | x | x | x |
 | hipsolverXgeqrf_bufferSize | x | x | x | x |
 | hipsolverXgeqrf | x | x | x | x |
 | hipsolverXgetrf_bufferSize | x | x | x | x |
@@ -129,3 +131,7 @@ at [rocSOLVER API](https://rocsolver.readthedocs.io/en/latest/userguide_api.html
 | hipsolverXpotrf_bufferSize | x | x | x | x |
 | hipsolverXpotrf | x | x | x | x |
 | hipsolverXpotrfBatched | x | x | x | x |
+| hipsolverXsytrd_bufferSize | x | x |   |   |
+| hipsolverXsytrd | x | x |   |   |
+| hipsolverXhetrd_bufferSize |   |   | x | x |
+| hipsolverXhetrd |   |   | x | x |

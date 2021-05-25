@@ -10,6 +10,9 @@
   - ormqr/unmqr
     - hipsolverSormqr_bufferSize, hipsolverDormqr_bufferSize, hipsolverCunmqr_bufferSize, hipsolverZunmqr_bufferSize
     - hipsolverSormqr, hipsolverDormqr, hipsolverCunmqr, hipsolverZunmqr
+  - gebrd
+    - hipsolverSgebrd_bufferSize, hipsolverDgebrd_bufferSize, hipsolverCgebrd_bufferSize, hipsolverZgebrd_bufferSize
+    - hipsolverSgebrd, hipsolverDgebrd, hipsolverCgebrd, hipsolverZgebrd
   - geqrf
     - hipsolverSgeqrf_bufferSize, hipsolverDgeqrf_bufferSize, hipsolverCgeqrf_bufferSize, hipsolverZgeqrf_bufferSize
     - hipsolverSgeqrf, hipsolverDgeqrf, hipsolverCgeqrf, hipsolverZgeqrf
@@ -20,6 +23,9 @@
     - hipsolverSpotrf, hipsolverDpotrf, hipsolverCpotrf, hipsolverZpotrf
   - potrfBatched
     - hipsolverSpotrfBatched, hipsolverDpotrfBatched, hipsolverCpotrfBatched, hipsolverZpotrfBatched
+  - sytrd/hetrd
+    - hipsolverSsytrd_bufferSize, hipsolverDsytrd_bufferSize, hipsolverChetrd_bufferSize, hipsolverZhetrd_bufferSize
+    - hipsolverSsytrd, hipsolverDsytrd, hipsolverChetrd, hipsolverZhetrd
 
 ### Changed
 - hipSOLVER functions will now return HIPSOLVER_STATUS_INVALID_ENUM or HIPSOLVER_STATUS_UNKNOWN status codes rather than throw exceptions

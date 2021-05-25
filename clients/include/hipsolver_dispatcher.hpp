@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 
+#include "testing_gebrd.hpp"
 #include "testing_geqrf.hpp"
 #include "testing_getrf.hpp"
 #include "testing_getrf_npvt.hpp"
@@ -15,6 +16,7 @@
 #include "testing_orgqr_ungqr.hpp"
 #include "testing_ormqr_unmqr.hpp"
 #include "testing_potrf.hpp"
+#include "testing_sytrd_hetrd.hpp"
 
 struct str_less
 {
@@ -35,6 +37,7 @@ class hipsolver_dispatcher
     {
         // Map for functions that support all precisions
         static const func_map map = {
+            {"gebrd", testing_gebrd<false, false, false, T>},
             {"geqrf", testing_geqrf<false, false, false, T>},
             {"getrf", testing_getrf<false, false, false, T>},
             {"getrs", testing_getrs<false, false, false, T>},
@@ -60,6 +63,7 @@ class hipsolver_dispatcher
         static const func_map map_real = {
             {"orgqr", testing_orgqr_ungqr<false, T>},
             {"ormqr", testing_ormqr_unmqr<false, T>},
+            {"sytrd", testing_sytrd_hetrd<false, false, false, T>},
         };
 
         // Grab function from the map and execute
@@ -80,6 +84,7 @@ class hipsolver_dispatcher
         static const func_map map_complex = {
             {"ungqr", testing_orgqr_ungqr<false, T>},
             {"unmqr", testing_ormqr_unmqr<false, T>},
+            {"hetrd", testing_sytrd_hetrd<false, false, false, T>},
         };
 
         // Grab function from the map and execute

@@ -350,6 +350,151 @@ module hipsolver_interface
         res = hipsolverZunmqr(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info)
     end function hipsolverZunmqrFortran
 
+    ! ******************** GEBRD ********************
+    function hipsolverSgebrd_bufferSizeFortran(handle, m, n, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverSgebrd_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverSgebrd_bufferSize(handle, m, n, lwork)
+    end function hipsolverSgebrd_bufferSizeFortran
+    
+    function hipsolverDgebrd_bufferSizeFortran(handle, m, n, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverDgebrd_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverDgebrd_bufferSize(handle, m, n, lwork)
+    end function hipsolverDgebrd_bufferSizeFortran
+    
+    function hipsolverCgebrd_bufferSizeFortran(handle, m, n, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverCgebrd_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverCgebrd_bufferSize(handle, m, n, lwork)
+    end function hipsolverCgebrd_bufferSizeFortran
+    
+    function hipsolverZgebrd_bufferSizeFortran(handle, m, n, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverZgebrd_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverZgebrd_bufferSize(handle, m, n, lwork)
+    end function hipsolverZgebrd_bufferSizeFortran
+
+    function hipsolverSgebrdFortran(handle, m, n, A, lda, D, E, tauq, taup, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverSgebrdFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: D
+        type(c_ptr), value :: E
+        type(c_ptr), value :: tauq
+        type(c_ptr), value :: taup
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverSgebrd(handle, m, n, A, lda, D, E, tauq, taup, work, lwork, info)
+    end function hipsolverSgebrdFortran
+
+    function hipsolverDgebrdFortran(handle, m, n, A, lda, D, E, tauq, taup, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverDgebrdFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: D
+        type(c_ptr), value :: E
+        type(c_ptr), value :: tauq
+        type(c_ptr), value :: taup
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverDgebrd(handle, m, n, A, lda, D, E, tauq, taup, work, lwork, info)
+    end function hipsolverDgebrdFortran
+
+    function hipsolverCgebrdFortran(handle, m, n, A, lda, D, E, tauq, taup, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverCgebrdFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: D
+        type(c_ptr), value :: E
+        type(c_ptr), value :: tauq
+        type(c_ptr), value :: taup
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverCgebrd(handle, m, n, A, lda, D, E, tauq, taup, work, lwork, info)
+    end function hipsolverCgebrdFortran
+
+    function hipsolverZgebrdFortran(handle, m, n, A, lda, D, E, tauq, taup, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverZgebrdFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: D
+        type(c_ptr), value :: E
+        type(c_ptr), value :: tauq
+        type(c_ptr), value :: taup
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverZgebrd(handle, m, n, A, lda, D, E, tauq, taup, work, lwork, info)
+    end function hipsolverZgebrdFortran
+
     ! ******************** GEQRF ********************
     function hipsolverSgeqrf_bufferSizeFortran(handle, m, n, A, lda, lwork) &
             result(res) &
@@ -914,5 +1059,166 @@ module hipsolver_interface
         integer(c_int) :: res
         res = hipsolverZpotrfBatched(handle, uplo, n, A, lda, info, batch_count)
     end function hipsolverZpotrfBatchedFortran
+
+    ! ******************** SYTRD/HETRD ********************
+    function hipsolverSsytrd_bufferSizeFortran(handle, uplo, n, A, lda, D, E, tau, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverSsytrd_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+        integer(c_int), value :: n
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: D
+        type(c_ptr), value :: E
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverSsytrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork)
+    end function hipsolverSsytrd_bufferSizeFortran
+    
+    function hipsolverDsytrd_bufferSizeFortran(handle, uplo, n, A, lda, D, E, tau, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverDsytrd_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+        integer(c_int), value :: n
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: D
+        type(c_ptr), value :: E
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverDsytrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork)
+    end function hipsolverDsytrd_bufferSizeFortran
+    
+    function hipsolverChetrd_bufferSizeFortran(handle, uplo, n, A, lda, D, E, tau, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverChetrd_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+        integer(c_int), value :: n
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: D
+        type(c_ptr), value :: E
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverChetrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork)
+    end function hipsolverChetrd_bufferSizeFortran
+    
+    function hipsolverZhetrd_bufferSizeFortran(handle, uplo, n, A, lda, D, E, tau, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverZhetrd_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+        integer(c_int), value :: n
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: D
+        type(c_ptr), value :: E
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverZhetrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork)
+    end function hipsolverZhetrd_bufferSizeFortran
+
+    function hipsolverSsytrdFortran(handle, uplo, n, A, lda, D, E, tau, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverSsytrdFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+        integer(c_int), value :: n
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: D
+        type(c_ptr), value :: E
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverSsytrd(handle, uplo, n, A, lda, D, E, tau, work, lwork, info)
+    end function hipsolverSsytrdFortran
+
+    function hipsolverDsytrdFortran(handle, uplo, n, A, lda, D, E, tau, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverDsytrdFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+        integer(c_int), value :: n
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: D
+        type(c_ptr), value :: E
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverDsytrd(handle, uplo, n, A, lda, D, E, tau, work, lwork, info)
+    end function hipsolverDsytrdFortran
+
+    function hipsolverChetrdFortran(handle, uplo, n, A, lda, D, E, tau, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverChetrdFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+        integer(c_int), value :: n
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: D
+        type(c_ptr), value :: E
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverChetrd(handle, uplo, n, A, lda, D, E, tau, work, lwork, info)
+    end function hipsolverChetrdFortran
+
+    function hipsolverZhetrdFortran(handle, uplo, n, A, lda, D, E, tau, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverZhetrdFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+        integer(c_int), value :: n
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: D
+        type(c_ptr), value :: E
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverZhetrd(handle, uplo, n, A, lda, D, E, tau, work, lwork, info)
+    end function hipsolverZhetrdFortran
     
 end module hipsolver_interface
