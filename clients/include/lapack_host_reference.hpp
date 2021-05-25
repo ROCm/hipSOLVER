@@ -43,6 +43,9 @@ void cblas_ormqr_unmqr(hipsolverSideMode_t  side,
                        T*                   work,
                        int                  sizeW);
 
+template <typename T, typename S>
+void cblas_gebrd(int m, int n, T* A, int lda, S* D, S* E, T* tauq, T* taup, T* work, int size_w);
+
 template <typename T>
 void cblas_geqrf(int m, int n, T* A, int lda, T* ipiv, T* work, int sizeW);
 

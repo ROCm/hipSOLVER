@@ -7,6 +7,9 @@
   - ormqr/unmqr
     - hipsolverSormqr_bufferSize, hipsolverDormqr_bufferSize, hipsolverCunmqr_bufferSize, hipsolverZunmqr_bufferSize
     - hipsolverSormqr, hipsolverDormqr, hipsolverCunmqr, hipsolverZunmqr
+  - gebrd
+    - hipsolverSgebrd_bufferSize, hipsolverDgebrd_bufferSize, hipsolverCgebrd_bufferSize, hipsolverZgebrd_bufferSize
+    - hipsolverSgebrd, hipsolverDgebrd, hipsolverCgebrd, hipsolverZgebrd
   - geqrf
     - hipsolverSgeqrf_bufferSize, hipsolverDgeqrf_bufferSize, hipsolverCgeqrf_bufferSize, hipsolverZgeqrf_bufferSize
     - hipsolverSgeqrf, hipsolverDgeqrf, hipsolverCgeqrf, hipsolverZgeqrf

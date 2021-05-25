@@ -117,6 +117,8 @@ at [rocSOLVER API](https://rocsolver.readthedocs.io/en/latest/userguide_api.html
 | hipsolverXormqr | x | x |   |   |
 | hipsolverXunmqr_bufferSize |   |   | x | x |
 | hipsolverXunmqr |   |   | x | x |
+| hipsolverXgebrd_bufferSize | x | x | x | x |
+| hipsolverXgebrd | x | x | x | x |
 | hipsolverXgeqrf_bufferSize | x | x | x | x |
 | hipsolverXgeqrf | x | x | x | x |
 | hipsolverXgetrf_bufferSize | x | x | x | x |

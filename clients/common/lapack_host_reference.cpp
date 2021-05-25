@@ -104,6 +104,51 @@ void zunmqr_(char*                   side,
              int*                    sizeW,
              int*                    info);
 
+void sgebrd_(int*   m,
+             int*   n,
+             float* A,
+             int*   lda,
+             float* D,
+             float* E,
+             float* tauq,
+             float* taup,
+             float* work,
+             int*   size_w,
+             int*   info);
+void dgebrd_(int*    m,
+             int*    n,
+             double* A,
+             int*    lda,
+             double* D,
+             double* E,
+             double* tauq,
+             double* taup,
+             double* work,
+             int*    size_w,
+             int*    info);
+void cgebrd_(int*              m,
+             int*              n,
+             hipsolverComplex* A,
+             int*              lda,
+             float*            D,
+             float*            E,
+             hipsolverComplex* tauq,
+             hipsolverComplex* taup,
+             hipsolverComplex* work,
+             int*              size_w,
+             int*              info);
+void zgebrd_(int*                    m,
+             int*                    n,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             double*                 D,
+             double*                 E,
+             hipsolverDoubleComplex* tauq,
+             hipsolverDoubleComplex* taup,
+             hipsolverDoubleComplex* work,
+             int*                    size_w,
+             int*                    info);
+
 void sgeqrf_(int* m, int* n, float* A, int* lda, float* ipiv, float* work, int* lwork, int* info);
 void dgeqrf_(
     int* m, int* n, double* A, int* lda, double* ipiv, double* work, int* lwork, int* info);
@@ -488,6 +533,71 @@ void cblas_ormqr_unmqr<hipsolverDoubleComplex>(hipsolverSideMode_t     side,
     char transC = hipsolver2char_operation(trans);
 
     zunmqr_(&sideC, &transC, &m, &n, &k, A, &lda, ipiv, C, &ldc, work, &lwork, &info);
+}
+
+// gebrd
+template <>
+void cblas_gebrd<float, float>(int    m,
+                               int    n,
+                               float* A,
+                               int    lda,
+                               float* D,
+                               float* E,
+                               float* tauq,
+                               float* taup,
+                               float* work,
+                               int    size_w)
+{
+    int info;
+    sgebrd_(&m, &n, A, &lda, D, E, tauq, taup, work, &size_w, &info);
+}
+
+template <>
+void cblas_gebrd<double, double>(int     m,
+                                 int     n,
+                                 double* A,
+                                 int     lda,
+                                 double* D,
+                                 double* E,
+                                 double* tauq,
+                                 double* taup,
+                                 double* work,
+                                 int     size_w)
+{
+    int info;
+    dgebrd_(&m, &n, A, &lda, D, E, tauq, taup, work, &size_w, &info);
+}
+
+template <>
+void cblas_gebrd<hipsolverComplex, float>(int               m,
+                                          int               n,
+                                          hipsolverComplex* A,
+                                          int               lda,
+                                          float*            D,
+                                          float*            E,
+                                          hipsolverComplex* tauq,
+                                          hipsolverComplex* taup,
+                                          hipsolverComplex* work,
+                                          int               size_w)
+{
+    int info;
+    cgebrd_(&m, &n, A, &lda, D, E, tauq, taup, work, &size_w, &info);
+}
+
+template <>
+void cblas_gebrd<hipsolverDoubleComplex, double>(int                     m,
+                                                 int                     n,
+                                                 hipsolverDoubleComplex* A,
+                                                 int                     lda,
+                                                 double*                 D,
+                                                 double*                 E,
+                                                 hipsolverDoubleComplex* tauq,
+                                                 hipsolverDoubleComplex* taup,
+                                                 hipsolverDoubleComplex* work,
+                                                 int                     size_w)
+{
+    int info;
+    zgebrd_(&m, &n, A, &lda, D, E, tauq, taup, work, &size_w, &info);
 }
 
 // geqrf
