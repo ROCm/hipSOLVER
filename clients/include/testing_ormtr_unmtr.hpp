@@ -6,6 +6,235 @@
 
 #include "clientcommon.hpp"
 
+template <bool FORTRAN, bool COMPLEX, typename T, typename U>
+void ormtr_unmtr_checkBadArgs(const hipsolverHandle_t    handle,
+                              const hipsolverSideMode_t  side,
+                              const hipsolverFillMode_t  uplo,
+                              const hipsolverOperation_t trans,
+                              const int                  m,
+                              const int                  n,
+                              T                          dA,
+                              const int                  lda,
+                              T                          dIpiv,
+                              T                          dC,
+                              const int                  ldc,
+                              T                          dWork,
+                              const int                  lwork,
+                              U                          dInfo)
+{
+    // handle
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+                                                nullptr,
+                                                side,
+                                                uplo,
+                                                trans,
+                                                m,
+                                                n,
+                                                dA,
+                                                lda,
+                                                dIpiv,
+                                                dC,
+                                                ldc,
+                                                dWork,
+                                                lwork,
+                                                dInfo),
+                          HIPSOLVER_STATUS_NOT_INITIALIZED);
+
+    // values
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+                                                handle,
+                                                hipsolverSideMode_t(-1),
+                                                uplo,
+                                                trans,
+                                                m,
+                                                n,
+                                                dA,
+                                                lda,
+                                                dIpiv,
+                                                dC,
+                                                ldc,
+                                                dWork,
+                                                lwork,
+                                                dInfo),
+                          HIPSOLVER_STATUS_INVALID_ENUM);
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+                                                handle,
+                                                side,
+                                                hipsolverFillMode_t(-1),
+                                                trans,
+                                                m,
+                                                n,
+                                                dA,
+                                                lda,
+                                                dIpiv,
+                                                dC,
+                                                ldc,
+                                                dWork,
+                                                lwork,
+                                                dInfo),
+                          HIPSOLVER_STATUS_INVALID_ENUM);
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+                                                handle,
+                                                side,
+                                                uplo,
+                                                hipsolverOperation_t(-1),
+                                                m,
+                                                n,
+                                                dA,
+                                                lda,
+                                                dIpiv,
+                                                dC,
+                                                ldc,
+                                                dWork,
+                                                lwork,
+                                                dInfo),
+                          HIPSOLVER_STATUS_INVALID_ENUM);
+    if(COMPLEX)
+        EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+                                                    handle,
+                                                    side,
+                                                    uplo,
+                                                    HIPSOLVER_OP_T,
+                                                    m,
+                                                    n,
+                                                    dA,
+                                                    lda,
+                                                    dIpiv,
+                                                    dC,
+                                                    ldc,
+                                                    dWork,
+                                                    lwork,
+                                                    dInfo),
+                              HIPSOLVER_STATUS_INVALID_VALUE);
+    else
+        EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+                                                    handle,
+                                                    side,
+                                                    uplo,
+                                                    HIPSOLVER_OP_C,
+                                                    m,
+                                                    n,
+                                                    dA,
+                                                    lda,
+                                                    dIpiv,
+                                                    dC,
+                                                    ldc,
+                                                    dWork,
+                                                    lwork,
+                                                    dInfo),
+                              HIPSOLVER_STATUS_INVALID_VALUE);
+
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
+    // pointers
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+                                                handle,
+                                                side,
+                                                uplo,
+                                                trans,
+                                                m,
+                                                n,
+                                                (T) nullptr,
+                                                lda,
+                                                dIpiv,
+                                                dC,
+                                                ldc,
+                                                dWork,
+                                                lwork,
+                                                dInfo),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+                                                handle,
+                                                side,
+                                                uplo,
+                                                trans,
+                                                m,
+                                                n,
+                                                dA,
+                                                lda,
+                                                (T) nullptr,
+                                                dC,
+                                                ldc,
+                                                dWork,
+                                                lwork,
+                                                dInfo),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+                                                handle,
+                                                side,
+                                                uplo,
+                                                trans,
+                                                m,
+                                                n,
+                                                dA,
+                                                lda,
+                                                dIpiv,
+                                                (T) nullptr,
+                                                ldc,
+                                                dWork,
+                                                lwork,
+                                                dInfo),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+#endif
+}
+
+template <bool FORTRAN, typename T, bool COMPLEX = is_complex<T>>
+void testing_ormtr_unmtr_bad_arg()
+{
+    // safe arguments
+    hipsolver_local_handle handle;
+    hipsolverSideMode_t    side  = HIPSOLVER_SIDE_LEFT;
+    hipsolverFillMode_t    uplo  = HIPSOLVER_FILL_MODE_UPPER;
+    hipsolverOperation_t   trans = HIPSOLVER_OP_N;
+    int                    m     = 1;
+    int                    n     = 1;
+    int                    lda   = 1;
+    int                    ldc   = 1;
+
+    // memory allocation
+    device_strided_batch_vector<T>   dA(1, 1, 1, 1);
+    device_strided_batch_vector<T>   dIpiv(1, 1, 1, 1);
+    device_strided_batch_vector<T>   dC(1, 1, 1, 1);
+    device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
+    CHECK_HIP_ERROR(dA.memcheck());
+    CHECK_HIP_ERROR(dIpiv.memcheck());
+    CHECK_HIP_ERROR(dC.memcheck());
+    CHECK_HIP_ERROR(dInfo.memcheck());
+
+    int size_W;
+    hipsolver_ormtr_unmtr_bufferSize(FORTRAN,
+                                     handle,
+                                     side,
+                                     uplo,
+                                     trans,
+                                     m,
+                                     n,
+                                     dA.data(),
+                                     lda,
+                                     dIpiv.data(),
+                                     dC.data(),
+                                     ldc,
+                                     &size_W);
+    device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
+    if(size_W)
+        CHECK_HIP_ERROR(dWork.memcheck());
+
+    // check bad arguments
+    ormtr_unmtr_checkBadArgs<FORTRAN, COMPLEX>(handle,
+                                               side,
+                                               uplo,
+                                               trans,
+                                               m,
+                                               n,
+                                               dA.data(),
+                                               lda,
+                                               dIpiv.data(),
+                                               dC.data(),
+                                               ldc,
+                                               dWork.data(),
+                                               size_W,
+                                               dInfo.data());
+}
+
 template <bool CPU, bool GPU, typename T, typename Td, typename Th>
 void ormtr_unmtr_initData(const hipsolverHandle_t    handle,
                           const hipsolverSideMode_t  side,
