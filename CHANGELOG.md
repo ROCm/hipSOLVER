@@ -4,6 +4,9 @@
 ## [(Unreleased) hipSOLVER 1.0.0 for ROCm 4.4]
 ### Added
 - Added functions
+  - orgqr/ungqr
+    - hipsolverSorgqr_bufferSize, hipsolverDorgqr_bufferSize, hipsolverCungqr_bufferSize, hipsolverZungqr_bufferSize
+    - hipsolverSorgqr, hipsolverDorgqr, hipsolverCungqr, hipsolverZungqr
   - ormqr/unmqr
     - hipsolverSormqr_bufferSize, hipsolverDormqr_bufferSize, hipsolverCunmqr_bufferSize, hipsolverZunmqr_bufferSize
     - hipsolverSormqr, hipsolverDormqr, hipsolverCunmqr, hipsolverZunmqr
