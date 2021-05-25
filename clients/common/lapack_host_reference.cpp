@@ -51,6 +51,29 @@ void zlarf_(char*                   side,
             int*                    lda,
             hipsolverDoubleComplex* work);
 
+void sorgqr_(
+    int* m, int* n, int* k, float* A, int* lda, float* ipiv, float* work, int* lwork, int* info);
+void dorgqr_(
+    int* m, int* n, int* k, double* A, int* lda, double* ipiv, double* work, int* lwork, int* info);
+void cungqr_(int*              m,
+             int*              n,
+             int*              k,
+             hipsolverComplex* A,
+             int*              lda,
+             hipsolverComplex* ipiv,
+             hipsolverComplex* work,
+             int*              lwork,
+             int*              info);
+void zungqr_(int*                    m,
+             int*                    n,
+             int*                    k,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             hipsolverDoubleComplex* ipiv,
+             hipsolverDoubleComplex* work,
+             int*                    lwork,
+             int*                    info);
+
 void sormqr_(char*  side,
              char*  trans,
              int*   m,
@@ -448,6 +471,51 @@ void cblas_gemm<hipsolverDoubleComplex>(hipsolverOperation_t    transA,
                 &beta,
                 C,
                 ldc);
+}
+
+// orgqr & ungqr
+template <>
+void cblas_orgqr_ungqr<float>(
+    int m, int n, int k, float* A, int lda, float* ipiv, float* work, int lwork)
+{
+    int info;
+    sorgqr_(&m, &n, &k, A, &lda, ipiv, work, &lwork, &info);
+}
+
+template <>
+void cblas_orgqr_ungqr<double>(
+    int m, int n, int k, double* A, int lda, double* ipiv, double* work, int lwork)
+{
+    int info;
+    dorgqr_(&m, &n, &k, A, &lda, ipiv, work, &lwork, &info);
+}
+
+template <>
+void cblas_orgqr_ungqr<hipsolverComplex>(int               m,
+                                         int               n,
+                                         int               k,
+                                         hipsolverComplex* A,
+                                         int               lda,
+                                         hipsolverComplex* ipiv,
+                                         hipsolverComplex* work,
+                                         int               lwork)
+{
+    int info;
+    cungqr_(&m, &n, &k, A, &lda, ipiv, work, &lwork, &info);
+}
+
+template <>
+void cblas_orgqr_ungqr<hipsolverDoubleComplex>(int                     m,
+                                               int                     n,
+                                               int                     k,
+                                               hipsolverDoubleComplex* A,
+                                               int                     lda,
+                                               hipsolverDoubleComplex* ipiv,
+                                               hipsolverDoubleComplex* work,
+                                               int                     lwork)
+{
+    int info;
+    zungqr_(&m, &n, &k, A, &lda, ipiv, work, &lwork, &info);
 }
 
 // ormqr & unmqr
