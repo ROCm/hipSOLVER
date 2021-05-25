@@ -423,13 +423,15 @@ module hipsolver
     
     ! ******************** GESVD ********************
     interface
-        function hipsolverSgesvd_bufferSize(handle, m, n, lwork) &
+        function hipsolverSgesvd_bufferSize(handle, jobu, jobv, m, n, lwork) &
                 result(c_int) &
                 bind(c, name = 'hipsolverSgesvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
             type(c_ptr), value :: handle
+            integer(c_signed_char), value :: jobu
+            integer(c_signed_char), value :: jobv
             integer(c_int), value :: m
             integer(c_int), value :: n
             type(c_ptr), value :: lwork
@@ -437,13 +439,15 @@ module hipsolver
     end interface
     
     interface
-        function hipsolverDgesvd_bufferSize(handle, m, n, lwork) &
+        function hipsolverDgesvd_bufferSize(handle, jobu, jobv, m, n, lwork) &
                 result(c_int) &
                 bind(c, name = 'hipsolverDgesvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
             type(c_ptr), value :: handle
+            integer(c_signed_char), value :: jobu
+            integer(c_signed_char), value :: jobv
             integer(c_int), value :: m
             integer(c_int), value :: n
             type(c_ptr), value :: lwork
@@ -451,13 +455,15 @@ module hipsolver
     end interface
     
     interface
-        function hipsolverCgesvd_bufferSize(handle, m, n, lwork) &
+        function hipsolverCgesvd_bufferSize(handle, jobu, jobv, m, n, lwork) &
                 result(c_int) &
                 bind(c, name = 'hipsolverCgesvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
             type(c_ptr), value :: handle
+            integer(c_signed_char), value :: jobu
+            integer(c_signed_char), value :: jobv
             integer(c_int), value :: m
             integer(c_int), value :: n
             type(c_ptr), value :: lwork
@@ -465,13 +471,15 @@ module hipsolver
     end interface
     
     interface
-        function hipsolverZgesvd_bufferSize(handle, m, n, lwork) &
+        function hipsolverZgesvd_bufferSize(handle, jobu, jobv, m, n, lwork) &
                 result(c_int) &
                 bind(c, name = 'hipsolverZgesvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
             type(c_ptr), value :: handle
+            integer(c_signed_char), value :: jobu
+            integer(c_signed_char), value :: jobv
             integer(c_int), value :: m
             integer(c_int), value :: n
             type(c_ptr), value :: lwork

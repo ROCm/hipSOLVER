@@ -38,8 +38,7 @@ const vector<vector<int>> size_range = {
     {1, 1, 0},
     {20, 20, 0},
     {40, 30, 0},
-    {60, 30, 0},
-    {60, 30, 1}};
+    {60, 30, 0}};
 
 const vector<vector<int>> opt_range = {
     // invalid
@@ -65,7 +64,7 @@ const vector<vector<int>> opt_range = {
     {0, 0, 0, 0, 1}};
 
 // // for daily_lapack tests
-// const vector<vector<int>> large_size_range = {{120, 100, 0}, {300, 120, 0}, {300, 120, 1}};
+// const vector<vector<int>> large_size_range = {{120, 100, 0}, {300, 120, 0}};
 
 // const vector<vector<int>> large_opt_range = {{0, 0, 0, 3, 3},
 //                                              {1, 0, 0, 0, 1},

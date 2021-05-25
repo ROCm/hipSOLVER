@@ -339,60 +339,68 @@ module hipsolver_interface
     end function hipsolverZgeqrfFortran
 
     ! ******************** GESVD ********************
-    function hipsolverSgesvd_bufferSizeFortran(handle, m, n, lwork) &
+    function hipsolverSgesvd_bufferSizeFortran(handle, jobu, jobv, m, n, lwork) &
             result(res) &
             bind(c, name = 'hipsolverSgesvd_bufferSizeFortran')
         use iso_c_binding
         use hipsolver_enums
         implicit none
         type(c_ptr), value :: handle
+        integer(c_signed_char), value :: jobu
+        integer(c_signed_char), value :: jobv
         integer(c_int), value :: m
         integer(c_int), value :: n
         type(c_ptr), value :: lwork
         integer(c_int) :: res
-        res = hipsolverSgesvd_bufferSize(handle, m, n, lwork)
+        res = hipsolverSgesvd_bufferSize(handle, jobu, jobv, m, n, lwork)
     end function hipsolverSgesvd_bufferSizeFortran
     
-    function hipsolverDgesvd_bufferSizeFortran(handle, m, n, lwork) &
+    function hipsolverDgesvd_bufferSizeFortran(handle, jobu, jobv, m, n, lwork) &
             result(res) &
             bind(c, name = 'hipsolverDgesvd_bufferSizeFortran')
         use iso_c_binding
         use hipsolver_enums
         implicit none
         type(c_ptr), value :: handle
+        integer(c_signed_char), value :: jobu
+        integer(c_signed_char), value :: jobv
         integer(c_int), value :: m
         integer(c_int), value :: n
         type(c_ptr), value :: lwork
         integer(c_int) :: res
-        res = hipsolverDgesvd_bufferSize(handle, m, n, lwork)
+        res = hipsolverDgesvd_bufferSize(handle, jobu, jobv, m, n, lwork)
     end function hipsolverDgesvd_bufferSizeFortran
     
-    function hipsolverCgesvd_bufferSizeFortran(handle, m, n, lwork) &
+    function hipsolverCgesvd_bufferSizeFortran(handle, jobu, jobv, m, n, lwork) &
             result(res) &
             bind(c, name = 'hipsolverCgesvd_bufferSizeFortran')
         use iso_c_binding
         use hipsolver_enums
         implicit none
         type(c_ptr), value :: handle
+        integer(c_signed_char), value :: jobu
+        integer(c_signed_char), value :: jobv
         integer(c_int), value :: m
         integer(c_int), value :: n
         type(c_ptr), value :: lwork
         integer(c_int) :: res
-        res = hipsolverCgesvd_bufferSize(handle, m, n, lwork)
+        res = hipsolverCgesvd_bufferSize(handle, jobu, jobv, m, n, lwork)
     end function hipsolverCgesvd_bufferSizeFortran
     
-    function hipsolverZgesvd_bufferSizeFortran(handle, m, n, lwork) &
+    function hipsolverZgesvd_bufferSizeFortran(handle, jobu, jobv, m, n, lwork) &
             result(res) &
             bind(c, name = 'hipsolverZgesvd_bufferSizeFortran')
         use iso_c_binding
         use hipsolver_enums
         implicit none
         type(c_ptr), value :: handle
+        integer(c_signed_char), value :: jobu
+        integer(c_signed_char), value :: jobv
         integer(c_int), value :: m
         integer(c_int), value :: n
         type(c_ptr), value :: lwork
         integer(c_int) :: res
-        res = hipsolverZgesvd_bufferSize(handle, m, n, lwork)
+        res = hipsolverZgesvd_bufferSize(handle, jobu, jobv, m, n, lwork)
     end function hipsolverZgesvd_bufferSizeFortran
 
     function hipsolverSgesvdFortran(handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info) &

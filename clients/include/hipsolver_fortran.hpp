@@ -189,25 +189,17 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgeqrfFortran(hipsolverHandle_t     
                                                           int*                    devInfo);
 
 // gesvd
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgesvd_bufferSizeFortran(hipsolverHandle_t handle,
-                                                                     int               m,
-                                                                     int               n,
-                                                                     int*              lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgesvd_bufferSizeFortran(
+    hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgesvd_bufferSizeFortran(hipsolverHandle_t handle,
-                                                                     int               m,
-                                                                     int               n,
-                                                                     int*              lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgesvd_bufferSizeFortran(
+    hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgesvd_bufferSizeFortran(hipsolverHandle_t handle,
-                                                                     int               m,
-                                                                     int               n,
-                                                                     int*              lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgesvd_bufferSizeFortran(
+    hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgesvd_bufferSizeFortran(hipsolverHandle_t handle,
-                                                                     int               m,
-                                                                     int               n,
-                                                                     int*              lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgesvd_bufferSizeFortran(
+    hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgesvdFortran(hipsolverHandle_t handle,
                                                           signed char       jobu,

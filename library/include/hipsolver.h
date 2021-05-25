@@ -364,25 +364,17 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgeqrf(hipsolverHandle_t       handl
                                                    int*                    devInfo);
 
 // gesvd
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgesvd_bufferSize(hipsolverHandle_t handle,
-                                                              int               m,
-                                                              int               n,
-                                                              int*              lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgesvd_bufferSize(
+    hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgesvd_bufferSize(hipsolverHandle_t handle,
-                                                              int               m,
-                                                              int               n,
-                                                              int*              lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgesvd_bufferSize(
+    hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgesvd_bufferSize(hipsolverHandle_t handle,
-                                                              int               m,
-                                                              int               n,
-                                                              int*              lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgesvd_bufferSize(
+    hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgesvd_bufferSize(hipsolverHandle_t handle,
-                                                              int               m,
-                                                              int               n,
-                                                              int*              lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgesvd_bufferSize(
+    hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgesvd(hipsolverHandle_t handle,
                                                    signed char       jobu,

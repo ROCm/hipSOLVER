@@ -572,7 +572,8 @@ catch(...)
 }
 
 /******************** GESVD ********************/
-hipsolverStatus_t hipsolverSgesvd_bufferSize(hipsolverHandle_t handle, int m, int n, int* lwork)
+hipsolverStatus_t hipsolverSgesvd_bufferSize(
+    hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork)
 try
 {
     return cuda2hip_status(cusolverDnSgesvd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
@@ -582,7 +583,8 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDgesvd_bufferSize(hipsolverHandle_t handle, int m, int n, int* lwork)
+hipsolverStatus_t hipsolverDgesvd_bufferSize(
+    hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork)
 try
 {
     return cuda2hip_status(cusolverDnSgesvd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
@@ -592,7 +594,8 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCgesvd_bufferSize(hipsolverHandle_t handle, int m, int n, int* lwork)
+hipsolverStatus_t hipsolverCgesvd_bufferSize(
+    hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork)
 try
 {
     return cuda2hip_status(cusolverDnSgesvd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
@@ -602,7 +605,8 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZgesvd_bufferSize(hipsolverHandle_t handle, int m, int n, int* lwork)
+hipsolverStatus_t hipsolverZgesvd_bufferSize(
+    hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork)
 try
 {
     return cuda2hip_status(cusolverDnSgesvd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));

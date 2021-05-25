@@ -317,7 +317,7 @@ void testing_gesvd_bad_arg()
         // CHECK_HIP_ERROR(dinfo.memcheck());
 
         // int size_W;
-        // hipsolver_gesvd_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        // hipsolver_gesvd_bufferSize(FORTRAN, handle, left_svect, right_svect, m, n, dA.data(), lda, &size_W);
         // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
@@ -344,7 +344,8 @@ void testing_gesvd_bad_arg()
         CHECK_HIP_ERROR(dinfo.memcheck());
 
         int size_W;
-        hipsolver_gesvd_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        hipsolver_gesvd_bufferSize(
+            FORTRAN, handle, left_svect, right_svect, m, n, dA.data(), lda, &size_W);
         device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
@@ -1081,8 +1082,10 @@ void testing_gesvd(Arguments& argus)
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
 
-        // int size_W;
-        // hipsolver_gesvd_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        // int w1, w2;
+        // hipsolver_gesvd_bufferSize(FORTRAN, handle, leftv, rightv, m, n, dA.data(), lda, &w1);
+        // hipsolver_gesvd_bufferSize(FORTRAN, handle, leftvT, rightvT, mT, nT, dA.data(), lda, &w2);
+        // int size_W = max(w1, w2);
         // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
@@ -1185,8 +1188,10 @@ void testing_gesvd(Arguments& argus)
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
 
-        int size_W;
-        hipsolver_gesvd_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        int w1, w2;
+        hipsolver_gesvd_bufferSize(FORTRAN, handle, leftv, rightv, m, n, dA.data(), lda, &w1);
+        hipsolver_gesvd_bufferSize(FORTRAN, handle, leftvT, rightvT, mT, nT, dA.data(), lda, &w2);
+        int                            size_W = max(w1, w2);
         device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
