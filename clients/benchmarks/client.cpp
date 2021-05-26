@@ -294,13 +294,6 @@ try
         //     "                           The order in which a series of transformations are applied.\n"
         //     "                           ")
 
-        // ("evect",
-        //  value<char>()->default_value('N'),
-        //     "N = none, V = compute eigenvectors of the matrix,\n"
-        //     "                           I = compute eigenvectors of the tridiagonal matrix.\n"
-        //     "                           Indicates how the eigenvectors are to be calculated and stored.\n"
-        //     "                           ")
-
         // ("fast_alg",
         //  value<char>()->default_value('O'),
         //     "O = out-of-place, I = in-place.\n"
@@ -317,6 +310,12 @@ try
         //     "1 = Ax, 2 = ABx, 3 = BAx.\n"
         //     "                           Problem type for generalized eigenproblems.\n"
         //     "                           ")
+
+        ("jobz",
+         value<char>()->default_value('N'),
+            "N = none, V = compute eigenvectors of the matrix,\n"
+            "                           Indicates how the eigenvectors are to be calculated and stored.\n"
+            "                           ")
 
         ("side",
          value<char>(),
@@ -375,7 +374,7 @@ try
     // argus.validate_svect("left_svect");
     // argus.validate_svect("right_svect");
     // argus.validate_workmode("fast_alg");
-    // argus.validate_evect("evect");
+    argus.validate_evect("jobz");
     // argus.validate_itype("itype");
 
     // select and dispatch function test/benchmark

@@ -27,6 +27,7 @@ set(hipsolver_test_source
   gebrd_gtest.cpp
   geqrf_gtest.cpp
   potrf_gtest.cpp
+  syevd_heevd_gtest.cpp
   sytrd_hetrd_gtest.cpp
   orgqr_ungqr_gtest.cpp
   ormqr_unmqr_gtest.cpp

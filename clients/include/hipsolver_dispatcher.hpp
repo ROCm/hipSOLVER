@@ -16,6 +16,7 @@
 #include "testing_orgqr_ungqr.hpp"
 #include "testing_ormqr_unmqr.hpp"
 #include "testing_potrf.hpp"
+#include "testing_syevd_heevd.hpp"
 #include "testing_sytrd_hetrd.hpp"
 
 struct str_less
@@ -63,6 +64,7 @@ class hipsolver_dispatcher
         static const func_map map_real = {
             {"orgqr", testing_orgqr_ungqr<false, T>},
             {"ormqr", testing_ormqr_unmqr<false, T>},
+            {"syevd", testing_syevd_heevd<false, false, false, T>},
             {"sytrd", testing_sytrd_hetrd<false, false, false, T>},
         };
 
@@ -84,6 +86,7 @@ class hipsolver_dispatcher
         static const func_map map_complex = {
             {"ungqr", testing_orgqr_ungqr<false, T>},
             {"unmqr", testing_ormqr_unmqr<false, T>},
+            {"heevd", testing_syevd_heevd<false, false, false, T>},
             {"hetrd", testing_sytrd_hetrd<false, false, false, T>},
         };
 

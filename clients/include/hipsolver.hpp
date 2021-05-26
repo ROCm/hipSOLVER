@@ -1090,6 +1090,157 @@ inline hipsolverStatus_t hipsolver_potrf(bool                    FORTRAN,
 }
 /********************************************************/
 
+/******************** SYEVD/HEEVD ********************/
+// normal and strided_batched
+inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FORTRAN,
+                                                          hipsolverHandle_t   handle,
+                                                          hipsolverEigMode_t  jobz,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          float*              A,
+                                                          int                 lda,
+                                                          float*              W,
+                                                          int*                lwork)
+{
+    if(!FORTRAN)
+        return hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
+    else
+        return hipsolverSsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FORTRAN,
+                                                          hipsolverHandle_t   handle,
+                                                          hipsolverEigMode_t  jobz,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          double*             A,
+                                                          int                 lda,
+                                                          double*             W,
+                                                          int*                lwork)
+{
+    if(!FORTRAN)
+        return hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
+    else
+        return hipsolverDsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FORTRAN,
+                                                          hipsolverHandle_t   handle,
+                                                          hipsolverEigMode_t  jobz,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          hipsolverComplex*   A,
+                                                          int                 lda,
+                                                          float*              W,
+                                                          int*                lwork)
+{
+    if(!FORTRAN)
+        return hipsolverCheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
+    else
+        return hipsolverCheevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                    FORTRAN,
+                                                          hipsolverHandle_t       handle,
+                                                          hipsolverEigMode_t      jobz,
+                                                          hipsolverFillMode_t     uplo,
+                                                          int                     n,
+                                                          hipsolverDoubleComplex* A,
+                                                          int                     lda,
+                                                          double*                 W,
+                                                          int*                    lwork)
+{
+    if(!FORTRAN)
+        return hipsolverZheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
+    else
+        return hipsolverZheevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
+                                               hipsolverHandle_t   handle,
+                                               hipsolverEigMode_t  jobz,
+                                               hipsolverFillMode_t uplo,
+                                               int                 n,
+                                               float*              A,
+                                               int                 lda,
+                                               int                 stA,
+                                               float*              W,
+                                               int                 stW,
+                                               float*              work,
+                                               int                 lwork,
+                                               int*                info,
+                                               int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverSsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+    else
+        return hipsolverSsyevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
+                                               hipsolverHandle_t   handle,
+                                               hipsolverEigMode_t  jobz,
+                                               hipsolverFillMode_t uplo,
+                                               int                 n,
+                                               double*             A,
+                                               int                 lda,
+                                               int                 stA,
+                                               double*             W,
+                                               int                 stW,
+                                               double*             work,
+                                               int                 lwork,
+                                               int*                info,
+                                               int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverDsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+    else
+        return hipsolverDsyevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
+                                               hipsolverHandle_t   handle,
+                                               hipsolverEigMode_t  jobz,
+                                               hipsolverFillMode_t uplo,
+                                               int                 n,
+                                               hipsolverComplex*   A,
+                                               int                 lda,
+                                               int                 stA,
+                                               float*              W,
+                                               int                 stW,
+                                               hipsolverComplex*   work,
+                                               int                 lwork,
+                                               int*                info,
+                                               int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverCheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+    else
+        return hipsolverCheevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_syevd_heevd(bool                    FORTRAN,
+                                               hipsolverHandle_t       handle,
+                                               hipsolverEigMode_t      jobz,
+                                               hipsolverFillMode_t     uplo,
+                                               int                     n,
+                                               hipsolverDoubleComplex* A,
+                                               int                     lda,
+                                               int                     stA,
+                                               double*                 W,
+                                               int                     stW,
+                                               hipsolverDoubleComplex* work,
+                                               int                     lwork,
+                                               int*                    info,
+                                               int                     bc)
+{
+    if(!FORTRAN)
+        return hipsolverZheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+    else
+        return hipsolverZheevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+}
+/********************************************************/
+
 /******************** SYTRD/HETRD ********************/
 // normal and strided_batched
 inline hipsolverStatus_t hipsolver_sytrd_hetrd_bufferSize(bool                FORTRAN,
