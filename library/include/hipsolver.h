@@ -713,11 +713,45 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t       handl
                                                    int*                    devInfo);
 
 // potrf_batched
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpotrfBatched_bufferSize(hipsolverHandle_t   handle,
+                                                                     hipsolverFillMode_t uplo,
+                                                                     int                 n,
+                                                                     float*              A[],
+                                                                     int                 lda,
+                                                                     int*                lwork,
+                                                                     int batch_count);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDpotrfBatched_bufferSize(hipsolverHandle_t   handle,
+                                                                     hipsolverFillMode_t uplo,
+                                                                     int                 n,
+                                                                     double*             A[],
+                                                                     int                 lda,
+                                                                     int*                lwork,
+                                                                     int batch_count);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCpotrfBatched_bufferSize(hipsolverHandle_t   handle,
+                                                                     hipsolverFillMode_t uplo,
+                                                                     int                 n,
+                                                                     hipsolverComplex*   A[],
+                                                                     int                 lda,
+                                                                     int*                lwork,
+                                                                     int batch_count);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrfBatched_bufferSize(hipsolverHandle_t       handle,
+                                                                     hipsolverFillMode_t     uplo,
+                                                                     int                     n,
+                                                                     hipsolverDoubleComplex* A[],
+                                                                     int                     lda,
+                                                                     int*                    lwork,
+                                                                     int batch_count);
+
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpotrfBatched(hipsolverHandle_t   handle,
                                                           hipsolverFillMode_t uplo,
                                                           int                 n,
                                                           float*              A[],
                                                           int                 lda,
+                                                          float*              work,
+                                                          int                 lwork,
                                                           int*                devInfo,
                                                           int                 batch_count);
 
@@ -726,6 +760,8 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDpotrfBatched(hipsolverHandle_t   ha
                                                           int                 n,
                                                           double*             A[],
                                                           int                 lda,
+                                                          double*             work,
+                                                          int                 lwork,
                                                           int*                devInfo,
                                                           int                 batch_count);
 
@@ -734,6 +770,8 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCpotrfBatched(hipsolverHandle_t   ha
                                                           int                 n,
                                                           hipsolverComplex*   A[],
                                                           int                 lda,
+                                                          hipsolverComplex*   work,
+                                                          int                 lwork,
                                                           int*                devInfo,
                                                           int                 batch_count);
 
@@ -742,6 +780,8 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrfBatched(hipsolverHandle_t     
                                                           int                     n,
                                                           hipsolverDoubleComplex* A[],
                                                           int                     lda,
+                                                          hipsolverDoubleComplex* work,
+                                                          int                     lwork,
                                                           int*                    devInfo,
                                                           int                     batch_count);
 

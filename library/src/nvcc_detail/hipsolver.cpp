@@ -1357,11 +1357,81 @@ catch(...)
 }
 
 /******************** POTRF_BATCHED ********************/
+hipsolverStatus_t hipsolverSpotrfBatched_bufferSize(hipsolverHandle_t   handle,
+                                                    hipsolverFillMode_t uplo,
+                                                    int                 n,
+                                                    float*              A[],
+                                                    int                 lda,
+                                                    int*                lwork,
+                                                    int                 batch_count)
+try
+{
+    *lwork = 0;
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDpotrfBatched_bufferSize(hipsolverHandle_t   handle,
+                                                    hipsolverFillMode_t uplo,
+                                                    int                 n,
+                                                    double*             A[],
+                                                    int                 lda,
+                                                    int*                lwork,
+                                                    int                 batch_count)
+try
+{
+    *lwork = 0;
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverCpotrfBatched_bufferSize(hipsolverHandle_t   handle,
+                                                    hipsolverFillMode_t uplo,
+                                                    int                 n,
+                                                    hipsolverComplex*   A[],
+                                                    int                 lda,
+                                                    int*                lwork,
+                                                    int                 batch_count)
+try
+{
+    *lwork = 0;
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverZpotrfBatched_bufferSize(hipsolverHandle_t       handle,
+                                                    hipsolverFillMode_t     uplo,
+                                                    int                     n,
+                                                    hipsolverDoubleComplex* A[],
+                                                    int                     lda,
+                                                    int*                    lwork,
+                                                    int                     batch_count)
+try
+{
+    *lwork = 0;
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
 hipsolverStatus_t hipsolverSpotrfBatched(hipsolverHandle_t   handle,
                                          hipsolverFillMode_t uplo,
                                          int                 n,
                                          float*              A[],
                                          int                 lda,
+                                         float*              work,
+                                         int                 lwork,
                                          int*                devInfo,
                                          int                 batch_count)
 try
@@ -1379,6 +1449,8 @@ hipsolverStatus_t hipsolverDpotrfBatched(hipsolverHandle_t   handle,
                                          int                 n,
                                          double*             A[],
                                          int                 lda,
+                                         double*             work,
+                                         int                 lwork,
                                          int*                devInfo,
                                          int                 batch_count)
 try
@@ -1396,6 +1468,8 @@ hipsolverStatus_t hipsolverCpotrfBatched(hipsolverHandle_t   handle,
                                          int                 n,
                                          hipsolverComplex*   A[],
                                          int                 lda,
+                                         hipsolverComplex*   work,
+                                         int                 lwork,
                                          int*                devInfo,
                                          int                 batch_count)
 try
@@ -1418,6 +1492,8 @@ hipsolverStatus_t hipsolverZpotrfBatched(hipsolverHandle_t       handle,
                                          int                     n,
                                          hipsolverDoubleComplex* A[],
                                          int                     lda,
+                                         hipsolverDoubleComplex* work,
+                                         int                     lwork,
                                          int*                    devInfo,
                                          int                     batch_count)
 try
