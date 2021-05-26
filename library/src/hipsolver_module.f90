@@ -31,6 +31,12 @@ module hipsolver_enums
     end enum
 
     enum, bind(c)
+        enumerator :: HIPSOLVER_EIG_TYPE_1 = 211
+        enumerator :: HIPSOLVER_EIG_TYPE_2 = 212
+        enumerator :: HIPSOLVER_EIG_TYPE_3 = 213
+    end enum
+
+    enum, bind(c)
         enumerator :: HIPSOLVER_STATUS_SUCCESS           = 0
         enumerator :: HIPSOLVER_STATUS_NOT_INITIALIZED   = 1
         enumerator :: HIPSOLVER_STATUS_ALLOC_FAILED      = 2

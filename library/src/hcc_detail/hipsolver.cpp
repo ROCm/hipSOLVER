@@ -124,6 +124,36 @@ hipsolverEigMode_t rocblas2hip_evect(rocblas_evect_ eig)
     }
 }
 
+rocblas_eform_ hip2rocblas_eform(hipsolverEigType_t eig)
+{
+    switch(eig)
+    {
+    case HIPSOLVER_EIG_TYPE_1:
+        return rocblas_eform_ax;
+    case HIPSOLVER_EIG_TYPE_2:
+        return rocblas_eform_abx;
+    case HIPSOLVER_EIG_TYPE_3:
+        return rocblas_eform_bax;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+hipsolverEigType_t rocblas2hip_eform(rocblas_eform_ eig)
+{
+    switch(eig)
+    {
+    case rocblas_eform_ax:
+        return HIPSOLVER_EIG_TYPE_1;
+    case rocblas_eform_abx:
+        return HIPSOLVER_EIG_TYPE_2;
+    case rocblas_eform_bax:
+        return HIPSOLVER_EIG_TYPE_3;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
 hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
 {
     switch(error)

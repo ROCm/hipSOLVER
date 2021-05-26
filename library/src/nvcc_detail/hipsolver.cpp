@@ -118,6 +118,36 @@ hipsolverEigMode_t cuda2hip_evect(cusolverEigMode_t eig)
     }
 }
 
+cusolverEigType_t hip2cuda_eform(hipsolverEigType_t eig)
+{
+    switch(eig)
+    {
+    case HIPSOLVER_EIG_TYPE_1:
+        return CUSOLVER_EIG_TYPE_1;
+    case HIPSOLVER_EIG_TYPE_2:
+        return CUSOLVER_EIG_TYPE_2;
+    case HIPSOLVER_EIG_TYPE_3:
+        return CUSOLVER_EIG_TYPE_3;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+hipsolverEigType_t cuda2hip_eform(cusolverEigType_t eig)
+{
+    switch(eig)
+    {
+    case CUSOLVER_EIG_TYPE_1:
+        return HIPSOLVER_EIG_TYPE_1;
+    case CUSOLVER_EIG_TYPE_2:
+        return HIPSOLVER_EIG_TYPE_2;
+    case CUSOLVER_EIG_TYPE_3:
+        return HIPSOLVER_EIG_TYPE_3;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
 hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
 {
     switch(cuStatus)

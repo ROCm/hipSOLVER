@@ -189,6 +189,13 @@ typedef enum
     HIPSOLVER_EIG_MODE_VECTOR   = 202,
 } hipsolverEigMode_t;
 
+typedef enum
+{
+    HIPSOLVER_EIG_TYPE_1 = 211,
+    HIPSOLVER_EIG_TYPE_2 = 212,
+    HIPSOLVER_EIG_TYPE_3 = 213,
+} hipsolverEigType_t;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
