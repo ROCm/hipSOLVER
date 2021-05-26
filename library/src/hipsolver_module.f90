@@ -862,7 +862,87 @@ module hipsolver
 
     ! ******************** GETRS ********************
     interface
-        function hipsolverSgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info) &
+        function hipsolverSgetrs_bufferSize(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSgetrs_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: ipiv
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: lwork
+        end function hipsolverSgetrs_bufferSize
+    end interface
+    
+    interface
+        function hipsolverDgetrs_bufferSize(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDgetrs_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: ipiv
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: lwork
+        end function hipsolverDgetrs_bufferSize
+    end interface
+    
+    interface
+        function hipsolverCgetrs_bufferSize(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCgetrs_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: ipiv
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: lwork
+        end function hipsolverCgetrs_bufferSize
+    end interface
+    
+    interface
+        function hipsolverZgetrs_bufferSize(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZgetrs_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: ipiv
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: lwork
+        end function hipsolverZgetrs_bufferSize
+    end interface
+
+    interface
+        function hipsolverSgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, work, lwork, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverSgetrs')
             use iso_c_binding
@@ -877,12 +957,14 @@ module hipsolver
             type(c_ptr), value :: ipiv
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
             type(c_ptr), value :: info
         end function hipsolverSgetrs
     end interface
     
     interface
-        function hipsolverDgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info) &
+        function hipsolverDgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, work, lwork, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverDgetrs')
             use iso_c_binding
@@ -897,12 +979,14 @@ module hipsolver
             type(c_ptr), value :: ipiv
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
             type(c_ptr), value :: info
         end function hipsolverDgetrs
     end interface
     
     interface
-        function hipsolverCgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info) &
+        function hipsolverCgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, work, lwork, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverCgetrs')
             use iso_c_binding
@@ -917,12 +1001,14 @@ module hipsolver
             type(c_ptr), value :: ipiv
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
             type(c_ptr), value :: info
         end function hipsolverCgetrs
     end interface
     
     interface
-        function hipsolverZgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, info) &
+        function hipsolverZgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, work, lwork, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverZgetrs')
             use iso_c_binding
@@ -937,6 +1023,8 @@ module hipsolver
             type(c_ptr), value :: ipiv
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
             type(c_ptr), value :: info
         end function hipsolverZgetrs
     end interface

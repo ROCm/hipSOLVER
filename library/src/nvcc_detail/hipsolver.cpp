@@ -1015,6 +1015,86 @@ catch(...)
 }
 
 /******************** GETRS ********************/
+hipsolverStatus_t hipsolverSgetrs_bufferSize(hipsolverHandle_t    handle,
+                                             hipsolverOperation_t trans,
+                                             int                  n,
+                                             int                  nrhs,
+                                             float*               A,
+                                             int                  lda,
+                                             int*                 devIpiv,
+                                             float*               B,
+                                             int                  ldb,
+                                             int*                 lwork)
+try
+{
+    *lwork = 0;
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDgetrs_bufferSize(hipsolverHandle_t    handle,
+                                             hipsolverOperation_t trans,
+                                             int                  n,
+                                             int                  nrhs,
+                                             double*              A,
+                                             int                  lda,
+                                             int*                 devIpiv,
+                                             double*              B,
+                                             int                  ldb,
+                                             int*                 lwork)
+try
+{
+    *lwork = 0;
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverCgetrs_bufferSize(hipsolverHandle_t    handle,
+                                             hipsolverOperation_t trans,
+                                             int                  n,
+                                             int                  nrhs,
+                                             hipsolverComplex*    A,
+                                             int                  lda,
+                                             int*                 devIpiv,
+                                             hipsolverComplex*    B,
+                                             int                  ldb,
+                                             int*                 lwork)
+try
+{
+    *lwork = 0;
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverZgetrs_bufferSize(hipsolverHandle_t       handle,
+                                             hipsolverOperation_t    trans,
+                                             int                     n,
+                                             int                     nrhs,
+                                             hipsolverDoubleComplex* A,
+                                             int                     lda,
+                                             int*                    devIpiv,
+                                             hipsolverDoubleComplex* B,
+                                             int                     ldb,
+                                             int*                    lwork)
+try
+{
+    *lwork = 0;
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
 hipsolverStatus_t hipsolverSgetrs(hipsolverHandle_t    handle,
                                   hipsolverOperation_t trans,
                                   int                  n,
@@ -1024,6 +1104,8 @@ hipsolverStatus_t hipsolverSgetrs(hipsolverHandle_t    handle,
                                   int*                 devIpiv,
                                   float*               B,
                                   int                  ldb,
+                                  float*               work,
+                                  int                  lwork,
                                   int*                 devInfo)
 try
 {
@@ -1052,6 +1134,8 @@ hipsolverStatus_t hipsolverDgetrs(hipsolverHandle_t    handle,
                                   int*                 devIpiv,
                                   double*              B,
                                   int                  ldb,
+                                  double*              work,
+                                  int                  lwork,
                                   int*                 devInfo)
 try
 {
@@ -1080,6 +1164,8 @@ hipsolverStatus_t hipsolverCgetrs(hipsolverHandle_t    handle,
                                   int*                 devIpiv,
                                   hipsolverComplex*    B,
                                   int                  ldb,
+                                  hipsolverComplex*    work,
+                                  int                  lwork,
                                   int*                 devInfo)
 try
 {
@@ -1108,6 +1194,8 @@ hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t       handle,
                                   int*                    devIpiv,
                                   hipsolverDoubleComplex* B,
                                   int                     ldb,
+                                  hipsolverDoubleComplex* work,
+                                  int                     lwork,
                                   int*                    devInfo)
 try
 {
