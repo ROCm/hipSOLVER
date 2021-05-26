@@ -34,8 +34,8 @@ const vector<vector<int>> size_range = {
     {35, 35},
     {50, 60}};
 
-// for daily_lapack tests
-const vector<vector<int>> large_size_range = {{192, 192}, {256, 270}, {300, 300}};
+// // for daily_lapack tests
+// const vector<vector<int>> large_size_range = {{192, 192}, {256, 270}, {300, 300}};
 
 Arguments syevd_heevd_setup_arguments(syevd_heevd_tuple tup)
 {
@@ -137,29 +137,29 @@ TEST_P(HEEVD_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         SYEVD,
-                         Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          SYEVD,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack, SYEVD, Combine(ValuesIn(size_range), ValuesIn(op_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         HEEVD,
-                         Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          HEEVD,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack, HEEVD, Combine(ValuesIn(size_range), ValuesIn(op_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         SYEVD_FORTRAN,
-                         Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          SYEVD_FORTRAN,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          SYEVD_FORTRAN,
                          Combine(ValuesIn(size_range), ValuesIn(op_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         HEEVD_FORTRAN,
-                         Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          HEEVD_FORTRAN,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          HEEVD_FORTRAN,
