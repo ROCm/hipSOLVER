@@ -26,6 +26,9 @@
   - syevd/heevd
     - hipsolverSsyevd_bufferSize, hipsolverDsyevd_bufferSize, hipsolverCheevd_bufferSize, hipsolverZheevd_bufferSize
     - hipsolverSsyevd, hipsolverDsyevd, hipsolverCheevd, hipsolverZheevd
+  - sygvd/hegvd
+    - hipsolverSsygvd_bufferSize, hipsolverDsygvd_bufferSize, hipsolverChegvd_bufferSize, hipsolverZhegvd_bufferSize
+    - hipsolverSsygvd, hipsolverDsygvd, hipsolverChegvd, hipsolverZhegvd
   - sytrd/hetrd
     - hipsolverSsytrd_bufferSize, hipsolverDsytrd_bufferSize, hipsolverChetrd_bufferSize, hipsolverZhetrd_bufferSize
     - hipsolverSsytrd, hipsolverDsytrd, hipsolverChetrd, hipsolverZhetrd
