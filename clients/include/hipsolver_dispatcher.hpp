@@ -17,6 +17,7 @@
 #include "testing_ormqr_unmqr.hpp"
 #include "testing_potrf.hpp"
 #include "testing_syevd_heevd.hpp"
+#include "testing_sygvd_hegvd.hpp"
 #include "testing_sytrd_hetrd.hpp"
 
 struct str_less
@@ -65,6 +66,7 @@ class hipsolver_dispatcher
             {"orgqr", testing_orgqr_ungqr<false, T>},
             {"ormqr", testing_ormqr_unmqr<false, T>},
             {"syevd", testing_syevd_heevd<false, false, false, T>},
+            {"sygvd", testing_sygvd_hegvd<false, false, false, T>},
             {"sytrd", testing_sytrd_hetrd<false, false, false, T>},
         };
 
@@ -87,6 +89,7 @@ class hipsolver_dispatcher
             {"ungqr", testing_orgqr_ungqr<false, T>},
             {"unmqr", testing_ormqr_unmqr<false, T>},
             {"heevd", testing_syevd_heevd<false, false, false, T>},
+            {"hegvd", testing_sygvd_hegvd<false, false, false, T>},
             {"hetrd", testing_sytrd_hetrd<false, false, false, T>},
         };
 

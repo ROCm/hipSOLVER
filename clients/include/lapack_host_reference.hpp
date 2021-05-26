@@ -25,6 +25,20 @@ void cblas_gemm(hipsolverOperation_t transA,
                 int                  ldc);
 
 template <typename T>
+void cblas_symm_hemm(hipsolverSideMode_t side,
+                     hipsolverFillMode_t uplo,
+                     int                 m,
+                     int                 n,
+                     T                   alpha,
+                     T*                  A,
+                     int                 lda,
+                     T*                  B,
+                     int                 ldb,
+                     T                   beta,
+                     T*                  C,
+                     int                 ldc);
+
+template <typename T>
 void cblas_symv_hemv(hipsolverFillMode_t uplo,
                      int                 n,
                      T                   alpha,
@@ -85,6 +99,24 @@ void cblas_syevd_heevd(hipsolverEigMode_t  evect,
                        T*                  A,
                        int                 lda,
                        S*                  D,
+                       T*                  work,
+                       int                 lwork,
+                       S*                  rwork,
+                       int                 lrwork,
+                       int*                iwork,
+                       int                 liwork,
+                       int*                info);
+
+template <typename T, typename S>
+void cblas_sygvd_hegvd(hipsolverEigType_t  itype,
+                       hipsolverEigMode_t  evect,
+                       hipsolverFillMode_t uplo,
+                       int                 n,
+                       T*                  A,
+                       int                 lda,
+                       T*                  B,
+                       int                 ldb,
+                       S*                  W,
                        T*                  work,
                        int                 lwork,
                        S*                  rwork,

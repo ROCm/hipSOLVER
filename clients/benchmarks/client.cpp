@@ -305,11 +305,11 @@ try
         //     "Increment between values in vector x.\n"
         //     "                           ")
 
-        // ("itype",
-        //  value<char>()->default_value('1'),
-        //     "1 = Ax, 2 = ABx, 3 = BAx.\n"
-        //     "                           Problem type for generalized eigenproblems.\n"
-        //     "                           ")
+        ("itype",
+         value<char>()->default_value('1'),
+            "1 = Ax, 2 = ABx, 3 = BAx.\n"
+            "                           Problem type for generalized eigenproblems.\n"
+            "                           ")
 
         ("jobz",
          value<char>()->default_value('N'),
@@ -374,8 +374,8 @@ try
     // argus.validate_svect("left_svect");
     // argus.validate_svect("right_svect");
     // argus.validate_workmode("fast_alg");
+    argus.validate_itype("itype");
     argus.validate_evect("jobz");
-    // argus.validate_itype("itype");
 
     // select and dispatch function test/benchmark
     hipsolver_dispatcher::invoke(function, precision, argus);
