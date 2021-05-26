@@ -88,23 +88,23 @@ hipsolverSgetrf(hipsolverHandle_t handle,
 ```
 
 ## Notes on API Differences
-While the API of hipSOLVER is, overall, modeled on that of cuSOLVER, there are some notable differences between the APIs of hipSOLVER and cuSOLVER. In particular, the following functions take additional arguments:
+While the API of hipSOLVER is, overall, modeled after that of cuSOLVER, there are some notable differences. In particular:
 
-* hipsolverXgesvd_bufferSize: Accepts `jobu` and `jobv` as arguments
-* hipsolverXgetrf: Accepts `lwork` as an argument
-* hipsolverXgetrs: Accepts `work` and `lwork` as arguments
-* hipsolverXpotrfBatched: Accepts `work` and `lwork` as arguments
+* hipsolverXgesvd_bufferSize requires `jobu` and `jobv` as arguments
+* hipsolverXgetrf requires `lwork` as an argument
+* hipsolverXgetrs requires `work` and `lwork` as arguments, and
+* hipsolverXpotrfBatched requires `work` and `lwork` as arguments.
 
-In order to support these changes to getrs and potrfBatched, the following functions have been added as well:
+In order to support these changes, hipSOLVER adds the following functions as well:
 
 * hipsolverXgetrs_bufferSize
 * hipsolverXpotrfBatched_bufferSize
 
-Furthermore, due to differences in implementation and API design between rocSOLVER and cuSOLVER, not all arguments are handled identically between the two backends. When using the rocSOLVER backend, keep in mind the following differences.
+Furthermore, due to differences in implementation and API design between rocSOLVER and cuSOLVER, not all arguments are handled identically between the two backends. When using the rocSOLVER backend, keep in mind the following differences:
 
-While many cuSOLVER functions (and, consequently, hipSOLVER functions) take a workspace pointer and size as arguments, rocSOLVER maintains its own internal device workspace by default. In order to take advantage of this feature, users may pass a null pointer for the `work` argument of any function when using the rocSOLVER backend, and the workspace will be automatically managed behind-the-scenes. It is recommended to use a consistent strategy for workspace management, as performance issues may arise if the internal workspace is made to flip-flop between user-provided and automatically allocated workspaces.
+* While many cuSOLVER functions (and, consequently, hipSOLVER functions) take a workspace pointer and size as arguments, rocSOLVER maintains its own internal device workspace by default. In order to take advantage of this feature, users may pass a null pointer for the `work` argument of any function when using the rocSOLVER backend, and the workspace will be automatically managed behind-the-scenes. It is recommended to use a consistent strategy for workspace management, as performance issues may arise if the internal workspace is made to flip-flop between user-provided and automatically allocated workspaces.
 
-Additionally, unlike cuSOLVER, rocSOLVER does not provide information on invalid arguments in its `info` arguments, though it will provide info on singularities and algorithm convergence. As a result, the `info` argument of many functions will not be referenced or altered by the rocSOLVER backend, excepting those that provide info on singularities or convergence.
+* Additionally, unlike cuSOLVER, rocSOLVER does not provide information on invalid arguments in its `info` arguments, though it will provide info on singularities and algorithm convergence. As a result, the `info` argument of many functions will not be referenced or altered by the rocSOLVER backend, excepting those that provide info on singularities or convergence.
 
 ## Supported Functionality
 For a complete description of all the supported functions, see the corresponding backends' documentation
