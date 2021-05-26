@@ -26,6 +26,11 @@ module hipsolver_enums
     end enum
 
     enum, bind(c)
+        enumerator :: HIPSOLVER_EIG_MODE_NOVECTOR = 201
+        enumerator :: HIPSOLVER_EIG_MODE_VECTOR   = 202
+    end enum
+
+    enum, bind(c)
         enumerator :: HIPSOLVER_STATUS_SUCCESS           = 0
         enumerator :: HIPSOLVER_STATUS_NOT_INITIALIZED   = 1
         enumerator :: HIPSOLVER_STATUS_ALLOC_FAILED      = 2

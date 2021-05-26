@@ -92,6 +92,32 @@ hipsolverSideMode_t cuda2hip_side(cublasSideMode_t side)
     }
 }
 
+cusolverEigMode_t hip2cuda_evect(hipsolverEigMode_t eig)
+{
+    switch(eig)
+    {
+    case HIPSOLVER_EIG_MODE_NOVECTOR:
+        return CUSOLVER_EIG_MODE_NOVECTOR;
+    case HIPSOLVER_EIG_MODE_VECTOR:
+        return CUSOLVER_EIG_MODE_VECTOR;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+hipsolverEigMode_t cuda2hip_evect(cusolverEigMode_t eig)
+{
+    switch(eig)
+    {
+    case CUSOLVER_EIG_MODE_NOVECTOR:
+        return HIPSOLVER_EIG_MODE_NOVECTOR;
+    case CUSOLVER_EIG_MODE_VECTOR:
+        return HIPSOLVER_EIG_MODE_VECTOR;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
 hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
 {
     switch(cuStatus)

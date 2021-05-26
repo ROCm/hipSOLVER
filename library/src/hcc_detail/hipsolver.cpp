@@ -98,6 +98,32 @@ hipsolverSideMode_t rocblas2hip_side(rocblas_side_ side)
     }
 }
 
+rocblas_evect_ hip2rocblas_evect(hipsolverEigMode_t eig)
+{
+    switch(eig)
+    {
+    case HIPSOLVER_EIG_MODE_NOVECTOR:
+        return rocblas_evect_none;
+    case HIPSOLVER_EIG_MODE_VECTOR:
+        return rocblas_evect_original;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+hipsolverEigMode_t rocblas2hip_evect(rocblas_evect_ eig)
+{
+    switch(eig)
+    {
+    case rocblas_evect_none:
+        return HIPSOLVER_EIG_MODE_NOVECTOR;
+    case rocblas_evect_original:
+        return HIPSOLVER_EIG_MODE_VECTOR;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
 hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
 {
     switch(error)

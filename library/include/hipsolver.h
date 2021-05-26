@@ -183,6 +183,12 @@ typedef enum
     HIPSOLVER_SIDE_RIGHT = 142,
 } hipsolverSideMode_t;
 
+typedef enum
+{
+    HIPSOLVER_EIG_MODE_NOVECTOR = 201,
+    HIPSOLVER_EIG_MODE_VECTOR   = 202,
+} hipsolverEigMode_t;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
