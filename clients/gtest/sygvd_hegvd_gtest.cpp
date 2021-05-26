@@ -37,12 +37,12 @@ const vector<vector<int>> matrix_size_range = {
     {35, 35, 35},
     {50, 50, 60}};
 
-// for daily_lapack tests
-const vector<vector<int>> large_matrix_size_range = {
-    {192, 192, 192},
-    {256, 270, 256},
-    {300, 300, 310},
-};
+// // for daily_lapack tests
+// const vector<vector<int>> large_matrix_size_range = {
+//     {192, 192, 192},
+//     {256, 270, 256},
+//     {300, 300, 310},
+// };
 
 Arguments sygvd_setup_arguments(sygvd_tuple tup)
 {
@@ -146,33 +146,33 @@ TEST_P(HEGVD_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         SYGVD,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          SYGVD,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          SYGVD,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         HEGVD,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          HEGVD,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          HEGVD,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         SYGVD_FORTRAN,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          SYGVD_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          SYGVD_FORTRAN,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         HEGVD_FORTRAN,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          HEGVD_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          HEGVD_FORTRAN,
