@@ -687,6 +687,7 @@ inline hipsolverStatus_t hipsolver_getrf(bool              FORTRAN,
                                          int               lda,
                                          int               stA,
                                          float*            work,
+                                         int               lwork,
                                          int*              ipiv,
                                          int               stP,
                                          int*              info,
@@ -695,13 +696,13 @@ inline hipsolverStatus_t hipsolver_getrf(bool              FORTRAN,
     switch(bool2marshal(FORTRAN, NPVT))
     {
     case C_NORMAL:
-        return hipsolverSgetrf(handle, m, n, A, lda, work, ipiv, info);
+        return hipsolverSgetrf(handle, m, n, A, lda, work, lwork, ipiv, info);
     case C_NORMAL_ALT:
-        return hipsolverSgetrf(handle, m, n, A, lda, work, nullptr, info);
+        return hipsolverSgetrf(handle, m, n, A, lda, work, lwork, nullptr, info);
     case FORTRAN_NORMAL:
-        return hipsolverSgetrfFortran(handle, m, n, A, lda, work, ipiv, info);
+        return hipsolverSgetrfFortran(handle, m, n, A, lda, work, lwork, ipiv, info);
     case FORTRAN_NORMAL_ALT:
-        return hipsolverSgetrfFortran(handle, m, n, A, lda, work, nullptr, info);
+        return hipsolverSgetrfFortran(handle, m, n, A, lda, work, lwork, nullptr, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -716,6 +717,7 @@ inline hipsolverStatus_t hipsolver_getrf(bool              FORTRAN,
                                          int               lda,
                                          int               stA,
                                          double*           work,
+                                         int               lwork,
                                          int*              ipiv,
                                          int               stP,
                                          int*              info,
@@ -724,13 +726,13 @@ inline hipsolverStatus_t hipsolver_getrf(bool              FORTRAN,
     switch(bool2marshal(FORTRAN, NPVT))
     {
     case C_NORMAL:
-        return hipsolverDgetrf(handle, m, n, A, lda, work, ipiv, info);
+        return hipsolverDgetrf(handle, m, n, A, lda, work, lwork, ipiv, info);
     case C_NORMAL_ALT:
-        return hipsolverDgetrf(handle, m, n, A, lda, work, nullptr, info);
+        return hipsolverDgetrf(handle, m, n, A, lda, work, lwork, nullptr, info);
     case FORTRAN_NORMAL:
-        return hipsolverDgetrfFortran(handle, m, n, A, lda, work, ipiv, info);
+        return hipsolverDgetrfFortran(handle, m, n, A, lda, work, lwork, ipiv, info);
     case FORTRAN_NORMAL_ALT:
-        return hipsolverDgetrfFortran(handle, m, n, A, lda, work, nullptr, info);
+        return hipsolverDgetrfFortran(handle, m, n, A, lda, work, lwork, nullptr, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -745,6 +747,7 @@ inline hipsolverStatus_t hipsolver_getrf(bool              FORTRAN,
                                          int               lda,
                                          int               stA,
                                          hipsolverComplex* work,
+                                         int               lwork,
                                          int*              ipiv,
                                          int               stP,
                                          int*              info,
@@ -753,13 +756,13 @@ inline hipsolverStatus_t hipsolver_getrf(bool              FORTRAN,
     switch(bool2marshal(FORTRAN, NPVT))
     {
     case C_NORMAL:
-        return hipsolverCgetrf(handle, m, n, A, lda, work, ipiv, info);
+        return hipsolverCgetrf(handle, m, n, A, lda, work, lwork, ipiv, info);
     case C_NORMAL_ALT:
-        return hipsolverCgetrf(handle, m, n, A, lda, work, nullptr, info);
+        return hipsolverCgetrf(handle, m, n, A, lda, work, lwork, nullptr, info);
     case FORTRAN_NORMAL:
-        return hipsolverCgetrfFortran(handle, m, n, A, lda, work, ipiv, info);
+        return hipsolverCgetrfFortran(handle, m, n, A, lda, work, lwork, ipiv, info);
     case FORTRAN_NORMAL_ALT:
-        return hipsolverCgetrfFortran(handle, m, n, A, lda, work, nullptr, info);
+        return hipsolverCgetrfFortran(handle, m, n, A, lda, work, lwork, nullptr, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -774,6 +777,7 @@ inline hipsolverStatus_t hipsolver_getrf(bool                    FORTRAN,
                                          int                     lda,
                                          int                     stA,
                                          hipsolverDoubleComplex* work,
+                                         int                     lwork,
                                          int*                    ipiv,
                                          int                     stP,
                                          int*                    info,
@@ -782,13 +786,13 @@ inline hipsolverStatus_t hipsolver_getrf(bool                    FORTRAN,
     switch(bool2marshal(FORTRAN, NPVT))
     {
     case C_NORMAL:
-        return hipsolverZgetrf(handle, m, n, A, lda, work, ipiv, info);
+        return hipsolverZgetrf(handle, m, n, A, lda, work, lwork, ipiv, info);
     case C_NORMAL_ALT:
-        return hipsolverZgetrf(handle, m, n, A, lda, work, nullptr, info);
+        return hipsolverZgetrf(handle, m, n, A, lda, work, lwork, nullptr, info);
     case FORTRAN_NORMAL:
-        return hipsolverZgetrfFortran(handle, m, n, A, lda, work, ipiv, info);
+        return hipsolverZgetrfFortran(handle, m, n, A, lda, work, lwork, ipiv, info);
     case FORTRAN_NORMAL_ALT:
-        return hipsolverZgetrfFortran(handle, m, n, A, lda, work, nullptr, info);
+        return hipsolverZgetrfFortran(handle, m, n, A, lda, work, lwork, nullptr, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }

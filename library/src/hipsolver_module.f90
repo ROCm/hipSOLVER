@@ -785,7 +785,7 @@ module hipsolver
     end interface
 
     interface
-        function hipsolverSgetrf(handle, m, n, A, lda, work, ipiv, info) &
+        function hipsolverSgetrf(handle, m, n, A, lda, work, lwork, ipiv, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverSgetrf')
             use iso_c_binding
@@ -797,13 +797,14 @@ module hipsolver
             type(c_ptr), value :: A
             integer(c_int), value :: lda
             type(c_ptr), value :: work
+            integer(c_int), value :: lwork
             type(c_ptr), value :: ipiv
             type(c_ptr), value :: info
         end function hipsolverSgetrf
     end interface
     
     interface
-        function hipsolverDgetrf(handle, m, n, A, lda, work, ipiv, info) &
+        function hipsolverDgetrf(handle, m, n, A, lda, work, lwork, ipiv, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverDgetrf')
             use iso_c_binding
@@ -815,13 +816,14 @@ module hipsolver
             type(c_ptr), value :: A
             integer(c_int), value :: lda
             type(c_ptr), value :: work
+            integer(c_int), value :: lwork
             type(c_ptr), value :: ipiv
             type(c_ptr), value :: info
         end function hipsolverDgetrf
     end interface
     
     interface
-        function hipsolverCgetrf(handle, m, n, A, lda, work, ipiv, info) &
+        function hipsolverCgetrf(handle, m, n, A, lda, work, lwork, ipiv, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverCgetrf')
             use iso_c_binding
@@ -833,13 +835,14 @@ module hipsolver
             type(c_ptr), value :: A
             integer(c_int), value :: lda
             type(c_ptr), value :: work
+            integer(c_int), value :: lwork
             type(c_ptr), value :: ipiv
             type(c_ptr), value :: info
         end function hipsolverCgetrf
     end interface
     
     interface
-        function hipsolverZgetrf(handle, m, n, A, lda, work, ipiv, info) &
+        function hipsolverZgetrf(handle, m, n, A, lda, work, lwork, ipiv, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverZgetrf')
             use iso_c_binding
@@ -851,6 +854,7 @@ module hipsolver
             type(c_ptr), value :: A
             integer(c_int), value :: lda
             type(c_ptr), value :: work
+            integer(c_int), value :: lwork
             type(c_ptr), value :: ipiv
             type(c_ptr), value :: info
         end function hipsolverZgetrf

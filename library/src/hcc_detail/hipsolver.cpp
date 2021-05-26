@@ -1142,21 +1142,18 @@ hipsolverStatus_t hipsolverSgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
 try
 {
-    size_t sz1, sz2;
+    size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocblas_status status
         = rocsolver_sgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz1);
-
-    rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocsolver_sgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz2);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(max(sz1, sz2) > INT_MAX)
+    if(sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
-    *lwork = (int)max(sz1, sz2);
+    *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
 catch(...)
@@ -1168,21 +1165,18 @@ hipsolverStatus_t hipsolverDgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork)
 try
 {
-    size_t sz1, sz2;
+    size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocblas_status status
         = rocsolver_dgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz1);
-
-    rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocsolver_dgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz2);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(max(sz1, sz2) > INT_MAX)
+    if(sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
-    *lwork = (int)max(sz1, sz2);
+    *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
 catch(...)
@@ -1194,21 +1188,18 @@ hipsolverStatus_t hipsolverCgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork)
 try
 {
-    size_t sz1, sz2;
+    size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocblas_status status
         = rocsolver_cgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz1);
-
-    rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocsolver_cgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz2);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(max(sz1, sz2) > INT_MAX)
+    if(sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
-    *lwork = (int)max(sz1, sz2);
+    *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
 catch(...)
@@ -1220,21 +1211,18 @@ hipsolverStatus_t hipsolverZgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork)
 try
 {
-    size_t sz1, sz2;
+    size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocblas_status status
         = rocsolver_zgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz1);
-
-    rocblas_start_device_memory_size_query((rocblas_handle)handle);
     rocsolver_zgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
-    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz2);
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(max(sz1, sz2) > INT_MAX)
+    if(sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
-    *lwork = (int)max(sz1, sz2);
+    *lwork = (int)sz;
     return rocblas2hip_status(status);
 }
 catch(...)
@@ -1248,22 +1236,13 @@ hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
                                   float*            A,
                                   int               lda,
                                   float*            work,
+                                  int               lwork,
                                   int*              devIpiv,
                                   int*              devInfo)
 try
 {
     if(work != nullptr)
-    {
-        size_t sz;
-        rocblas_start_device_memory_size_query((rocblas_handle)handle);
-        if(devIpiv != nullptr)
-            rocsolver_sgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-        else
-            rocsolver_sgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
-        rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
-
-        rocblas_set_workspace((rocblas_handle)handle, work, sz);
-    }
+        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
     else
     {
         if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
@@ -1288,22 +1267,13 @@ hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
                                   double*           A,
                                   int               lda,
                                   double*           work,
+                                  int               lwork,
                                   int*              devIpiv,
                                   int*              devInfo)
 try
 {
     if(work != nullptr)
-    {
-        size_t sz;
-        rocblas_start_device_memory_size_query((rocblas_handle)handle);
-        if(devIpiv != nullptr)
-            rocsolver_dgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-        else
-            rocsolver_dgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
-        rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
-
-        rocblas_set_workspace((rocblas_handle)handle, work, sz);
-    }
+        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
     else
     {
         if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
@@ -1328,22 +1298,13 @@ hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
                                   hipsolverComplex* A,
                                   int               lda,
                                   hipsolverComplex* work,
+                                  int               lwork,
                                   int*              devIpiv,
                                   int*              devInfo)
 try
 {
     if(work != nullptr)
-    {
-        size_t sz;
-        rocblas_start_device_memory_size_query((rocblas_handle)handle);
-        if(devIpiv != nullptr)
-            rocsolver_cgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-        else
-            rocsolver_cgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
-        rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
-
-        rocblas_set_workspace((rocblas_handle)handle, work, sz);
-    }
+        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
     else
     {
         if(!rocblas_is_managing_device_memory((rocblas_handle)handle))
@@ -1368,22 +1329,13 @@ hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
                                   hipsolverDoubleComplex* A,
                                   int                     lda,
                                   hipsolverDoubleComplex* work,
+                                  int                     lwork,
                                   int*                    devIpiv,
                                   int*                    devInfo)
 try
 {
     if(work != nullptr)
-    {
-        size_t sz;
-        rocblas_start_device_memory_size_query((rocblas_handle)handle);
-        if(devIpiv != nullptr)
-            rocsolver_zgetrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr, nullptr);
-        else
-            rocsolver_zgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
-        rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
-
-        rocblas_set_workspace((rocblas_handle)handle, work, sz);
-    }
+        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
     else
     {
         if(!rocblas_is_managing_device_memory((rocblas_handle)handle))

@@ -349,6 +349,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgetrfFortran(hipsolverHandle_t hand
                                                           float*            A,
                                                           int               lda,
                                                           float*            work,
+                                                          int               lwork,
                                                           int*              devIpiv,
                                                           int*              devInfo);
 
@@ -358,6 +359,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgetrfFortran(hipsolverHandle_t hand
                                                           double*           A,
                                                           int               lda,
                                                           double*           work,
+                                                          int               lwork,
                                                           int*              devIpiv,
                                                           int*              devInfo);
 
@@ -367,6 +369,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgetrfFortran(hipsolverHandle_t hand
                                                           hipsolverComplex* A,
                                                           int               lda,
                                                           hipsolverComplex* work,
+                                                          int               lwork,
                                                           int*              devIpiv,
                                                           int*              devInfo);
 
@@ -376,6 +379,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrfFortran(hipsolverHandle_t     
                                                           hipsolverDoubleComplex* A,
                                                           int                     lda,
                                                           hipsolverDoubleComplex* work,
+                                                          int                     lwork,
                                                           int*                    devIpiv,
                                                           int*                    devInfo);
 

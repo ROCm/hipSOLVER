@@ -524,6 +524,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
                                                    float*            A,
                                                    int               lda,
                                                    float*            work,
+                                                   int               lwork,
                                                    int*              devIpiv,
                                                    int*              devInfo);
 
@@ -533,6 +534,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
                                                    double*           A,
                                                    int               lda,
                                                    double*           work,
+                                                   int               lwork,
                                                    int*              devIpiv,
                                                    int*              devInfo);
 
@@ -542,6 +544,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
                                                    hipsolverComplex* A,
                                                    int               lda,
                                                    hipsolverComplex* work,
+                                                   int               lwork,
                                                    int*              devIpiv,
                                                    int*              devInfo);
 
@@ -551,6 +554,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handl
                                                    hipsolverDoubleComplex* A,
                                                    int                     lda,
                                                    hipsolverDoubleComplex* work,
+                                                   int                     lwork,
                                                    int*                    devIpiv,
                                                    int*                    devInfo);
 

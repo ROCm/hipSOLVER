@@ -701,7 +701,7 @@ module hipsolver_interface
         res = hipsolverZgetrf_bufferSize(handle, m, n, A, lda, lwork)
     end function hipsolverZgetrf_bufferSizeFortran
 
-    function hipsolverSgetrfFortran(handle, m, n, A, lda, work, ipiv, info) &
+    function hipsolverSgetrfFortran(handle, m, n, A, lda, work, lwork, ipiv, info) &
             result(res) &
             bind(c, name = 'hipsolverSgetrfFortran')
         use iso_c_binding
@@ -713,13 +713,14 @@ module hipsolver_interface
         type(c_ptr), value :: A
         integer(c_int), value :: lda
         type(c_ptr), value :: work
+        integer(c_int), value :: lwork
         type(c_ptr), value :: ipiv
         type(c_ptr), value :: info
         integer(c_int) :: res
-        res = hipsolverSgetrf(handle, m, n, A, lda, work, ipiv, info)
+        res = hipsolverSgetrf(handle, m, n, A, lda, work, lwork, ipiv, info)
     end function hipsolverSgetrfFortran
     
-    function hipsolverDgetrfFortran(handle, m, n, A, lda, work, ipiv, info) &
+    function hipsolverDgetrfFortran(handle, m, n, A, lda, work, lwork, ipiv, info) &
             result(res) &
             bind(c, name = 'hipsolverDgetrfFortran')
         use iso_c_binding
@@ -731,13 +732,14 @@ module hipsolver_interface
         type(c_ptr), value :: A
         integer(c_int), value :: lda
         type(c_ptr), value :: work
+        integer(c_int), value :: lwork
         type(c_ptr), value :: ipiv
         type(c_ptr), value :: info
         integer(c_int) :: res
-        res = hipsolverDgetrf(handle, m, n, A, lda, work, ipiv, info)
+        res = hipsolverDgetrf(handle, m, n, A, lda, work, lwork, ipiv, info)
     end function hipsolverDgetrfFortran
     
-    function hipsolverCgetrfFortran(handle, m, n, A, lda, work, ipiv, info) &
+    function hipsolverCgetrfFortran(handle, m, n, A, lda, work, lwork, ipiv, info) &
             result(res) &
             bind(c, name = 'hipsolverCgetrfFortran')
         use iso_c_binding
@@ -749,13 +751,14 @@ module hipsolver_interface
         type(c_ptr), value :: A
         integer(c_int), value :: lda
         type(c_ptr), value :: work
+        integer(c_int), value :: lwork
         type(c_ptr), value :: ipiv
         type(c_ptr), value :: info
         integer(c_int) :: res
-        res = hipsolverCgetrf(handle, m, n, A, lda, work, ipiv, info)
+        res = hipsolverCgetrf(handle, m, n, A, lda, work, lwork, ipiv, info)
     end function hipsolverCgetrfFortran
 
-    function hipsolverZgetrfFortran(handle, m, n, A, lda, work, ipiv, info) &
+    function hipsolverZgetrfFortran(handle, m, n, A, lda, work, lwork, ipiv, info) &
             result(res) &
             bind(c, name = 'hipsolverZgetrfFortran')
         use iso_c_binding
@@ -767,10 +770,11 @@ module hipsolver_interface
         type(c_ptr), value :: A
         integer(c_int), value :: lda
         type(c_ptr), value :: work
+        integer(c_int), value :: lwork
         type(c_ptr), value :: ipiv
         type(c_ptr), value :: info
         integer(c_int) :: res
-        res = hipsolverZgetrf(handle, m, n, A, lda, work, ipiv, info)
+        res = hipsolverZgetrf(handle, m, n, A, lda, work, lwork, ipiv, info)
     end function hipsolverZgetrfFortran
     
     ! ******************** GETRS ********************
