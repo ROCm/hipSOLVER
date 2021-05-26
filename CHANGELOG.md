@@ -23,6 +23,9 @@
     - hipsolverSpotrf, hipsolverDpotrf, hipsolverCpotrf, hipsolverZpotrf
   - potrfBatched
     - hipsolverSpotrfBatched, hipsolverDpotrfBatched, hipsolverCpotrfBatched, hipsolverZpotrfBatched
+  - syevd/heevd
+    - hipsolverSsyevd_bufferSize, hipsolverDsyevd_bufferSize, hipsolverCheevd_bufferSize, hipsolverZheevd_bufferSize
+    - hipsolverSsyevd, hipsolverDsyevd, hipsolverCheevd, hipsolverZheevd
   - sytrd/hetrd
     - hipsolverSsytrd_bufferSize, hipsolverDsytrd_bufferSize, hipsolverChetrd_bufferSize, hipsolverZhetrd_bufferSize
     - hipsolverSsytrd, hipsolverDsytrd, hipsolverChetrd, hipsolverZhetrd

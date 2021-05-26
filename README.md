@@ -131,6 +131,10 @@ at [rocSOLVER API](https://rocsolver.readthedocs.io/en/latest/userguide_api.html
 | hipsolverXpotrf_bufferSize | x | x | x | x |
 | hipsolverXpotrf | x | x | x | x |
 | hipsolverXpotrfBatched | x | x | x | x |
+| hipsolverXsyevd_bufferSize | x | x |   |   |
+| hipsolverXsyevd | x | x |   |   |
+| hipsolverXheevd_bufferSize |   |   | x | x |
+| hipsolverXheevd |   |   | x | x |
 | hipsolverXsytrd_bufferSize | x | x |   |   |
 | hipsolverXsytrd | x | x |   |   |
 | hipsolverXhetrd_bufferSize |   |   | x | x |
