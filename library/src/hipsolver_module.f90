@@ -718,6 +718,175 @@ module hipsolver
             type(c_ptr), value :: info
         end function hipsolverZgeqrf
     end interface
+    
+    ! ******************** GESVD ********************
+    interface
+        function hipsolverSgesvd_bufferSize(handle, jobu, jobv, m, n, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSgesvd_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_signed_char), value :: jobu
+            integer(c_signed_char), value :: jobv
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: lwork
+        end function hipsolverSgesvd_bufferSize
+    end interface
+    
+    interface
+        function hipsolverDgesvd_bufferSize(handle, jobu, jobv, m, n, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDgesvd_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_signed_char), value :: jobu
+            integer(c_signed_char), value :: jobv
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: lwork
+        end function hipsolverDgesvd_bufferSize
+    end interface
+    
+    interface
+        function hipsolverCgesvd_bufferSize(handle, jobu, jobv, m, n, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCgesvd_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_signed_char), value :: jobu
+            integer(c_signed_char), value :: jobv
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: lwork
+        end function hipsolverCgesvd_bufferSize
+    end interface
+    
+    interface
+        function hipsolverZgesvd_bufferSize(handle, jobu, jobv, m, n, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZgesvd_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_signed_char), value :: jobu
+            integer(c_signed_char), value :: jobv
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: lwork
+        end function hipsolverZgesvd_bufferSize
+    end interface
+
+    interface
+        function hipsolverSgesvd(handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSgesvd')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_signed_char), value :: jobu
+            integer(c_signed_char), value :: jobv
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: S
+            type(c_ptr), value :: U
+            integer(c_int), value :: ldu
+            type(c_ptr), value :: V
+            integer(c_int), value :: ldv
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: rwork
+            type(c_ptr), value :: info
+        end function hipsolverSgesvd
+    end interface
+
+    interface
+        function hipsolverDgesvd(handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDgesvd')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_signed_char), value :: jobu
+            integer(c_signed_char), value :: jobv
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: S
+            type(c_ptr), value :: U
+            integer(c_int), value :: ldu
+            type(c_ptr), value :: V
+            integer(c_int), value :: ldv
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: rwork
+            type(c_ptr), value :: info
+        end function hipsolverDgesvd
+    end interface
+
+    interface
+        function hipsolverCgesvd(handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCgesvd')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_signed_char), value :: jobu
+            integer(c_signed_char), value :: jobv
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: S
+            type(c_ptr), value :: U
+            integer(c_int), value :: ldu
+            type(c_ptr), value :: V
+            integer(c_int), value :: ldv
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: rwork
+            type(c_ptr), value :: info
+        end function hipsolverCgesvd
+    end interface
+
+    interface
+        function hipsolverZgesvd(handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZgesvd')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_signed_char), value :: jobu
+            integer(c_signed_char), value :: jobv
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: S
+            type(c_ptr), value :: U
+            integer(c_int), value :: ldu
+            type(c_ptr), value :: V
+            integer(c_int), value :: ldv
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: rwork
+            type(c_ptr), value :: info
+        end function hipsolverZgesvd
+    end interface
 
     ! ******************** GETRF ********************
     interface
