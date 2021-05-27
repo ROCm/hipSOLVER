@@ -282,6 +282,65 @@ void zgeqrf_(int*                    m,
              int*                    lwork,
              int*                    info);
 
+void sgesvd_(char*  jobu,
+             char*  jobv,
+             int*   m,
+             int*   n,
+             float* A,
+             int*   lda,
+             float* S,
+             float* U,
+             int*   ldu,
+             float* V,
+             int*   ldv,
+             float* E,
+             int*   lwork,
+             int*   info);
+void dgesvd_(char*   jobu,
+             char*   jobv,
+             int*    m,
+             int*    n,
+             double* A,
+             int*    lda,
+             double* S,
+             double* U,
+             int*    ldu,
+             double* V,
+             int*    ldv,
+             double* E,
+             int*    lwork,
+             int*    info);
+void cgesvd_(char*             jobu,
+             char*             jobv,
+             int*              m,
+             int*              n,
+             hipsolverComplex* A,
+             int*              lda,
+             float*            S,
+             hipsolverComplex* U,
+             int*              ldu,
+             hipsolverComplex* V,
+             int*              ldv,
+             hipsolverComplex* work,
+             int*              lwork,
+             float*            E,
+             int*              info);
+void zgesvd_(char*                   jobu,
+             char*                   jobv,
+             int*                    m,
+             int*                    n,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             double*                 S,
+             hipsolverDoubleComplex* U,
+             int*                    ldu,
+             hipsolverDoubleComplex* V,
+             int*                    ldv,
+             hipsolverDoubleComplex* work,
+             int*                    lwork,
+             double*                 E,
+             int*                    info);
+
 void sgetrf_(int* m, int* n, float* A, int* lda, int* ipiv, int* info);
 void dgetrf_(int* m, int* n, double* A, int* lda, int* ipiv, int* info);
 void cgetrf_(int* m, int* n, hipsolverComplex* A, int* lda, int* ipiv, int* info);
@@ -1052,6 +1111,87 @@ void cblas_geqrf<hipsolverDoubleComplex>(int                     m,
 {
     int info;
     zgeqrf_(&m, &n, A, &lda, ipiv, work, &lwork, &info);
+}
+
+// gesvd
+template <>
+void cblas_gesvd(char   jobu,
+                 char   jobv,
+                 int    m,
+                 int    n,
+                 float* A,
+                 int    lda,
+                 float* S,
+                 float* U,
+                 int    ldu,
+                 float* V,
+                 int    ldv,
+                 float* work,
+                 int    lwork,
+                 float* E,
+                 int*   info)
+{
+    sgesvd_(&jobu, &jobv, &m, &n, A, &lda, S, U, &ldu, V, &ldv, E, &lwork, info);
+}
+
+template <>
+void cblas_gesvd(char    jobu,
+                 char    jobv,
+                 int     m,
+                 int     n,
+                 double* A,
+                 int     lda,
+                 double* S,
+                 double* U,
+                 int     ldu,
+                 double* V,
+                 int     ldv,
+                 double* work,
+                 int     lwork,
+                 double* E,
+                 int*    info)
+{
+    dgesvd_(&jobu, &jobv, &m, &n, A, &lda, S, U, &ldu, V, &ldv, E, &lwork, info);
+}
+
+template <>
+void cblas_gesvd(char              jobu,
+                 char              jobv,
+                 int               m,
+                 int               n,
+                 hipsolverComplex* A,
+                 int               lda,
+                 float*            S,
+                 hipsolverComplex* U,
+                 int               ldu,
+                 hipsolverComplex* V,
+                 int               ldv,
+                 hipsolverComplex* work,
+                 int               lwork,
+                 float*            E,
+                 int*              info)
+{
+    cgesvd_(&jobu, &jobv, &m, &n, A, &lda, S, U, &ldu, V, &ldv, work, &lwork, E, info);
+}
+
+template <>
+void cblas_gesvd(char                    jobu,
+                 char                    jobv,
+                 int                     m,
+                 int                     n,
+                 hipsolverDoubleComplex* A,
+                 int                     lda,
+                 double*                 S,
+                 hipsolverDoubleComplex* U,
+                 int                     ldu,
+                 hipsolverDoubleComplex* V,
+                 int                     ldv,
+                 hipsolverDoubleComplex* work,
+                 int                     lwork,
+                 double*                 E,
+                 int*                    info)
+{
+    zgesvd_(&jobu, &jobv, &m, &n, A, &lda, S, U, &ldu, V, &ldv, work, &lwork, E, info);
 }
 
 // getrf

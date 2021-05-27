@@ -153,17 +153,17 @@ try
         //     "                           Leading dimension of matrices T.\n"
         //     "                           ")
 
-        // ("ldu",
-        //  value<rocblas_int>(),
-        //     "Matrix size parameter.\n"
-        //     "                           Leading dimension of matrices U.\n"
-        //     "                           ")
+        ("ldu",
+         value<rocblas_int>(),
+            "Matrix size parameter.\n"
+            "                           Leading dimension of matrices U.\n"
+            "                           ")
 
-        // ("ldv",
-        //  value<rocblas_int>(),
-        //     "Matrix size parameter.\n"
-        //     "                           Leading dimension of matrices V.\n"
-        //     "                           ")
+        ("ldv",
+         value<rocblas_int>(),
+            "Matrix size parameter.\n"
+            "                           Leading dimension of matrices V.\n"
+            "                           ")
 
         // ("ldw",
         //  value<rocblas_int>(),
@@ -271,21 +271,21 @@ try
         //     "                           ")
 
         // gesvd options
-        // ("left_svect",
-        //  value<char>()->default_value('N'),
-        //     "N = none, A = the entire orthogonal matrix is computed,\n"
-        //     "                           S = the singular vectors are computed,\n"
-        //     "                           O = the singular vectors overwrite the original matrix.\n"
-        //     "                           Indicates how the left singular vectors are to be calculated and stored.\n"
-        //     "                           ")
+        ("jobu",
+         value<char>()->default_value('N'),
+            "N = none, A = the entire orthogonal matrix is computed,\n"
+            "                           S = the singular vectors are computed,\n"
+            "                           O = the singular vectors overwrite the original matrix.\n"
+            "                           Indicates how the left singular vectors are to be calculated and stored.\n"
+            "                           ")
 
-        // ("right_svect",
-        //  value<char>()->default_value('N'),
-        //     "N = none, A = the entire orthogonal matrix is computed,\n"
-        //     "                           S = the singular vectors are computed,\n"
-        //     "                           O = the singular vectors overwrite the original matrix.\n"
-        //     "                           Indicates how the right singular vectors are to be calculated and stored.\n"
-        //     "                           ")
+        ("jobv",
+         value<char>()->default_value('N'),
+            "N = none, A = the entire orthogonal matrix is computed,\n"
+            "                           S = the singular vectors are computed,\n"
+            "                           O = the singular vectors overwrite the original matrix.\n"
+            "                           Indicates how the right singular vectors are to be calculated and stored.\n"
+            "                           ")
 
         // other options
         // ("direct",
@@ -371,8 +371,8 @@ try
     argus.validate_fill("uplo");
     // argus.validate_direct("direct");
     // argus.validate_storev("storev");
-    // argus.validate_svect("left_svect");
-    // argus.validate_svect("right_svect");
+    argus.validate_svect("jobu");
+    argus.validate_svect("jobv");
     // argus.validate_workmode("fast_alg");
     argus.validate_itype("itype");
     argus.validate_evect("jobz");
