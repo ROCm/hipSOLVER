@@ -781,6 +781,221 @@ inline hipsolverStatus_t hipsolver_geqrf(bool                    FORTRAN,
 }
 /********************************************************/
 
+/******************** GESVD ********************/
+// normal and strided_batched
+inline hipsolverStatus_t hipsolver_gesvd_bufferSize(bool              FORTRAN,
+                                                    hipsolverHandle_t handle,
+                                                    signed char       jobu,
+                                                    signed char       jobv,
+                                                    int               m,
+                                                    int               n,
+                                                    float*            A,
+                                                    int               lda,
+                                                    int*              lwork)
+{
+    if(!FORTRAN)
+        return hipsolverSgesvd_bufferSize(handle, jobu, jobv, m, n, lwork);
+    else
+        return hipsolverSgesvd_bufferSizeFortran(handle, jobu, jobv, m, n, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_gesvd_bufferSize(bool              FORTRAN,
+                                                    hipsolverHandle_t handle,
+                                                    signed char       jobu,
+                                                    signed char       jobv,
+                                                    int               m,
+                                                    int               n,
+                                                    double*           A,
+                                                    int               lda,
+                                                    int*              lwork)
+{
+    if(!FORTRAN)
+        return hipsolverDgesvd_bufferSize(handle, jobu, jobv, m, n, lwork);
+    else
+        return hipsolverDgesvd_bufferSizeFortran(handle, jobu, jobv, m, n, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_gesvd_bufferSize(bool              FORTRAN,
+                                                    hipsolverHandle_t handle,
+                                                    signed char       jobu,
+                                                    signed char       jobv,
+                                                    int               m,
+                                                    int               n,
+                                                    hipsolverComplex* A,
+                                                    int               lda,
+                                                    int*              lwork)
+{
+    if(!FORTRAN)
+        return hipsolverCgesvd_bufferSize(handle, jobu, jobv, m, n, lwork);
+    else
+        return hipsolverCgesvd_bufferSizeFortran(handle, jobu, jobv, m, n, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_gesvd_bufferSize(bool                    FORTRAN,
+                                                    hipsolverHandle_t       handle,
+                                                    signed char             jobu,
+                                                    signed char             jobv,
+                                                    int                     m,
+                                                    int                     n,
+                                                    hipsolverDoubleComplex* A,
+                                                    int                     lda,
+                                                    int*                    lwork)
+{
+    if(!FORTRAN)
+        return hipsolverZgesvd_bufferSize(handle, jobu, jobv, m, n, lwork);
+    else
+        return hipsolverZgesvd_bufferSizeFortran(handle, jobu, jobv, m, n, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_gesvd(bool              FORTRAN,
+                                         hipsolverHandle_t handle,
+                                         signed char       jobu,
+                                         signed char       jobv,
+                                         int               m,
+                                         int               n,
+                                         float*            A,
+                                         int               lda,
+                                         int               stA,
+                                         float*            S,
+                                         int               stS,
+                                         float*            U,
+                                         int               ldu,
+                                         int               stU,
+                                         float*            V,
+                                         int               ldv,
+                                         int               stV,
+                                         float*            work,
+                                         int               lwork,
+                                         float*            rwork,
+                                         int               stRW,
+                                         int*              info,
+                                         int               bc)
+{
+    switch(bool2marshal(FORTRAN, bc != 1))
+    {
+    case C_NORMAL:
+        return hipsolverSgesvd(
+            handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
+    case FORTRAN_NORMAL:
+        return hipsolverSgesvdFortran(
+            handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvd(bool              FORTRAN,
+                                         hipsolverHandle_t handle,
+                                         signed char       jobu,
+                                         signed char       jobv,
+                                         int               m,
+                                         int               n,
+                                         double*           A,
+                                         int               lda,
+                                         int               stA,
+                                         double*           S,
+                                         int               stS,
+                                         double*           U,
+                                         int               ldu,
+                                         int               stU,
+                                         double*           V,
+                                         int               ldv,
+                                         int               stV,
+                                         double*           work,
+                                         int               lwork,
+                                         double*           rwork,
+                                         int               stRW,
+                                         int*              info,
+                                         int               bc)
+{
+    switch(bool2marshal(FORTRAN, bc != 1))
+    {
+    case C_NORMAL:
+        return hipsolverDgesvd(
+            handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
+    case FORTRAN_NORMAL:
+        return hipsolverDgesvdFortran(
+            handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvd(bool              FORTRAN,
+                                         hipsolverHandle_t handle,
+                                         signed char       jobu,
+                                         signed char       jobv,
+                                         int               m,
+                                         int               n,
+                                         hipsolverComplex* A,
+                                         int               lda,
+                                         int               stA,
+                                         float*            S,
+                                         int               stS,
+                                         hipsolverComplex* U,
+                                         int               ldu,
+                                         int               stU,
+                                         hipsolverComplex* V,
+                                         int               ldv,
+                                         int               stV,
+                                         hipsolverComplex* work,
+                                         int               lwork,
+                                         float*            rwork,
+                                         int               stRW,
+                                         int*              info,
+                                         int               bc)
+{
+    switch(bool2marshal(FORTRAN, bc != 1))
+    {
+    case C_NORMAL:
+        return hipsolverCgesvd(
+            handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
+    case FORTRAN_NORMAL:
+        return hipsolverCgesvdFortran(
+            handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvd(bool                    FORTRAN,
+                                         hipsolverHandle_t       handle,
+                                         signed char             jobu,
+                                         signed char             jobv,
+                                         int                     m,
+                                         int                     n,
+                                         hipsolverDoubleComplex* A,
+                                         int                     lda,
+                                         int                     stA,
+                                         double*                 S,
+                                         int                     stS,
+                                         hipsolverDoubleComplex* U,
+                                         int                     ldu,
+                                         int                     stU,
+                                         hipsolverDoubleComplex* V,
+                                         int                     ldv,
+                                         int                     stV,
+                                         hipsolverDoubleComplex* work,
+                                         int                     lwork,
+                                         double*                 rwork,
+                                         int                     stRW,
+                                         int*                    info,
+                                         int                     bc)
+{
+    switch(bool2marshal(FORTRAN, bc != 1))
+    {
+    case C_NORMAL:
+        return hipsolverZgesvd(
+            handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
+    case FORTRAN_NORMAL:
+        return hipsolverZgesvdFortran(
+            handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+/********************************************************/
+
 /******************** GETRF ********************/
 // normal and strided_batched
 inline hipsolverStatus_t hipsolver_getrf_bufferSize(

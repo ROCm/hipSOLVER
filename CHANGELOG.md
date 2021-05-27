@@ -19,6 +19,9 @@
   - geqrf
     - hipsolverSgeqrf_bufferSize, hipsolverDgeqrf_bufferSize, hipsolverCgeqrf_bufferSize, hipsolverZgeqrf_bufferSize
     - hipsolverSgeqrf, hipsolverDgeqrf, hipsolverCgeqrf, hipsolverZgeqrf
+  - gesvd
+    - hipsolverSgesvd_bufferSize, hipsolverDgesvd_bufferSize, hipsolverCgesvd_bufferSize, hipsolverZgesvd_bufferSize
+    - hipsolverSgesvd, hipsolverDgesvd, hipsolverCgesvd, hipsolverZgesvd
   - getrs
     - hipsolverSgetrs, hipsolverDgetrs, hipsolverCgetrs, hipsolverZgetrs
   - potrf
