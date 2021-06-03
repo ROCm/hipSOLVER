@@ -37,6 +37,10 @@ template <typename T>
 void cblas_orgqr_ungqr(int m, int n, int k, T* A, int lda, T* Ipiv, T* work, int sizeW);
 
 template <typename T>
+void cblas_orgtr_ungtr(
+    hipsolverFillMode_t uplo, int n, T* A, int lda, T* Ipiv, T* work, int size_w);
+
+template <typename T>
 void cblas_ormqr_unmqr(hipsolverSideMode_t  side,
                        hipsolverOperation_t trans,
                        int                  m,
