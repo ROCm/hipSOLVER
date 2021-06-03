@@ -16,6 +16,7 @@
 #include "testing_getrs.hpp"
 #include "testing_orgbr_ungbr.hpp"
 #include "testing_orgqr_ungqr.hpp"
+#include "testing_orgtr_ungtr.hpp"
 #include "testing_ormqr_unmqr.hpp"
 #include "testing_potrf.hpp"
 #include "testing_sytrd_hetrd.hpp"
@@ -66,6 +67,7 @@ class hipsolver_dispatcher
         static const func_map map_real = {
             {"orgbr", testing_orgbr_ungbr<false, T>},
             {"orgqr", testing_orgqr_ungqr<false, T>},
+            {"orgtr", testing_orgtr_ungtr<false, T>},
             {"ormqr", testing_ormqr_unmqr<false, T>},
             {"sytrd", testing_sytrd_hetrd<false, false, false, T>},
         };
@@ -88,6 +90,7 @@ class hipsolver_dispatcher
         static const func_map map_complex = {
             {"ungbr", testing_orgbr_ungbr<false, T>},
             {"ungqr", testing_orgqr_ungqr<false, T>},
+            {"ungtr", testing_orgtr_ungtr<false, T>},
             {"unmqr", testing_ormqr_unmqr<false, T>},
             {"hetrd", testing_sytrd_hetrd<false, false, false, T>},
         };

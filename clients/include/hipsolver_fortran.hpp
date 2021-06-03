@@ -180,6 +180,79 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungqrFortran(hipsolverHandle_t     
                                                           int                     lwork,
                                                           int*                    devInfo);
 
+// orgtr/ungtr
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSorgtr_bufferSizeFortran(hipsolverHandle_t   handle,
+                                                                     hipsolverFillMode_t uplo,
+                                                                     int                 n,
+                                                                     float*              A,
+                                                                     int                 lda,
+                                                                     float*              tau,
+                                                                     int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDorgtr_bufferSizeFortran(hipsolverHandle_t   handle,
+                                                                     hipsolverFillMode_t uplo,
+                                                                     int                 n,
+                                                                     double*             A,
+                                                                     int                 lda,
+                                                                     double*             tau,
+                                                                     int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCungtr_bufferSizeFortran(hipsolverHandle_t   handle,
+                                                                     hipsolverFillMode_t uplo,
+                                                                     int                 n,
+                                                                     hipsolverComplex*   A,
+                                                                     int                 lda,
+                                                                     hipsolverComplex*   tau,
+                                                                     int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungtr_bufferSizeFortran(hipsolverHandle_t       handle,
+                                                                     hipsolverFillMode_t     uplo,
+                                                                     int                     n,
+                                                                     hipsolverDoubleComplex* A,
+                                                                     int                     lda,
+                                                                     hipsolverDoubleComplex* tau,
+                                                                     int*                    lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSorgtrFortran(hipsolverHandle_t   handle,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          float*              A,
+                                                          int                 lda,
+                                                          float*              tau,
+                                                          float*              work,
+                                                          int                 lwork,
+                                                          int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDorgtrFortran(hipsolverHandle_t   handle,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          double*             A,
+                                                          int                 lda,
+                                                          double*             tau,
+                                                          double*             work,
+                                                          int                 lwork,
+                                                          int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCungtrFortran(hipsolverHandle_t   handle,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          hipsolverComplex*   A,
+                                                          int                 lda,
+                                                          hipsolverComplex*   tau,
+                                                          hipsolverComplex*   work,
+                                                          int                 lwork,
+                                                          int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungtrFortran(hipsolverHandle_t       handle,
+                                                          hipsolverFillMode_t     uplo,
+                                                          int                     n,
+                                                          hipsolverDoubleComplex* A,
+                                                          int                     lda,
+                                                          hipsolverDoubleComplex* tau,
+                                                          hipsolverDoubleComplex* work,
+                                                          int                     lwork,
+                                                          int*                    devInfo);
+
 // ormqr/unmqr
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSormqr_bufferSizeFortran(hipsolverHandle_t    handle,
                                                                      hipsolverSideMode_t  side,

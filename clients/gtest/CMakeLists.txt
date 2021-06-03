@@ -31,6 +31,7 @@ set(hipsolver_test_source
   sytrd_hetrd_gtest.cpp
   orgbr_ungbr_gtest.cpp
   orgqr_ungqr_gtest.cpp
+  orgtr_ungtr_gtest.cpp
   ormqr_unmqr_gtest.cpp
 )
 

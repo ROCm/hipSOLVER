@@ -10,6 +10,9 @@
   - orgqr/ungqr
     - hipsolverSorgqr_bufferSize, hipsolverDorgqr_bufferSize, hipsolverCungqr_bufferSize, hipsolverZungqr_bufferSize
     - hipsolverSorgqr, hipsolverDorgqr, hipsolverCungqr, hipsolverZungqr
+  - orgtr/ungtr
+    - hipsolverSorgtr_bufferSize, hipsolverDorgtr_bufferSize, hipsolverCungtr_bufferSize, hipsolverZungtr_bufferSize
+    - hipsolverSorgtr, hipsolverDorgtr, hipsolverCungtr, hipsolverZungtr
   - ormqr/unmqr
     - hipsolverSormqr_bufferSize, hipsolverDormqr_bufferSize, hipsolverCunmqr_bufferSize, hipsolverZunmqr_bufferSize
     - hipsolverSormqr, hipsolverDormqr, hipsolverCunmqr, hipsolverZunmqr

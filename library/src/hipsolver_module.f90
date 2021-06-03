@@ -409,6 +409,151 @@ module hipsolver
         end function hipsolverZungqr
     end interface
     
+    ! ******************** ORGTR/UNGTR ********************
+    interface
+        function hipsolverSorgtr_bufferSize(handle, uplo, n, A, lda, tau, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSorgtr_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: lwork
+        end function hipsolverSorgtr_bufferSize
+    end interface
+    
+    interface
+        function hipsolverDorgtr_bufferSize(handle, uplo, n, A, lda, tau, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDorgtr_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: lwork
+        end function hipsolverDorgtr_bufferSize
+    end interface
+    
+    interface
+        function hipsolverCungtr_bufferSize(handle, uplo, n, A, lda, tau, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCungtr_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: lwork
+        end function hipsolverCungtr_bufferSize
+    end interface
+    
+    interface
+        function hipsolverZungtr_bufferSize(handle, uplo, n, A, lda, tau, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZungtr_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: lwork
+        end function hipsolverZungtr_bufferSize
+    end interface
+    
+    interface
+        function hipsolverSorgtr(handle, uplo, n, A, lda, tau, work, lwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSorgtr')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+        end function hipsolverSorgtr
+    end interface
+    
+    interface
+        function hipsolverDorgtr(handle, uplo, n, A, lda, tau, work, lwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDorgtr')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+        end function hipsolverDorgtr
+    end interface
+    
+    interface
+        function hipsolverCungtr(handle, uplo, n, A, lda, tau, work, lwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCungtr')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+        end function hipsolverCungtr
+    end interface
+    
+    interface
+        function hipsolverZungtr(handle, uplo, n, A, lda, tau, work, lwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZungtr')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+        end function hipsolverZungtr
+    end interface
+    
     ! ******************** ORMQR/UNMQR ********************
     interface
         function hipsolverSormqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork) &
