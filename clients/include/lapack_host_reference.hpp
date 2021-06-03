@@ -30,7 +30,15 @@ void cblas_gemm(hipsolverOperation_t transA,
                 int                  ldc);
 
 template <typename T>
+void cblas_orgbr_ungbr(
+    hipsolverSideMode_t side, int m, int n, int k, T* A, int lda, T* Ipiv, T* work, int size_w);
+
+template <typename T>
 void cblas_orgqr_ungqr(int m, int n, int k, T* A, int lda, T* Ipiv, T* work, int sizeW);
+
+template <typename T>
+void cblas_orgtr_ungtr(
+    hipsolverFillMode_t uplo, int n, T* A, int lda, T* Ipiv, T* work, int size_w);
 
 template <typename T>
 void cblas_ormqr_unmqr(hipsolverSideMode_t  side,
@@ -65,6 +73,23 @@ void cblas_gebrd(int m, int n, T* A, int lda, S* D, S* E, T* tauq, T* taup, T* w
 
 template <typename T>
 void cblas_geqrf(int m, int n, T* A, int lda, T* ipiv, T* work, int sizeW);
+
+template <typename T, typename W>
+void cblas_gesvd(char leftv,
+                 char rightv,
+                 int  m,
+                 int  n,
+                 T*   A,
+                 int  lda,
+                 W*   S,
+                 T*   U,
+                 int  ldu,
+                 T*   V,
+                 int  ldv,
+                 T*   work,
+                 int  lwork,
+                 W*   E,
+                 int* info);
 
 template <typename T>
 void cblas_getrf(int m, int n, T* A, int lda, int* ipiv, int* info);

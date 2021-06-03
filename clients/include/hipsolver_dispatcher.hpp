@@ -10,10 +10,13 @@
 
 #include "testing_gebrd.hpp"
 #include "testing_geqrf.hpp"
+#include "testing_gesvd.hpp"
 #include "testing_getrf.hpp"
 #include "testing_getrf_npvt.hpp"
 #include "testing_getrs.hpp"
+#include "testing_orgbr_ungbr.hpp"
 #include "testing_orgqr_ungqr.hpp"
+#include "testing_orgtr_ungtr.hpp"
 #include "testing_ormqr_unmqr.hpp"
 #include "testing_ormtr_unmtr.hpp"
 #include "testing_potrf.hpp"
@@ -40,6 +43,7 @@ class hipsolver_dispatcher
         static const func_map map = {
             {"gebrd", testing_gebrd<false, false, false, T>},
             {"geqrf", testing_geqrf<false, false, false, T>},
+            {"gesvd", testing_gesvd<false, false, false, T>},
             {"getrf", testing_getrf<false, false, false, T>},
             {"getrs", testing_getrs<false, false, false, T>},
             {"potrf", testing_potrf<false, false, false, T>},
@@ -62,7 +66,9 @@ class hipsolver_dispatcher
     {
         // Map for functions that support single and double precisions
         static const func_map map_real = {
+            {"orgbr", testing_orgbr_ungbr<false, T>},
             {"orgqr", testing_orgqr_ungqr<false, T>},
+            {"orgtr", testing_orgtr_ungtr<false, T>},
             {"ormqr", testing_ormqr_unmqr<false, T>},
             {"ormtr", testing_ormtr_unmtr<false, T>},
             {"sytrd", testing_sytrd_hetrd<false, false, false, T>},
@@ -84,7 +90,9 @@ class hipsolver_dispatcher
     {
         // Map for functions that support single complex and double complex precisions
         static const func_map map_complex = {
+            {"ungbr", testing_orgbr_ungbr<false, T>},
             {"ungqr", testing_orgqr_ungqr<false, T>},
+            {"ungtr", testing_orgtr_ungtr<false, T>},
             {"unmqr", testing_ormqr_unmqr<false, T>},
             {"unmtr", testing_ormtr_unmtr<false, T>},
             {"hetrd", testing_sytrd_hetrd<false, false, false, T>},
