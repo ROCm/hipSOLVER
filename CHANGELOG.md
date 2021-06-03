@@ -4,9 +4,15 @@
 ## [(Unreleased) hipSOLVER 1.0.0 for ROCm 4.4]
 ### Added
 - Added functions
+  - orgbr/ungbr
+    - hipsolverSorgbr_bufferSize, hipsolverDorgbr_bufferSize, hipsolverCungbr_bufferSize, hipsolverZungbr_bufferSize
+    - hipsolverSorgbr, hipsolverDorgbr, hipsolverCungbr, hipsolverZungbr
   - orgqr/ungqr
     - hipsolverSorgqr_bufferSize, hipsolverDorgqr_bufferSize, hipsolverCungqr_bufferSize, hipsolverZungqr_bufferSize
     - hipsolverSorgqr, hipsolverDorgqr, hipsolverCungqr, hipsolverZungqr
+  - orgtr/ungtr
+    - hipsolverSorgtr_bufferSize, hipsolverDorgtr_bufferSize, hipsolverCungtr_bufferSize, hipsolverZungtr_bufferSize
+    - hipsolverSorgtr, hipsolverDorgtr, hipsolverCungtr, hipsolverZungtr
   - ormqr/unmqr
     - hipsolverSormqr_bufferSize, hipsolverDormqr_bufferSize, hipsolverCunmqr_bufferSize, hipsolverZunmqr_bufferSize
     - hipsolverSormqr, hipsolverDormqr, hipsolverCunmqr, hipsolverZunmqr
@@ -20,11 +26,13 @@
     - hipsolverSgesvd_bufferSize, hipsolverDgesvd_bufferSize, hipsolverCgesvd_bufferSize, hipsolverZgesvd_bufferSize
     - hipsolverSgesvd, hipsolverDgesvd, hipsolverCgesvd, hipsolverZgesvd
   - getrs
+    - hipsolverSgetrs_bufferSize, hipsolverDgetrs_bufferSize, hipsolverCgetrs_bufferSize, hipsolverZgetrs_bufferSize
     - hipsolverSgetrs, hipsolverDgetrs, hipsolverCgetrs, hipsolverZgetrs
   - potrf
     - hipsolverSpotrf_bufferSize, hipsolverDpotrf_bufferSize, hipsolverCpotrf_bufferSize, hipsolverZpotrf_bufferSize
     - hipsolverSpotrf, hipsolverDpotrf, hipsolverCpotrf, hipsolverZpotrf
   - potrfBatched
+    - hipsolverSpotrfBatched_bufferSize, hipsolverDpotrfBatched_bufferSize, hipsolverCpotrfBatched_bufferSize, hipsolverZpotrfBatched_bufferSize
     - hipsolverSpotrfBatched, hipsolverDpotrfBatched, hipsolverCpotrfBatched, hipsolverZpotrfBatched
   - syevd/heevd
     - hipsolverSsyevd_bufferSize, hipsolverDsyevd_bufferSize, hipsolverCheevd_bufferSize, hipsolverZheevd_bufferSize
@@ -37,7 +45,8 @@
     - hipsolverSsytrd, hipsolverDsytrd, hipsolverChetrd, hipsolverZhetrd
 
 ### Changed
-- hipSOLVER functions will now return HIPSOLVER_STATUS_INVALID_ENUM or HIPSOLVER_STATUS_UNKNOWN status codes rather than throw exceptions
+- hipSOLVER functions will now return HIPSOLVER_STATUS_INVALID_ENUM or HIPSOLVER_STATUS_UNKNOWN status codes rather than throw exceptions.
+- hipsolverXgetrf functions now take lwork as an argument.
 
 ### Removed
 - Removed unused HIPSOLVER_FILL_MODE_FULL enum value.

@@ -87,14 +87,24 @@ hipsolverSgetrf(hipsolverHandle_t handle,
                 int*              devInfo);
 ```
 
-## Special Considerations with the rocSOLVER Backend
-Due to differences in implementation and API design between rocSOLVER and cuSOLVER, the hipSOLVER library cannot guarantee identical behaviour between the two backends. As the hipSOLVER API is modeled on that of cuSOLVER, some notable discrepancies exist when using the rocSOLVER backend.
+## Notes on API Differences
+While the API of hipSOLVER is, overall, modeled after that of cuSOLVER, there are some notable differences. In particular:
 
-While many cuSOLVER functions (and, consequently, hipSOLVER functions) take a workspace pointer and size as arguments, rocSOLVER maintains its own internal device workspace by default. In order to take advantage of this feature, users may pass a null pointer for the `work` argument of any function when using the rocSOLVER backend, and the workspace will be automatically managed behind-the-scenes.
+* hipsolverXgesvd_bufferSize requires `jobu` and `jobv` as arguments
+* hipsolverXgetrf requires `lwork` as an argument
+* hipsolverXgetrs requires `work` and `lwork` as arguments, and
+* hipsolverXpotrfBatched requires `work` and `lwork` as arguments.
 
-Note that several functions do not take a `work` pointer as an argument, and will therefore always use rocSOLVER's internal device workspace management (see, for example, gesvd, getrs, and potrfBatched). This may cause performance issues if combined with function calls that receive non-null `work` pointers, as the internal workspace will flip-flop between the user-provided and automatically allocated workspaces. In these cases, it is recommended to always pass null pointers to the `work` arguments of all other functions.
+In order to support these changes, hipSOLVER adds the following functions as well:
 
-Additionally, unlike cuSOLVER, rocSOLVER does not provide information on invalid arguments in its `info` arguments, though it will provide info on singularities and algorithm convergence. As a result, the `info` argument of many functions will not be referenced or altered by the rocSOLVER backend, excepting those that provide info on singularities or convergence.
+* hipsolverXgetrs_bufferSize
+* hipsolverXpotrfBatched_bufferSize
+
+Furthermore, due to differences in implementation and API design between rocSOLVER and cuSOLVER, not all arguments are handled identically between the two backends. When using the rocSOLVER backend, keep in mind the following differences:
+
+* While many cuSOLVER functions (and, consequently, hipSOLVER functions) take a workspace pointer and size as arguments, rocSOLVER maintains its own internal device workspace by default. In order to take advantage of this feature, users may pass a null pointer for the `work` argument of any function when using the rocSOLVER backend, and the workspace will be automatically managed behind-the-scenes. It is recommended to use a consistent strategy for workspace management, as performance issues may arise if the internal workspace is made to flip-flop between user-provided and automatically allocated workspaces.
+
+* Additionally, unlike cuSOLVER, rocSOLVER does not provide information on invalid arguments in its `info` arguments, though it will provide info on singularities and algorithm convergence. As a result, the `info` argument of many functions will not be referenced or altered by the rocSOLVER backend, excepting those that provide info on singularities or convergence.
 
 ## Supported Functionality
 For a complete description of all the supported functions, see the corresponding backends' documentation
@@ -113,10 +123,18 @@ at [rocSOLVER API](https://rocsolver.readthedocs.io/en/latest/userguide_api.html
 
 | Function | single | double | single complex | double complex |
 | -------- | ------ | ------ | -------------- | -------------- |
+| hipsolverXorgbr_bufferSize | x | x |   |   |
+| hipsolverXorgbr | x | x |   |   |
+| hipsolverXungbr_bufferSize |   |   | x | x |
+| hipsolverXungbr |   |   | x | x |
 | hipsolverXorgqr_bufferSize | x | x |   |   |
 | hipsolverXorgqr | x | x |   |   |
 | hipsolverXungqr_bufferSize |   |   | x | x |
 | hipsolverXungqr |   |   | x | x |
+| hipsolverXorgtr_bufferSize | x | x |   |   |
+| hipsolverXorgtr | x | x |   |   |
+| hipsolverXungtr_bufferSize |   |   | x | x |
+| hipsolverXungtr |   |   | x | x |
 | hipsolverXormqr_bufferSize | x | x |   |   |
 | hipsolverXormqr | x | x |   |   |
 | hipsolverXunmqr_bufferSize |   |   | x | x |
@@ -129,9 +147,11 @@ at [rocSOLVER API](https://rocsolver.readthedocs.io/en/latest/userguide_api.html
 | hipsolverXgesvd | x | x | x | x |
 | hipsolverXgetrf_bufferSize | x | x | x | x |
 | hipsolverXgetrf | x | x | x | x |
+| hipsolverXgetrs_bufferSize | x | x | x | x |
 | hipsolverXgetrs | x | x | x | x |
 | hipsolverXpotrf_bufferSize | x | x | x | x |
 | hipsolverXpotrf | x | x | x | x |
+| hipsolverXpotrfBatched_bufferSize | x | x | x | x |
 | hipsolverXpotrfBatched | x | x | x | x |
 | hipsolverXsyevd_bufferSize | x | x |   |   |
 | hipsolverXsyevd | x | x |   |   |

@@ -141,6 +141,47 @@ void zlarf_(char*                   side,
             int*                    lda,
             hipsolverDoubleComplex* work);
 
+void sorgbr_(char*  vect,
+             int*   m,
+             int*   n,
+             int*   k,
+             float* A,
+             int*   lda,
+             float* Ipiv,
+             float* work,
+             int*   size_w,
+             int*   info);
+void dorgbr_(char*   vect,
+             int*    m,
+             int*    n,
+             int*    k,
+             double* A,
+             int*    lda,
+             double* Ipiv,
+             double* work,
+             int*    size_w,
+             int*    info);
+void cungbr_(char*             vect,
+             int*              m,
+             int*              n,
+             int*              k,
+             hipsolverComplex* A,
+             int*              lda,
+             hipsolverComplex* Ipiv,
+             hipsolverComplex* work,
+             int*              size_w,
+             int*              info);
+void zungbr_(char*                   vect,
+             int*                    m,
+             int*                    n,
+             int*                    k,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             hipsolverDoubleComplex* Ipiv,
+             hipsolverDoubleComplex* work,
+             int*                    size_w,
+             int*                    info);
+
 void sorgqr_(
     int* m, int* n, int* k, float* A, int* lda, float* ipiv, float* work, int* lwork, int* info);
 void dorgqr_(
@@ -162,6 +203,27 @@ void zungqr_(int*                    m,
              hipsolverDoubleComplex* ipiv,
              hipsolverDoubleComplex* work,
              int*                    lwork,
+             int*                    info);
+
+void sorgtr_(
+    char* uplo, int* n, float* A, int* lda, float* Ipiv, float* work, int* size_w, int* info);
+void dorgtr_(
+    char* uplo, int* n, double* A, int* lda, double* Ipiv, double* work, int* size_w, int* info);
+void cungtr_(char*             uplo,
+             int*              n,
+             hipsolverComplex* A,
+             int*              lda,
+             hipsolverComplex* Ipiv,
+             hipsolverComplex* work,
+             int*              size_w,
+             int*              info);
+void zungtr_(char*                   uplo,
+             int*                    n,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             hipsolverDoubleComplex* Ipiv,
+             hipsolverDoubleComplex* work,
+             int*                    size_w,
              int*                    info);
 
 void sormqr_(char*  side,
@@ -877,6 +939,87 @@ void cblas_larf<hipsolverDoubleComplex>(hipsolverSideMode_t     sideR,
     zlarf_(&side, &m, &n, x, &incx, alpha, A, &lda, work);
 }
 
+// orgbr & ungbr
+template <>
+void cblas_orgbr_ungbr<float>(hipsolverSideMode_t side,
+                              int                 m,
+                              int                 n,
+                              int                 k,
+                              float*              A,
+                              int                 lda,
+                              float*              Ipiv,
+                              float*              work,
+                              int                 size_w)
+{
+    int  info;
+    char vect;
+    if(side == HIPSOLVER_SIDE_LEFT)
+        vect = 'Q';
+    else
+        vect = 'P';
+    sorgbr_(&vect, &m, &n, &k, A, &lda, Ipiv, work, &size_w, &info);
+}
+
+template <>
+void cblas_orgbr_ungbr<double>(hipsolverSideMode_t side,
+                               int                 m,
+                               int                 n,
+                               int                 k,
+                               double*             A,
+                               int                 lda,
+                               double*             Ipiv,
+                               double*             work,
+                               int                 size_w)
+{
+    int  info;
+    char vect;
+    if(side == HIPSOLVER_SIDE_LEFT)
+        vect = 'Q';
+    else
+        vect = 'P';
+    dorgbr_(&vect, &m, &n, &k, A, &lda, Ipiv, work, &size_w, &info);
+}
+
+template <>
+void cblas_orgbr_ungbr<hipsolverComplex>(hipsolverSideMode_t side,
+                                         int                 m,
+                                         int                 n,
+                                         int                 k,
+                                         hipsolverComplex*   A,
+                                         int                 lda,
+                                         hipsolverComplex*   Ipiv,
+                                         hipsolverComplex*   work,
+                                         int                 size_w)
+{
+    int  info;
+    char vect;
+    if(side == HIPSOLVER_SIDE_LEFT)
+        vect = 'Q';
+    else
+        vect = 'P';
+    cungbr_(&vect, &m, &n, &k, A, &lda, Ipiv, work, &size_w, &info);
+}
+
+template <>
+void cblas_orgbr_ungbr<hipsolverDoubleComplex>(hipsolverSideMode_t     side,
+                                               int                     m,
+                                               int                     n,
+                                               int                     k,
+                                               hipsolverDoubleComplex* A,
+                                               int                     lda,
+                                               hipsolverDoubleComplex* Ipiv,
+                                               hipsolverDoubleComplex* work,
+                                               int                     size_w)
+{
+    int  info;
+    char vect;
+    if(side == HIPSOLVER_SIDE_LEFT)
+        vect = 'Q';
+    else
+        vect = 'P';
+    zungbr_(&vect, &m, &n, &k, A, &lda, Ipiv, work, &size_w, &info);
+}
+
 // orgqr & ungqr
 template <>
 void cblas_orgqr_ungqr<float>(
@@ -920,6 +1063,53 @@ void cblas_orgqr_ungqr<hipsolverDoubleComplex>(int                     m,
 {
     int info;
     zungqr_(&m, &n, &k, A, &lda, ipiv, work, &lwork, &info);
+}
+
+// orgtr & ungtr
+template <>
+void cblas_orgtr_ungtr<float>(
+    hipsolverFillMode_t uplo, int n, float* A, int lda, float* Ipiv, float* work, int size_w)
+{
+    int  info;
+    char uploC = hipsolver2char_fill(uplo);
+    sorgtr_(&uploC, &n, A, &lda, Ipiv, work, &size_w, &info);
+}
+
+template <>
+void cblas_orgtr_ungtr<double>(
+    hipsolverFillMode_t uplo, int n, double* A, int lda, double* Ipiv, double* work, int size_w)
+{
+    int  info;
+    char uploC = hipsolver2char_fill(uplo);
+    dorgtr_(&uploC, &n, A, &lda, Ipiv, work, &size_w, &info);
+}
+
+template <>
+void cblas_orgtr_ungtr<hipsolverComplex>(hipsolverFillMode_t uplo,
+                                         int                 n,
+                                         hipsolverComplex*   A,
+                                         int                 lda,
+                                         hipsolverComplex*   Ipiv,
+                                         hipsolverComplex*   work,
+                                         int                 size_w)
+{
+    int  info;
+    char uploC = hipsolver2char_fill(uplo);
+    cungtr_(&uploC, &n, A, &lda, Ipiv, work, &size_w, &info);
+}
+
+template <>
+void cblas_orgtr_ungtr<hipsolverDoubleComplex>(hipsolverFillMode_t     uplo,
+                                               int                     n,
+                                               hipsolverDoubleComplex* A,
+                                               int                     lda,
+                                               hipsolverDoubleComplex* Ipiv,
+                                               hipsolverDoubleComplex* work,
+                                               int                     size_w)
+{
+    int  info;
+    char uploC = hipsolver2char_fill(uplo);
+    zungtr_(&uploC, &n, A, &lda, Ipiv, work, &size_w, &info);
 }
 
 // ormqr & unmqr
