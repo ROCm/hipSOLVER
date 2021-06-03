@@ -30,6 +30,10 @@ void cblas_gemm(hipsolverOperation_t transA,
                 int                  ldc);
 
 template <typename T>
+void cblas_orgbr_ungbr(
+    hipsolverSideMode_t side, int m, int n, int k, T* A, int lda, T* Ipiv, T* work, int size_w);
+
+template <typename T>
 void cblas_orgqr_ungqr(int m, int n, int k, T* A, int lda, T* Ipiv, T* work, int sizeW);
 
 template <typename T>

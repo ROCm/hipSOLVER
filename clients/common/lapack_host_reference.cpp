@@ -51,6 +51,47 @@ void zlarf_(char*                   side,
             int*                    lda,
             hipsolverDoubleComplex* work);
 
+void sorgbr_(char*  vect,
+             int*   m,
+             int*   n,
+             int*   k,
+             float* A,
+             int*   lda,
+             float* Ipiv,
+             float* work,
+             int*   size_w,
+             int*   info);
+void dorgbr_(char*   vect,
+             int*    m,
+             int*    n,
+             int*    k,
+             double* A,
+             int*    lda,
+             double* Ipiv,
+             double* work,
+             int*    size_w,
+             int*    info);
+void cungbr_(char*             vect,
+             int*              m,
+             int*              n,
+             int*              k,
+             hipsolverComplex* A,
+             int*              lda,
+             hipsolverComplex* Ipiv,
+             hipsolverComplex* work,
+             int*              size_w,
+             int*              info);
+void zungbr_(char*                   vect,
+             int*                    m,
+             int*                    n,
+             int*                    k,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             hipsolverDoubleComplex* Ipiv,
+             hipsolverDoubleComplex* work,
+             int*                    size_w,
+             int*                    info);
+
 void sorgqr_(
     int* m, int* n, int* k, float* A, int* lda, float* ipiv, float* work, int* lwork, int* info);
 void dorgqr_(
@@ -530,6 +571,87 @@ void cblas_gemm<hipsolverDoubleComplex>(hipsolverOperation_t    transA,
                 &beta,
                 C,
                 ldc);
+}
+
+// orgbr & ungbr
+template <>
+void cblas_orgbr_ungbr<float>(hipsolverSideMode_t side,
+                              int                 m,
+                              int                 n,
+                              int                 k,
+                              float*              A,
+                              int                 lda,
+                              float*              Ipiv,
+                              float*              work,
+                              int                 size_w)
+{
+    int  info;
+    char vect;
+    if(side == HIPSOLVER_SIDE_LEFT)
+        vect = 'Q';
+    else
+        vect = 'P';
+    sorgbr_(&vect, &m, &n, &k, A, &lda, Ipiv, work, &size_w, &info);
+}
+
+template <>
+void cblas_orgbr_ungbr<double>(hipsolverSideMode_t side,
+                               int                 m,
+                               int                 n,
+                               int                 k,
+                               double*             A,
+                               int                 lda,
+                               double*             Ipiv,
+                               double*             work,
+                               int                 size_w)
+{
+    int  info;
+    char vect;
+    if(side == HIPSOLVER_SIDE_LEFT)
+        vect = 'Q';
+    else
+        vect = 'P';
+    dorgbr_(&vect, &m, &n, &k, A, &lda, Ipiv, work, &size_w, &info);
+}
+
+template <>
+void cblas_orgbr_ungbr<hipsolverComplex>(hipsolverSideMode_t side,
+                                         int                 m,
+                                         int                 n,
+                                         int                 k,
+                                         hipsolverComplex*   A,
+                                         int                 lda,
+                                         hipsolverComplex*   Ipiv,
+                                         hipsolverComplex*   work,
+                                         int                 size_w)
+{
+    int  info;
+    char vect;
+    if(side == HIPSOLVER_SIDE_LEFT)
+        vect = 'Q';
+    else
+        vect = 'P';
+    cungbr_(&vect, &m, &n, &k, A, &lda, Ipiv, work, &size_w, &info);
+}
+
+template <>
+void cblas_orgbr_ungbr<hipsolverDoubleComplex>(hipsolverSideMode_t     side,
+                                               int                     m,
+                                               int                     n,
+                                               int                     k,
+                                               hipsolverDoubleComplex* A,
+                                               int                     lda,
+                                               hipsolverDoubleComplex* Ipiv,
+                                               hipsolverDoubleComplex* work,
+                                               int                     size_w)
+{
+    int  info;
+    char vect;
+    if(side == HIPSOLVER_SIDE_LEFT)
+        vect = 'Q';
+    else
+        vect = 'P';
+    zungbr_(&vect, &m, &n, &k, A, &lda, Ipiv, work, &size_w, &info);
 }
 
 // orgqr & ungqr

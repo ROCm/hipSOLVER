@@ -159,6 +159,217 @@ catch(...)
     return exception2hip_status();
 }
 
+/******************** ORGBR/UNGBR ********************/
+hipsolverStatus_t hipsolverSorgbr_bufferSize(hipsolverHandle_t   handle,
+                                             hipsolverSideMode_t side,
+                                             int                 m,
+                                             int                 n,
+                                             int                 k,
+                                             float*              A,
+                                             int                 lda,
+                                             float*              tau,
+                                             int*                lwork)
+try
+{
+    return cuda2hip_status(cusolverDnSorgbr_bufferSize(
+        (cusolverDnHandle_t)handle, hip2cuda_side(side), m, n, k, A, lda, tau, lwork));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDorgbr_bufferSize(hipsolverHandle_t   handle,
+                                             hipsolverSideMode_t side,
+                                             int                 m,
+                                             int                 n,
+                                             int                 k,
+                                             double*             A,
+                                             int                 lda,
+                                             double*             tau,
+                                             int*                lwork)
+try
+{
+    return cuda2hip_status(cusolverDnDorgbr_bufferSize(
+        (cusolverDnHandle_t)handle, hip2cuda_side(side), m, n, k, A, lda, tau, lwork));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverCungbr_bufferSize(hipsolverHandle_t   handle,
+                                             hipsolverSideMode_t side,
+                                             int                 m,
+                                             int                 n,
+                                             int                 k,
+                                             hipsolverComplex*   A,
+                                             int                 lda,
+                                             hipsolverComplex*   tau,
+                                             int*                lwork)
+try
+{
+    return cuda2hip_status(cusolverDnCungbr_bufferSize((cusolverDnHandle_t)handle,
+                                                       hip2cuda_side(side),
+                                                       m,
+                                                       n,
+                                                       k,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       (cuComplex*)tau,
+                                                       lwork));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverZungbr_bufferSize(hipsolverHandle_t       handle,
+                                             hipsolverSideMode_t     side,
+                                             int                     m,
+                                             int                     n,
+                                             int                     k,
+                                             hipsolverDoubleComplex* A,
+                                             int                     lda,
+                                             hipsolverDoubleComplex* tau,
+                                             int*                    lwork)
+try
+{
+    return cuda2hip_status(cusolverDnZungbr_bufferSize((cusolverDnHandle_t)handle,
+                                                       hip2cuda_side(side),
+                                                       m,
+                                                       n,
+                                                       k,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)tau,
+                                                       lwork));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverSorgbr(hipsolverHandle_t   handle,
+                                  hipsolverSideMode_t side,
+                                  int                 m,
+                                  int                 n,
+                                  int                 k,
+                                  float*              A,
+                                  int                 lda,
+                                  float*              tau,
+                                  float*              work,
+                                  int                 lwork,
+                                  int*                devInfo)
+try
+{
+    return cuda2hip_status(cusolverDnSorgbr((cusolverDnHandle_t)handle,
+                                            hip2cuda_side(side),
+                                            m,
+                                            n,
+                                            k,
+                                            A,
+                                            lda,
+                                            tau,
+                                            work,
+                                            lwork,
+                                            devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDorgbr(hipsolverHandle_t   handle,
+                                  hipsolverSideMode_t side,
+                                  int                 m,
+                                  int                 n,
+                                  int                 k,
+                                  double*             A,
+                                  int                 lda,
+                                  double*             tau,
+                                  double*             work,
+                                  int                 lwork,
+                                  int*                devInfo)
+try
+{
+    return cuda2hip_status(cusolverDnDorgbr((cusolverDnHandle_t)handle,
+                                            hip2cuda_side(side),
+                                            m,
+                                            n,
+                                            k,
+                                            A,
+                                            lda,
+                                            tau,
+                                            work,
+                                            lwork,
+                                            devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverCungbr(hipsolverHandle_t   handle,
+                                  hipsolverSideMode_t side,
+                                  int                 m,
+                                  int                 n,
+                                  int                 k,
+                                  hipsolverComplex*   A,
+                                  int                 lda,
+                                  hipsolverComplex*   tau,
+                                  hipsolverComplex*   work,
+                                  int                 lwork,
+                                  int*                devInfo)
+try
+{
+    return cuda2hip_status(cusolverDnCungbr((cusolverDnHandle_t)handle,
+                                            hip2cuda_side(side),
+                                            m,
+                                            n,
+                                            k,
+                                            (cuComplex*)A,
+                                            lda,
+                                            (cuComplex*)tau,
+                                            (cuComplex*)work,
+                                            lwork,
+                                            devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverZungbr(hipsolverHandle_t       handle,
+                                  hipsolverSideMode_t     side,
+                                  int                     m,
+                                  int                     n,
+                                  int                     k,
+                                  hipsolverDoubleComplex* A,
+                                  int                     lda,
+                                  hipsolverDoubleComplex* tau,
+                                  hipsolverDoubleComplex* work,
+                                  int                     lwork,
+                                  int*                    devInfo)
+try
+{
+    return cuda2hip_status(cusolverDnZungbr((cusolverDnHandle_t)handle,
+                                            hip2cuda_side(side),
+                                            m,
+                                            n,
+                                            k,
+                                            (cuDoubleComplex*)A,
+                                            lda,
+                                            (cuDoubleComplex*)tau,
+                                            (cuDoubleComplex*)work,
+                                            lwork,
+                                            devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
 /******************** ORGQR/UNGQR ********************/
 hipsolverStatus_t hipsolverSorgqr_bufferSize(
     hipsolverHandle_t handle, int m, int n, int k, float* A, int lda, float* tau, int* lwork)
