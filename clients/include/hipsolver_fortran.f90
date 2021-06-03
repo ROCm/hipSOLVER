@@ -12,6 +12,167 @@ module hipsolver_interface
     !   LAPACK   !
     !------------!
 
+    ! ******************** ORGBR/UNGBR ********************
+    function hipsolverSorgbr_bufferSizeFortran(handle, side, m, n, k, A, lda, tau, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverSorgbr_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverSorgbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork)
+    end function hipsolverSorgbr_bufferSizeFortran
+    
+    function hipsolverDorgbr_bufferSizeFortran(handle, side, m, n, k, A, lda, tau, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverDorgbr_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverDorgbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork)
+    end function hipsolverDorgbr_bufferSizeFortran
+    
+    function hipsolverCungbr_bufferSizeFortran(handle, side, m, n, k, A, lda, tau, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverCungbr_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverCungbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork)
+    end function hipsolverCungbr_bufferSizeFortran
+    
+    function hipsolverZungbr_bufferSizeFortran(handle, side, m, n, k, A, lda, tau, lwork) &
+            result(res) &
+            bind(c, name = 'hipsolverZungbr_bufferSizeFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: lwork
+        integer(c_int) :: res
+        res = hipsolverZungbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork)
+    end function hipsolverZungbr_bufferSizeFortran
+    
+    function hipsolverSorgbrFortran(handle, side, m, n, k, A, lda, tau, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverSorgbrFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverSorgbr(handle, side, m, n, k, A, lda, tau, work, lwork, info)
+    end function hipsolverSorgbrFortran
+    
+    function hipsolverDorgbrFortran(handle, side, m, n, k, A, lda, tau, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverDorgbrFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverDorgbr(handle, side, m, n, k, A, lda, tau, work, lwork, info)
+    end function hipsolverDorgbrFortran
+    
+    function hipsolverCungbrFortran(handle, side, m, n, k, A, lda, tau, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverCungbrFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverCungbr(handle, side, m, n, k, A, lda, tau, work, lwork, info)
+    end function hipsolverCungbrFortran
+    
+    function hipsolverZungbrFortran(handle, side, m, n, k, A, lda, tau, work, lwork, info) &
+            result(res) &
+            bind(c, name = 'hipsolverZungbrFortran')
+        use iso_c_binding
+        use hipsolver_enums
+        implicit none
+        type(c_ptr), value :: handle
+        integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+        integer(c_int), value :: m
+        integer(c_int), value :: n
+        integer(c_int), value :: k
+        type(c_ptr), value :: A
+        integer(c_int), value :: lda
+        type(c_ptr), value :: tau
+        type(c_ptr), value :: work
+        integer(c_int), value :: lwork
+        type(c_ptr), value :: info
+        integer(c_int) :: res
+        res = hipsolverZungbr(handle, side, m, n, k, A, lda, tau, work, lwork, info)
+    end function hipsolverZungbrFortran
+
     ! ******************** ORGQR/UNGQR ********************
     function hipsolverSorgqr_bufferSizeFortran(handle, m, n, k, A, lda, tau, lwork) &
             result(res) &
