@@ -19,14 +19,30 @@ void getrs_checkBadArgs(const hipsolverHandle_t    handle,
                         T                          dB,
                         const int                  ldb,
                         const int                  stB,
+                        T                          dWork,
+                        const int                  lwork,
                         U                          dInfo,
                         const int                  bc)
 {
     // handle
-    EXPECT_ROCBLAS_STATUS(
-        hipsolver_getrs(
-            FORTRAN, nullptr, trans, m, nrhs, dA, lda, stA, dIpiv, stP, dB, ldb, stB, dInfo, bc),
-        HIPSOLVER_STATUS_NOT_INITIALIZED);
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrs(FORTRAN,
+                                          nullptr,
+                                          trans,
+                                          m,
+                                          nrhs,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dIpiv,
+                                          stP,
+                                          dB,
+                                          ldb,
+                                          stB,
+                                          dWork,
+                                          lwork,
+                                          dInfo,
+                                          bc),
+                          HIPSOLVER_STATUS_NOT_INITIALIZED);
 
     // values
     EXPECT_ROCBLAS_STATUS(hipsolver_getrs(FORTRAN,
@@ -42,6 +58,8 @@ void getrs_checkBadArgs(const hipsolverHandle_t    handle,
                                           dB,
                                           ldb,
                                           stB,
+                                          dWork,
+                                          lwork,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_ENUM);
@@ -61,6 +79,8 @@ void getrs_checkBadArgs(const hipsolverHandle_t    handle,
                                           dB,
                                           ldb,
                                           stB,
+                                          dWork,
+                                          lwork,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
@@ -77,6 +97,8 @@ void getrs_checkBadArgs(const hipsolverHandle_t    handle,
                                           dB,
                                           ldb,
                                           stB,
+                                          dWork,
+                                          lwork,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
@@ -93,6 +115,8 @@ void getrs_checkBadArgs(const hipsolverHandle_t    handle,
                                           (T) nullptr,
                                           ldb,
                                           stB,
+                                          dWork,
+                                          lwork,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
@@ -126,6 +150,12 @@ void testing_getrs_bad_arg()
         // CHECK_HIP_ERROR(dIpiv.memcheck());
         // CHECK_HIP_ERROR(dInfo.memcheck());
 
+        // int size_W;
+        // hipsolver_getrs_bufferSize(FORTRAN, handle, trans, m, nrhs, dA.data(), lda, dIpiv.data(), dB.data(), ldb, &size_W);
+        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        // if(size_W)
+        //     CHECK_HIP_ERROR(dWork.memcheck());
+
         // // check bad arguments
         // getrs_checkBadArgs<FORTRAN>(handle,
         //                             trans,
@@ -154,6 +184,13 @@ void testing_getrs_bad_arg()
         CHECK_HIP_ERROR(dIpiv.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());
 
+        int size_W;
+        hipsolver_getrs_bufferSize(
+            FORTRAN, handle, trans, m, nrhs, dA.data(), lda, dIpiv.data(), dB.data(), ldb, &size_W);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        if(size_W)
+            CHECK_HIP_ERROR(dWork.memcheck());
+
         // check bad arguments
         getrs_checkBadArgs<FORTRAN>(handle,
                                     trans,
@@ -167,6 +204,8 @@ void testing_getrs_bad_arg()
                                     dB.data(),
                                     ldb,
                                     stB,
+                                    dWork.data(),
+                                    size_W,
                                     dInfo.data(),
                                     bc);
     }
@@ -240,6 +279,8 @@ void getrs_getError(const hipsolverHandle_t    handle,
                     Td&                        dB,
                     const int                  ldb,
                     const int                  stB,
+                    Td&                        dWork,
+                    const int                  lwork,
                     Ud&                        dInfo,
                     const int                  bc,
                     Th&                        hA,
@@ -268,6 +309,8 @@ void getrs_getError(const hipsolverHandle_t    handle,
                                         dB.data(),
                                         ldb,
                                         stB,
+                                        dWork.data(),
+                                        lwork,
                                         dInfo.data(),
                                         bc));
     CHECK_HIP_ERROR(hBRes.transfer_from(dB));
@@ -304,6 +347,8 @@ void getrs_getPerfData(const hipsolverHandle_t    handle,
                        Td&                        dB,
                        const int                  ldb,
                        const int                  stB,
+                       Td&                        dWork,
+                       const int                  lwork,
                        Ud&                        dInfo,
                        const int                  bc,
                        Th&                        hA,
@@ -351,6 +396,8 @@ void getrs_getPerfData(const hipsolverHandle_t    handle,
                                             dB.data(),
                                             ldb,
                                             stB,
+                                            dWork.data(),
+                                            lwork,
                                             dInfo.data(),
                                             bc));
     }
@@ -379,6 +426,8 @@ void getrs_getPerfData(const hipsolverHandle_t    handle,
                         dB.data(),
                         ldb,
                         stB,
+                        dWork.data(),
+                        lwork,
                         dInfo.data(),
                         bc);
         *gpu_time_used += get_time_us_sync(stream) - start;
@@ -436,6 +485,8 @@ void testing_getrs(Arguments& argus)
             //                                       (T* const*)nullptr,
             //                                       ldb,
             //                                       stB,
+            //                                       (T*)nullptr,
+            //                                       0,
             //                                       (int*)nullptr,
             //                                       bc),
             //                       HIPSOLVER_STATUS_INVALID_VALUE);
@@ -455,6 +506,8 @@ void testing_getrs(Arguments& argus)
                                                   (T*)nullptr,
                                                   ldb,
                                                   stB,
+                                                  (T*)nullptr,
+                                                  0,
                                                   (int*)nullptr,
                                                   bc),
                                   HIPSOLVER_STATUS_INVALID_VALUE);
@@ -486,6 +539,13 @@ void testing_getrs(Arguments& argus)
         //     CHECK_HIP_ERROR(dIpiv.memcheck());
         // CHECK_HIP_ERROR(dInfo.memcheck());
 
+        // int size_W;
+        // hipsolver_getrs_bufferSize(
+        //    FORTRAN, handle, trans, m, nrhs, dA.data(), lda, dIpiv.data(), dB.data(), ldb, &size_W);
+        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        // if(size_W)
+        //     CHECK_HIP_ERROR(dWork.memcheck());
+
         // // check computations
         // if(argus.unit_check || argus.norm_check)
         //     getrs_getError<FORTRAN, T>(handle,
@@ -500,6 +560,8 @@ void testing_getrs(Arguments& argus)
         //                                dB,
         //                                ldb,
         //                                stB,
+        //                                dWork,
+        //                                size_W,
         //                                dInfo,
         //                                bc,
         //                                hA,
@@ -523,6 +585,8 @@ void testing_getrs(Arguments& argus)
         //                                   dB,
         //                                   ldb,
         //                                   stB,
+        //                                   dWork,
+        //                                   size_W,
         //                                   dInfo,
         //                                   bc,
         //                                   hA,
@@ -555,6 +619,13 @@ void testing_getrs(Arguments& argus)
             CHECK_HIP_ERROR(dIpiv.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());
 
+        int size_W;
+        hipsolver_getrs_bufferSize(
+            FORTRAN, handle, trans, m, nrhs, dA.data(), lda, dIpiv.data(), dB.data(), ldb, &size_W);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        if(size_W)
+            CHECK_HIP_ERROR(dWork.memcheck());
+
         // check computations
         if(argus.unit_check || argus.norm_check)
             getrs_getError<FORTRAN, T>(handle,
@@ -569,6 +640,8 @@ void testing_getrs(Arguments& argus)
                                        dB,
                                        ldb,
                                        stB,
+                                       dWork,
+                                       size_W,
                                        dInfo,
                                        bc,
                                        hA,
@@ -592,6 +665,8 @@ void testing_getrs(Arguments& argus)
                                           dB,
                                           ldb,
                                           stB,
+                                          dWork,
+                                          size_W,
                                           dInfo,
                                           bc,
                                           hA,

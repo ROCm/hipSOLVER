@@ -12,6 +12,7 @@ void getrf_npvt_checkBadArgs(const hipsolverHandle_t handle,
                              const int               lda,
                              const int               stA,
                              U                       dWork,
+                             const int               lwork,
                              V                       dIpiv,
                              const int               stP,
                              V                       dinfo,
@@ -20,20 +21,32 @@ void getrf_npvt_checkBadArgs(const hipsolverHandle_t handle,
 #if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // handle
     EXPECT_ROCBLAS_STATUS(
-        hipsolver_getrf(FORTRAN, true, nullptr, m, n, dA, lda, stA, dWork, dIpiv, stP, dinfo, bc),
+        hipsolver_getrf(
+            FORTRAN, true, nullptr, m, n, dA, lda, stA, dWork, lwork, dIpiv, stP, dinfo, bc),
         HIPSOLVER_STATUS_NOT_INITIALIZED);
 
     // values
     // N/A
 
     // pointers
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrf(FORTRAN,
+                                          true,
+                                          handle,
+                                          m,
+                                          n,
+                                          (T) nullptr,
+                                          lda,
+                                          stA,
+                                          dWork,
+                                          lwork,
+                                          dIpiv,
+                                          stP,
+                                          dinfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
     EXPECT_ROCBLAS_STATUS(
         hipsolver_getrf(
-            FORTRAN, true, handle, m, n, (T) nullptr, lda, stA, dWork, dIpiv, stP, dinfo, bc),
-        HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(
-        hipsolver_getrf(
-            FORTRAN, true, handle, m, n, dA, lda, stA, dWork, dIpiv, stP, (V) nullptr, bc),
+            FORTRAN, true, handle, m, n, dA, lda, stA, dWork, lwork, dIpiv, stP, (V) nullptr, bc),
         HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
 }
@@ -68,7 +81,7 @@ void testing_getrf_npvt_bad_arg()
 
         // // check bad arguments
         // getrf_npvt_checkBadArgs<FORTRAN>(
-        //     handle, m, n, dA.data(), lda, stA, dWork.data(), dIpiv.data(), stP, dInfo.data(), bc);
+        //     handle, m, n, dA.data(), lda, stA, dWork.data(), size_W, dIpiv.data(), stP, dInfo.data(), bc);
     }
     else
     {
@@ -87,8 +100,18 @@ void testing_getrf_npvt_bad_arg()
             CHECK_HIP_ERROR(dWork.memcheck());
 
         // check bad arguments
-        getrf_npvt_checkBadArgs<FORTRAN>(
-            handle, m, n, dA.data(), lda, stA, dWork.data(), dIpiv.data(), stP, dInfo.data(), bc);
+        getrf_npvt_checkBadArgs<FORTRAN>(handle,
+                                         m,
+                                         n,
+                                         dA.data(),
+                                         lda,
+                                         stA,
+                                         dWork.data(),
+                                         size_W,
+                                         dIpiv.data(),
+                                         stP,
+                                         dInfo.data(),
+                                         bc);
     }
 }
 
@@ -140,6 +163,7 @@ void getrf_npvt_getError(const hipsolverHandle_t handle,
                          const int               lda,
                          const int               stA,
                          Td&                     dWork,
+                         const int               lwork,
                          Ud&                     dInfo,
                          const int               bc,
                          Th&                     hA,
@@ -163,6 +187,7 @@ void getrf_npvt_getError(const hipsolverHandle_t handle,
                                         lda,
                                         stA,
                                         dWork.data(),
+                                        lwork,
                                         (int*)nullptr,
                                         0,
                                         dInfo.data(),
@@ -203,6 +228,7 @@ void getrf_npvt_getPerfData(const hipsolverHandle_t handle,
                             const int               lda,
                             const int               stA,
                             Td&                     dWork,
+                            const int               lwork,
                             Ud&                     dInfo,
                             const int               bc,
                             Th&                     hA,
@@ -240,6 +266,7 @@ void getrf_npvt_getPerfData(const hipsolverHandle_t handle,
                                             lda,
                                             stA,
                                             dWork.data(),
+                                            lwork,
                                             (int*)nullptr,
                                             0,
                                             dInfo.data(),
@@ -265,6 +292,7 @@ void getrf_npvt_getPerfData(const hipsolverHandle_t handle,
                         lda,
                         stA,
                         dWork.data(),
+                        lwork,
                         (int*)nullptr,
                         0,
                         dInfo.data(),
@@ -315,6 +343,7 @@ void testing_getrf_npvt(Arguments& argus)
             //                                       lda,
             //                                       stA,
             //                                       (T*)nullptr,
+            //                                       0,
             //                                       (int*)nullptr,
             //                                       0,
             //                                       (int*)nullptr,
@@ -332,6 +361,7 @@ void testing_getrf_npvt(Arguments& argus)
                                                   lda,
                                                   stA,
                                                   (T*)nullptr,
+                                                  0,
                                                   (int*)nullptr,
                                                   0,
                                                   (int*)nullptr,
@@ -374,6 +404,7 @@ void testing_getrf_npvt(Arguments& argus)
         //                                     lda,
         //                                     stA,
         //                                     dWork,
+        //                                     size_W,
         //                                     dInfo,
         //                                     bc,
         //                                     hA,
@@ -392,6 +423,7 @@ void testing_getrf_npvt(Arguments& argus)
         //                                        lda,
         //                                        stA,
         //                                        dWork,
+        //                                        size_W,
         //                                        dInfo,
         //                                        bc,
         //                                        hA,
@@ -432,6 +464,7 @@ void testing_getrf_npvt(Arguments& argus)
                                             lda,
                                             stA,
                                             dWork,
+                                            size_W,
                                             dInfo,
                                             bc,
                                             hA,
@@ -450,6 +483,7 @@ void testing_getrf_npvt(Arguments& argus)
                                                lda,
                                                stA,
                                                dWork,
+                                               size_W,
                                                dInfo,
                                                bc,
                                                hA,

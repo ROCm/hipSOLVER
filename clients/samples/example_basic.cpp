@@ -74,7 +74,8 @@ int main()
     hipMalloc(&dWork, sizeof(double) * size_work);
 
     // compute the LU factorization on the GPU
-    hipsolverStatus_t status = hipsolverDgetrf(handle, M, N, dA, lda, dWork, dIpiv, dInfo);
+    hipsolverStatus_t status
+        = hipsolverDgetrf(handle, M, N, dA, lda, dWork, size_work, dIpiv, dInfo);
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
 
