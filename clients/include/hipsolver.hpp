@@ -1747,13 +1747,13 @@ inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FO
                                                           int                 n,
                                                           float*              A,
                                                           int                 lda,
-                                                          float*              W,
+                                                          float*              D,
                                                           int*                lwork)
 {
     if(!FORTRAN)
-        return hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
+        return hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork);
     else
-        return hipsolverSsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork);
+        return hipsolverSsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, D, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FORTRAN,
@@ -1763,13 +1763,13 @@ inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FO
                                                           int                 n,
                                                           double*             A,
                                                           int                 lda,
-                                                          double*             W,
+                                                          double*             D,
                                                           int*                lwork)
 {
     if(!FORTRAN)
-        return hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
+        return hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork);
     else
-        return hipsolverDsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork);
+        return hipsolverDsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, D, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FORTRAN,
@@ -1779,13 +1779,13 @@ inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FO
                                                           int                 n,
                                                           hipsolverComplex*   A,
                                                           int                 lda,
-                                                          float*              W,
+                                                          float*              D,
                                                           int*                lwork)
 {
     if(!FORTRAN)
-        return hipsolverCheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
+        return hipsolverCheevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork);
     else
-        return hipsolverCheevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork);
+        return hipsolverCheevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, D, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                    FORTRAN,
@@ -1795,13 +1795,13 @@ inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                  
                                                           int                     n,
                                                           hipsolverDoubleComplex* A,
                                                           int                     lda,
-                                                          double*                 W,
+                                                          double*                 D,
                                                           int*                    lwork)
 {
     if(!FORTRAN)
-        return hipsolverZheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
+        return hipsolverZheevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork);
     else
-        return hipsolverZheevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork);
+        return hipsolverZheevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, D, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
@@ -1812,7 +1812,7 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
                                                float*              A,
                                                int                 lda,
                                                int                 stA,
-                                               float*              W,
+                                               float*              D,
                                                int                 stW,
                                                float*              work,
                                                int                 lwork,
@@ -1820,9 +1820,9 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
                                                int                 bc)
 {
     if(!FORTRAN)
-        return hipsolverSsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+        return hipsolverSsyevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info);
     else
-        return hipsolverSsyevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+        return hipsolverSsyevdFortran(handle, jobz, uplo, n, A, lda, D, work, lwork, info);
 }
 
 inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
@@ -1833,7 +1833,7 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
                                                double*             A,
                                                int                 lda,
                                                int                 stA,
-                                               double*             W,
+                                               double*             D,
                                                int                 stW,
                                                double*             work,
                                                int                 lwork,
@@ -1841,9 +1841,9 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
                                                int                 bc)
 {
     if(!FORTRAN)
-        return hipsolverDsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+        return hipsolverDsyevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info);
     else
-        return hipsolverDsyevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+        return hipsolverDsyevdFortran(handle, jobz, uplo, n, A, lda, D, work, lwork, info);
 }
 
 inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
@@ -1854,7 +1854,7 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
                                                hipsolverComplex*   A,
                                                int                 lda,
                                                int                 stA,
-                                               float*              W,
+                                               float*              D,
                                                int                 stW,
                                                hipsolverComplex*   work,
                                                int                 lwork,
@@ -1862,9 +1862,9 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
                                                int                 bc)
 {
     if(!FORTRAN)
-        return hipsolverCheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+        return hipsolverCheevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info);
     else
-        return hipsolverCheevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+        return hipsolverCheevdFortran(handle, jobz, uplo, n, A, lda, D, work, lwork, info);
 }
 
 inline hipsolverStatus_t hipsolver_syevd_heevd(bool                    FORTRAN,
@@ -1875,7 +1875,7 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                    FORTRAN,
                                                hipsolverDoubleComplex* A,
                                                int                     lda,
                                                int                     stA,
-                                               double*                 W,
+                                               double*                 D,
                                                int                     stW,
                                                hipsolverDoubleComplex* work,
                                                int                     lwork,
@@ -1883,9 +1883,9 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                    FORTRAN,
                                                int                     bc)
 {
     if(!FORTRAN)
-        return hipsolverZheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+        return hipsolverZheevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info);
     else
-        return hipsolverZheevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
+        return hipsolverZheevdFortran(handle, jobz, uplo, n, A, lda, D, work, lwork, info);
 }
 /********************************************************/
 
@@ -1901,14 +1901,14 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                FO
                                                           int                 lda,
                                                           float*              B,
                                                           int                 ldb,
-                                                          float*              W,
+                                                          float*              D,
                                                           int*                lwork)
 {
     if(!FORTRAN)
-        return hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
+        return hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
     else
         return hipsolverSsygvd_bufferSizeFortran(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                FORTRAN,
@@ -1921,14 +1921,14 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                FO
                                                           int                 lda,
                                                           double*             B,
                                                           int                 ldb,
-                                                          double*             W,
+                                                          double*             D,
                                                           int*                lwork)
 {
     if(!FORTRAN)
-        return hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
+        return hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
     else
         return hipsolverDsygvd_bufferSizeFortran(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                FORTRAN,
@@ -1941,14 +1941,14 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                FO
                                                           int                 lda,
                                                           hipsolverComplex*   B,
                                                           int                 ldb,
-                                                          float*              W,
+                                                          float*              D,
                                                           int*                lwork)
 {
     if(!FORTRAN)
-        return hipsolverChegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
+        return hipsolverChegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
     else
         return hipsolverChegvd_bufferSizeFortran(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                    FORTRAN,
@@ -1961,14 +1961,14 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                  
                                                           int                     lda,
                                                           hipsolverDoubleComplex* B,
                                                           int                     ldb,
-                                                          double*                 W,
+                                                          double*                 D,
                                                           int*                    lwork)
 {
     if(!FORTRAN)
-        return hipsolverZhegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
+        return hipsolverZhegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
     else
         return hipsolverZhegvd_bufferSizeFortran(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
@@ -1983,7 +1983,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
                                                float*              B,
                                                int                 ldb,
                                                int                 stB,
-                                               float*              W,
+                                               float*              D,
                                                int                 stW,
                                                float*              work,
                                                int                 lwork,
@@ -1991,10 +1991,10 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
                                                int                 bc)
 {
     if(!FORTRAN)
-        return hipsolverSsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info);
+        return hipsolverSsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info);
     else
         return hipsolverSsygvdFortran(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info);
 }
 
 inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
@@ -2009,7 +2009,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
                                                double*             B,
                                                int                 ldb,
                                                int                 stB,
-                                               double*             W,
+                                               double*             D,
                                                int                 stW,
                                                double*             work,
                                                int                 lwork,
@@ -2017,10 +2017,10 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
                                                int                 bc)
 {
     if(!FORTRAN)
-        return hipsolverDsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info);
+        return hipsolverDsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info);
     else
         return hipsolverDsygvdFortran(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info);
 }
 
 inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
@@ -2035,7 +2035,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
                                                hipsolverComplex*   B,
                                                int                 ldb,
                                                int                 stB,
-                                               float*              W,
+                                               float*              D,
                                                int                 stW,
                                                hipsolverComplex*   work,
                                                int                 lwork,
@@ -2043,10 +2043,10 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
                                                int                 bc)
 {
     if(!FORTRAN)
-        return hipsolverChegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info);
+        return hipsolverChegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info);
     else
         return hipsolverChegvdFortran(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info);
 }
 
 inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                    FORTRAN,
@@ -2061,7 +2061,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                    FORTRAN,
                                                hipsolverDoubleComplex* B,
                                                int                     ldb,
                                                int                     stB,
-                                               double*                 W,
+                                               double*                 D,
                                                int                     stW,
                                                hipsolverDoubleComplex* work,
                                                int                     lwork,
@@ -2069,10 +2069,10 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                    FORTRAN,
                                                int                     bc)
 {
     if(!FORTRAN)
-        return hipsolverZhegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info);
+        return hipsolverZhegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info);
     else
         return hipsolverZhegvdFortran(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info);
 }
 /********************************************************/
 

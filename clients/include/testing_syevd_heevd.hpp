@@ -513,7 +513,7 @@ void testing_syevd_heevd(Arguments& argus)
     int                    n      = argus.get<int>("n");
     int                    lda    = argus.get<int>("lda", n);
     int                    stA    = argus.get<int>("strideA", lda * n);
-    int                    stD    = argus.get<int>("strideW", n);
+    int                    stD    = argus.get<int>("strideD", n);
 
     hipsolverEigMode_t  evect     = char2hipsolver_evect(evectC);
     hipsolverFillMode_t uplo      = char2hipsolver_fill(uploC);
@@ -737,12 +737,12 @@ void testing_syevd_heevd(Arguments& argus)
             std::cerr << "============================================\n";
             if(BATCHED)
             {
-                rocsolver_bench_output("jobz", "uplo", "n", "lda", "strideW", "batch_c");
+                rocsolver_bench_output("jobz", "uplo", "n", "lda", "strideD", "batch_c");
                 rocsolver_bench_output(evectC, uploC, n, lda, stD, bc);
             }
             else if(STRIDED)
             {
-                rocsolver_bench_output("jobz", "uplo", "n", "lda", "strideA", "strideW", "batch_c");
+                rocsolver_bench_output("jobz", "uplo", "n", "lda", "strideA", "strideD", "batch_c");
                 rocsolver_bench_output(evectC, uploC, n, lda, stA, stD, bc);
             }
             else

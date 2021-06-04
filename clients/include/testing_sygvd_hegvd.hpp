@@ -759,7 +759,7 @@ void testing_sygvd_hegvd(Arguments& argus)
     int                    ldb    = argus.get<int>("ldb", n);
     int                    stA    = argus.get<int>("strideA", lda * n);
     int                    stB    = argus.get<int>("strideB", ldb * n);
-    int                    stD    = argus.get<int>("stridew", n);
+    int                    stD    = argus.get<int>("strideD", n);
 
     hipsolverEigType_t  itype     = char2hipsolver_eform(itypeC);
     hipsolverEigMode_t  evect     = char2hipsolver_evect(evectC);
@@ -1046,7 +1046,7 @@ void testing_sygvd_hegvd(Arguments& argus)
             if(BATCHED)
             {
                 rocsolver_bench_output(
-                    "itype", "evect", "uplo", "n", "lda", "ldb", "strideW", "batch_c");
+                    "itype", "evect", "uplo", "n", "lda", "ldb", "strideD", "batch_c");
                 rocsolver_bench_output(itypeC, evectC, uploC, n, lda, ldb, stD, bc);
             }
             else if(STRIDED)
@@ -1059,7 +1059,7 @@ void testing_sygvd_hegvd(Arguments& argus)
                                        "ldb",
                                        "strideA",
                                        "strideB",
-                                       "strideW",
+                                       "strideD",
                                        "batch_c");
                 rocsolver_bench_output(itypeC, evectC, uploC, n, lda, ldb, stA, stB, stD, bc);
             }

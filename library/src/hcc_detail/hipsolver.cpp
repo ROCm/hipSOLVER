@@ -2965,7 +2965,7 @@ hipsolverStatus_t hipsolverSsyevd_bufferSize(hipsolverHandle_t   handle,
                                              int                 n,
                                              float*              A,
                                              int                 lda,
-                                             float*              W,
+                                             float*              D,
                                              int*                lwork)
 try
 {
@@ -3003,7 +3003,7 @@ hipsolverStatus_t hipsolverDsyevd_bufferSize(hipsolverHandle_t   handle,
                                              int                 n,
                                              double*             A,
                                              int                 lda,
-                                             double*             W,
+                                             double*             D,
                                              int*                lwork)
 try
 {
@@ -3041,7 +3041,7 @@ hipsolverStatus_t hipsolverCheevd_bufferSize(hipsolverHandle_t   handle,
                                              int                 n,
                                              hipsolverComplex*   A,
                                              int                 lda,
-                                             float*              W,
+                                             float*              D,
                                              int*                lwork)
 try
 {
@@ -3079,7 +3079,7 @@ hipsolverStatus_t hipsolverZheevd_bufferSize(hipsolverHandle_t       handle,
                                              int                     n,
                                              hipsolverDoubleComplex* A,
                                              int                     lda,
-                                             double*                 W,
+                                             double*                 D,
                                              int*                    lwork)
 try
 {
@@ -3117,7 +3117,7 @@ hipsolverStatus_t hipsolverSsyevd(hipsolverHandle_t   handle,
                                   int                 n,
                                   float*              A,
                                   int                 lda,
-                                  float*              W,
+                                  float*              D,
                                   float*              work,
                                   int                 lwork,
                                   int*                devInfo)
@@ -3140,7 +3140,7 @@ try
                                                n,
                                                A,
                                                lda,
-                                               W,
+                                               D,
                                                E,
                                                devInfo));
 }
@@ -3155,7 +3155,7 @@ hipsolverStatus_t hipsolverDsyevd(hipsolverHandle_t   handle,
                                   int                 n,
                                   double*             A,
                                   int                 lda,
-                                  double*             W,
+                                  double*             D,
                                   double*             work,
                                   int                 lwork,
                                   int*                devInfo)
@@ -3178,7 +3178,7 @@ try
                                                n,
                                                A,
                                                lda,
-                                               W,
+                                               D,
                                                E,
                                                devInfo));
 }
@@ -3193,7 +3193,7 @@ hipsolverStatus_t hipsolverCheevd(hipsolverHandle_t   handle,
                                   int                 n,
                                   hipsolverComplex*   A,
                                   int                 lda,
-                                  float*              W,
+                                  float*              D,
                                   hipsolverComplex*   work,
                                   int                 lwork,
                                   int*                devInfo)
@@ -3216,7 +3216,7 @@ try
                                                n,
                                                (rocblas_float_complex*)A,
                                                lda,
-                                               W,
+                                               D,
                                                E,
                                                devInfo));
 }
@@ -3231,7 +3231,7 @@ hipsolverStatus_t hipsolverZheevd(hipsolverHandle_t       handle,
                                   int                     n,
                                   hipsolverDoubleComplex* A,
                                   int                     lda,
-                                  double*                 W,
+                                  double*                 D,
                                   hipsolverDoubleComplex* work,
                                   int                     lwork,
                                   int*                    devInfo)
@@ -3254,7 +3254,7 @@ try
                                                n,
                                                (rocblas_double_complex*)A,
                                                lda,
-                                               W,
+                                               D,
                                                E,
                                                devInfo));
 }
@@ -3263,7 +3263,7 @@ catch(...)
     return exception2hip_status();
 }
 
-/******************** SYTRD/HETRD ********************/
+/******************** SYGVD/HEGVD ********************/
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd_bufferSize(hipsolverHandle_t   handle,
                                                               hipsolverEigType_t  itype,
                                                               hipsolverEigMode_t  jobz,
@@ -3273,7 +3273,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               float*              B,
                                                               int                 ldb,
-                                                              float*              W,
+                                                              float*              D,
                                                               int*                lwork)
 try
 {
@@ -3317,7 +3317,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               double*             B,
                                                               int                 ldb,
-                                                              double*             W,
+                                                              double*             D,
                                                               int*                lwork)
 try
 {
@@ -3361,7 +3361,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               hipsolverComplex*   B,
                                                               int                 ldb,
-                                                              float*              W,
+                                                              float*              D,
                                                               int*                lwork)
 try
 {
@@ -3405,7 +3405,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSize(hipsolverHandle_t 
                                                               int                     lda,
                                                               hipsolverDoubleComplex* B,
                                                               int                     ldb,
-                                                              double*                 W,
+                                                              double*                 D,
                                                               int*                    lwork)
 try
 {
@@ -3449,7 +3449,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    float*              B,
                                                    int                 ldb,
-                                                   float*              W,
+                                                   float*              D,
                                                    float*              work,
                                                    int                 lwork,
                                                    int*                devInfo)
@@ -3475,7 +3475,7 @@ try
                                                lda,
                                                B,
                                                ldb,
-                                               W,
+                                               D,
                                                E,
                                                devInfo));
 }
@@ -3493,7 +3493,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    double*             B,
                                                    int                 ldb,
-                                                   double*             W,
+                                                   double*             D,
                                                    double*             work,
                                                    int                 lwork,
                                                    int*                devInfo)
@@ -3519,7 +3519,7 @@ try
                                                lda,
                                                B,
                                                ldb,
-                                               W,
+                                               D,
                                                E,
                                                devInfo));
 }
@@ -3537,7 +3537,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    hipsolverComplex*   B,
                                                    int                 ldb,
-                                                   float*              W,
+                                                   float*              D,
                                                    hipsolverComplex*   work,
                                                    int                 lwork,
                                                    int*                devInfo)
@@ -3563,7 +3563,7 @@ try
                                                lda,
                                                (rocblas_float_complex*)B,
                                                ldb,
-                                               W,
+                                               D,
                                                E,
                                                devInfo));
 }
@@ -3581,7 +3581,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd(hipsolverHandle_t       handl
                                                    int                     lda,
                                                    hipsolverDoubleComplex* B,
                                                    int                     ldb,
-                                                   double*                 W,
+                                                   double*                 D,
                                                    hipsolverDoubleComplex* work,
                                                    int                     lwork,
                                                    int*                    devInfo)
@@ -3607,7 +3607,7 @@ try
                                                lda,
                                                (rocblas_double_complex*)B,
                                                ldb,
-                                               W,
+                                               D,
                                                E,
                                                devInfo));
 }

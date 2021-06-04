@@ -1799,7 +1799,7 @@ module hipsolver
 
     ! ******************** SYEVD/HEEVD ********************
     interface
-        function hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork) &
+        function hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork) &
                 result(c_int) &
                 bind(c, name = 'hipsolverSsyevd_bufferSize')
             use iso_c_binding
@@ -1811,13 +1811,13 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: lwork
         end function hipsolverSsyevd_bufferSize
     end interface
     
     interface
-        function hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork) &
+        function hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork) &
                 result(c_int) &
                 bind(c, name = 'hipsolverDsyevd_bufferSize')
             use iso_c_binding
@@ -1829,13 +1829,13 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: lwork
         end function hipsolverDsyevd_bufferSize
     end interface
     
     interface
-        function hipsolverCheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork) &
+        function hipsolverCheevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork) &
                 result(c_int) &
                 bind(c, name = 'hipsolverCheevd_bufferSize')
             use iso_c_binding
@@ -1847,13 +1847,13 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: lwork
         end function hipsolverCheevd_bufferSize
     end interface
     
     interface
-        function hipsolverZheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork) &
+        function hipsolverZheevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork) &
                 result(c_int) &
                 bind(c, name = 'hipsolverZheevd_bufferSize')
             use iso_c_binding
@@ -1865,13 +1865,13 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: lwork
         end function hipsolverZheevd_bufferSize
     end interface
 
     interface
-        function hipsolverSsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
+        function hipsolverSsyevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverSsyevd')
             use iso_c_binding
@@ -1883,7 +1883,7 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -1891,7 +1891,7 @@ module hipsolver
     end interface
 
     interface
-        function hipsolverDsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
+        function hipsolverDsyevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverDsyevd')
             use iso_c_binding
@@ -1903,7 +1903,7 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -1911,7 +1911,7 @@ module hipsolver
     end interface
 
     interface
-        function hipsolverCheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
+        function hipsolverCheevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverCheevd')
             use iso_c_binding
@@ -1923,7 +1923,7 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -1931,7 +1931,7 @@ module hipsolver
     end interface
 
     interface
-        function hipsolverZheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
+        function hipsolverZheevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverZheevd')
             use iso_c_binding
@@ -1943,7 +1943,7 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -1952,7 +1952,7 @@ module hipsolver
 
     ! ******************** SYGVD/HEGVD ********************
     interface
-        function hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
+        function hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork) &
                 result(c_int) &
                 bind(c, name = 'hipsolverSsygvd_bufferSize')
             use iso_c_binding
@@ -1967,13 +1967,13 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: lwork
         end function hipsolverSsygvd_bufferSize
     end interface
     
     interface
-        function hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
+        function hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork) &
                 result(c_int) &
                 bind(c, name = 'hipsolverDsygvd_bufferSize')
             use iso_c_binding
@@ -1988,13 +1988,13 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: lwork
         end function hipsolverDsygvd_bufferSize
     end interface
     
     interface
-        function hipsolverChegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
+        function hipsolverChegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork) &
                 result(c_int) &
                 bind(c, name = 'hipsolverChegvd_bufferSize')
             use iso_c_binding
@@ -2009,13 +2009,13 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: lwork
         end function hipsolverChegvd_bufferSize
     end interface
     
     interface
-        function hipsolverZhegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
+        function hipsolverZhegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork) &
                 result(c_int) &
                 bind(c, name = 'hipsolverZhegvd_bufferSize')
             use iso_c_binding
@@ -2030,13 +2030,13 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: lwork
         end function hipsolverZhegvd_bufferSize
     end interface
 
     interface
-        function hipsolverSsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
+        function hipsolverSsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverSsygvd')
             use iso_c_binding
@@ -2051,7 +2051,7 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -2059,7 +2059,7 @@ module hipsolver
     end interface
 
     interface
-        function hipsolverDsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
+        function hipsolverDsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverDsygvd')
             use iso_c_binding
@@ -2074,7 +2074,7 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -2082,7 +2082,7 @@ module hipsolver
     end interface
 
     interface
-        function hipsolverChegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
+        function hipsolverChegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverChegvd')
             use iso_c_binding
@@ -2097,7 +2097,7 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -2105,7 +2105,7 @@ module hipsolver
     end interface
 
     interface
-        function hipsolverZhegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
+        function hipsolverZhegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info) &
                 result(c_int) &
                 bind(c, name = 'hipsolverZhegvd')
             use iso_c_binding
@@ -2120,7 +2120,7 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: W
+            type(c_ptr), value :: D
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
