@@ -96,7 +96,7 @@ if( USE_CUDA )
 endif( )
 
 # FOR OPTIONAL CODE COVERAGE
-option(BUILD_CODE_COVERAGE "Build rocSOLVER with code coverage enabled" OFF)
+option(BUILD_CODE_COVERAGE "Build hipSOLVER with code coverage enabled" OFF)
 if(BUILD_CODE_COVERAGE)
   add_compile_options(-fprofile-arcs -ftest-coverage)
   add_link_options(--coverage)
