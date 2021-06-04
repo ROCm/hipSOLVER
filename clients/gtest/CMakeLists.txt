@@ -35,6 +35,7 @@ set(hipsolver_test_source
   orgqr_ungqr_gtest.cpp
   orgtr_ungtr_gtest.cpp
   ormqr_unmqr_gtest.cpp
+  ormtr_unmtr_gtest.cpp
 )
 
 set( hipsolver_test_common

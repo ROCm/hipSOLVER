@@ -279,6 +279,59 @@ void zunmqr_(char*                   side,
              int*                    sizeW,
              int*                    info);
 
+void sormtr_(char*  side,
+             char*  uplo,
+             char*  trans,
+             int*   m,
+             int*   n,
+             float* A,
+             int*   lda,
+             float* ipiv,
+             float* C,
+             int*   ldc,
+             float* work,
+             int*   sizeW,
+             int*   info);
+void dormtr_(char*   side,
+             char*   uplo,
+             char*   trans,
+             int*    m,
+             int*    n,
+             double* A,
+             int*    lda,
+             double* ipiv,
+             double* C,
+             int*    ldc,
+             double* work,
+             int*    sizeW,
+             int*    info);
+void cunmtr_(char*             side,
+             char*             uplo,
+             char*             trans,
+             int*              m,
+             int*              n,
+             hipsolverComplex* A,
+             int*              lda,
+             hipsolverComplex* ipiv,
+             hipsolverComplex* C,
+             int*              ldc,
+             hipsolverComplex* work,
+             int*              sizeW,
+             int*              info);
+void zunmtr_(char*                   side,
+             char*                   uplo,
+             char*                   trans,
+             int*                    m,
+             int*                    n,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             hipsolverDoubleComplex* ipiv,
+             hipsolverDoubleComplex* C,
+             int*                    ldc,
+             hipsolverDoubleComplex* work,
+             int*                    sizeW,
+             int*                    info);
+
 void sgebrd_(int*   m,
              int*   n,
              float* A,
@@ -1195,6 +1248,95 @@ void cblas_ormqr_unmqr<hipsolverDoubleComplex>(hipsolverSideMode_t     side,
     char transC = hipsolver2char_operation(trans);
 
     zunmqr_(&sideC, &transC, &m, &n, &k, A, &lda, ipiv, C, &ldc, work, &lwork, &info);
+}
+
+// ormtr & unmtr
+template <>
+void cblas_ormtr_unmtr<float>(hipsolverSideMode_t  side,
+                              hipsolverFillMode_t  uplo,
+                              hipsolverOperation_t trans,
+                              int                  m,
+                              int                  n,
+                              float*               A,
+                              int                  lda,
+                              float*               ipiv,
+                              float*               C,
+                              int                  ldc,
+                              float*               work,
+                              int                  lwork)
+{
+    int  info;
+    char sideC  = hipsolver2char_side(side);
+    char uploC  = hipsolver2char_fill(uplo);
+    char transC = hipsolver2char_operation(trans);
+
+    sormtr_(&sideC, &uploC, &transC, &m, &n, A, &lda, ipiv, C, &ldc, work, &lwork, &info);
+}
+
+template <>
+void cblas_ormtr_unmtr<double>(hipsolverSideMode_t  side,
+                               hipsolverFillMode_t  uplo,
+                               hipsolverOperation_t trans,
+                               int                  m,
+                               int                  n,
+                               double*              A,
+                               int                  lda,
+                               double*              ipiv,
+                               double*              C,
+                               int                  ldc,
+                               double*              work,
+                               int                  lwork)
+{
+    int  info;
+    char sideC  = hipsolver2char_side(side);
+    char uploC  = hipsolver2char_fill(uplo);
+    char transC = hipsolver2char_operation(trans);
+
+    dormtr_(&sideC, &uploC, &transC, &m, &n, A, &lda, ipiv, C, &ldc, work, &lwork, &info);
+}
+
+template <>
+void cblas_ormtr_unmtr<hipsolverComplex>(hipsolverSideMode_t  side,
+                                         hipsolverFillMode_t  uplo,
+                                         hipsolverOperation_t trans,
+                                         int                  m,
+                                         int                  n,
+                                         hipsolverComplex*    A,
+                                         int                  lda,
+                                         hipsolverComplex*    ipiv,
+                                         hipsolverComplex*    C,
+                                         int                  ldc,
+                                         hipsolverComplex*    work,
+                                         int                  lwork)
+{
+    int  info;
+    char sideC  = hipsolver2char_side(side);
+    char uploC  = hipsolver2char_fill(uplo);
+    char transC = hipsolver2char_operation(trans);
+
+    cunmtr_(&sideC, &uploC, &transC, &m, &n, A, &lda, ipiv, C, &ldc, work, &lwork, &info);
+}
+
+template <>
+void cblas_ormtr_unmtr<hipsolverDoubleComplex>(hipsolverSideMode_t     side,
+                                               hipsolverFillMode_t     uplo,
+                                               hipsolverOperation_t    trans,
+                                               int                     m,
+                                               int                     n,
+                                               hipsolverDoubleComplex* A,
+                                               int                     lda,
+                                               hipsolverDoubleComplex* ipiv,
+                                               hipsolverDoubleComplex* C,
+                                               int                     ldc,
+                                               hipsolverDoubleComplex* work,
+                                               int                     lwork)
+{
+    int  info;
+    char sideC  = hipsolver2char_side(side);
+    char uploC  = hipsolver2char_fill(uplo);
+    char transC = hipsolver2char_operation(trans);
+
+    zunmtr_(&sideC, &uploC, &transC, &m, &n, A, &lda, ipiv, C, &ldc, work, &lwork, &info);
 }
 
 // gebrd

@@ -750,6 +750,191 @@ module hipsolver
         end function hipsolverZunmqr
     end interface
     
+    ! ******************** ORMTR/UNMTR ********************
+    interface
+        function hipsolverSormtr_bufferSize(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSormtr_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: C
+            integer(c_int), value :: ldc
+            type(c_ptr), value :: lwork
+        end function hipsolverSormtr_bufferSize
+    end interface
+    
+    interface
+        function hipsolverDormtr_bufferSize(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDormtr_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: C
+            integer(c_int), value :: ldc
+            type(c_ptr), value :: lwork
+        end function hipsolverDormtr_bufferSize
+    end interface
+    
+    interface
+        function hipsolverCunmtr_bufferSize(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCunmtr_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: C
+            integer(c_int), value :: ldc
+            type(c_ptr), value :: lwork
+        end function hipsolverCunmtr_bufferSize
+    end interface
+    
+    interface
+        function hipsolverZunmtr_bufferSize(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZunmtr_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: C
+            integer(c_int), value :: ldc
+            type(c_ptr), value :: lwork
+        end function hipsolverZunmtr_bufferSize
+    end interface
+    
+    interface
+        function hipsolverSormtr(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, work, lwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSormtr')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: C
+            integer(c_int), value :: ldc
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+        end function hipsolverSormtr
+    end interface
+    
+    interface
+        function hipsolverDormtr(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, work, lwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDormtr')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: C
+            integer(c_int), value :: ldc
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+        end function hipsolverDormtr
+    end interface
+    
+    interface
+        function hipsolverCunmtr(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, work, lwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCunmtr')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: C
+            integer(c_int), value :: ldc
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+        end function hipsolverCunmtr
+    end interface
+    
+    interface
+        function hipsolverZunmtr(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, work, lwork, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZunmtr')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(kind(HIPSOLVER_OP_N)), value :: trans
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: tau
+            type(c_ptr), value :: C
+            integer(c_int), value :: ldc
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+        end function hipsolverZunmtr
+    end interface
+    
     ! ******************** GEBRD ********************
     interface
         function hipsolverSgebrd_bufferSize(handle, m, n, lwork) &
