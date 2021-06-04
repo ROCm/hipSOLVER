@@ -10,6 +10,7 @@
 
 extern "C" {
 
+/******************** HELPERS ********************/
 cublasOperation_t hip2cuda_operation(hipsolverOperation_t op)
 {
     switch(op)
@@ -175,6 +176,7 @@ hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
     }
 }
 
+/******************** AUXLIARY ********************/
 hipsolverStatus_t hipsolverCreate(hipsolverHandle_t* handle)
 try
 {
