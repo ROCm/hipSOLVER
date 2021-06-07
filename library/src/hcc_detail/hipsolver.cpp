@@ -221,12 +221,16 @@ hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
 
 inline rocblas_status hipsolverManageWorkspace(rocblas_handle handle, int lwork)
 {
-    size_t current_size;
+    if(lwork < 0)
+        return rocblas_status_memory_error;
+
+    size_t new_size     = lwork;
+    size_t current_size = 0;
     if(rocblas_is_user_managing_device_memory(handle))
         rocblas_get_device_memory_size(handle, &current_size);
 
-    if(lwork > current_size)
-        return rocblas_set_device_memory_size(handle, lwork);
+    if(new_size > current_size)
+        return rocblas_set_device_memory_size(handle, new_size);
     else
         return rocblas_status_success;
 }
