@@ -306,6 +306,10 @@ hipsolverStatus_t hipsolverSorgbr_bufferSize(hipsolverHandle_t   handle,
                                              int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -337,6 +341,10 @@ hipsolverStatus_t hipsolverDorgbr_bufferSize(hipsolverHandle_t   handle,
                                              int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -368,6 +376,10 @@ hipsolverStatus_t hipsolverCungbr_bufferSize(hipsolverHandle_t   handle,
                                              int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -399,6 +411,10 @@ hipsolverStatus_t hipsolverZungbr_bufferSize(hipsolverHandle_t       handle,
                                              int*                    lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -556,6 +572,10 @@ hipsolverStatus_t hipsolverSorgqr_bufferSize(
     hipsolverHandle_t handle, int m, int n, int k, float* A, int lda, float* tau, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -580,6 +600,10 @@ hipsolverStatus_t hipsolverDorgqr_bufferSize(
     hipsolverHandle_t handle, int m, int n, int k, double* A, int lda, double* tau, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -610,6 +634,10 @@ hipsolverStatus_t hipsolverCungqr_bufferSize(hipsolverHandle_t handle,
                                              int*              lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -640,6 +668,10 @@ hipsolverStatus_t hipsolverZungqr_bufferSize(hipsolverHandle_t       handle,
                                              int*                    lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -794,6 +826,10 @@ hipsolverStatus_t hipsolverSorgtr_bufferSize(hipsolverHandle_t   handle,
                                              int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -823,6 +859,10 @@ hipsolverStatus_t hipsolverDorgtr_bufferSize(hipsolverHandle_t   handle,
                                              int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -852,6 +892,10 @@ hipsolverStatus_t hipsolverCungtr_bufferSize(hipsolverHandle_t   handle,
                                              int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -881,6 +925,10 @@ hipsolverStatus_t hipsolverZungtr_bufferSize(hipsolverHandle_t       handle,
                                              int*                    lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1036,6 +1084,10 @@ hipsolverStatus_t hipsolverSormqr_bufferSize(hipsolverHandle_t    handle,
                                              int*                 lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1079,6 +1131,10 @@ hipsolverStatus_t hipsolverDormqr_bufferSize(hipsolverHandle_t    handle,
                                              int*                 lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1122,6 +1178,10 @@ hipsolverStatus_t hipsolverCunmqr_bufferSize(hipsolverHandle_t    handle,
                                              int*                 lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1165,6 +1225,10 @@ hipsolverStatus_t hipsolverZunmqr_bufferSize(hipsolverHandle_t       handle,
                                              int*                    lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1377,6 +1441,10 @@ hipsolverStatus_t hipsolverSormtr_bufferSize(hipsolverHandle_t    handle,
                                              int*                 lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1420,6 +1488,10 @@ hipsolverStatus_t hipsolverDormtr_bufferSize(hipsolverHandle_t    handle,
                                              int*                 lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1463,6 +1535,10 @@ hipsolverStatus_t hipsolverCunmtr_bufferSize(hipsolverHandle_t    handle,
                                              int*                 lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1506,6 +1582,10 @@ hipsolverStatus_t hipsolverZunmtr_bufferSize(hipsolverHandle_t       handle,
                                              int*                    lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1707,6 +1787,10 @@ catch(...)
 hipsolverStatus_t hipsolverSgebrd_bufferSize(hipsolverHandle_t handle, int m, int n, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1730,6 +1814,10 @@ catch(...)
 hipsolverStatus_t hipsolverDgebrd_bufferSize(hipsolverHandle_t handle, int m, int n, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1753,6 +1841,10 @@ catch(...)
 hipsolverStatus_t hipsolverCgebrd_bufferSize(hipsolverHandle_t handle, int m, int n, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1776,6 +1868,10 @@ catch(...)
 hipsolverStatus_t hipsolverZgebrd_bufferSize(hipsolverHandle_t handle, int m, int n, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1935,6 +2031,10 @@ hipsolverStatus_t hipsolverSgeqrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1959,6 +2059,10 @@ hipsolverStatus_t hipsolverDgeqrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -1983,6 +2087,10 @@ hipsolverStatus_t hipsolverCgeqrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -2007,6 +2115,10 @@ hipsolverStatus_t hipsolverZgeqrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -2146,6 +2258,10 @@ hipsolverStatus_t hipsolverSgesvd_bufferSize(
     hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -2183,6 +2299,10 @@ hipsolverStatus_t hipsolverDgesvd_bufferSize(
     hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -2220,6 +2340,10 @@ hipsolverStatus_t hipsolverCgesvd_bufferSize(
     hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -2257,6 +2381,10 @@ hipsolverStatus_t hipsolverZgesvd_bufferSize(
     hipsolverHandle_t handle, signed char jobu, signed char jobv, int m, int n, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -2487,6 +2615,10 @@ hipsolverStatus_t hipsolverSgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -2512,6 +2644,10 @@ hipsolverStatus_t hipsolverDgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -2537,6 +2673,10 @@ hipsolverStatus_t hipsolverCgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -2562,6 +2702,10 @@ hipsolverStatus_t hipsolverZgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -2724,6 +2868,10 @@ hipsolverStatus_t hipsolverSgetrs_bufferSize(hipsolverHandle_t    handle,
                                              int*                 lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -2763,6 +2911,10 @@ hipsolverStatus_t hipsolverDgetrs_bufferSize(hipsolverHandle_t    handle,
                                              int*                 lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -2802,6 +2954,10 @@ hipsolverStatus_t hipsolverCgetrs_bufferSize(hipsolverHandle_t    handle,
                                              int*                 lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -2841,6 +2997,10 @@ hipsolverStatus_t hipsolverZgetrs_bufferSize(hipsolverHandle_t       handle,
                                              int*                    lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3011,6 +3171,10 @@ hipsolverStatus_t hipsolverSpotrf_bufferSize(
     hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, float* A, int lda, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3035,6 +3199,10 @@ hipsolverStatus_t hipsolverDpotrf_bufferSize(
     hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, double* A, int lda, int* lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3063,6 +3231,10 @@ hipsolverStatus_t hipsolverCpotrf_bufferSize(hipsolverHandle_t   handle,
                                              int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3091,6 +3263,10 @@ hipsolverStatus_t hipsolverZpotrf_bufferSize(hipsolverHandle_t       handle,
                                              int*                    lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3237,6 +3413,10 @@ hipsolverStatus_t hipsolverSpotrfBatched_bufferSize(hipsolverHandle_t   handle,
                                                     int                 batch_count)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3266,6 +3446,10 @@ hipsolverStatus_t hipsolverDpotrfBatched_bufferSize(hipsolverHandle_t   handle,
                                                     int                 batch_count)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3295,6 +3479,10 @@ hipsolverStatus_t hipsolverCpotrfBatched_bufferSize(hipsolverHandle_t   handle,
                                                     int                 batch_count)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3324,6 +3512,10 @@ hipsolverStatus_t hipsolverZpotrfBatched_bufferSize(hipsolverHandle_t       hand
                                                     int                     batch_count)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3477,6 +3669,10 @@ hipsolverStatus_t hipsolverSsyevd_bufferSize(hipsolverHandle_t   handle,
                                              int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3517,6 +3713,10 @@ hipsolverStatus_t hipsolverDsyevd_bufferSize(hipsolverHandle_t   handle,
                                              int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3557,6 +3757,10 @@ hipsolverStatus_t hipsolverCheevd_bufferSize(hipsolverHandle_t   handle,
                                              int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3597,6 +3801,10 @@ hipsolverStatus_t hipsolverZheevd_bufferSize(hipsolverHandle_t       handle,
                                              int*                    lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3869,6 +4077,10 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd_bufferSize(hipsolverHandle_t 
                                                               int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3915,6 +4127,10 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd_bufferSize(hipsolverHandle_t 
                                                               int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3961,6 +4177,10 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd_bufferSize(hipsolverHandle_t 
                                                               int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4007,6 +4227,10 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSize(hipsolverHandle_t 
                                                               int*                    lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4316,6 +4540,10 @@ hipsolverStatus_t hipsolverSsytrd_bufferSize(hipsolverHandle_t   handle,
                                              int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4353,6 +4581,10 @@ hipsolverStatus_t hipsolverDsytrd_bufferSize(hipsolverHandle_t   handle,
                                              int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4390,6 +4622,10 @@ hipsolverStatus_t hipsolverChetrd_bufferSize(hipsolverHandle_t   handle,
                                              int*                lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4427,6 +4663,10 @@ hipsolverStatus_t hipsolverZhetrd_bufferSize(hipsolverHandle_t       handle,
                                              int*                    lwork)
 try
 {
+    if(lwork == nullptr)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
