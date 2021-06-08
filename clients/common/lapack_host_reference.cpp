@@ -18,6 +18,96 @@
 extern "C" {
 #endif
 
+void ssymm_(char*  side,
+            char*  uplo,
+            int*   m,
+            int*   n,
+            float* alpha,
+            float* A,
+            int*   lda,
+            float* B,
+            int*   ldb,
+            float* beta,
+            float* C,
+            int*   ldc);
+void dsymm_(char*   side,
+            char*   uplo,
+            int*    m,
+            int*    n,
+            double* alpha,
+            double* A,
+            int*    lda,
+            double* B,
+            int*    ldb,
+            double* beta,
+            double* C,
+            int*    ldc);
+void chemm_(char*             side,
+            char*             uplo,
+            int*              m,
+            int*              n,
+            hipsolverComplex* alpha,
+            hipsolverComplex* A,
+            int*              lda,
+            hipsolverComplex* B,
+            int*              ldb,
+            hipsolverComplex* beta,
+            hipsolverComplex* C,
+            int*              ldc);
+void zhemm_(char*                   side,
+            char*                   uplo,
+            int*                    m,
+            int*                    n,
+            hipsolverDoubleComplex* alpha,
+            hipsolverDoubleComplex* A,
+            int*                    lda,
+            hipsolverDoubleComplex* B,
+            int*                    ldb,
+            hipsolverDoubleComplex* beta,
+            hipsolverDoubleComplex* C,
+            int*                    ldc);
+
+void ssymv_(char*  uplo,
+            int*   n,
+            float* alpha,
+            float* A,
+            int*   lda,
+            float* x,
+            int*   incx,
+            float* beta,
+            float* y,
+            int*   incy);
+void dsymv_(char*   uplo,
+            int*    n,
+            double* alpha,
+            double* A,
+            int*    lda,
+            double* x,
+            int*    incx,
+            double* beta,
+            double* y,
+            int*    incy);
+void chemv_(char*             uplo,
+            int*              n,
+            hipsolverComplex* alpha,
+            hipsolverComplex* A,
+            int*              lda,
+            hipsolverComplex* x,
+            int*              incx,
+            hipsolverComplex* beta,
+            hipsolverComplex* y,
+            int*              incy);
+void zhemv_(char*                   uplo,
+            int*                    n,
+            hipsolverDoubleComplex* alpha,
+            hipsolverDoubleComplex* A,
+            int*                    lda,
+            hipsolverDoubleComplex* x,
+            int*                    incx,
+            hipsolverDoubleComplex* beta,
+            hipsolverDoubleComplex* y,
+            int*                    incy);
+
 void clacgv_(int* n, hipsolverComplex* x, int* incx);
 void zlacgv_(int* n, hipsolverDoubleComplex* x, int* incx);
 
@@ -399,6 +489,116 @@ void dpotrf_(char* uplo, int* m, double* A, int* lda, int* info);
 void cpotrf_(char* uplo, int* m, hipsolverComplex* A, int* lda, int* info);
 void zpotrf_(char* uplo, int* m, hipsolverDoubleComplex* A, int* lda, int* info);
 
+void ssyevd_(char*  evect,
+             char*  uplo,
+             int*   n,
+             float* A,
+             int*   lda,
+             float* D,
+             float* work,
+             int*   lwork,
+             int*   iwork,
+             int*   liwork,
+             int*   info);
+void dsyevd_(char*   evect,
+             char*   uplo,
+             int*    n,
+             double* A,
+             int*    lda,
+             double* D,
+             double* work,
+             int*    lwork,
+             int*    iwork,
+             int*    liwork,
+             int*    info);
+void cheevd_(char*             evect,
+             char*             uplo,
+             int*              n,
+             hipsolverComplex* A,
+             int*              lda,
+             float*            D,
+             hipsolverComplex* work,
+             int*              lwork,
+             float*            rwork,
+             int*              lrwork,
+             int*              iwork,
+             int*              liwork,
+             int*              info);
+void zheevd_(char*                   evect,
+             char*                   uplo,
+             int*                    n,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             double*                 D,
+             hipsolverDoubleComplex* work,
+             int*                    lwork,
+             double*                 rwork,
+             int*                    lrwork,
+             int*                    iwork,
+             int*                    liwork,
+             int*                    info);
+
+void ssygvd_(int*   itype,
+             char*  evect,
+             char*  uplo,
+             int*   n,
+             float* A,
+             int*   lda,
+             float* B,
+             int*   ldb,
+             float* W,
+             float* work,
+             int*   lwork,
+             int*   iwork,
+             int*   liwork,
+             int*   info);
+void dsygvd_(int*    itype,
+             char*   evect,
+             char*   uplo,
+             int*    n,
+             double* A,
+             int*    lda,
+             double* B,
+             int*    ldb,
+             double* W,
+             double* work,
+             int*    lwork,
+             int*    iwork,
+             int*    liwork,
+             int*    info);
+void chegvd_(int*              itype,
+             char*             evect,
+             char*             uplo,
+             int*              n,
+             hipsolverComplex* A,
+             int*              lda,
+             hipsolverComplex* B,
+             int*              ldb,
+             float*            W,
+             hipsolverComplex* work,
+             int*              lwork,
+             float*            rwork,
+             int*              lrwork,
+             int*              iwork,
+             int*              liwork,
+             int*              info);
+void zhegvd_(int*                    itype,
+             char*                   evect,
+             char*                   uplo,
+             int*                    n,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             hipsolverDoubleComplex* B,
+             int*                    ldb,
+             double*                 W,
+             hipsolverDoubleComplex* work,
+             int*                    lwork,
+             double*                 rwork,
+             int*                    lrwork,
+             int*                    iwork,
+             int*                    liwork,
+             int*                    info);
+
 void ssytrd_(char*  uplo,
              int*   n,
              float* A,
@@ -446,81 +646,7 @@ void zhetrd_(char*                   uplo,
 /************************************************************************/
 
 /************************************************************************/
-// These are templated functions used in hipSOLVER clients code
-
-// lacgv
-template <>
-void cblas_lacgv<hipsolverComplex>(int n, hipsolverComplex* x, int incx)
-{
-    clacgv_(&n, x, &incx);
-}
-
-template <>
-void cblas_lacgv<hipsolverDoubleComplex>(int n, hipsolverDoubleComplex* x, int incx)
-{
-    zlacgv_(&n, x, &incx);
-}
-
-// larf
-template <>
-void cblas_larf<float>(hipsolverSideMode_t sideR,
-                       int                 m,
-                       int                 n,
-                       float*              x,
-                       int                 incx,
-                       float*              alpha,
-                       float*              A,
-                       int                 lda,
-                       float*              work)
-{
-    char side = hipsolver2char_side(sideR);
-    slarf_(&side, &m, &n, x, &incx, alpha, A, &lda, work);
-}
-
-template <>
-void cblas_larf<double>(hipsolverSideMode_t sideR,
-                        int                 m,
-                        int                 n,
-                        double*             x,
-                        int                 incx,
-                        double*             alpha,
-                        double*             A,
-                        int                 lda,
-                        double*             work)
-{
-    char side = hipsolver2char_side(sideR);
-    dlarf_(&side, &m, &n, x, &incx, alpha, A, &lda, work);
-}
-
-template <>
-void cblas_larf<hipsolverComplex>(hipsolverSideMode_t sideR,
-                                  int                 m,
-                                  int                 n,
-                                  hipsolverComplex*   x,
-                                  int                 incx,
-                                  hipsolverComplex*   alpha,
-                                  hipsolverComplex*   A,
-                                  int                 lda,
-                                  hipsolverComplex*   work)
-{
-    char side = hipsolver2char_side(sideR);
-    clarf_(&side, &m, &n, x, &incx, alpha, A, &lda, work);
-}
-
-template <>
-void cblas_larf<hipsolverDoubleComplex>(hipsolverSideMode_t     sideR,
-                                        int                     m,
-                                        int                     n,
-                                        hipsolverDoubleComplex* x,
-                                        int                     incx,
-                                        hipsolverDoubleComplex* alpha,
-                                        hipsolverDoubleComplex* A,
-                                        int                     lda,
-                                        hipsolverDoubleComplex* work)
-{
-    char side = hipsolver2char_side(sideR);
-    zlarf_(&side, &m, &n, x, &incx, alpha, A, &lda, work);
-}
+// These are templated BLAS functions used in hipSOLVER clients code
 
 // gemm
 template <>
@@ -645,6 +771,225 @@ void cblas_gemm<hipsolverDoubleComplex>(hipsolverOperation_t    transA,
                 &beta,
                 C,
                 ldc);
+}
+
+// symm & hemm
+template <>
+void cblas_symm_hemm<float>(hipsolverSideMode_t side,
+                            hipsolverFillMode_t uplo,
+                            int                 m,
+                            int                 n,
+                            float               alpha,
+                            float*              A,
+                            int                 lda,
+                            float*              B,
+                            int                 ldb,
+                            float               beta,
+                            float*              C,
+                            int                 ldc)
+{
+    char sideC = hipsolver2char_side(side);
+    char uploC = hipsolver2char_fill(uplo);
+    ssymm_(&sideC, &uploC, &m, &n, &alpha, A, &lda, B, &ldb, &beta, C, &ldc);
+}
+
+template <>
+void cblas_symm_hemm<double>(hipsolverSideMode_t side,
+                             hipsolverFillMode_t uplo,
+                             int                 m,
+                             int                 n,
+                             double              alpha,
+                             double*             A,
+                             int                 lda,
+                             double*             B,
+                             int                 ldb,
+                             double              beta,
+                             double*             C,
+                             int                 ldc)
+{
+    char sideC = hipsolver2char_side(side);
+    char uploC = hipsolver2char_fill(uplo);
+    dsymm_(&sideC, &uploC, &m, &n, &alpha, A, &lda, B, &ldb, &beta, C, &ldc);
+}
+
+template <>
+void cblas_symm_hemm<hipsolverComplex>(hipsolverSideMode_t side,
+                                       hipsolverFillMode_t uplo,
+                                       int                 m,
+                                       int                 n,
+                                       hipsolverComplex    alpha,
+                                       hipsolverComplex*   A,
+                                       int                 lda,
+                                       hipsolverComplex*   B,
+                                       int                 ldb,
+                                       hipsolverComplex    beta,
+                                       hipsolverComplex*   C,
+                                       int                 ldc)
+{
+    char sideC = hipsolver2char_side(side);
+    char uploC = hipsolver2char_fill(uplo);
+    chemm_(&sideC, &uploC, &m, &n, &alpha, A, &lda, B, &ldb, &beta, C, &ldc);
+}
+
+template <>
+void cblas_symm_hemm<hipsolverDoubleComplex>(hipsolverSideMode_t     side,
+                                             hipsolverFillMode_t     uplo,
+                                             int                     m,
+                                             int                     n,
+                                             hipsolverDoubleComplex  alpha,
+                                             hipsolverDoubleComplex* A,
+                                             int                     lda,
+                                             hipsolverDoubleComplex* B,
+                                             int                     ldb,
+                                             hipsolverDoubleComplex  beta,
+                                             hipsolverDoubleComplex* C,
+                                             int                     ldc)
+{
+    char sideC = hipsolver2char_side(side);
+    char uploC = hipsolver2char_fill(uplo);
+    zhemm_(&sideC, &uploC, &m, &n, &alpha, A, &lda, B, &ldb, &beta, C, &ldc);
+}
+
+// symv/hemv
+template <>
+void cblas_symv_hemv<float>(hipsolverFillMode_t uplo,
+                            int                 n,
+                            float               alpha,
+                            float*              A,
+                            int                 lda,
+                            float*              x,
+                            int                 incx,
+                            float               beta,
+                            float*              y,
+                            int                 incy)
+{
+    char uploC = hipsolver2char_fill(uplo);
+    ssymv_(&uploC, &n, &alpha, A, &lda, x, &incx, &beta, y, &incy);
+}
+
+template <>
+void cblas_symv_hemv<double>(hipsolverFillMode_t uplo,
+                             int                 n,
+                             double              alpha,
+                             double*             A,
+                             int                 lda,
+                             double*             x,
+                             int                 incx,
+                             double              beta,
+                             double*             y,
+                             int                 incy)
+{
+    char uploC = hipsolver2char_fill(uplo);
+    dsymv_(&uploC, &n, &alpha, A, &lda, x, &incx, &beta, y, &incy);
+}
+
+template <>
+void cblas_symv_hemv<hipsolverComplex>(hipsolverFillMode_t uplo,
+                                       int                 n,
+                                       hipsolverComplex    alpha,
+                                       hipsolverComplex*   A,
+                                       int                 lda,
+                                       hipsolverComplex*   x,
+                                       int                 incx,
+                                       hipsolverComplex    beta,
+                                       hipsolverComplex*   y,
+                                       int                 incy)
+{
+    char uploC = hipsolver2char_fill(uplo);
+    chemv_(&uploC, &n, &alpha, A, &lda, x, &incx, &beta, y, &incy);
+}
+
+template <>
+void cblas_symv_hemv<hipsolverDoubleComplex>(hipsolverFillMode_t     uplo,
+                                             int                     n,
+                                             hipsolverDoubleComplex  alpha,
+                                             hipsolverDoubleComplex* A,
+                                             int                     lda,
+                                             hipsolverDoubleComplex* x,
+                                             int                     incx,
+                                             hipsolverDoubleComplex  beta,
+                                             hipsolverDoubleComplex* y,
+                                             int                     incy)
+{
+    char uploC = hipsolver2char_fill(uplo);
+    zhemv_(&uploC, &n, &alpha, A, &lda, x, &incx, &beta, y, &incy);
+}
+
+/************************************************************************/
+// These are templated LAPACK functions used in hipSOLVER clients code
+
+// lacgv
+template <>
+void cblas_lacgv<hipsolverComplex>(int n, hipsolverComplex* x, int incx)
+{
+    clacgv_(&n, x, &incx);
+}
+
+template <>
+void cblas_lacgv<hipsolverDoubleComplex>(int n, hipsolverDoubleComplex* x, int incx)
+{
+    zlacgv_(&n, x, &incx);
+}
+
+// larf
+template <>
+void cblas_larf<float>(hipsolverSideMode_t sideR,
+                       int                 m,
+                       int                 n,
+                       float*              x,
+                       int                 incx,
+                       float*              alpha,
+                       float*              A,
+                       int                 lda,
+                       float*              work)
+{
+    char side = hipsolver2char_side(sideR);
+    slarf_(&side, &m, &n, x, &incx, alpha, A, &lda, work);
+}
+
+template <>
+void cblas_larf<double>(hipsolverSideMode_t sideR,
+                        int                 m,
+                        int                 n,
+                        double*             x,
+                        int                 incx,
+                        double*             alpha,
+                        double*             A,
+                        int                 lda,
+                        double*             work)
+{
+    char side = hipsolver2char_side(sideR);
+    dlarf_(&side, &m, &n, x, &incx, alpha, A, &lda, work);
+}
+
+template <>
+void cblas_larf<hipsolverComplex>(hipsolverSideMode_t sideR,
+                                  int                 m,
+                                  int                 n,
+                                  hipsolverComplex*   x,
+                                  int                 incx,
+                                  hipsolverComplex*   alpha,
+                                  hipsolverComplex*   A,
+                                  int                 lda,
+                                  hipsolverComplex*   work)
+{
+    char side = hipsolver2char_side(sideR);
+    clarf_(&side, &m, &n, x, &incx, alpha, A, &lda, work);
+}
+
+template <>
+void cblas_larf<hipsolverDoubleComplex>(hipsolverSideMode_t     sideR,
+                                        int                     m,
+                                        int                     n,
+                                        hipsolverDoubleComplex* x,
+                                        int                     incx,
+                                        hipsolverDoubleComplex* alpha,
+                                        hipsolverDoubleComplex* A,
+                                        int                     lda,
+                                        hipsolverDoubleComplex* work)
+{
+    char side = hipsolver2char_side(sideR);
+    zlarf_(&side, &m, &n, x, &incx, alpha, A, &lda, work);
 }
 
 // orgbr & ungbr
@@ -1285,6 +1630,216 @@ void cblas_potrf<hipsolverDoubleComplex>(
 {
     char uploC = hipsolver2char_fill(uplo);
     zpotrf_(&uploC, &n, A, &lda, info);
+}
+
+// syevd & heevd
+template <>
+void cblas_syevd_heevd<float, float>(hipsolverEigMode_t  evect,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     float*              A,
+                                     int                 lda,
+                                     float*              D,
+                                     float*              work,
+                                     int                 lwork,
+                                     float*              rwork,
+                                     int                 lrwork,
+                                     int*                iwork,
+                                     int                 liwork,
+                                     int*                info)
+{
+    char evectC = hipsolver2char_evect(evect);
+    char uploC  = hipsolver2char_fill(uplo);
+    ssyevd_(&evectC, &uploC, &n, A, &lda, D, rwork, &lrwork, iwork, &liwork, info);
+}
+
+template <>
+void cblas_syevd_heevd<double, double>(hipsolverEigMode_t  evect,
+                                       hipsolverFillMode_t uplo,
+                                       int                 n,
+                                       double*             A,
+                                       int                 lda,
+                                       double*             D,
+                                       double*             work,
+                                       int                 lwork,
+                                       double*             rwork,
+                                       int                 lrwork,
+                                       int*                iwork,
+                                       int                 liwork,
+                                       int*                info)
+{
+    char evectC = hipsolver2char_evect(evect);
+    char uploC  = hipsolver2char_fill(uplo);
+    dsyevd_(&evectC, &uploC, &n, A, &lda, D, rwork, &lrwork, iwork, &liwork, info);
+}
+
+template <>
+void cblas_syevd_heevd<hipsolverComplex, float>(hipsolverEigMode_t  evect,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                hipsolverComplex*   A,
+                                                int                 lda,
+                                                float*              D,
+                                                hipsolverComplex*   work,
+                                                int                 lwork,
+                                                float*              rwork,
+                                                int                 lrwork,
+                                                int*                iwork,
+                                                int                 liwork,
+                                                int*                info)
+{
+    char evectC = hipsolver2char_evect(evect);
+    char uploC  = hipsolver2char_fill(uplo);
+    cheevd_(&evectC, &uploC, &n, A, &lda, D, work, &lwork, rwork, &lrwork, iwork, &liwork, info);
+}
+
+template <>
+void cblas_syevd_heevd<hipsolverDoubleComplex, double>(hipsolverEigMode_t      evect,
+                                                       hipsolverFillMode_t     uplo,
+                                                       int                     n,
+                                                       hipsolverDoubleComplex* A,
+                                                       int                     lda,
+                                                       double*                 D,
+                                                       hipsolverDoubleComplex* work,
+                                                       int                     lwork,
+                                                       double*                 rwork,
+                                                       int                     lrwork,
+                                                       int*                    iwork,
+                                                       int                     liwork,
+                                                       int*                    info)
+{
+    char evectC = hipsolver2char_evect(evect);
+    char uploC  = hipsolver2char_fill(uplo);
+    zheevd_(&evectC, &uploC, &n, A, &lda, D, work, &lwork, rwork, &lrwork, iwork, &liwork, info);
+}
+
+// sygvd & hegvd
+template <>
+void cblas_sygvd_hegvd<float, float>(hipsolverEigType_t  itype,
+                                     hipsolverEigMode_t  evect,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     float*              A,
+                                     int                 lda,
+                                     float*              B,
+                                     int                 ldb,
+                                     float*              W,
+                                     float*              work,
+                                     int                 lwork,
+                                     float*              rwork,
+                                     int                 lrwork,
+                                     int*                iwork,
+                                     int                 liwork,
+                                     int*                info)
+{
+    int  itypeI = hipsolver2char_eform(itype) - '0';
+    char evectC = hipsolver2char_evect(evect);
+    char uploC  = hipsolver2char_fill(uplo);
+    ssygvd_(
+        &itypeI, &evectC, &uploC, &n, A, &lda, B, &ldb, W, rwork, &lrwork, iwork, &liwork, info);
+}
+
+template <>
+void cblas_sygvd_hegvd<double, double>(hipsolverEigType_t  itype,
+                                       hipsolverEigMode_t  evect,
+                                       hipsolverFillMode_t uplo,
+                                       int                 n,
+                                       double*             A,
+                                       int                 lda,
+                                       double*             B,
+                                       int                 ldb,
+                                       double*             W,
+                                       double*             work,
+                                       int                 lwork,
+                                       double*             rwork,
+                                       int                 lrwork,
+                                       int*                iwork,
+                                       int                 liwork,
+                                       int*                info)
+{
+    int  itypeI = hipsolver2char_eform(itype) - '0';
+    char evectC = hipsolver2char_evect(evect);
+    char uploC  = hipsolver2char_fill(uplo);
+    dsygvd_(
+        &itypeI, &evectC, &uploC, &n, A, &lda, B, &ldb, W, rwork, &lrwork, iwork, &liwork, info);
+}
+
+template <>
+void cblas_sygvd_hegvd<hipsolverComplex, float>(hipsolverEigType_t  itype,
+                                                hipsolverEigMode_t  evect,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                hipsolverComplex*   A,
+                                                int                 lda,
+                                                hipsolverComplex*   B,
+                                                int                 ldb,
+                                                float*              W,
+                                                hipsolverComplex*   work,
+                                                int                 lwork,
+                                                float*              rwork,
+                                                int                 lrwork,
+                                                int*                iwork,
+                                                int                 liwork,
+                                                int*                info)
+{
+    int  itypeI = hipsolver2char_eform(itype) - '0';
+    char evectC = hipsolver2char_evect(evect);
+    char uploC  = hipsolver2char_fill(uplo);
+    chegvd_(&itypeI,
+            &evectC,
+            &uploC,
+            &n,
+            A,
+            &lda,
+            B,
+            &ldb,
+            W,
+            work,
+            &lwork,
+            rwork,
+            &lrwork,
+            iwork,
+            &liwork,
+            info);
+}
+
+template <>
+void cblas_sygvd_hegvd<hipsolverDoubleComplex, double>(hipsolverEigType_t      itype,
+                                                       hipsolverEigMode_t      evect,
+                                                       hipsolverFillMode_t     uplo,
+                                                       int                     n,
+                                                       hipsolverDoubleComplex* A,
+                                                       int                     lda,
+                                                       hipsolverDoubleComplex* B,
+                                                       int                     ldb,
+                                                       double*                 W,
+                                                       hipsolverDoubleComplex* work,
+                                                       int                     lwork,
+                                                       double*                 rwork,
+                                                       int                     lrwork,
+                                                       int*                    iwork,
+                                                       int                     liwork,
+                                                       int*                    info)
+{
+    int  itypeI = hipsolver2char_eform(itype) - '0';
+    char evectC = hipsolver2char_evect(evect);
+    char uploC  = hipsolver2char_fill(uplo);
+    zhegvd_(&itypeI,
+            &evectC,
+            &uploC,
+            &n,
+            A,
+            &lda,
+            B,
+            &ldb,
+            W,
+            work,
+            &lwork,
+            rwork,
+            &lrwork,
+            iwork,
+            &liwork,
+            info);
 }
 
 // sytrd & hetrd

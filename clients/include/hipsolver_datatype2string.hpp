@@ -63,6 +63,10 @@ char hipsolver2char_fill(hipsolverFillMode_t value);
 
 char hipsolver2char_side(hipsolverSideMode_t value);
 
+char hipsolver2char_evect(hipsolverEigMode_t value);
+
+char hipsolver2char_eform(hipsolverEigType_t value);
+
 /* ============================================================================================ */
 /*  Convert lapack char constants to hipsolver type. */
 
@@ -73,3 +77,7 @@ hipsolverOperation_t char2hipsolver_operation(char value);
 hipsolverFillMode_t char2hipsolver_fill(char value);
 
 hipsolverSideMode_t char2hipsolver_side(char value);
+
+hipsolverEigMode_t char2hipsolver_evect(char value);
+
+hipsolverEigType_t char2hipsolver_eform(char value);

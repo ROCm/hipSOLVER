@@ -48,6 +48,34 @@ char hipsolver2char_side(hipsolverSideMode_t value)
     }
 }
 
+char hipsolver2char_evect(hipsolverEigMode_t value)
+{
+    switch(value)
+    {
+    case HIPSOLVER_EIG_MODE_NOVECTOR:
+        return 'N';
+    case HIPSOLVER_EIG_MODE_VECTOR:
+        return 'V';
+    default:
+        throw std::invalid_argument("Invalid enum");
+    }
+}
+
+char hipsolver2char_eform(hipsolverEigType_t value)
+{
+    switch(value)
+    {
+    case HIPSOLVER_EIG_TYPE_1:
+        return '1';
+    case HIPSOLVER_EIG_TYPE_2:
+        return '2';
+    case HIPSOLVER_EIG_TYPE_3:
+        return '3';
+    default:
+        throw std::invalid_argument("Invalid enum");
+    }
+}
+
 /* ============================================================================================ */
 /*  Convert lapack char constants to hipsolver type. */
 
@@ -111,6 +139,36 @@ hipsolverSideMode_t char2hipsolver_side(char value)
     case 'r':
     case 'R':
         return HIPSOLVER_SIDE_RIGHT;
+    default:
+        throw std::invalid_argument("Invalid character");
+    }
+}
+
+hipsolverEigMode_t char2hipsolver_evect(char value)
+{
+    switch(value)
+    {
+    case 'n':
+    case 'N':
+        return HIPSOLVER_EIG_MODE_NOVECTOR;
+    case 'v':
+    case 'V':
+        return HIPSOLVER_EIG_MODE_VECTOR;
+    default:
+        throw std::invalid_argument("Invalid character");
+    }
+}
+
+hipsolverEigType_t char2hipsolver_eform(char value)
+{
+    switch(value)
+    {
+    case '1':
+        return HIPSOLVER_EIG_TYPE_1;
+    case '2':
+        return HIPSOLVER_EIG_TYPE_2;
+    case '3':
+        return HIPSOLVER_EIG_TYPE_3;
     default:
         throw std::invalid_argument("Invalid character");
     }
