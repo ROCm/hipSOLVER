@@ -211,6 +211,14 @@ hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
     }
 }
 
+#define CHECK_HIPSOLVER_ERROR(STATUS)           \
+    do                                          \
+    {                                           \
+        hipsolverStatus_t _status = (STATUS);   \
+        if(_status != HIPSOLVER_STATUS_SUCCESS) \
+            return _status;                     \
+    } while(0)
+
 #define CHECK_ROCBLAS_ERROR(STATUS)             \
     do                                          \
     {                                           \
@@ -305,7 +313,9 @@ try
         (rocblas_handle)handle, hip2rocblas_side2storev(side), m, n, k, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -334,7 +344,9 @@ try
         (rocblas_handle)handle, hip2rocblas_side2storev(side), m, n, k, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -363,7 +375,9 @@ try
         (rocblas_handle)handle, hip2rocblas_side2storev(side), m, n, k, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -392,7 +406,9 @@ try
         (rocblas_handle)handle, hip2rocblas_side2storev(side), m, n, k, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -417,10 +433,11 @@ hipsolverStatus_t hipsolverSorgbr(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverSorgbr_bufferSize((rocblas_handle)handle, side, m, n, k, A, lda, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverSorgbr_bufferSize((rocblas_handle)handle, side, m, n, k, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -446,10 +463,11 @@ hipsolverStatus_t hipsolverDorgbr(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverDorgbr_bufferSize((rocblas_handle)handle, side, m, n, k, A, lda, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverDorgbr_bufferSize((rocblas_handle)handle, side, m, n, k, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -475,10 +493,11 @@ hipsolverStatus_t hipsolverCungbr(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverCungbr_bufferSize((rocblas_handle)handle, side, m, n, k, A, lda, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverCungbr_bufferSize((rocblas_handle)handle, side, m, n, k, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -510,10 +529,11 @@ hipsolverStatus_t hipsolverZungbr(hipsolverHandle_t       handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverZungbr_bufferSize((rocblas_handle)handle, side, m, n, k, A, lda, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverZungbr_bufferSize((rocblas_handle)handle, side, m, n, k, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -543,7 +563,9 @@ try
         = rocsolver_sorgqr((rocblas_handle)handle, m, n, k, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -565,7 +587,9 @@ try
         = rocsolver_dorgqr((rocblas_handle)handle, m, n, k, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -593,7 +617,9 @@ try
         = rocsolver_cungqr((rocblas_handle)handle, m, n, k, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -621,7 +647,9 @@ try
         = rocsolver_zungqr((rocblas_handle)handle, m, n, k, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -645,10 +673,11 @@ hipsolverStatus_t hipsolverSorgqr(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverSorgqr_bufferSize((rocblas_handle)handle, m, n, k, A, lda, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverSorgqr_bufferSize((rocblas_handle)handle, m, n, k, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -672,10 +701,11 @@ hipsolverStatus_t hipsolverDorgqr(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverDorgqr_bufferSize((rocblas_handle)handle, m, n, k, A, lda, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverDorgqr_bufferSize((rocblas_handle)handle, m, n, k, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -699,10 +729,11 @@ hipsolverStatus_t hipsolverCungqr(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverCungqr_bufferSize((rocblas_handle)handle, m, n, k, A, lda, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverCungqr_bufferSize((rocblas_handle)handle, m, n, k, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -732,10 +763,11 @@ hipsolverStatus_t hipsolverZungqr(hipsolverHandle_t       handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverZungqr_bufferSize((rocblas_handle)handle, m, n, k, A, lda, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverZungqr_bufferSize((rocblas_handle)handle, m, n, k, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -769,7 +801,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -796,7 +830,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -823,7 +859,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -850,7 +888,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -873,10 +913,11 @@ hipsolverStatus_t hipsolverSorgtr(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverSorgtr_bufferSize((rocblas_handle)handle, uplo, n, A, lda, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverSorgtr_bufferSize((rocblas_handle)handle, uplo, n, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -900,10 +941,11 @@ hipsolverStatus_t hipsolverDorgtr(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverDorgtr_bufferSize((rocblas_handle)handle, uplo, n, A, lda, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverDorgtr_bufferSize((rocblas_handle)handle, uplo, n, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -927,10 +969,11 @@ hipsolverStatus_t hipsolverCungtr(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverCungtr_bufferSize((rocblas_handle)handle, uplo, n, A, lda, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverCungtr_bufferSize((rocblas_handle)handle, uplo, n, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -958,10 +1001,11 @@ hipsolverStatus_t hipsolverZungtr(hipsolverHandle_t       handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverZungtr_bufferSize((rocblas_handle)handle, uplo, n, A, lda, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverZungtr_bufferSize((rocblas_handle)handle, uplo, n, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1008,7 +1052,9 @@ try
                                              ldc);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1049,7 +1095,9 @@ try
                                              ldc);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1090,7 +1138,9 @@ try
                                              ldc);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1131,7 +1181,9 @@ try
                                              ldc);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1159,11 +1211,11 @@ hipsolverStatus_t hipsolverSormqr(hipsolverHandle_t    handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverSormqr_bufferSize(
-            (rocblas_handle)handle, side, trans, m, n, k, A, lda, tau, C, ldc, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverSormqr_bufferSize(
+            (rocblas_handle)handle, side, trans, m, n, k, A, lda, tau, C, ldc, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1201,11 +1253,11 @@ hipsolverStatus_t hipsolverDormqr(hipsolverHandle_t    handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverDormqr_bufferSize(
-            (rocblas_handle)handle, side, trans, m, n, k, A, lda, tau, C, ldc, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverDormqr_bufferSize(
+            (rocblas_handle)handle, side, trans, m, n, k, A, lda, tau, C, ldc, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1243,11 +1295,11 @@ hipsolverStatus_t hipsolverCunmqr(hipsolverHandle_t    handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverCunmqr_bufferSize(
-            (rocblas_handle)handle, side, trans, m, n, k, A, lda, tau, C, ldc, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverCunmqr_bufferSize(
+            (rocblas_handle)handle, side, trans, m, n, k, A, lda, tau, C, ldc, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1285,11 +1337,11 @@ hipsolverStatus_t hipsolverZunmqr(hipsolverHandle_t       handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverZunmqr_bufferSize(
-            (rocblas_handle)handle, side, trans, m, n, k, A, lda, tau, C, ldc, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverZunmqr_bufferSize(
+            (rocblas_handle)handle, side, trans, m, n, k, A, lda, tau, C, ldc, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1341,7 +1393,9 @@ try
                                              ldc);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1382,7 +1436,9 @@ try
                                              ldc);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1423,7 +1479,9 @@ try
                                              ldc);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1464,7 +1522,9 @@ try
                                              ldc);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1492,11 +1552,11 @@ hipsolverStatus_t hipsolverSormtr(hipsolverHandle_t    handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverSormtr_bufferSize(
-            (rocblas_handle)handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverSormtr_bufferSize(
+            (rocblas_handle)handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1534,11 +1594,11 @@ hipsolverStatus_t hipsolverDormtr(hipsolverHandle_t    handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverDormtr_bufferSize(
-            (rocblas_handle)handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverDormtr_bufferSize(
+            (rocblas_handle)handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1576,11 +1636,11 @@ hipsolverStatus_t hipsolverCunmtr(hipsolverHandle_t    handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverCunmtr_bufferSize(
-            (rocblas_handle)handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverCunmtr_bufferSize(
+            (rocblas_handle)handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1618,11 +1678,11 @@ hipsolverStatus_t hipsolverZunmtr(hipsolverHandle_t       handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverZunmtr_bufferSize(
-            (rocblas_handle)handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverZunmtr_bufferSize(
+            (rocblas_handle)handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1654,7 +1714,9 @@ try
         (rocblas_handle)handle, m, n, nullptr, m, nullptr, nullptr, nullptr, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1675,7 +1737,9 @@ try
         (rocblas_handle)handle, m, n, nullptr, m, nullptr, nullptr, nullptr, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1696,7 +1760,9 @@ try
         (rocblas_handle)handle, m, n, nullptr, m, nullptr, nullptr, nullptr, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1717,7 +1783,9 @@ try
         (rocblas_handle)handle, m, n, nullptr, m, nullptr, nullptr, nullptr, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1743,10 +1811,10 @@ hipsolverStatus_t hipsolverSgebrd(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverSgebrd_bufferSize((rocblas_handle)handle, m, n, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverSgebrd_bufferSize((rocblas_handle)handle, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1773,10 +1841,10 @@ hipsolverStatus_t hipsolverDgebrd(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverDgebrd_bufferSize((rocblas_handle)handle, m, n, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverDgebrd_bufferSize((rocblas_handle)handle, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1803,10 +1871,10 @@ hipsolverStatus_t hipsolverCgebrd(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverCgebrd_bufferSize((rocblas_handle)handle, m, n, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverCgebrd_bufferSize((rocblas_handle)handle, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1840,10 +1908,10 @@ hipsolverStatus_t hipsolverZgebrd(hipsolverHandle_t       handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverZgebrd_bufferSize((rocblas_handle)handle, m, n, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverZgebrd_bufferSize((rocblas_handle)handle, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1873,7 +1941,9 @@ try
     rocblas_status status = rocsolver_sgeqrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1894,7 +1964,9 @@ try
     rocblas_status status = rocsolver_dgeqrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1915,7 +1987,9 @@ try
     rocblas_status status = rocsolver_cgeqrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1936,7 +2010,9 @@ try
     rocblas_status status = rocsolver_zgeqrf((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -1959,10 +2035,11 @@ hipsolverStatus_t hipsolverSgeqrf(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverSgeqrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverSgeqrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -1985,10 +2062,11 @@ hipsolverStatus_t hipsolverDgeqrf(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverDgeqrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverDgeqrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2011,10 +2089,11 @@ hipsolverStatus_t hipsolverCgeqrf(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverCgeqrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverCgeqrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2038,10 +2117,11 @@ hipsolverStatus_t hipsolverZgeqrf(hipsolverHandle_t       handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverZgeqrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverZgeqrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2082,7 +2162,9 @@ try
                                              nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2117,7 +2199,9 @@ try
                                              nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2152,7 +2236,9 @@ try
                                              nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2187,7 +2273,9 @@ try
                                              nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2217,10 +2305,11 @@ hipsolverStatus_t hipsolverSgesvd(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverSgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverSgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2264,10 +2353,11 @@ hipsolverStatus_t hipsolverDgesvd(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverDgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverDgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2311,10 +2401,11 @@ hipsolverStatus_t hipsolverCgesvd(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverCgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverCgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2358,10 +2449,11 @@ hipsolverStatus_t hipsolverZgesvd(hipsolverHandle_t       handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverZgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverZgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2399,7 +2491,9 @@ try
     rocsolver_sgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2422,7 +2516,9 @@ try
     rocsolver_dgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2445,7 +2541,9 @@ try
     rocsolver_cgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2468,7 +2566,9 @@ try
     rocsolver_zgetrf_npvt((rocblas_handle)handle, m, n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2491,10 +2591,11 @@ hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverSgetrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverSgetrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2522,10 +2623,11 @@ hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverDgetrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverDgetrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2553,10 +2655,11 @@ hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverCgetrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverCgetrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2584,10 +2687,11 @@ hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverZgetrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverZgetrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2630,7 +2734,9 @@ try
                                              ldb);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2667,7 +2773,9 @@ try
                                              ldb);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2704,7 +2812,9 @@ try
                                              ldb);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2741,7 +2851,9 @@ try
                                              ldb);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2767,11 +2879,11 @@ hipsolverStatus_t hipsolverSgetrs(hipsolverHandle_t    handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverSgetrs_bufferSize(
-            (rocblas_handle)handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverSgetrs_bufferSize(
+            (rocblas_handle)handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2798,11 +2910,11 @@ hipsolverStatus_t hipsolverDgetrs(hipsolverHandle_t    handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverDgetrs_bufferSize(
-            (rocblas_handle)handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverDgetrs_bufferSize(
+            (rocblas_handle)handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2829,11 +2941,11 @@ hipsolverStatus_t hipsolverCgetrs(hipsolverHandle_t    handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverCgetrs_bufferSize(
-            (rocblas_handle)handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverCgetrs_bufferSize(
+            (rocblas_handle)handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2867,11 +2979,11 @@ hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t       handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverZgetrs_bufferSize(
-            (rocblas_handle)handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverZgetrs_bufferSize(
+            (rocblas_handle)handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -2902,7 +3014,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2924,7 +3038,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2950,7 +3066,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2976,7 +3094,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -2998,10 +3118,11 @@ hipsolverStatus_t hipsolverSpotrf(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverSpotrf_bufferSize((rocblas_handle)handle, uplo, n, A, lda, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverSpotrf_bufferSize((rocblas_handle)handle, uplo, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -3024,10 +3145,11 @@ hipsolverStatus_t hipsolverDpotrf(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverDpotrf_bufferSize((rocblas_handle)handle, uplo, n, A, lda, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverDpotrf_bufferSize((rocblas_handle)handle, uplo, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -3050,10 +3172,11 @@ hipsolverStatus_t hipsolverCpotrf(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverCpotrf_bufferSize((rocblas_handle)handle, uplo, n, A, lda, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverCpotrf_bufferSize((rocblas_handle)handle, uplo, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -3080,10 +3203,11 @@ hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t       handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverZpotrf_bufferSize((rocblas_handle)handle, uplo, n, A, lda, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverZpotrf_bufferSize((rocblas_handle)handle, uplo, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -3116,7 +3240,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr, batch_count);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -3143,7 +3269,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr, batch_count);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -3170,7 +3298,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr, batch_count);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -3197,7 +3327,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr, batch_count);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -3220,11 +3352,11 @@ hipsolverStatus_t hipsolverSpotrfBatched(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverSpotrfBatched_bufferSize(
-            (rocblas_handle)handle, uplo, n, A, lda, &lwork, batch_count);
+        CHECK_HIPSOLVER_ERROR(hipsolverSpotrfBatched_bufferSize(
+            (rocblas_handle)handle, uplo, n, A, lda, &lwork, batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -3248,11 +3380,11 @@ hipsolverStatus_t hipsolverDpotrfBatched(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverDpotrfBatched_bufferSize(
-            (rocblas_handle)handle, uplo, n, A, lda, &lwork, batch_count);
+        CHECK_HIPSOLVER_ERROR(hipsolverDpotrfBatched_bufferSize(
+            (rocblas_handle)handle, uplo, n, A, lda, &lwork, batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -3276,11 +3408,11 @@ hipsolverStatus_t hipsolverCpotrfBatched(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverCpotrfBatched_bufferSize(
-            (rocblas_handle)handle, uplo, n, A, lda, &lwork, batch_count);
+        CHECK_HIPSOLVER_ERROR(hipsolverCpotrfBatched_bufferSize(
+            (rocblas_handle)handle, uplo, n, A, lda, &lwork, batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -3309,11 +3441,11 @@ hipsolverStatus_t hipsolverZpotrfBatched(hipsolverHandle_t       handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverZpotrfBatched_bufferSize(
-            (rocblas_handle)handle, uplo, n, A, lda, &lwork, batch_count);
+        CHECK_HIPSOLVER_ERROR(hipsolverZpotrfBatched_bufferSize(
+            (rocblas_handle)handle, uplo, n, A, lda, &lwork, batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -3358,7 +3490,9 @@ try
     // space for E array
     sz += sizeof(float) * n;
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -3396,7 +3530,9 @@ try
     // space for E array
     sz += sizeof(double) * n;
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -3434,7 +3570,9 @@ try
     // space for E array
     sz += sizeof(float) * n;
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -3472,7 +3610,9 @@ try
     // space for E array
     sz += sizeof(double) * n;
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -3500,7 +3640,7 @@ try
         float* E = work;
         work     = E + n;
 
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
         return rocblas2hip_status(rocsolver_ssyevd((rocblas_handle)handle,
                                                    hip2rocblas_evect(jobz),
@@ -3514,7 +3654,8 @@ try
     }
     else
     {
-        hipsolverSsyevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverSsyevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
         CHECK_ROCBLAS_ERROR(
             hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(float) * n));
 
@@ -3556,7 +3697,7 @@ try
         double* E = work;
         work      = E + n;
 
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
         return rocblas2hip_status(rocsolver_dsyevd((rocblas_handle)handle,
                                                    hip2rocblas_evect(jobz),
@@ -3570,7 +3711,8 @@ try
     }
     else
     {
-        hipsolverDsyevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverDsyevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
         CHECK_ROCBLAS_ERROR(
             hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(double) * n));
 
@@ -3612,7 +3754,7 @@ try
         float* E = (float*)work;
         work     = (hipsolverComplex*)(E + n);
 
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
         return rocblas2hip_status(rocsolver_cheevd((rocblas_handle)handle,
                                                    hip2rocblas_evect(jobz),
@@ -3626,7 +3768,8 @@ try
     }
     else
     {
-        hipsolverCheevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverCheevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
         CHECK_ROCBLAS_ERROR(
             hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(float) * n));
 
@@ -3668,7 +3811,7 @@ try
         double* E = (double*)work;
         work      = (hipsolverDoubleComplex*)(E + n);
 
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
         return rocblas2hip_status(rocsolver_zheevd((rocblas_handle)handle,
                                                    hip2rocblas_evect(jobz),
@@ -3682,7 +3825,8 @@ try
     }
     else
     {
-        hipsolverZheevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverZheevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
         CHECK_ROCBLAS_ERROR(
             hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(double) * n));
 
@@ -3741,7 +3885,9 @@ try
     // space for E array
     sz += sizeof(float) * n;
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -3785,7 +3931,9 @@ try
     // space for E array
     sz += sizeof(double) * n;
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -3829,7 +3977,9 @@ try
     // space for E array
     sz += sizeof(float) * n;
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -3873,7 +4023,9 @@ try
     // space for E array
     sz += sizeof(double) * n;
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -3904,7 +4056,7 @@ try
         float* E = work;
         work     = E + n;
 
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
         return rocblas2hip_status(rocsolver_ssygvd((rocblas_handle)handle,
                                                    hip2rocblas_eform(itype),
@@ -3921,8 +4073,8 @@ try
     }
     else
     {
-        hipsolverSsygvd_bufferSize(
-            (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverSsygvd_bufferSize(
+            (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
         CHECK_ROCBLAS_ERROR(
             hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(float) * n));
 
@@ -3970,7 +4122,7 @@ try
         double* E = work;
         work      = E + n;
 
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
         return rocblas2hip_status(rocsolver_dsygvd((rocblas_handle)handle,
                                                    hip2rocblas_eform(itype),
@@ -3987,8 +4139,8 @@ try
     }
     else
     {
-        hipsolverDsygvd_bufferSize(
-            (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverDsygvd_bufferSize(
+            (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
         CHECK_ROCBLAS_ERROR(
             hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(double) * n));
 
@@ -4036,7 +4188,7 @@ try
         float* E = (float*)work;
         work     = (hipsolverComplex*)(E + n);
 
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
         return rocblas2hip_status(rocsolver_chegvd((rocblas_handle)handle,
                                                    hip2rocblas_eform(itype),
@@ -4053,8 +4205,8 @@ try
     }
     else
     {
-        hipsolverChegvd_bufferSize(
-            (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverChegvd_bufferSize(
+            (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
         CHECK_ROCBLAS_ERROR(
             hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(float) * n));
 
@@ -4102,7 +4254,7 @@ try
         double* E = (double*)work;
         work      = (hipsolverDoubleComplex*)(E + n);
 
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
         return rocblas2hip_status(rocsolver_zhegvd((rocblas_handle)handle,
                                                    hip2rocblas_eform(itype),
@@ -4119,8 +4271,8 @@ try
     }
     else
     {
-        hipsolverZhegvd_bufferSize(
-            (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork);
+        CHECK_HIPSOLVER_ERROR(hipsolverZhegvd_bufferSize(
+            (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
         CHECK_ROCBLAS_ERROR(
             hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(double) * n));
 
@@ -4167,7 +4319,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr, nullptr, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -4196,7 +4350,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr, nullptr, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -4225,7 +4381,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr, nullptr, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -4254,7 +4412,9 @@ try
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nullptr, lda, nullptr, nullptr, nullptr);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    if(sz > INT_MAX)
+    bool valid
+        = (status == rocblas_status_size_unchanged || status == rocblas_status_size_increased);
+    if(valid && sz > INT_MAX)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     *lwork = (int)sz;
@@ -4279,10 +4439,11 @@ hipsolverStatus_t hipsolverSsytrd(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverSsytrd_bufferSize((rocblas_handle)handle, uplo, n, A, lda, D, E, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverSsytrd_bufferSize((rocblas_handle)handle, uplo, n, A, lda, D, E, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -4308,10 +4469,11 @@ hipsolverStatus_t hipsolverDsytrd(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverDsytrd_bufferSize((rocblas_handle)handle, uplo, n, A, lda, D, E, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverDsytrd_bufferSize((rocblas_handle)handle, uplo, n, A, lda, D, E, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -4337,10 +4499,11 @@ hipsolverStatus_t hipsolverChetrd(hipsolverHandle_t   handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverChetrd_bufferSize((rocblas_handle)handle, uplo, n, A, lda, D, E, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverChetrd_bufferSize((rocblas_handle)handle, uplo, n, A, lda, D, E, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
@@ -4372,10 +4535,11 @@ hipsolverStatus_t hipsolverZhetrd(hipsolverHandle_t       handle,
 try
 {
     if(work != nullptr)
-        rocblas_set_workspace((rocblas_handle)handle, work, lwork);
+        CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        hipsolverZhetrd_bufferSize((rocblas_handle)handle, uplo, n, A, lda, D, E, tau, &lwork);
+        CHECK_HIPSOLVER_ERROR(
+            hipsolverZhetrd_bufferSize((rocblas_handle)handle, uplo, n, A, lda, D, E, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
