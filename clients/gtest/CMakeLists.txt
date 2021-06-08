@@ -28,6 +28,8 @@ set(hipsolver_test_source
   geqrf_gtest.cpp
   gesvd_gtest.cpp
   potrf_gtest.cpp
+  syevd_heevd_gtest.cpp
+  sygvd_hegvd_gtest.cpp
   sytrd_hetrd_gtest.cpp
   orgbr_ungbr_gtest.cpp
   orgqr_ungqr_gtest.cpp

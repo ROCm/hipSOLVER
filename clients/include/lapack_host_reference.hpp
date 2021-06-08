@@ -7,12 +7,7 @@
 #include "hipsolver.h"
 #include "hipsolver_datatype2string.hpp"
 
-template <typename T>
-void cblas_lacgv(int n, T* x, int incx);
-
-template <typename T>
-void cblas_larf(
-    hipsolverSideMode_t side, int m, int n, T* x, int incx, T* alpha, T* A, int lda, T* work);
+// BLAS
 
 template <typename T>
 void cblas_gemm(hipsolverOperation_t transA,
@@ -28,6 +23,41 @@ void cblas_gemm(hipsolverOperation_t transA,
                 T                    beta,
                 T*                   C,
                 int                  ldc);
+
+template <typename T>
+void cblas_symm_hemm(hipsolverSideMode_t side,
+                     hipsolverFillMode_t uplo,
+                     int                 m,
+                     int                 n,
+                     T                   alpha,
+                     T*                  A,
+                     int                 lda,
+                     T*                  B,
+                     int                 ldb,
+                     T                   beta,
+                     T*                  C,
+                     int                 ldc);
+
+template <typename T>
+void cblas_symv_hemv(hipsolverFillMode_t uplo,
+                     int                 n,
+                     T                   alpha,
+                     T*                  A,
+                     int                 lda,
+                     T*                  x,
+                     int                 incx,
+                     T                   beta,
+                     T*                  y,
+                     int                 incy);
+
+// LAPACK
+
+template <typename T>
+void cblas_lacgv(int n, T* x, int incx);
+
+template <typename T>
+void cblas_larf(
+    hipsolverSideMode_t side, int m, int n, T* x, int incx, T* alpha, T* A, int lda, T* work);
 
 template <typename T>
 void cblas_orgbr_ungbr(
@@ -100,6 +130,39 @@ void cblas_getrs(
 
 template <typename T>
 void cblas_potrf(hipsolverFillMode_t uplo, int n, T* A, int lda, int* info);
+
+template <typename T, typename S>
+void cblas_syevd_heevd(hipsolverEigMode_t  evect,
+                       hipsolverFillMode_t uplo,
+                       int                 n,
+                       T*                  A,
+                       int                 lda,
+                       S*                  D,
+                       T*                  work,
+                       int                 lwork,
+                       S*                  rwork,
+                       int                 lrwork,
+                       int*                iwork,
+                       int                 liwork,
+                       int*                info);
+
+template <typename T, typename S>
+void cblas_sygvd_hegvd(hipsolverEigType_t  itype,
+                       hipsolverEigMode_t  evect,
+                       hipsolverFillMode_t uplo,
+                       int                 n,
+                       T*                  A,
+                       int                 lda,
+                       T*                  B,
+                       int                 ldb,
+                       S*                  W,
+                       T*                  work,
+                       int                 lwork,
+                       S*                  rwork,
+                       int                 lrwork,
+                       int*                iwork,
+                       int                 liwork,
+                       int*                info);
 
 template <typename T, typename S>
 void cblas_sytrd_hetrd(

@@ -970,6 +970,192 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrfBatchedFortran(hipsolverHandle
                                                                  int*                    devInfo,
                                                                  int batch_count);
 
+// syevd/heevd
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsyevd_bufferSizeFortran(hipsolverHandle_t   handle,
+                                                                     hipsolverEigMode_t  jobz,
+                                                                     hipsolverFillMode_t uplo,
+                                                                     int                 n,
+                                                                     float*              A,
+                                                                     int                 lda,
+                                                                     float*              D,
+                                                                     int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsyevd_bufferSizeFortran(hipsolverHandle_t   handle,
+                                                                     hipsolverEigMode_t  jobz,
+                                                                     hipsolverFillMode_t uplo,
+                                                                     int                 n,
+                                                                     double*             A,
+                                                                     int                 lda,
+                                                                     double*             D,
+                                                                     int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCheevd_bufferSizeFortran(hipsolverHandle_t   handle,
+                                                                     hipsolverEigMode_t  jobz,
+                                                                     hipsolverFillMode_t uplo,
+                                                                     int                 n,
+                                                                     hipsolverComplex*   A,
+                                                                     int                 lda,
+                                                                     float*              D,
+                                                                     int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZheevd_bufferSizeFortran(hipsolverHandle_t       handle,
+                                                                     hipsolverEigMode_t      jobz,
+                                                                     hipsolverFillMode_t     uplo,
+                                                                     int                     n,
+                                                                     hipsolverDoubleComplex* A,
+                                                                     int                     lda,
+                                                                     double*                 D,
+                                                                     int*                    lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsyevdFortran(hipsolverHandle_t   handle,
+                                                          hipsolverEigMode_t  jobz,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          float*              A,
+                                                          int                 lda,
+                                                          float*              D,
+                                                          float*              work,
+                                                          int                 lwork,
+                                                          int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsyevdFortran(hipsolverHandle_t   handle,
+                                                          hipsolverEigMode_t  jobz,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          double*             A,
+                                                          int                 lda,
+                                                          double*             D,
+                                                          double*             work,
+                                                          int                 lwork,
+                                                          int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCheevdFortran(hipsolverHandle_t   handle,
+                                                          hipsolverEigMode_t  jobz,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          hipsolverComplex*   A,
+                                                          int                 lda,
+                                                          float*              D,
+                                                          hipsolverComplex*   work,
+                                                          int                 lwork,
+                                                          int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZheevdFortran(hipsolverHandle_t       handle,
+                                                          hipsolverEigMode_t      jobz,
+                                                          hipsolverFillMode_t     uplo,
+                                                          int                     n,
+                                                          hipsolverDoubleComplex* A,
+                                                          int                     lda,
+                                                          double*                 D,
+                                                          hipsolverDoubleComplex* work,
+                                                          int                     lwork,
+                                                          int*                    devInfo);
+
+// sygvd/hegvd
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd_bufferSizeFortran(hipsolverHandle_t   handle,
+                                                                     hipsolverEigType_t  itype,
+                                                                     hipsolverEigMode_t  jobz,
+                                                                     hipsolverFillMode_t uplo,
+                                                                     int                 n,
+                                                                     float*              A,
+                                                                     int                 lda,
+                                                                     float*              B,
+                                                                     int                 ldb,
+                                                                     float*              D,
+                                                                     int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd_bufferSizeFortran(hipsolverHandle_t   handle,
+                                                                     hipsolverEigType_t  itype,
+                                                                     hipsolverEigMode_t  jobz,
+                                                                     hipsolverFillMode_t uplo,
+                                                                     int                 n,
+                                                                     double*             A,
+                                                                     int                 lda,
+                                                                     double*             B,
+                                                                     int                 ldb,
+                                                                     double*             D,
+                                                                     int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd_bufferSizeFortran(hipsolverHandle_t   handle,
+                                                                     hipsolverEigType_t  itype,
+                                                                     hipsolverEigMode_t  jobz,
+                                                                     hipsolverFillMode_t uplo,
+                                                                     int                 n,
+                                                                     hipsolverComplex*   A,
+                                                                     int                 lda,
+                                                                     hipsolverComplex*   B,
+                                                                     int                 ldb,
+                                                                     float*              D,
+                                                                     int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSizeFortran(hipsolverHandle_t       handle,
+                                                                     hipsolverEigType_t      itype,
+                                                                     hipsolverEigMode_t      jobz,
+                                                                     hipsolverFillMode_t     uplo,
+                                                                     int                     n,
+                                                                     hipsolverDoubleComplex* A,
+                                                                     int                     lda,
+                                                                     hipsolverDoubleComplex* B,
+                                                                     int                     ldb,
+                                                                     double*                 D,
+                                                                     int*                    lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvdFortran(hipsolverHandle_t   handle,
+                                                          hipsolverEigType_t  itype,
+                                                          hipsolverEigMode_t  jobz,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          float*              A,
+                                                          int                 lda,
+                                                          float*              B,
+                                                          int                 ldb,
+                                                          float*              D,
+                                                          float*              work,
+                                                          int                 lwork,
+                                                          int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvdFortran(hipsolverHandle_t   handle,
+                                                          hipsolverEigType_t  itype,
+                                                          hipsolverEigMode_t  jobz,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          double*             A,
+                                                          int                 lda,
+                                                          double*             B,
+                                                          int                 ldb,
+                                                          double*             D,
+                                                          double*             work,
+                                                          int                 lwork,
+                                                          int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvdFortran(hipsolverHandle_t   handle,
+                                                          hipsolverEigType_t  itype,
+                                                          hipsolverEigMode_t  jobz,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          hipsolverComplex*   A,
+                                                          int                 lda,
+                                                          hipsolverComplex*   B,
+                                                          int                 ldb,
+                                                          float*              D,
+                                                          hipsolverComplex*   work,
+                                                          int                 lwork,
+                                                          int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvdFortran(hipsolverHandle_t       handle,
+                                                          hipsolverEigType_t      itype,
+                                                          hipsolverEigMode_t      jobz,
+                                                          hipsolverFillMode_t     uplo,
+                                                          int                     n,
+                                                          hipsolverDoubleComplex* A,
+                                                          int                     lda,
+                                                          hipsolverDoubleComplex* B,
+                                                          int                     ldb,
+                                                          double*                 D,
+                                                          hipsolverDoubleComplex* work,
+                                                          int                     lwork,
+                                                          int*                    devInfo);
+
 // sytrd/hetrd
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsytrd_bufferSizeFortran(hipsolverHandle_t   handle,
                                                                      hipsolverFillMode_t uplo,
