@@ -523,7 +523,7 @@ pushd .
   fi
 
   # address sanitizer
-  if ($build_address_sanitizer); then
+  if [[ "${build_address_sanitizer}" == true ]]; then
     cmake_common_options="$cmake_common_options -DBUILD_ADDRESS_SANITIZER=ON"
   fi
 
