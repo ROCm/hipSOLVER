@@ -29,6 +29,7 @@ function display_help()
   echo "    [--rocsolver-path] Set specific path to custom built rocsolver"
   echo "    [--static] Create static library instead of shared library"
   echo "    [--codecoverage] Build with code coverage profiling enabled, excluding release mode."
+  echo "    [--address-sanitizer] build with address sanitizer enabled. Uses hipcc to compile"
 }
 
 
@@ -302,6 +303,7 @@ compiler=g++
 build_static=false
 build_release_debug=false
 build_codecoverage=false
+build_address_sanitizer=false
 
 # #################################################
 # Parameter parsing
@@ -310,7 +312,7 @@ build_codecoverage=false
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,address-sanitizer --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -365,7 +367,11 @@ while true; do
         shift ;;
     --static)
         build_static=true
-	shift ;;
+        shift ;;
+    --address-sanitizer)
+        build_address_sanitizer=true
+        compiler=hipcc
+        shift ;;
     -p|--cmakepp)
         cmake_prefix_path=${2}
         shift 2 ;;
@@ -514,6 +520,11 @@ pushd .
           exit 1
       fi
       cmake_common_options="${cmake_common_options} -DBUILD_CODE_COVERAGE=ON"
+  fi
+
+  # address sanitizer
+  if [[ "${build_address_sanitizer}" == true ]]; then
+    cmake_common_options="$cmake_common_options -DBUILD_ADDRESS_SANITIZER=ON"
   fi
 
   # Build library
