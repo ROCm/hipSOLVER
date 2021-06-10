@@ -73,7 +73,7 @@ int main()
     double* dWork;
     int     size_work; // size of workspace to pass to getrf
     hipsolverDgetrf_bufferSize(handle, M, N, dA, lda, &size_work);
-    hipMalloc((void**)&dWork, sizeof(double) * size_work);
+    hipMalloc((void**)&dWork, size_work);
 
     // compute the LU factorization on the GPU
     hipsolverStatus_t status
