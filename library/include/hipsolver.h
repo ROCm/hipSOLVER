@@ -15,6 +15,7 @@
 
 #include "hipsolver-export.h"
 #include "hipsolver-version.h"
+#include <hip/hip_complex.h>
 #include <hip/hip_runtime_api.h>
 #include <stdint.h>
 
@@ -40,112 +41,6 @@
 #endif
 
 typedef void* hipsolverHandle_t;
-
-typedef struct hipsolverComplex
-{
-#ifndef __cplusplus
-
-    float x, y;
-
-#else
-
-private:
-    float x, y;
-
-public:
-#if __cplusplus >= 201103L
-    hipsolverComplex() = default;
-#else
-    hipsolverComplex() {}
-#endif
-
-    hipsolverComplex(float r, float i = 0)
-        : x(r)
-        , y(i)
-    {
-    }
-
-    float real() const
-    {
-        return x;
-    }
-    float imag() const
-    {
-        return y;
-    }
-    void real(float r)
-    {
-        x = r;
-    }
-    void imag(float i)
-    {
-        y = i;
-    }
-
-#endif
-} hipsolverComplex;
-
-typedef struct hipsolverDoubleComplex
-{
-#ifndef __cplusplus
-
-    double x, y;
-
-#else
-
-private:
-    double x, y;
-
-public:
-
-#if __cplusplus >= 201103L
-    hipsolverDoubleComplex() = default;
-#else
-    hipsolverDoubleComplex() {}
-#endif
-
-    hipsolverDoubleComplex(double r, double i = 0)
-        : x(r)
-        , y(i)
-    {
-    }
-
-    double real() const
-    {
-        return x;
-    }
-    double imag() const
-    {
-        return y;
-    }
-    void real(double r)
-    {
-        x = r;
-    }
-    void imag(double i)
-    {
-        y = i;
-    }
-
-#endif
-} hipsolverDoubleComplex;
-
-#if __cplusplus >= 201103L
-#include <type_traits>
-static_assert(std::is_standard_layout<hipsolverComplex>{},
-              "hipsolverComplex is not a standard layout type, and thus is incompatible with C.");
-static_assert(
-    std::is_standard_layout<hipsolverDoubleComplex>{},
-    "hipsolverDoubleComplex is not a standard layout type, and thus is incompatible with C.");
-static_assert(std::is_trivial<hipsolverComplex>{},
-              "hipsolverComplex is not a trivial type, and thus is incompatible with C.");
-static_assert(std::is_trivial<hipsolverDoubleComplex>{},
-              "hipsolverDoubleComplex is not a trivial type, and thus is incompatible with C.");
-static_assert(sizeof(hipsolverComplex) == sizeof(float) * 2
-                  && sizeof(hipsolverDoubleComplex) == sizeof(double) * 2
-                  && sizeof(hipsolverDoubleComplex) == sizeof(hipsolverComplex) * 2,
-              "Sizes of hipsolverComplex or hipsolverDoubleComplex are inconsistent");
-#endif
 
 typedef enum
 {
@@ -236,20 +131,20 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCungbr_bufferSize(hipsolverHandle_t 
                                                               int                 m,
                                                               int                 n,
                                                               int                 k,
-                                                              hipsolverComplex*   A,
+                                                              hipFloatComplex*    A,
                                                               int                 lda,
-                                                              hipsolverComplex*   tau,
+                                                              hipFloatComplex*    tau,
                                                               int*                lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungbr_bufferSize(hipsolverHandle_t       handle,
-                                                              hipsolverSideMode_t     side,
-                                                              int                     m,
-                                                              int                     n,
-                                                              int                     k,
-                                                              hipsolverDoubleComplex* A,
-                                                              int                     lda,
-                                                              hipsolverDoubleComplex* tau,
-                                                              int*                    lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungbr_bufferSize(hipsolverHandle_t   handle,
+                                                              hipsolverSideMode_t side,
+                                                              int                 m,
+                                                              int                 n,
+                                                              int                 k,
+                                                              hipDoubleComplex*   A,
+                                                              int                 lda,
+                                                              hipDoubleComplex*   tau,
+                                                              int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSorgbr(hipsolverHandle_t   handle,
                                                    hipsolverSideMode_t side,
@@ -280,24 +175,24 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCungbr(hipsolverHandle_t   handle,
                                                    int                 m,
                                                    int                 n,
                                                    int                 k,
-                                                   hipsolverComplex*   A,
+                                                   hipFloatComplex*    A,
                                                    int                 lda,
-                                                   hipsolverComplex*   tau,
-                                                   hipsolverComplex*   work,
+                                                   hipFloatComplex*    tau,
+                                                   hipFloatComplex*    work,
                                                    int                 lwork,
                                                    int*                devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungbr(hipsolverHandle_t       handle,
-                                                   hipsolverSideMode_t     side,
-                                                   int                     m,
-                                                   int                     n,
-                                                   int                     k,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   hipsolverDoubleComplex* tau,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungbr(hipsolverHandle_t   handle,
+                                                   hipsolverSideMode_t side,
+                                                   int                 m,
+                                                   int                 n,
+                                                   int                 k,
+                                                   hipDoubleComplex*   A,
+                                                   int                 lda,
+                                                   hipDoubleComplex*   tau,
+                                                   hipDoubleComplex*   work,
+                                                   int                 lwork,
+                                                   int*                devInfo);
 
 // orgqr/ungqr
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSorgqr_bufferSize(
@@ -310,19 +205,19 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCungqr_bufferSize(hipsolverHandle_t 
                                                               int               m,
                                                               int               n,
                                                               int               k,
-                                                              hipsolverComplex* A,
+                                                              hipFloatComplex*  A,
                                                               int               lda,
-                                                              hipsolverComplex* tau,
+                                                              hipFloatComplex*  tau,
                                                               int*              lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungqr_bufferSize(hipsolverHandle_t       handle,
-                                                              int                     m,
-                                                              int                     n,
-                                                              int                     k,
-                                                              hipsolverDoubleComplex* A,
-                                                              int                     lda,
-                                                              hipsolverDoubleComplex* tau,
-                                                              int*                    lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungqr_bufferSize(hipsolverHandle_t handle,
+                                                              int               m,
+                                                              int               n,
+                                                              int               k,
+                                                              hipDoubleComplex* A,
+                                                              int               lda,
+                                                              hipDoubleComplex* tau,
+                                                              int*              lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSorgqr(hipsolverHandle_t handle,
                                                    int               m,
@@ -350,23 +245,23 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCungqr(hipsolverHandle_t handle,
                                                    int               m,
                                                    int               n,
                                                    int               k,
-                                                   hipsolverComplex* A,
+                                                   hipFloatComplex*  A,
                                                    int               lda,
-                                                   hipsolverComplex* tau,
-                                                   hipsolverComplex* work,
+                                                   hipFloatComplex*  tau,
+                                                   hipFloatComplex*  work,
                                                    int               lwork,
                                                    int*              devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungqr(hipsolverHandle_t       handle,
-                                                   int                     m,
-                                                   int                     n,
-                                                   int                     k,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   hipsolverDoubleComplex* tau,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungqr(hipsolverHandle_t handle,
+                                                   int               m,
+                                                   int               n,
+                                                   int               k,
+                                                   hipDoubleComplex* A,
+                                                   int               lda,
+                                                   hipDoubleComplex* tau,
+                                                   hipDoubleComplex* work,
+                                                   int               lwork,
+                                                   int*              devInfo);
 
 // orgtr/ungtr
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSorgtr_bufferSize(hipsolverHandle_t   handle,
@@ -388,18 +283,18 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDorgtr_bufferSize(hipsolverHandle_t 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCungtr_bufferSize(hipsolverHandle_t   handle,
                                                               hipsolverFillMode_t uplo,
                                                               int                 n,
-                                                              hipsolverComplex*   A,
+                                                              hipFloatComplex*    A,
                                                               int                 lda,
-                                                              hipsolverComplex*   tau,
+                                                              hipFloatComplex*    tau,
                                                               int*                lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungtr_bufferSize(hipsolverHandle_t       handle,
-                                                              hipsolverFillMode_t     uplo,
-                                                              int                     n,
-                                                              hipsolverDoubleComplex* A,
-                                                              int                     lda,
-                                                              hipsolverDoubleComplex* tau,
-                                                              int*                    lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungtr_bufferSize(hipsolverHandle_t   handle,
+                                                              hipsolverFillMode_t uplo,
+                                                              int                 n,
+                                                              hipDoubleComplex*   A,
+                                                              int                 lda,
+                                                              hipDoubleComplex*   tau,
+                                                              int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSorgtr(hipsolverHandle_t   handle,
                                                    hipsolverFillMode_t uplo,
@@ -424,22 +319,22 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDorgtr(hipsolverHandle_t   handle,
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCungtr(hipsolverHandle_t   handle,
                                                    hipsolverFillMode_t uplo,
                                                    int                 n,
-                                                   hipsolverComplex*   A,
+                                                   hipFloatComplex*    A,
                                                    int                 lda,
-                                                   hipsolverComplex*   tau,
-                                                   hipsolverComplex*   work,
+                                                   hipFloatComplex*    tau,
+                                                   hipFloatComplex*    work,
                                                    int                 lwork,
                                                    int*                devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungtr(hipsolverHandle_t       handle,
-                                                   hipsolverFillMode_t     uplo,
-                                                   int                     n,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   hipsolverDoubleComplex* tau,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZungtr(hipsolverHandle_t   handle,
+                                                   hipsolverFillMode_t uplo,
+                                                   int                 n,
+                                                   hipDoubleComplex*   A,
+                                                   int                 lda,
+                                                   hipDoubleComplex*   tau,
+                                                   hipDoubleComplex*   work,
+                                                   int                 lwork,
+                                                   int*                devInfo);
 
 // ormqr/unmqr
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSormqr_bufferSize(hipsolverHandle_t    handle,
@@ -474,25 +369,25 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCunmqr_bufferSize(hipsolverHandle_t 
                                                               int                  m,
                                                               int                  n,
                                                               int                  k,
-                                                              hipsolverComplex*    A,
+                                                              hipFloatComplex*     A,
                                                               int                  lda,
-                                                              hipsolverComplex*    tau,
-                                                              hipsolverComplex*    C,
+                                                              hipFloatComplex*     tau,
+                                                              hipFloatComplex*     C,
                                                               int                  ldc,
                                                               int*                 lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZunmqr_bufferSize(hipsolverHandle_t       handle,
-                                                              hipsolverSideMode_t     side,
-                                                              hipsolverOperation_t    trans,
-                                                              int                     m,
-                                                              int                     n,
-                                                              int                     k,
-                                                              hipsolverDoubleComplex* A,
-                                                              int                     lda,
-                                                              hipsolverDoubleComplex* tau,
-                                                              hipsolverDoubleComplex* C,
-                                                              int                     ldc,
-                                                              int*                    lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZunmqr_bufferSize(hipsolverHandle_t    handle,
+                                                              hipsolverSideMode_t  side,
+                                                              hipsolverOperation_t trans,
+                                                              int                  m,
+                                                              int                  n,
+                                                              int                  k,
+                                                              hipDoubleComplex*    A,
+                                                              int                  lda,
+                                                              hipDoubleComplex*    tau,
+                                                              hipDoubleComplex*    C,
+                                                              int                  ldc,
+                                                              int*                 lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSormqr(hipsolverHandle_t    handle,
                                                    hipsolverSideMode_t  side,
@@ -530,29 +425,29 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCunmqr(hipsolverHandle_t    handle,
                                                    int                  m,
                                                    int                  n,
                                                    int                  k,
-                                                   hipsolverComplex*    A,
+                                                   hipFloatComplex*     A,
                                                    int                  lda,
-                                                   hipsolverComplex*    tau,
-                                                   hipsolverComplex*    C,
+                                                   hipFloatComplex*     tau,
+                                                   hipFloatComplex*     C,
                                                    int                  ldc,
-                                                   hipsolverComplex*    work,
+                                                   hipFloatComplex*     work,
                                                    int                  lwork,
                                                    int*                 devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZunmqr(hipsolverHandle_t       handle,
-                                                   hipsolverSideMode_t     side,
-                                                   hipsolverOperation_t    trans,
-                                                   int                     m,
-                                                   int                     n,
-                                                   int                     k,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   hipsolverDoubleComplex* tau,
-                                                   hipsolverDoubleComplex* C,
-                                                   int                     ldc,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZunmqr(hipsolverHandle_t    handle,
+                                                   hipsolverSideMode_t  side,
+                                                   hipsolverOperation_t trans,
+                                                   int                  m,
+                                                   int                  n,
+                                                   int                  k,
+                                                   hipDoubleComplex*    A,
+                                                   int                  lda,
+                                                   hipDoubleComplex*    tau,
+                                                   hipDoubleComplex*    C,
+                                                   int                  ldc,
+                                                   hipDoubleComplex*    work,
+                                                   int                  lwork,
+                                                   int*                 devInfo);
 
 // ormtr/unmtr
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSormtr_bufferSize(hipsolverHandle_t    handle,
@@ -587,25 +482,25 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCunmtr_bufferSize(hipsolverHandle_t 
                                                               hipsolverOperation_t trans,
                                                               int                  m,
                                                               int                  n,
-                                                              hipsolverComplex*    A,
+                                                              hipFloatComplex*     A,
                                                               int                  lda,
-                                                              hipsolverComplex*    tau,
-                                                              hipsolverComplex*    C,
+                                                              hipFloatComplex*     tau,
+                                                              hipFloatComplex*     C,
                                                               int                  ldc,
                                                               int*                 lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZunmtr_bufferSize(hipsolverHandle_t       handle,
-                                                              hipsolverSideMode_t     side,
-                                                              hipsolverFillMode_t     uplo,
-                                                              hipsolverOperation_t    trans,
-                                                              int                     m,
-                                                              int                     n,
-                                                              hipsolverDoubleComplex* A,
-                                                              int                     lda,
-                                                              hipsolverDoubleComplex* tau,
-                                                              hipsolverDoubleComplex* C,
-                                                              int                     ldc,
-                                                              int*                    lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZunmtr_bufferSize(hipsolverHandle_t    handle,
+                                                              hipsolverSideMode_t  side,
+                                                              hipsolverFillMode_t  uplo,
+                                                              hipsolverOperation_t trans,
+                                                              int                  m,
+                                                              int                  n,
+                                                              hipDoubleComplex*    A,
+                                                              int                  lda,
+                                                              hipDoubleComplex*    tau,
+                                                              hipDoubleComplex*    C,
+                                                              int                  ldc,
+                                                              int*                 lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSormtr(hipsolverHandle_t    handle,
                                                    hipsolverSideMode_t  side,
@@ -643,29 +538,29 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCunmtr(hipsolverHandle_t    handle,
                                                    hipsolverOperation_t trans,
                                                    int                  m,
                                                    int                  n,
-                                                   hipsolverComplex*    A,
+                                                   hipFloatComplex*     A,
                                                    int                  lda,
-                                                   hipsolverComplex*    tau,
-                                                   hipsolverComplex*    C,
+                                                   hipFloatComplex*     tau,
+                                                   hipFloatComplex*     C,
                                                    int                  ldc,
-                                                   hipsolverComplex*    work,
+                                                   hipFloatComplex*     work,
                                                    int                  lwork,
                                                    int*                 devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZunmtr(hipsolverHandle_t       handle,
-                                                   hipsolverSideMode_t     side,
-                                                   hipsolverFillMode_t     uplo,
-                                                   hipsolverOperation_t    trans,
-                                                   int                     m,
-                                                   int                     n,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   hipsolverDoubleComplex* tau,
-                                                   hipsolverDoubleComplex* C,
-                                                   int                     ldc,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZunmtr(hipsolverHandle_t    handle,
+                                                   hipsolverSideMode_t  side,
+                                                   hipsolverFillMode_t  uplo,
+                                                   hipsolverOperation_t trans,
+                                                   int                  m,
+                                                   int                  n,
+                                                   hipDoubleComplex*    A,
+                                                   int                  lda,
+                                                   hipDoubleComplex*    tau,
+                                                   hipDoubleComplex*    C,
+                                                   int                  ldc,
+                                                   hipDoubleComplex*    work,
+                                                   int                  lwork,
+                                                   int*                 devInfo);
 
 // gebrd
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgebrd_bufferSize(hipsolverHandle_t handle,
@@ -717,28 +612,28 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgebrd(hipsolverHandle_t handle,
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgebrd(hipsolverHandle_t handle,
                                                    int               m,
                                                    int               n,
-                                                   hipsolverComplex* A,
+                                                   hipFloatComplex*  A,
                                                    int               lda,
                                                    float*            D,
                                                    float*            E,
-                                                   hipsolverComplex* tauq,
-                                                   hipsolverComplex* taup,
-                                                   hipsolverComplex* work,
+                                                   hipFloatComplex*  tauq,
+                                                   hipFloatComplex*  taup,
+                                                   hipFloatComplex*  work,
                                                    int               lwork,
                                                    int*              devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgebrd(hipsolverHandle_t       handle,
-                                                   int                     m,
-                                                   int                     n,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   double*                 D,
-                                                   double*                 E,
-                                                   hipsolverDoubleComplex* tauq,
-                                                   hipsolverDoubleComplex* taup,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgebrd(hipsolverHandle_t handle,
+                                                   int               m,
+                                                   int               n,
+                                                   hipDoubleComplex* A,
+                                                   int               lda,
+                                                   double*           D,
+                                                   double*           E,
+                                                   hipDoubleComplex* tauq,
+                                                   hipDoubleComplex* taup,
+                                                   hipDoubleComplex* work,
+                                                   int               lwork,
+                                                   int*              devInfo);
 
 // geqrf
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgeqrf_bufferSize(
@@ -748,10 +643,10 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgeqrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgeqrf_bufferSize(
-    hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork);
+    hipsolverHandle_t handle, int m, int n, hipFloatComplex* A, int lda, int* lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgeqrf_bufferSize(
-    hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork);
+    hipsolverHandle_t handle, int m, int n, hipDoubleComplex* A, int lda, int* lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgeqrf(hipsolverHandle_t handle,
                                                    int               m,
@@ -776,22 +671,22 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgeqrf(hipsolverHandle_t handle,
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgeqrf(hipsolverHandle_t handle,
                                                    int               m,
                                                    int               n,
-                                                   hipsolverComplex* A,
+                                                   hipFloatComplex*  A,
                                                    int               lda,
-                                                   hipsolverComplex* tau,
-                                                   hipsolverComplex* work,
+                                                   hipFloatComplex*  tau,
+                                                   hipFloatComplex*  work,
                                                    int               lwork,
                                                    int*              devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgeqrf(hipsolverHandle_t       handle,
-                                                   int                     m,
-                                                   int                     n,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   hipsolverDoubleComplex* tau,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgeqrf(hipsolverHandle_t handle,
+                                                   int               m,
+                                                   int               n,
+                                                   hipDoubleComplex* A,
+                                                   int               lda,
+                                                   hipDoubleComplex* tau,
+                                                   hipDoubleComplex* work,
+                                                   int               lwork,
+                                                   int*              devInfo);
 
 // gesvd
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgesvd_bufferSize(
@@ -845,34 +740,34 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgesvd(hipsolverHandle_t handle,
                                                    signed char       jobv,
                                                    int               m,
                                                    int               n,
-                                                   hipsolverComplex* A,
+                                                   hipFloatComplex*  A,
                                                    int               lda,
                                                    float*            S,
-                                                   hipsolverComplex* U,
+                                                   hipFloatComplex*  U,
                                                    int               ldu,
-                                                   hipsolverComplex* V,
+                                                   hipFloatComplex*  V,
                                                    int               ldv,
-                                                   hipsolverComplex* work,
+                                                   hipFloatComplex*  work,
                                                    int               lwork,
                                                    float*            rwork,
                                                    int*              devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgesvd(hipsolverHandle_t       handle,
-                                                   signed char             jobu,
-                                                   signed char             jobv,
-                                                   int                     m,
-                                                   int                     n,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   double*                 S,
-                                                   hipsolverDoubleComplex* U,
-                                                   int                     ldu,
-                                                   hipsolverDoubleComplex* V,
-                                                   int                     ldv,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   double*                 rwork,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgesvd(hipsolverHandle_t handle,
+                                                   signed char       jobu,
+                                                   signed char       jobv,
+                                                   int               m,
+                                                   int               n,
+                                                   hipDoubleComplex* A,
+                                                   int               lda,
+                                                   double*           S,
+                                                   hipDoubleComplex* U,
+                                                   int               ldu,
+                                                   hipDoubleComplex* V,
+                                                   int               ldv,
+                                                   hipDoubleComplex* work,
+                                                   int               lwork,
+                                                   double*           rwork,
+                                                   int*              devInfo);
 
 // getrf
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgetrf_bufferSize(
@@ -882,10 +777,10 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgetrf_bufferSize(
-    hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork);
+    hipsolverHandle_t handle, int m, int n, hipFloatComplex* A, int lda, int* lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrf_bufferSize(
-    hipsolverHandle_t handle, int m, int n, hipsolverDoubleComplex* A, int lda, int* lwork);
+    hipsolverHandle_t handle, int m, int n, hipDoubleComplex* A, int lda, int* lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
                                                    int               m,
@@ -910,22 +805,22 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
                                                    int               m,
                                                    int               n,
-                                                   hipsolverComplex* A,
+                                                   hipFloatComplex*  A,
                                                    int               lda,
-                                                   hipsolverComplex* work,
+                                                   hipFloatComplex*  work,
                                                    int               lwork,
                                                    int*              devIpiv,
                                                    int*              devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t       handle,
-                                                   int                     m,
-                                                   int                     n,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   int*                    devIpiv,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t handle,
+                                                   int               m,
+                                                   int               n,
+                                                   hipDoubleComplex* A,
+                                                   int               lda,
+                                                   hipDoubleComplex* work,
+                                                   int               lwork,
+                                                   int*              devIpiv,
+                                                   int*              devInfo);
 
 // getrs
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgetrs_bufferSize(hipsolverHandle_t    handle,
@@ -954,23 +849,23 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgetrs_bufferSize(hipsolverHandle_t 
                                                               hipsolverOperation_t trans,
                                                               int                  n,
                                                               int                  nrhs,
-                                                              hipsolverComplex*    A,
+                                                              hipFloatComplex*     A,
                                                               int                  lda,
                                                               int*                 devIpiv,
-                                                              hipsolverComplex*    B,
+                                                              hipFloatComplex*     B,
                                                               int                  ldb,
                                                               int*                 lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrs_bufferSize(hipsolverHandle_t       handle,
-                                                              hipsolverOperation_t    trans,
-                                                              int                     n,
-                                                              int                     nrhs,
-                                                              hipsolverDoubleComplex* A,
-                                                              int                     lda,
-                                                              int*                    devIpiv,
-                                                              hipsolverDoubleComplex* B,
-                                                              int                     ldb,
-                                                              int*                    lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrs_bufferSize(hipsolverHandle_t    handle,
+                                                              hipsolverOperation_t trans,
+                                                              int                  n,
+                                                              int                  nrhs,
+                                                              hipDoubleComplex*    A,
+                                                              int                  lda,
+                                                              int*                 devIpiv,
+                                                              hipDoubleComplex*    B,
+                                                              int                  ldb,
+                                                              int*                 lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSgetrs(hipsolverHandle_t    handle,
                                                    hipsolverOperation_t trans,
@@ -1002,27 +897,27 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCgetrs(hipsolverHandle_t    handle,
                                                    hipsolverOperation_t trans,
                                                    int                  n,
                                                    int                  nrhs,
-                                                   hipsolverComplex*    A,
+                                                   hipFloatComplex*     A,
                                                    int                  lda,
                                                    int*                 devIpiv,
-                                                   hipsolverComplex*    B,
+                                                   hipFloatComplex*     B,
                                                    int                  ldb,
-                                                   hipsolverComplex*    work,
+                                                   hipFloatComplex*     work,
                                                    int                  lwork,
                                                    int*                 devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t       handle,
-                                                   hipsolverOperation_t    trans,
-                                                   int                     n,
-                                                   int                     nrhs,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   int*                    devIpiv,
-                                                   hipsolverDoubleComplex* B,
-                                                   int                     ldb,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t    handle,
+                                                   hipsolverOperation_t trans,
+                                                   int                  n,
+                                                   int                  nrhs,
+                                                   hipDoubleComplex*    A,
+                                                   int                  lda,
+                                                   int*                 devIpiv,
+                                                   hipDoubleComplex*    B,
+                                                   int                  ldb,
+                                                   hipDoubleComplex*    work,
+                                                   int                  lwork,
+                                                   int*                 devInfo);
 
 // potrf
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpotrf_bufferSize(
@@ -1034,16 +929,16 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDpotrf_bufferSize(
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCpotrf_bufferSize(hipsolverHandle_t   handle,
                                                               hipsolverFillMode_t uplo,
                                                               int                 n,
-                                                              hipsolverComplex*   A,
+                                                              hipFloatComplex*    A,
                                                               int                 lda,
                                                               int*                lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrf_bufferSize(hipsolverHandle_t       handle,
-                                                              hipsolverFillMode_t     uplo,
-                                                              int                     n,
-                                                              hipsolverDoubleComplex* A,
-                                                              int                     lda,
-                                                              int*                    lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrf_bufferSize(hipsolverHandle_t   handle,
+                                                              hipsolverFillMode_t uplo,
+                                                              int                 n,
+                                                              hipDoubleComplex*   A,
+                                                              int                 lda,
+                                                              int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpotrf(hipsolverHandle_t   handle,
                                                    hipsolverFillMode_t uplo,
@@ -1066,20 +961,20 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDpotrf(hipsolverHandle_t   handle,
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCpotrf(hipsolverHandle_t   handle,
                                                    hipsolverFillMode_t uplo,
                                                    int                 n,
-                                                   hipsolverComplex*   A,
+                                                   hipFloatComplex*    A,
                                                    int                 lda,
-                                                   hipsolverComplex*   work,
+                                                   hipFloatComplex*    work,
                                                    int                 lwork,
                                                    int*                devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t       handle,
-                                                   hipsolverFillMode_t     uplo,
-                                                   int                     n,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t   handle,
+                                                   hipsolverFillMode_t uplo,
+                                                   int                 n,
+                                                   hipDoubleComplex*   A,
+                                                   int                 lda,
+                                                   hipDoubleComplex*   work,
+                                                   int                 lwork,
+                                                   int*                devInfo);
 
 // potrf_batched
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpotrfBatched_bufferSize(hipsolverHandle_t   handle,
@@ -1101,17 +996,17 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDpotrfBatched_bufferSize(hipsolverHa
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCpotrfBatched_bufferSize(hipsolverHandle_t   handle,
                                                                      hipsolverFillMode_t uplo,
                                                                      int                 n,
-                                                                     hipsolverComplex*   A[],
+                                                                     hipFloatComplex*    A[],
                                                                      int                 lda,
                                                                      int*                lwork,
                                                                      int batch_count);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrfBatched_bufferSize(hipsolverHandle_t       handle,
-                                                                     hipsolverFillMode_t     uplo,
-                                                                     int                     n,
-                                                                     hipsolverDoubleComplex* A[],
-                                                                     int                     lda,
-                                                                     int*                    lwork,
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrfBatched_bufferSize(hipsolverHandle_t   handle,
+                                                                     hipsolverFillMode_t uplo,
+                                                                     int                 n,
+                                                                     hipDoubleComplex*   A[],
+                                                                     int                 lda,
+                                                                     int*                lwork,
                                                                      int batch_count);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpotrfBatched(hipsolverHandle_t   handle,
@@ -1137,22 +1032,22 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDpotrfBatched(hipsolverHandle_t   ha
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCpotrfBatched(hipsolverHandle_t   handle,
                                                           hipsolverFillMode_t uplo,
                                                           int                 n,
-                                                          hipsolverComplex*   A[],
+                                                          hipFloatComplex*    A[],
                                                           int                 lda,
-                                                          hipsolverComplex*   work,
+                                                          hipFloatComplex*    work,
                                                           int                 lwork,
                                                           int*                devInfo,
                                                           int                 batch_count);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrfBatched(hipsolverHandle_t       handle,
-                                                          hipsolverFillMode_t     uplo,
-                                                          int                     n,
-                                                          hipsolverDoubleComplex* A[],
-                                                          int                     lda,
-                                                          hipsolverDoubleComplex* work,
-                                                          int                     lwork,
-                                                          int*                    devInfo,
-                                                          int                     batch_count);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrfBatched(hipsolverHandle_t   handle,
+                                                          hipsolverFillMode_t uplo,
+                                                          int                 n,
+                                                          hipDoubleComplex*   A[],
+                                                          int                 lda,
+                                                          hipDoubleComplex*   work,
+                                                          int                 lwork,
+                                                          int*                devInfo,
+                                                          int                 batch_count);
 
 // syevd/heevd
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsyevd_bufferSize(hipsolverHandle_t   handle,
@@ -1177,19 +1072,19 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCheevd_bufferSize(hipsolverHandle_t 
                                                               hipsolverEigMode_t  jobz,
                                                               hipsolverFillMode_t uplo,
                                                               int                 n,
-                                                              hipsolverComplex*   A,
+                                                              hipFloatComplex*    A,
                                                               int                 lda,
                                                               float*              D,
                                                               int*                lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZheevd_bufferSize(hipsolverHandle_t       handle,
-                                                              hipsolverEigMode_t      jobz,
-                                                              hipsolverFillMode_t     uplo,
-                                                              int                     n,
-                                                              hipsolverDoubleComplex* A,
-                                                              int                     lda,
-                                                              double*                 D,
-                                                              int*                    lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZheevd_bufferSize(hipsolverHandle_t   handle,
+                                                              hipsolverEigMode_t  jobz,
+                                                              hipsolverFillMode_t uplo,
+                                                              int                 n,
+                                                              hipDoubleComplex*   A,
+                                                              int                 lda,
+                                                              double*             D,
+                                                              int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsyevd(hipsolverHandle_t   handle,
                                                    hipsolverEigMode_t  jobz,
@@ -1217,23 +1112,23 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCheevd(hipsolverHandle_t   handle,
                                                    hipsolverEigMode_t  jobz,
                                                    hipsolverFillMode_t uplo,
                                                    int                 n,
-                                                   hipsolverComplex*   A,
+                                                   hipFloatComplex*    A,
                                                    int                 lda,
                                                    float*              D,
-                                                   hipsolverComplex*   work,
+                                                   hipFloatComplex*    work,
                                                    int                 lwork,
                                                    int*                devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZheevd(hipsolverHandle_t       handle,
-                                                   hipsolverEigMode_t      jobz,
-                                                   hipsolverFillMode_t     uplo,
-                                                   int                     n,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   double*                 D,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZheevd(hipsolverHandle_t   handle,
+                                                   hipsolverEigMode_t  jobz,
+                                                   hipsolverFillMode_t uplo,
+                                                   int                 n,
+                                                   hipDoubleComplex*   A,
+                                                   int                 lda,
+                                                   double*             D,
+                                                   hipDoubleComplex*   work,
+                                                   int                 lwork,
+                                                   int*                devInfo);
 
 // sygvd/hegvd
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd_bufferSize(hipsolverHandle_t   handle,
@@ -1265,24 +1160,24 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd_bufferSize(hipsolverHandle_t 
                                                               hipsolverEigMode_t  jobz,
                                                               hipsolverFillMode_t uplo,
                                                               int                 n,
-                                                              hipsolverComplex*   A,
+                                                              hipFloatComplex*    A,
                                                               int                 lda,
-                                                              hipsolverComplex*   B,
+                                                              hipFloatComplex*    B,
                                                               int                 ldb,
                                                               float*              D,
                                                               int*                lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSize(hipsolverHandle_t       handle,
-                                                              hipsolverEigType_t      itype,
-                                                              hipsolverEigMode_t      jobz,
-                                                              hipsolverFillMode_t     uplo,
-                                                              int                     n,
-                                                              hipsolverDoubleComplex* A,
-                                                              int                     lda,
-                                                              hipsolverDoubleComplex* B,
-                                                              int                     ldb,
-                                                              double*                 D,
-                                                              int*                    lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSize(hipsolverHandle_t   handle,
+                                                              hipsolverEigType_t  itype,
+                                                              hipsolverEigMode_t  jobz,
+                                                              hipsolverFillMode_t uplo,
+                                                              int                 n,
+                                                              hipDoubleComplex*   A,
+                                                              int                 lda,
+                                                              hipDoubleComplex*   B,
+                                                              int                 ldb,
+                                                              double*             D,
+                                                              int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd(hipsolverHandle_t   handle,
                                                    hipsolverEigType_t  itype,
@@ -1317,28 +1212,28 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd(hipsolverHandle_t   handle,
                                                    hipsolverEigMode_t  jobz,
                                                    hipsolverFillMode_t uplo,
                                                    int                 n,
-                                                   hipsolverComplex*   A,
+                                                   hipFloatComplex*    A,
                                                    int                 lda,
-                                                   hipsolverComplex*   B,
+                                                   hipFloatComplex*    B,
                                                    int                 ldb,
                                                    float*              D,
-                                                   hipsolverComplex*   work,
+                                                   hipFloatComplex*    work,
                                                    int                 lwork,
                                                    int*                devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd(hipsolverHandle_t       handle,
-                                                   hipsolverEigType_t      itype,
-                                                   hipsolverEigMode_t      jobz,
-                                                   hipsolverFillMode_t     uplo,
-                                                   int                     n,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   hipsolverDoubleComplex* B,
-                                                   int                     ldb,
-                                                   double*                 D,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd(hipsolverHandle_t   handle,
+                                                   hipsolverEigType_t  itype,
+                                                   hipsolverEigMode_t  jobz,
+                                                   hipsolverFillMode_t uplo,
+                                                   int                 n,
+                                                   hipDoubleComplex*   A,
+                                                   int                 lda,
+                                                   hipDoubleComplex*   B,
+                                                   int                 ldb,
+                                                   double*             D,
+                                                   hipDoubleComplex*   work,
+                                                   int                 lwork,
+                                                   int*                devInfo);
 
 // sytrd/hetrd
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsytrd_bufferSize(hipsolverHandle_t   handle,
@@ -1364,22 +1259,22 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsytrd_bufferSize(hipsolverHandle_t 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChetrd_bufferSize(hipsolverHandle_t   handle,
                                                               hipsolverFillMode_t uplo,
                                                               int                 n,
-                                                              hipsolverComplex*   A,
+                                                              hipFloatComplex*    A,
                                                               int                 lda,
                                                               float*              D,
                                                               float*              E,
-                                                              hipsolverComplex*   tau,
+                                                              hipFloatComplex*    tau,
                                                               int*                lwork);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhetrd_bufferSize(hipsolverHandle_t       handle,
-                                                              hipsolverFillMode_t     uplo,
-                                                              int                     n,
-                                                              hipsolverDoubleComplex* A,
-                                                              int                     lda,
-                                                              double*                 D,
-                                                              double*                 E,
-                                                              hipsolverDoubleComplex* tau,
-                                                              int*                    lwork);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhetrd_bufferSize(hipsolverHandle_t   handle,
+                                                              hipsolverFillMode_t uplo,
+                                                              int                 n,
+                                                              hipDoubleComplex*   A,
+                                                              int                 lda,
+                                                              double*             D,
+                                                              double*             E,
+                                                              hipDoubleComplex*   tau,
+                                                              int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsytrd(hipsolverHandle_t   handle,
                                                    hipsolverFillMode_t uplo,
@@ -1408,26 +1303,26 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsytrd(hipsolverHandle_t   handle,
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChetrd(hipsolverHandle_t   handle,
                                                    hipsolverFillMode_t uplo,
                                                    int                 n,
-                                                   hipsolverComplex*   A,
+                                                   hipFloatComplex*    A,
                                                    int                 lda,
                                                    float*              D,
                                                    float*              E,
-                                                   hipsolverComplex*   tau,
-                                                   hipsolverComplex*   work,
+                                                   hipFloatComplex*    tau,
+                                                   hipFloatComplex*    work,
                                                    int                 lwork,
                                                    int*                devInfo);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhetrd(hipsolverHandle_t       handle,
-                                                   hipsolverFillMode_t     uplo,
-                                                   int                     n,
-                                                   hipsolverDoubleComplex* A,
-                                                   int                     lda,
-                                                   double*                 D,
-                                                   double*                 E,
-                                                   hipsolverDoubleComplex* tau,
-                                                   hipsolverDoubleComplex* work,
-                                                   int                     lwork,
-                                                   int*                    devInfo);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhetrd(hipsolverHandle_t   handle,
+                                                   hipsolverFillMode_t uplo,
+                                                   int                 n,
+                                                   hipDoubleComplex*   A,
+                                                   int                 lda,
+                                                   double*             D,
+                                                   double*             E,
+                                                   hipDoubleComplex*   tau,
+                                                   hipDoubleComplex*   work,
+                                                   int                 lwork,
+                                                   int*                devInfo);
 
 #ifdef __cplusplus
 }
