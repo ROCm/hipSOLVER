@@ -1563,17 +1563,12 @@ inline hipsolverStatus_t hipsolver_gesvd(bool              FORTRAN,
                                          int*              info,
                                          int               bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverSgesvd(
             handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverSgesvdFortran(
             handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 
 inline hipsolverStatus_t hipsolver_gesvd(bool              FORTRAN,
@@ -1600,17 +1595,12 @@ inline hipsolverStatus_t hipsolver_gesvd(bool              FORTRAN,
                                          int*              info,
                                          int               bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverDgesvd(
             handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverDgesvdFortran(
             handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 
 inline hipsolverStatus_t hipsolver_gesvd(bool              FORTRAN,
@@ -1637,9 +1627,7 @@ inline hipsolverStatus_t hipsolver_gesvd(bool              FORTRAN,
                                          int*              info,
                                          int               bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverCgesvd(handle,
                                jobu,
                                jobv,
@@ -1656,7 +1644,7 @@ inline hipsolverStatus_t hipsolver_gesvd(bool              FORTRAN,
                                lwork,
                                rwork,
                                info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverCgesvdFortran(handle,
                                       jobu,
                                       jobv,
@@ -1673,9 +1661,6 @@ inline hipsolverStatus_t hipsolver_gesvd(bool              FORTRAN,
                                       lwork,
                                       rwork,
                                       info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 
 inline hipsolverStatus_t hipsolver_gesvd(bool                    FORTRAN,
@@ -1702,9 +1687,7 @@ inline hipsolverStatus_t hipsolver_gesvd(bool                    FORTRAN,
                                          int*                    info,
                                          int                     bc)
 {
-    switch(bool2marshal(FORTRAN, bc != 1))
-    {
-    case C_NORMAL:
+    if(!FORTRAN)
         return hipsolverZgesvd(handle,
                                jobu,
                                jobv,
@@ -1721,7 +1704,7 @@ inline hipsolverStatus_t hipsolver_gesvd(bool                    FORTRAN,
                                lwork,
                                rwork,
                                info);
-    case FORTRAN_NORMAL:
+    else
         return hipsolverZgesvdFortran(handle,
                                       jobu,
                                       jobv,
@@ -1738,9 +1721,6 @@ inline hipsolverStatus_t hipsolver_gesvd(bool                    FORTRAN,
                                       lwork,
                                       rwork,
                                       info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
 }
 /********************************************************/
 
