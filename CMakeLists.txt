@@ -69,6 +69,12 @@ option( BUILD_VERBOSE "Output additional build information" OFF )
 
 # BUILD_SHARED_LIBS is a cmake built-in; we make it an explicit option such that it shows in cmake-gui
 option( BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON )
+option(BUILD_ADDRESS_SANITIZER "Build with address sanitizer enabled" OFF)
+
+if(BUILD_ADDRESS_SANITIZER)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -shared-libasan")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -shared-libasan")
+endif()
 
 if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
   set( DEFAULT_ARMOR_LEVEL 1 )

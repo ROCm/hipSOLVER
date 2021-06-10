@@ -34,6 +34,10 @@ set (hipsolver_f90_source
 # Create hipSOLVER Fortran module
 add_library(hipsolver_fortran ${hipsolver_f90_source})
 
+if(BUILD_ADDRESS_SANITIZER)
+  add_link_options(-fuse-ld=lld)
+endif()
+
 add_library( hipsolver
   ${hipsolver_source}
   ${relative_hipsolver_headers_public}
