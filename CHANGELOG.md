@@ -1,7 +1,8 @@
 # Change Log for hipSOLVER
 
+Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
-## [(Unreleased) hipSOLVER 1.0.0 for ROCm 4.4]
+## [hipSOLVER 1.0.0 for ROCm 4.4.0]
 ### Added
 - Added functions
   - orgbr/ungbr
@@ -46,7 +47,13 @@
   - sytrd/hetrd
     - hipsolverSsytrd_bufferSize, hipsolverDsytrd_bufferSize, hipsolverChetrd_bufferSize, hipsolverZhetrd_bufferSize
     - hipsolverSsytrd, hipsolverDsytrd, hipsolverChetrd, hipsolverZhetrd
-
+  - getrf
+    - hipsolverSgetrf_bufferSize, hipsolverDgetrf_bufferSize, hipsolverCgetrf_bufferSize, hipsolverZgetrf_bufferSize
+    - hipsolverSgetrf, hipsolverDgetrf, hipsolverCgetrf, hipsolverZgetrf
+  - auxiliary
+    - hipsolverCreate, hipsolverDestroy
+    - hipsolverSetStream, hipsolverGetStream
+  
 ### Changed
 - hipSOLVER functions will now return HIPSOLVER_STATUS_INVALID_ENUM or HIPSOLVER_STATUS_UNKNOWN status codes rather than throw exceptions.
 - hipsolverXgetrf functions now take lwork as an argument.
@@ -55,14 +62,3 @@
 - Removed unused HIPSOLVER_FILL_MODE_FULL enum value.
 - Removed hipsolverComplex and hipsolverDoubleComplex from the library. Use hipFloatComplex and hipDoubleComplex instead.
 
-
-## [hipSOLVER 0.1.0 for ROCm 4.2]
-### Added
-- Created hipSOLVER repository
-- Added functions
-  - auxiliary
-    - hipsolverCreate, hipsolverDestroy
-    - hipsolverSetStream, hipsolverGetStream
-  - getrf
-    - hipsolverSgetrf_bufferSize, hipsolverDgetrf_bufferSize, hipsolverCgetrf_bufferSize, hipsolverZgetrf_bufferSize
-    - hipsolverSgetrf, hipsolverDgetrf, hipsolverCgetrf, hipsolverZgetrf
