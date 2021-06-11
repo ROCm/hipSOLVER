@@ -2,6 +2,14 @@
 
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
+## [(unreleased) hipSOLVER for ROCm 4.5.0]
+### Added
+### Optimizations
+### Changed
+### Removed
+### Fixed
+### Known Issues
+
 ## [hipSOLVER 1.0.0 for ROCm 4.4.0]
 ### Added
 - Added functions
