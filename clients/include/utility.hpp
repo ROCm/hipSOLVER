@@ -140,6 +140,15 @@ inline bool hipsolver_isnan(hipsolverDoubleComplex arg)
 template <typename T>
 static constexpr bool is_complex = false;
 
+/* Workaround for clang bug:
+   https://bugs.llvm.org/show_bug.cgi?id=35863
+*/
+#if __clang__
+#define HIPSOLVER_CLANG_STATIC static
+#else
+#define HIPSOLVER_CLANG_STATIC
+#endif
+
 template <>
 HIPSOLVER_CLANG_STATIC constexpr bool is_complex<hipsolverComplex> = true;
 

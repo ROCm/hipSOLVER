@@ -53,6 +53,7 @@
 
 ### Removed
 - Removed unused HIPSOLVER_FILL_MODE_FULL enum value.
+- Removed hipsolverComplex and hipsolverDoubleComplex from the library. Use hipFloatComplex and hipDoubleComplex instead.
 
 
 ## [hipSOLVER 0.1.0 for ROCm 4.2]

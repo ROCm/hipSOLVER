@@ -7,6 +7,78 @@
 #include "hipsolver.h"
 #include <complex>
 
+typedef struct hipsolverComplex
+{
+private:
+    float x, y;
+
+public:
+#if __cplusplus >= 201103L
+    hipsolverComplex() = default;
+#else
+    hipsolverComplex() {}
+#endif
+
+    hipsolverComplex(float r, float i = 0)
+        : x(r)
+        , y(i)
+    {
+    }
+
+    float real() const
+    {
+        return x;
+    }
+    float imag() const
+    {
+        return y;
+    }
+    void real(float r)
+    {
+        x = r;
+    }
+    void imag(float i)
+    {
+        y = i;
+    }
+} hipsolverComplex;
+
+typedef struct hipsolverDoubleComplex
+{
+private:
+    double x, y;
+
+public:
+#if __cplusplus >= 201103L
+    hipsolverDoubleComplex() = default;
+#else
+    hipsolverDoubleComplex() {}
+#endif
+
+    hipsolverDoubleComplex(double r, double i = 0)
+        : x(r)
+        , y(i)
+    {
+    }
+
+    double real() const
+    {
+        return x;
+    }
+    double imag() const
+    {
+        return y;
+    }
+    void real(double r)
+    {
+        x = r;
+    }
+    void imag(double i)
+    {
+        y = i;
+    }
+} hipsolverDoubleComplex;
+
 inline hipsolverComplex& operator+=(hipsolverComplex& lhs, const hipsolverComplex& rhs)
 {
     reinterpret_cast<std::complex<float>&>(lhs)

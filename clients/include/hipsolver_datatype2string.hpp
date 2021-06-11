@@ -4,9 +4,11 @@
 
 #pragma once
 
-#include "hipsolver.h"
 #include <ostream>
 #include <string>
+
+#include "complex.hpp"
+#include "hipsolver.h"
 
 // Complex output
 inline std::ostream& operator<<(std::ostream& os, const hipsolverComplex& x)
