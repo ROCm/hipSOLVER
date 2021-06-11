@@ -1,23 +1,21 @@
 #!/bin/bash
 
-# This script needs to be edited to bump new master version to new develop for new release.
-# - run this script after running bump_master_version.sh and merging develop into master
-# - run this script in master branch
-# - after running this script merge master into develop
+# run this script in develop after merging develop/staging into master at the feature-complete date
+# Edit script to bump versions for new development cycle/release.
 
-OLD_HIPSOLVER_VERSION="1.0.0"
-NEW_HIPSOLVER_VERSION="1.1.0"
-
-OLD_HIPSOLVER_DOCS_VERSION="1.0"
-NEW_HIPSOLVER_DOCS_VERSION="1.1"
-
-OLD_MINIMUM_ROCBLAS_VERSION="2.40.0"
-NEW_MINIMUM_ROCBLAS_VERSION="2.41.0"
-
-OLD_MINIMUM_ROCSOLVER_VERSION="3.14.0"
-NEW_MINIMUM_ROCSOLVER_VERSION="3.15.0"
-
+OLD_HIPSOLVER_VERSION="1.1.0"  # Distributed with ROCm 4.5
+NEW_HIPSOLVER_VERSION="1.2.0"  # Distributed with ROCm 4.6
 sed -i "s/${OLD_HIPSOLVER_VERSION}/${NEW_HIPSOLVER_VERSION}/g" CMakeLists.txt
+
+# for documentation
+OLD_HIPSOLVER_DOCS_VERSION="1.1"
+NEW_HIPSOLVER_DOCS_VERSION="1.2"
 sed -i "s/${OLD_HIPSOLVER_DOCS_VERSION}/${NEW_HIPSOLVER_DOCS_VERSION}/g" docs/source/conf.py
+
+# for rocBLAS/rocSOLVER package requirements
+OLD_MINIMUM_ROCBLAS_VERSION="2.41.0"
+NEW_MINIMUM_ROCBLAS_VERSION="2.42.0"
+OLD_MINIMUM_ROCSOLVER_VERSION="3.15.0"
+NEW_MINIMUM_ROCSOLVER_VERSION="3.16.0"
 sed -i "s/${OLD_MINIMUM_ROCBLAS_VERSION}/${NEW_MINIMUM_ROCBLAS_VERSION}/g" library/CMakeLists.txt
 sed -i "s/${OLD_MINIMUM_ROCSOLVER_VERSION}/${NEW_MINIMUM_ROCSOLVER_VERSION}/g" library/CMakeLists.txt
