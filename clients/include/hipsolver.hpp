@@ -2431,6 +2431,209 @@ inline hipsolverStatus_t hipsolver_potrf(bool                    FORTRAN,
 }
 /********************************************************/
 
+/******************** POTRS ********************/
+// normal and strided_batched
+inline hipsolverStatus_t hipsolver_potrs_bufferSize(bool                FORTRAN,
+                                                    hipsolverHandle_t   handle,
+                                                    hipsolverFillMode_t uplo,
+                                                    int                 n,
+                                                    int                 nrhs,
+                                                    float*              A,
+                                                    int                 lda,
+                                                    float*              B,
+                                                    int                 ldb,
+                                                    int*                lwork)
+{
+    if(!FORTRAN)
+        return hipsolverSpotrs_bufferSize(handle, uplo, n, nrhs, A, lda, B, ldb, lwork);
+    else
+        return hipsolverSpotrs_bufferSizeFortran(handle, uplo, n, nrhs, A, lda, B, ldb, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_potrs_bufferSize(bool                FORTRAN,
+                                                    hipsolverHandle_t   handle,
+                                                    hipsolverFillMode_t uplo,
+                                                    int                 n,
+                                                    int                 nrhs,
+                                                    double*             A,
+                                                    int                 lda,
+                                                    double*             B,
+                                                    int                 ldb,
+                                                    int*                lwork)
+{
+    if(!FORTRAN)
+        return hipsolverDpotrs_bufferSize(handle, uplo, n, nrhs, A, lda, B, ldb, lwork);
+    else
+        return hipsolverDpotrs_bufferSizeFortran(handle, uplo, n, nrhs, A, lda, B, ldb, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_potrs_bufferSize(bool                FORTRAN,
+                                                    hipsolverHandle_t   handle,
+                                                    hipsolverFillMode_t uplo,
+                                                    int                 n,
+                                                    int                 nrhs,
+                                                    hipsolverComplex*   A,
+                                                    int                 lda,
+                                                    hipsolverComplex*   B,
+                                                    int                 ldb,
+                                                    int*                lwork)
+{
+    if(!FORTRAN)
+        return hipsolverCpotrs_bufferSize(
+            handle, uplo, n, nrhs, (hipFloatComplex*)A, lda, (hipFloatComplex*)B, ldb, lwork);
+    else
+        return hipsolverCpotrs_bufferSizeFortran(
+            handle, uplo, n, nrhs, (hipFloatComplex*)A, lda, (hipFloatComplex*)B, ldb, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_potrs_bufferSize(bool                    FORTRAN,
+                                                    hipsolverHandle_t       handle,
+                                                    hipsolverFillMode_t     uplo,
+                                                    int                     n,
+                                                    int                     nrhs,
+                                                    hipsolverDoubleComplex* A,
+                                                    int                     lda,
+                                                    hipsolverDoubleComplex* B,
+                                                    int                     ldb,
+                                                    int*                    lwork)
+{
+    if(!FORTRAN)
+        return hipsolverZpotrs_bufferSize(
+            handle, uplo, n, nrhs, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)B, ldb, lwork);
+    else
+        return hipsolverZpotrs_bufferSizeFortran(
+            handle, uplo, n, nrhs, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)B, ldb, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_potrs(bool                FORTRAN,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverFillMode_t uplo,
+                                         int                 n,
+                                         int                 nrhs,
+                                         float*              A,
+                                         int                 lda,
+                                         int                 stA,
+                                         float*              B,
+                                         int                 ldb,
+                                         int                 stB,
+                                         float*              work,
+                                         int                 lwork,
+                                         int*                info,
+                                         int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverSpotrs(handle, uplo, n, nrhs, A, lda, B, ldb, work, lwork, info);
+    else
+        return hipsolverSpotrsFortran(handle, uplo, n, nrhs, A, lda, B, ldb, work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_potrs(bool                FORTRAN,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverFillMode_t uplo,
+                                         int                 n,
+                                         int                 nrhs,
+                                         double*             A,
+                                         int                 lda,
+                                         int                 stA,
+                                         double*             B,
+                                         int                 ldb,
+                                         int                 stB,
+                                         double*             work,
+                                         int                 lwork,
+                                         int*                info,
+                                         int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverDpotrs(handle, uplo, n, nrhs, A, lda, B, ldb, work, lwork, info);
+    else
+        return hipsolverDpotrsFortran(handle, uplo, n, nrhs, A, lda, B, ldb, work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_potrs(bool                FORTRAN,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverFillMode_t uplo,
+                                         int                 n,
+                                         int                 nrhs,
+                                         hipsolverComplex*   A,
+                                         int                 lda,
+                                         int                 stA,
+                                         hipsolverComplex*   B,
+                                         int                 ldb,
+                                         int                 stB,
+                                         hipsolverComplex*   work,
+                                         int                 lwork,
+                                         int*                info,
+                                         int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverCpotrs(handle,
+                               uplo,
+                               n,
+                               nrhs,
+                               (hipFloatComplex*)A,
+                               lda,
+                               (hipFloatComplex*)B,
+                               ldb,
+                               (hipFloatComplex*)work,
+                               lwork,
+                               info);
+    else
+        return hipsolverCpotrsFortran(handle,
+                                      uplo,
+                                      n,
+                                      nrhs,
+                                      (hipFloatComplex*)A,
+                                      lda,
+                                      (hipFloatComplex*)B,
+                                      ldb,
+                                      (hipFloatComplex*)work,
+                                      lwork,
+                                      info);
+}
+
+inline hipsolverStatus_t hipsolver_potrs(bool                    FORTRAN,
+                                         hipsolverHandle_t       handle,
+                                         hipsolverFillMode_t     uplo,
+                                         int                     n,
+                                         int                     nrhs,
+                                         hipsolverDoubleComplex* A,
+                                         int                     lda,
+                                         int                     stA,
+                                         hipsolverDoubleComplex* B,
+                                         int                     ldb,
+                                         int                     stB,
+                                         hipsolverDoubleComplex* work,
+                                         int                     lwork,
+                                         int*                    info,
+                                         int                     bc)
+{
+    if(!FORTRAN)
+        return hipsolverZpotrs(handle,
+                               uplo,
+                               n,
+                               nrhs,
+                               (hipDoubleComplex*)A,
+                               lda,
+                               (hipDoubleComplex*)B,
+                               ldb,
+                               (hipDoubleComplex*)work,
+                               lwork,
+                               info);
+    else
+        return hipsolverZpotrsFortran(handle,
+                                      uplo,
+                                      n,
+                                      nrhs,
+                                      (hipDoubleComplex*)A,
+                                      lda,
+                                      (hipDoubleComplex*)B,
+                                      ldb,
+                                      (hipDoubleComplex*)work,
+                                      lwork,
+                                      info);
+}
+/********************************************************/
+
 /******************** SYEVD/HEEVD ********************/
 // normal and strided_batched
 inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FORTRAN,
