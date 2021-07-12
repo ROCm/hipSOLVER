@@ -99,32 +99,17 @@ void potrf_initData(const hipsolverHandle_t   handle,
                     Ud&                       dInfo,
                     const int                 bc,
                     Th&                       hA,
-                    Th&                       hATmp,
                     Uh&                       hInfo)
 {
     if(CPU)
     {
-        rocblas_init<T>(hATmp, true);
+        rocblas_init<T>(hA, true);
 
-        for(int b = 0; b < bc; ++b)
+        for(rocblas_int b = 0; b < bc; ++b)
         {
-            // make A hermitian and scale to ensure positive definiteness
-            cblas_gemm(HIPSOLVER_OP_N,
-                       HIPSOLVER_OP_C,
-                       n,
-                       n,
-                       n,
-                       (T)1.0,
-                       hATmp[b],
-                       lda,
-                       hATmp[b],
-                       lda,
-                       (T)0.0,
-                       hA[b],
-                       lda);
-
-            for(int i = 0; i < n; i++)
-                hA[b][i + i * lda] += 400;
+            // scale to ensure positive definiteness
+            for(rocblas_int i = 0; i < n; i++)
+                hA[b][i + i * lda] = hA[b][i + i * lda] * conj(hA[b][i + i * lda]) * 400;
         }
     }
 
@@ -153,7 +138,7 @@ void potrf_getError(const hipsolverHandle_t   handle,
                     double*                   max_err)
 {
     // input data initialization
-    potrf_initData<true, true, T>(handle, uplo, n, dA, lda, stA, dInfo, bc, hA, hARes, hInfo);
+    potrf_initData<true, true, T>(handle, uplo, n, dA, lda, stA, dInfo, bc, hA, hInfo);
 
     // execute computations
     // GPU lapack
@@ -206,7 +191,6 @@ void potrf_getPerfData(const hipsolverHandle_t   handle,
                        Ud&                       dInfo,
                        const int                 bc,
                        Th&                       hA,
-                       Th&                       hATmp,
                        Uh&                       hInfo,
                        double*                   gpu_time_used,
                        double*                   cpu_time_used,
@@ -215,7 +199,7 @@ void potrf_getPerfData(const hipsolverHandle_t   handle,
 {
     if(!perf)
     {
-        potrf_initData<true, false, T>(handle, uplo, n, dA, lda, stA, dInfo, bc, hA, hATmp, hInfo);
+        potrf_initData<true, false, T>(handle, uplo, n, dA, lda, stA, dInfo, bc, hA, hInfo);
 
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
@@ -224,12 +208,12 @@ void potrf_getPerfData(const hipsolverHandle_t   handle,
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 
-    potrf_initData<true, false, T>(handle, uplo, n, dA, lda, stA, dInfo, bc, hA, hATmp, hInfo);
+    potrf_initData<true, false, T>(handle, uplo, n, dA, lda, stA, dInfo, bc, hA, hInfo);
 
     // cold calls
     for(int iter = 0; iter < 2; iter++)
     {
-        potrf_initData<false, true, T>(handle, uplo, n, dA, lda, stA, dInfo, bc, hA, hATmp, hInfo);
+        potrf_initData<false, true, T>(handle, uplo, n, dA, lda, stA, dInfo, bc, hA, hInfo);
 
         CHECK_ROCBLAS_ERROR(hipsolver_potrf(
             FORTRAN, handle, uplo, n, dA.data(), lda, stA, dWork.data(), lwork, dInfo.data(), bc));
@@ -242,7 +226,7 @@ void potrf_getPerfData(const hipsolverHandle_t   handle,
 
     for(int iter = 0; iter < hot_calls; iter++)
     {
-        potrf_initData<false, true, T>(handle, uplo, n, dA, lda, stA, dInfo, bc, hA, hATmp, hInfo);
+        potrf_initData<false, true, T>(handle, uplo, n, dA, lda, stA, dInfo, bc, hA, hInfo);
 
         start = get_time_us_sync(stream);
         hipsolver_potrf(
@@ -266,8 +250,7 @@ void testing_potrf(Arguments& argus)
     hipsolverFillMode_t uplo      = char2hipsolver_fill(uploC);
     int                 hot_calls = argus.iters;
 
-    // hARes should always be allocated (used in initData)
-    size_t stARes = stA;
+    rocblas_stride stARes = (argus.unit_check || argus.norm_check) ? stA : 0;
 
     // check non-supported values
     if(uplo != HIPSOLVER_FILL_MODE_UPPER && uplo != HIPSOLVER_FILL_MODE_LOWER)
@@ -313,8 +296,7 @@ void testing_potrf(Arguments& argus)
     size_t size_A    = size_t(lda) * n;
     double max_error = 0, gpu_time_used = 0, cpu_time_used = 0;
 
-    // hARes should always be allocated (used in initData)
-    size_t size_ARes = size_A;
+    size_t size_ARes = (argus.unit_check || argus.norm_check) ? size_A : 0;
 
     // check invalid sizes
     bool invalid_size = (n < 0 || lda < n || bc < 0);
@@ -407,7 +389,6 @@ void testing_potrf(Arguments& argus)
                                           dInfo,
                                           bc,
                                           hA,
-                                          hARes,
                                           hInfo,
                                           &gpu_time_used,
                                           &cpu_time_used,
@@ -465,7 +446,6 @@ void testing_potrf(Arguments& argus)
                                           dInfo,
                                           bc,
                                           hA,
-                                          hARes,
                                           hInfo,
                                           &gpu_time_used,
                                           &cpu_time_used,
