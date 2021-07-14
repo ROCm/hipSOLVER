@@ -6,7 +6,7 @@
 
 #include "clientcommon.hpp"
 
-template <bool FORTRAN, typename T, typename U>
+template <bool FORTRAN, typename T, typename U, typename V>
 void potrs_checkBadArgs(const hipsolverHandle_t   handle,
                         const hipsolverFillMode_t uplo,
                         const int                 n,
@@ -17,7 +17,7 @@ void potrs_checkBadArgs(const hipsolverHandle_t   handle,
                         T                         dB,
                         const int                 ldb,
                         const int                 stB,
-                        T                         dWork,
+                        V                         dWork,
                         const int                 lwork,
                         U                         dInfo,
                         const int                 bc)
@@ -99,36 +99,36 @@ void testing_potrs_bad_arg()
 
     if(BATCHED)
     {
-        // // memory allocations
-        // device_batch_vector<T>           dA(1, 1, 1);
-        // device_batch_vector<T>           dB(1, 1, 1);
-        // device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
-        // CHECK_HIP_ERROR(dA.memcheck());
-        // CHECK_HIP_ERROR(dB.memcheck());
-        // CHECK_HIP_ERROR(dInfo.memcheck());
+        // memory allocations
+        device_batch_vector<T>           dA(1, 1, 1);
+        device_batch_vector<T>           dB(1, 1, 1);
+        device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
+        CHECK_HIP_ERROR(dA.memcheck());
+        CHECK_HIP_ERROR(dB.memcheck());
+        CHECK_HIP_ERROR(dInfo.memcheck());
 
-        // int size_W;
-        // hipsolver_potrs_bufferSize(
-        //     FORTRAN, handle, uplo, n, nrhs, dA.data(), lda, dB.data(), ldb, &size_W);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        // if(size_W)
-        //     CHECK_HIP_ERROR(dWork.memcheck());
+        int size_W;
+        hipsolver_potrs_bufferSize(
+            FORTRAN, handle, uplo, n, nrhs, dA.data(), lda, dB.data(), ldb, &size_W, bc);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        if(size_W)
+            CHECK_HIP_ERROR(dWork.memcheck());
 
-        // // check bad arguments
-        // potrs_checkBadArgs<FORTRAN>(handle,
-        //                             uplo,
-        //                             n,
-        //                             nrhs,
-        //                             dA.data(),
-        //                             lda,
-        //                             stA,
-        //                             dB.data(),
-        //                             ldb,
-        //                             stB,
-        //                             dWork.data(),
-        //                             size_W,
-        //                             dInfo.data(),
-        //                             bc);
+        // check bad arguments
+        potrs_checkBadArgs<FORTRAN>(handle,
+                                    uplo,
+                                    n,
+                                    nrhs,
+                                    dA.data(),
+                                    lda,
+                                    stA,
+                                    dB.data(),
+                                    ldb,
+                                    stB,
+                                    dWork.data(),
+                                    size_W,
+                                    dInfo.data(),
+                                    bc);
     }
     else
     {
@@ -142,7 +142,7 @@ void testing_potrs_bad_arg()
 
         int size_W;
         hipsolver_potrs_bufferSize(
-            FORTRAN, handle, uplo, n, nrhs, dA.data(), lda, dB.data(), ldb, &size_W);
+            FORTRAN, handle, uplo, n, nrhs, dA.data(), lda, dB.data(), ldb, &size_W, bc);
         device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
@@ -205,7 +205,7 @@ void potrs_initData(const hipsolverHandle_t   handle,
     }
 }
 
-template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <bool FORTRAN, typename T, typename Td, typename Ud, typename Vd, typename Th, typename Uh>
 void potrs_getError(const hipsolverHandle_t   handle,
                     const hipsolverFillMode_t uplo,
                     const int                 n,
@@ -216,7 +216,7 @@ void potrs_getError(const hipsolverHandle_t   handle,
                     Td&                       dB,
                     const int                 ldb,
                     const int                 stB,
-                    Td&                       dWork,
+                    Vd&                       dWork,
                     const int                 lwork,
                     Ud&                       dInfo,
                     const int                 bc,
@@ -267,7 +267,7 @@ void potrs_getError(const hipsolverHandle_t   handle,
     }
 }
 
-template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <bool FORTRAN, typename T, typename Td, typename Ud, typename Vd, typename Th, typename Uh>
 void potrs_getPerfData(const hipsolverHandle_t   handle,
                        const hipsolverFillMode_t uplo,
                        const int                 n,
@@ -278,7 +278,7 @@ void potrs_getPerfData(const hipsolverHandle_t   handle,
                        Td&                       dB,
                        const int                 ldb,
                        const int                 stB,
-                       Td&                       dWork,
+                       Vd&                       dWork,
                        const int                 lwork,
                        Ud&                       dInfo,
                        const int                 bc,
@@ -395,22 +395,22 @@ void testing_potrs(Arguments& argus)
     {
         if(BATCHED)
         {
-            // EXPECT_ROCBLAS_STATUS(hipsolver_potrs(FORTRAN,
-            //                                       handle,
-            //                                       uplo,
-            //                                       n,
-            //                                       nrhs,
-            //                                       (T* const*)nullptr,
-            //                                       lda,
-            //                                       stA,
-            //                                       (T* const*)nullptr,
-            //                                       ldb,
-            //                                       stB,
-            //                                       (T*)nullptr,
-            //                                       0,
-            //                                       (int*)nullptr,
-            //                                       bc),
-            //                       HIPSOLVER_STATUS_INVALID_VALUE);
+            EXPECT_ROCBLAS_STATUS(hipsolver_potrs(FORTRAN,
+                                                  handle,
+                                                  uplo,
+                                                  n,
+                                                  nrhs,
+                                                  (T**)nullptr,
+                                                  lda,
+                                                  stA,
+                                                  (T**)nullptr,
+                                                  ldb,
+                                                  stB,
+                                                  (T*)nullptr,
+                                                  0,
+                                                  (int*)nullptr,
+                                                  bc),
+                                  HIPSOLVER_STATUS_INVALID_VALUE);
         }
         else
         {
@@ -440,72 +440,72 @@ void testing_potrs(Arguments& argus)
 
     if(BATCHED)
     {
-        // // memory allocations
-        // host_batch_vector<T>             hA(size_A, 1, bc);
-        // host_batch_vector<T>             hB(size_B, 1, bc);
-        // host_batch_vector<T>             hBRes(size_BRes, 1, bc);
-        // host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
-        // device_batch_vector<T>           dA(size_A, 1, bc);
-        // device_batch_vector<T>           dB(size_B, 1, bc);
-        // device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        // if(size_A)
-        //     CHECK_HIP_ERROR(dA.memcheck());
-        // if(size_B)
-        //     CHECK_HIP_ERROR(dB.memcheck());
-        // CHECK_HIP_ERROR(dInfo.memcheck());
+        // memory allocations
+        host_batch_vector<T>             hA(size_A, 1, bc);
+        host_batch_vector<T>             hB(size_B, 1, bc);
+        host_batch_vector<T>             hBRes(size_BRes, 1, bc);
+        host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
+        device_batch_vector<T>           dA(size_A, 1, bc);
+        device_batch_vector<T>           dB(size_B, 1, bc);
+        device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+        if(size_A)
+            CHECK_HIP_ERROR(dA.memcheck());
+        if(size_B)
+            CHECK_HIP_ERROR(dB.memcheck());
+        CHECK_HIP_ERROR(dInfo.memcheck());
 
-        // int size_W;
-        // hipsolver_potrs_bufferSize(
-        //     FORTRAN, handle, uplo, n, nrhs, dA.data(), lda, dB.data(), ldb, &size_W);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        // if(size_W)
-        //     CHECK_HIP_ERROR(dWork.memcheck());
+        int size_W;
+        hipsolver_potrs_bufferSize(
+            FORTRAN, handle, uplo, n, nrhs, dA.data(), lda, dB.data(), ldb, &size_W, bc);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        if(size_W)
+            CHECK_HIP_ERROR(dWork.memcheck());
 
-        // // check computations
-        // if(argus.unit_check || argus.norm_check)
-        //     potrs_getError<FORTRAN, T>(handle,
-        //                                uplo,
-        //                                n,
-        //                                nrhs,
-        //                                dA,
-        //                                lda,
-        //                                stA,
-        //                                dB,
-        //                                ldb,
-        //                                stB,
-        //                                dWork,
-        //                                size_W,
-        //                                dInfo,
-        //                                bc,
-        //                                hA,
-        //                                hB,
-        //                                hBRes,
-        //                                hInfo,
-        //                                &max_error);
+        // check computations
+        if(argus.unit_check || argus.norm_check)
+            potrs_getError<FORTRAN, T>(handle,
+                                       uplo,
+                                       n,
+                                       nrhs,
+                                       dA,
+                                       lda,
+                                       stA,
+                                       dB,
+                                       ldb,
+                                       stB,
+                                       dWork,
+                                       size_W,
+                                       dInfo,
+                                       bc,
+                                       hA,
+                                       hB,
+                                       hBRes,
+                                       hInfo,
+                                       &max_error);
 
-        // // collect performance data
-        // if(argus.timing)
-        //     potrs_getPerfData<FORTRAN, T>(handle,
-        //                                   uplo,
-        //                                   n,
-        //                                   nrhs,
-        //                                   dA,
-        //                                   lda,
-        //                                   stA,
-        //                                   dB,
-        //                                   ldb,
-        //                                   stB,
-        //                                   dWork,
-        //                                   size_W,
-        //                                   dInfo,
-        //                                   bc,
-        //                                   hA,
-        //                                   hB,
-        //                                   hInfo,
-        //                                   &gpu_time_used,
-        //                                   &cpu_time_used,
-        //                                   hot_calls,
-        //                                   argus.perf);
+        // collect performance data
+        if(argus.timing)
+            potrs_getPerfData<FORTRAN, T>(handle,
+                                          uplo,
+                                          n,
+                                          nrhs,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dB,
+                                          ldb,
+                                          stB,
+                                          dWork,
+                                          size_W,
+                                          dInfo,
+                                          bc,
+                                          hA,
+                                          hB,
+                                          hInfo,
+                                          &gpu_time_used,
+                                          &cpu_time_used,
+                                          hot_calls,
+                                          argus.perf);
     }
 
     else
@@ -526,7 +526,7 @@ void testing_potrs(Arguments& argus)
 
         int size_W;
         hipsolver_potrs_bufferSize(
-            FORTRAN, handle, uplo, n, nrhs, dA.data(), lda, dB.data(), ldb, &size_W);
+            FORTRAN, handle, uplo, n, nrhs, dA.data(), lda, dB.data(), ldb, &size_W, bc);
         device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());

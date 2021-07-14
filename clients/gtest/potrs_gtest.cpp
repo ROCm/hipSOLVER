@@ -24,8 +24,6 @@ typedef std::tuple<vector<int>, vector<int>> potrs_tuple;
 
 // for checkin_lapack tests
 const vector<vector<int>> matrix_sizeA_range = {
-    // quick return
-    {0, 1, 1},
     // invalid
     {-1, 1, 1},
     {10, 2, 10},
@@ -36,8 +34,6 @@ const vector<vector<int>> matrix_sizeA_range = {
     {30, 30, 50},
     {50, 60, 60}};
 const vector<vector<int>> matrix_sizeB_range = {
-    // quick return
-    {0, 0},
     // invalid
     {-1, 0},
     // normal (valid) samples
@@ -46,16 +42,16 @@ const vector<vector<int>> matrix_sizeB_range = {
     {30, 1},
 };
 
-// // for daily_lapack tests
-// const vector<vector<int>> large_matrix_sizeA_range
-//     = {{70, 70, 100}, {192, 192, 192}, {600, 700, 645}, {1000, 1000, 1000}, {1000, 2000, 2000}};
-// const vector<vector<int>> large_matrix_sizeB_range = {
-//     {100, 0},
-//     {150, 0},
-//     {200, 1},
-//     {524, 1},
-//     {1000, 0},
-// };
+// for daily_lapack tests
+const vector<vector<int>> large_matrix_sizeA_range
+    = {{70, 70, 100}, {192, 192, 192}, {600, 700, 645}, {1000, 1000, 1000}, {1000, 2000, 2000}};
+const vector<vector<int>> large_matrix_sizeB_range = {
+    {100, 0},
+    {150, 0},
+    {200, 1},
+    {524, 1},
+    {1000, 0},
+};
 
 Arguments potrs_setup_arguments(potrs_tuple tup)
 {
@@ -152,19 +148,61 @@ TEST_P(POTRS_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
-// INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          POTRS,
-//                          Combine(ValuesIn(large_matrix_sizeA_range),
-//                                  ValuesIn(large_matrix_sizeB_range)));
+// batched tests
+
+TEST_P(POTRS, batched__float)
+{
+    run_tests<true, false, float>();
+}
+
+TEST_P(POTRS, batched__double)
+{
+    run_tests<true, false, double>();
+}
+
+TEST_P(POTRS, batched__float_complex)
+{
+    run_tests<true, false, rocblas_float_complex>();
+}
+
+TEST_P(POTRS, batched__double_complex)
+{
+    run_tests<true, false, rocblas_double_complex>();
+}
+
+TEST_P(POTRS_FORTRAN, batched__float)
+{
+    run_tests<true, false, float>();
+}
+
+TEST_P(POTRS_FORTRAN, batched__double)
+{
+    run_tests<true, false, double>();
+}
+
+TEST_P(POTRS_FORTRAN, batched__float_complex)
+{
+    run_tests<true, false, rocblas_float_complex>();
+}
+
+TEST_P(POTRS_FORTRAN, batched__double_complex)
+{
+    run_tests<true, false, rocblas_double_complex>();
+}
+
+INSTANTIATE_TEST_SUITE_P(daily_lapack,
+                         POTRS,
+                         Combine(ValuesIn(large_matrix_sizeA_range),
+                                 ValuesIn(large_matrix_sizeB_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          POTRS,
                          Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
 
-// INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          POTRS_FORTRAN,
-//                          Combine(ValuesIn(large_matrix_sizeA_range),
-//                                  ValuesIn(large_matrix_sizeB_range)));
+INSTANTIATE_TEST_SUITE_P(daily_lapack,
+                         POTRS_FORTRAN,
+                         Combine(ValuesIn(large_matrix_sizeA_range),
+                                 ValuesIn(large_matrix_sizeB_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          POTRS_FORTRAN,
