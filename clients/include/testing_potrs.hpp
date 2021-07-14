@@ -380,7 +380,52 @@ void testing_potrs(Arguments& argus)
     int stBRes = (argus.unit_check || argus.norm_check) ? stB : 0;
 
     // check non-supported values
-    // N/A
+    if(uplo != HIPSOLVER_FILL_MODE_UPPER && uplo != HIPSOLVER_FILL_MODE_LOWER)
+    {
+        if(BATCHED)
+        {
+            EXPECT_ROCBLAS_STATUS(hipsolver_potrs(FORTRAN,
+                                                  handle,
+                                                  uplo,
+                                                  n,
+                                                  nrhs,
+                                                  (T**)nullptr,
+                                                  lda,
+                                                  stA,
+                                                  (T**)nullptr,
+                                                  ldb,
+                                                  stB,
+                                                  (T*)nullptr,
+                                                  0,
+                                                  (int*)nullptr,
+                                                  bc),
+                                  HIPSOLVER_STATUS_INVALID_VALUE);
+        }
+        else
+        {
+            EXPECT_ROCBLAS_STATUS(hipsolver_potrs(FORTRAN,
+                                                  handle,
+                                                  uplo,
+                                                  n,
+                                                  nrhs,
+                                                  (T*)nullptr,
+                                                  lda,
+                                                  stA,
+                                                  (T*)nullptr,
+                                                  ldb,
+                                                  stB,
+                                                  (T*)nullptr,
+                                                  0,
+                                                  (int*)nullptr,
+                                                  bc),
+                                  HIPSOLVER_STATUS_INVALID_VALUE);
+        }
+
+        if(argus.timing)
+            ROCSOLVER_BENCH_INFORM(2);
+
+        return;
+    }
 
     // determine sizes
     size_t size_A    = size_t(lda) * n;

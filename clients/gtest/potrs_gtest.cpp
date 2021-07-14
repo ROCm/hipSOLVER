@@ -37,20 +37,16 @@ const vector<vector<int>> matrix_sizeB_range = {
     // invalid
     {-1, 0},
     // normal (valid) samples
-    {10, 0},
-    {20, 1},
-    {30, 1},
+    {1, 0},
+    {1, 1},
 };
 
 // // for daily_lapack tests
 // const vector<vector<int>> large_matrix_sizeA_range
 //     = {{70, 70, 100}, {192, 192, 192}, {600, 700, 645}, {1000, 1000, 1000}, {1000, 2000, 2000}};
 // const vector<vector<int>> large_matrix_sizeB_range = {
-//     {100, 0},
-//     {150, 0},
-//     {200, 1},
-//     {524, 1},
-//     {1000, 0},
+//     {1, 0},
+//     {1, 1},
 // };
 
 Arguments potrs_setup_arguments(potrs_tuple tup)
