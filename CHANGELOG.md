@@ -9,6 +9,9 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
   - potrs
     - hipsolverSpotrs_bufferSize, hipsolverDpotrs_bufferSize, hipsolverCpotrs_bufferSize, hipsolverZpotrs_bufferSize
     - hipsolverSpotrs, hipsolverDpotrs, hipsolverCpotrs, hipsolverZpotrs
+  - potrsBatched
+    - hipsolverSpotrsBatched_bufferSize, hipsolverDpotrsBatched_bufferSize, hipsolverCpotrsBatched_bufferSize, hipsolverZpotrsBatched_bufferSize
+    - hipsolverSpotrsBatched, hipsolverDpotrsBatched, hipsolverCpotrsBatched, hipsolverZpotrsBatched
 
 ### Optimizations
 ### Changed
