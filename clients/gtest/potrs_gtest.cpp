@@ -19,7 +19,7 @@ typedef std::tuple<vector<int>, vector<int>> potrs_tuple;
 // if uplo = 0 then upper
 // if uplo = 1 then lower
 
-// case when N = nrhs = 0 will also execute the bad arguments test
+// case when N = nrhs = -1 will also execute the bad arguments test
 // (null handle, null pointers and invalid values)
 
 // for checkin_lapack tests
@@ -86,7 +86,7 @@ protected:
     {
         Arguments arg = potrs_setup_arguments(GetParam());
 
-        if(arg.peek<rocblas_int>("n") == 0 && arg.peek<rocblas_int>("nrhs") == 0)
+        if(arg.peek<rocblas_int>("n") == -1 && arg.peek<rocblas_int>("nrhs") == -1)
             testing_potrs_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
 
         arg.batch_count = (BATCHED || STRIDED ? 3 : 1);
