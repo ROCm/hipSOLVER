@@ -40,16 +40,16 @@ const vector<int> matrix_sizeB_range = {
     30,
 };
 
-// for daily_lapack tests
-const vector<vector<int>> large_matrix_sizeA_range
-    = {{70, 70, 100}, {192, 192, 192}, {600, 700, 645}, {1000, 1000, 1000}, {1000, 2000, 2000}};
-const vector<int> large_matrix_sizeB_range = {
-    100,
-    150,
-    200,
-    524,
-    1000,
-};
+// // for daily_lapack tests
+// const vector<vector<int>> large_matrix_sizeA_range
+//     = {{70, 70, 100}, {192, 192, 192}, {600, 700, 645}, {1000, 1000, 1000}, {1000, 2000, 2000}};
+// const vector<int> large_matrix_sizeB_range = {
+//     100,
+//     150,
+//     200,
+//     524,
+//     1000,
+// };
 
 Arguments gesv_setup_arguments(gesv_tuple tup)
 {
@@ -143,19 +143,19 @@ TEST_P(GESV_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         GESV,
-                         Combine(ValuesIn(large_matrix_sizeA_range),
-                                 ValuesIn(large_matrix_sizeB_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GESV,
+//                          Combine(ValuesIn(large_matrix_sizeA_range),
+//                                  ValuesIn(large_matrix_sizeB_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GESV,
                          Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         GESV_FORTRAN,
-                         Combine(ValuesIn(large_matrix_sizeA_range),
-                                 ValuesIn(large_matrix_sizeB_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GESV_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_sizeA_range),
+//                                  ValuesIn(large_matrix_sizeB_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GESV_FORTRAN,
