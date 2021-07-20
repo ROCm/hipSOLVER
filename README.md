@@ -161,6 +161,8 @@ at [rocSOLVER API](https://rocsolver.readthedocs.io/en/latest/userguide_api.html
 | hipsolverXpotrf | x | x | x | x |
 | hipsolverXpotrfBatched_bufferSize | x | x | x | x |
 | hipsolverXpotrfBatched | x | x | x | x |
+| hipsolverXpotri_bufferSize | x | x | x | x |
+| hipsolverXpotri | x | x | x | x |
 | hipsolverXpotrs_bufferSize | x | x | x | x |
 | hipsolverXpotrs | x | x | x | x |
 | hipsolverXpotrsBatched_bufferSize | x | x | x | x |
