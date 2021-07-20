@@ -66,8 +66,7 @@ Arguments gesv_setup_arguments(gesv_tuple tup)
 
     // only testing standard use case/defaults for strides
 
-    arg.timing   = 0;
-    arg.singular = matrix_sizeA[3];
+    arg.timing = 0;
 
     return arg;
 }
