@@ -8,6 +8,6 @@ Welcome to hipSOLVER's documentation!
    :caption: Contents:
 
    disclaimer
-   readme
+   userguide_index
    api_index
 

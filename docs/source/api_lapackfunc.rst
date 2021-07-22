@@ -38,6 +38,8 @@ hipsolver<type>potrf_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverSpotrf_bufferSize
 
+.. _potrf_batched_bufferSize:
+
 hipsolver<type>potrfBatched_bufferSize()
 ---------------------------------------------------
 .. doxygenfunction:: hipsolverZpotrfBatched_bufferSize
@@ -59,6 +61,8 @@ hipsolver<type>potrf()
 .. doxygenfunction:: hipsolverDpotrf
    :outline:
 .. doxygenfunction:: hipsolverSpotrf
+
+.. _potrf_batched:
 
 hipsolver<type>potrfBatched()
 ---------------------------------------------------
