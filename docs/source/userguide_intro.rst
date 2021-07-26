@@ -118,7 +118,7 @@ LAPACK main functions
 Differences with the cuSOLVER API
 ==================================
 
-While the API of hipSOLVER is, overall, modeled after that of cuSOLVER, there are some notable differences. In particular:
+While the API of hipSOLVER is similar to that of cuSOLVER, there are some notable differences. In particular:
 
 * :ref:`hipsolverXgesvd_bufferSize <gesvd_bufferSize>` requires `jobu` and `jobv` as arguments
 * :ref:`hipsolverXgetrf <getrf>` requires `lwork` as an argument
@@ -137,7 +137,7 @@ In order to support these changes, hipSOLVER adds the following functions as wel
 Furthermore, due to differences in implementation and API design between rocSOLVER and cuSOLVER, not all arguments are handled identically between the two backends.
 When using the rocSOLVER backend, keep in mind the following differences:
 
-* While many cuSOLVER functions (and, consequently, hipSOLVER functions) take a workspace pointer and size as arguments, rocSOLVER maintains its own internal device
+* While many cuSOLVER and hipSOLVER functions take a workspace pointer and size as arguments, rocSOLVER maintains its own internal device
   workspace by default. In order to take advantage of this feature, users may pass a null pointer for the `work` argument of any function when using the rocSOLVER backend,
   and the workspace will be automatically managed behind-the-scenes. It is recommended to use a consistent strategy for workspace management, as performance issues may arise
   if the internal workspace is made to flip-flop between user-provided and automatically allocated workspaces.
