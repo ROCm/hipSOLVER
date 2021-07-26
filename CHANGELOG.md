@@ -3,7 +3,7 @@
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
 
-## [(Unreleased) hipSOLVER for ROCm 4.5.0]
+## [(Unreleased) hipSOLVER]
 ### Added
 - Added functions
   - potrs
@@ -13,10 +13,14 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
     - hipsolverSpotrsBatched_bufferSize, hipsolverDpotrsBatched_bufferSize, hipsolverCpotrsBatched_bufferSize, hipsolverZpotrsBatched_bufferSize
     - hipsolverSpotrsBatched, hipsolverDpotrsBatched, hipsolverCpotrsBatched, hipsolverZpotrsBatched
 
-### Optimizations
+### Optimized
+
 ### Changed
+
 ### Removed
+
 ### Fixed
+
 ### Known Issues
 
 
