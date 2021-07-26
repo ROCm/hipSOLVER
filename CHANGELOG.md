@@ -3,14 +3,20 @@
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
 
-## [(Unreleased) hipSOLVER for ROCm 4.5.0]
+## [(Unreleased) hipSOLVER]
 ### Added
 - Added functions
   - gesv
     - hipsolverSSgesv_bufferSize, hipsolverDDgesv_bufferSize, hipsolverCCgesv_bufferSize, hipsolverZZgesv_bufferSize
     - hipsolverSSgesv, hipsolverDDgesv, hipsolverCCgesv, hipsolverZZgesv
+  - potrs
+    - hipsolverSpotrs_bufferSize, hipsolverDpotrs_bufferSize, hipsolverCpotrs_bufferSize, hipsolverZpotrs_bufferSize
+    - hipsolverSpotrs, hipsolverDpotrs, hipsolverCpotrs, hipsolverZpotrs
+  - potrsBatched
+    - hipsolverSpotrsBatched_bufferSize, hipsolverDpotrsBatched_bufferSize, hipsolverCpotrsBatched_bufferSize, hipsolverZpotrsBatched_bufferSize
+    - hipsolverSpotrsBatched, hipsolverDpotrsBatched, hipsolverCpotrsBatched, hipsolverZpotrsBatched
 
-### Optimizations
+### Optimized
 
 ### Changed
 
