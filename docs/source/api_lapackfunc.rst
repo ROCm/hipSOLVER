@@ -211,6 +211,54 @@ Linear-systems solvers
    :local:
    :backlinks: top
 
+.. _potrs_bufferSize:
+
+hipsolver<type>potrs_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZpotrs_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverCpotrs_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDpotrs_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverSpotrs_bufferSize
+
+.. _potrs_batched_bufferSize:
+
+hipsolver<type>potrsBatched_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZpotrsBatched_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverCpotrsBatched_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDpotrsBatched_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverSpotrsBatched_bufferSize
+
+.. _potrs:
+
+hipsolver<type>potrs()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZpotrs
+   :outline:
+.. doxygenfunction:: hipsolverCpotrs
+   :outline:
+.. doxygenfunction:: hipsolverDpotrs
+   :outline:
+.. doxygenfunction:: hipsolverSpotrs
+
+.. _potrs_batched:
+
+hipsolver<type>potrsBatched()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZpotrsBatched
+   :outline:
+.. doxygenfunction:: hipsolverCpotrsBatched
+   :outline:
+.. doxygenfunction:: hipsolverDpotrsBatched
+   :outline:
+.. doxygenfunction:: hipsolverSpotrsBatched
+
 .. _getrs_bufferSize:
 
 hipsolver<type>getrs_bufferSize()

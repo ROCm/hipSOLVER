@@ -122,13 +122,17 @@ While the API of hipSOLVER is, overall, modeled after that of cuSOLVER, there ar
 
 * :ref:`hipsolverXgesvd_bufferSize <gesvd_bufferSize>` requires `jobu` and `jobv` as arguments
 * :ref:`hipsolverXgetrf <getrf>` requires `lwork` as an argument
-* :ref:`hipsolverXgetrs <getrs>` requires `work` and `lwork` as arguments, and
-* :ref:`hipsolverXpotrfBatched <potrf_batched>` requires `work` and `lwork` as arguments.
+* :ref:`hipsolverXgetrs <getrs>` requires `work` and `lwork` as arguments
+* :ref:`hipsolverXpotrfBatched <potrf_batched>` requires `work` and `lwork` as arguments
+* :ref:`hipsolverXpotrs <potrs>` requires `work` and `lwork` as arguments, and
+* :ref:`hipsolverXpotrsBatched <potrs_batched>` requires `work` and `lwork` as arguments.
 
 In order to support these changes, hipSOLVER adds the following functions as well:
 
 * :ref:`hipsolverXgetrs_bufferSize <getrs_bufferSize>`
 * :ref:`hipsolverXpotrfBatched_bufferSize <potrf_batched_bufferSize>`
+* :ref:`hipsolverXpotrs_bufferSize <potrs_bufferSize>`
+* :ref:`hipsolverXpotrsBatched_bufferSize <potrs_batched_bufferSize>`
 
 Furthermore, due to differences in implementation and API design between rocSOLVER and cuSOLVER, not all arguments are handled identically between the two backends.
 When using the rocSOLVER backend, keep in mind the following differences:
