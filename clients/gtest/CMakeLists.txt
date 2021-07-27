@@ -3,22 +3,13 @@
 # ########################################################################
 
 # Linking lapack library requires fortran flags
-enable_language( Fortran )
-find_package( cblas CONFIG REQUIRED )
-if( NOT cblas_FOUND )
-  message( FATAL_ERROR "cblas is a required dependency and is not found;  try adding cblas path to CMAKE_PREFIX_PATH" )
-endif( )
+find_package( cblas REQUIRED CONFIG )
 
 if( NOT TARGET hipsolver )
-  find_package( hipsolver CONFIG PATHS /opt/rocm/hipsolver )
-
-  if( NOT hipsolver_FOUND )
-    message( FATAL_ERROR "hipSOLVER is a required dependency and is not found; try adding hipsolver path to CMAKE_PREFIX_PATH")
-  endif( )
+  find_package( hipsolver REQUIRED CONFIG PATHS /opt/rocm/hipsolver )
 endif( )
 
 find_package( GTest REQUIRED )
-include_directories(${GTEST_INCLUDE_DIRS})
 
 set(hipsolver_test_source
   hipsolver_gtest_main.cpp
@@ -47,7 +38,10 @@ set( hipsolver_test_common
   ../common/utility.cpp
 )
 
-add_executable( hipsolver-test ${hipsolver_f90_source} ${hipsolver_test_source} ${hipsolver_test_common} )
+add_executable( hipsolver-test ${hipsolver_test_source} ${hipsolver_test_common} )
+if( UNIX )
+  target_sources( hipsolver-test PRIVATE ${hipsolver_f90_source} )
+endif( )
 
 target_include_directories( hipsolver-test
   PRIVATE
@@ -56,7 +50,6 @@ target_include_directories( hipsolver-test
 
 set( THREADS_PREFER_PTHREAD_FLAG ON )
 find_package( Threads REQUIRED )
-target_link_libraries( hipsolver-test PRIVATE Threads::Threads )
 
 add_armor_flags( hipsolver-test "${ARMOR_LEVEL}" )
 
@@ -66,12 +59,14 @@ target_compile_definitions( hipsolver-test PRIVATE GOOGLE_TEST )
 target_include_directories( hipsolver-test
   SYSTEM PRIVATE
     $<BUILD_INTERFACE:${CBLAS_INCLUDE_DIRS}>
-    $<BUILD_INTERFACE:${GTEST_INCLUDE_DIRS}>
     $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
     ${ROCM_PATH}/hsa/include
 )
 
-target_link_libraries( hipsolver-test PRIVATE roc::hipsolver cblas lapack ${GTEST_LIBRARIES} ${Boost_LIBRARIES} hipsolver_fortran_client )
+target_link_libraries( hipsolver-test PRIVATE cblas lapack blas GTest::GTest Threads::Threads roc::hipsolver )
+if( UNIX )
+  target_link_libraries( hipsolver-test PRIVATE hipsolver_fortran_client )
+endif( )
 
 # need mf16c flag for float->half convertion
 target_compile_options( hipsolver-test PRIVATE -mf16c )
@@ -100,3 +95,29 @@ endif( )
 
 set_target_properties( hipsolver-test PROPERTIES DEBUG_POSTFIX "-d" CXX_EXTENSIONS NO )
 set_target_properties( hipsolver-test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging" )
+
+if(WIN32)
+  file(GLOB third_party_dlls
+    LIST_DIRECTORIES OFF
+    CONFIGURE_DEPENDS
+    ${cblas_DIR}/bin/*.dll
+    ${GTest_DIR}/bin/*.dll
+    $ENV{rocblas_DIR}/bin/*.dll
+	$ENV{rocsolver_DIR}/bin/*.dll
+    $ENV{HIP_DIR}/bin/*.dll
+    $ENV{HIP_DIR}/bin/hipinfo.exe
+    ${CMAKE_SOURCE_DIR}/rtest.*
+  )
+  foreach(file_i ${third_party_dlls})
+    add_custom_command(TARGET hipsolver-test
+      POST_BUILD
+      COMMAND ${CMAKE_COMMAND}
+      ARGS -E copy ${file_i} ${PROJECT_BINARY_DIR}/staging/
+    )
+  endforeach()
+  add_custom_command(TARGET hipsolver-test
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND}
+    ARGS -E copy_directory $ENV{rocblas_DIR}/bin/library ${PROJECT_BINARY_DIR}/staging/library
+  )
+endif()

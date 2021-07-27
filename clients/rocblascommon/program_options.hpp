@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <map>
 #include <ostream>
+#include <sstream>
 #include <regex>
 #include <stdexcept>
 #include <string>
