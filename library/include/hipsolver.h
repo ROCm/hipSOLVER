@@ -1028,6 +1028,63 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotrfBatched(hipsolverHandle_t   ha
                                                           int*                devInfo,
                                                           int                 batch_count);
 
+// potri
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpotri_bufferSize(
+    hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, float* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDpotri_bufferSize(
+    hipsolverHandle_t handle, hipsolverFillMode_t uplo, int n, double* A, int lda, int* lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCpotri_bufferSize(hipsolverHandle_t   handle,
+                                                              hipsolverFillMode_t uplo,
+                                                              int                 n,
+                                                              hipFloatComplex*    A,
+                                                              int                 lda,
+                                                              int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotri_bufferSize(hipsolverHandle_t   handle,
+                                                              hipsolverFillMode_t uplo,
+                                                              int                 n,
+                                                              hipDoubleComplex*   A,
+                                                              int                 lda,
+                                                              int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpotri(hipsolverHandle_t   handle,
+                                                   hipsolverFillMode_t uplo,
+                                                   int                 n,
+                                                   float*              A,
+                                                   int                 lda,
+                                                   float*              work,
+                                                   int                 lwork,
+                                                   int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDpotri(hipsolverHandle_t   handle,
+                                                   hipsolverFillMode_t uplo,
+                                                   int                 n,
+                                                   double*             A,
+                                                   int                 lda,
+                                                   double*             work,
+                                                   int                 lwork,
+                                                   int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCpotri(hipsolverHandle_t   handle,
+                                                   hipsolverFillMode_t uplo,
+                                                   int                 n,
+                                                   hipFloatComplex*    A,
+                                                   int                 lda,
+                                                   hipFloatComplex*    work,
+                                                   int                 lwork,
+                                                   int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZpotri(hipsolverHandle_t   handle,
+                                                   hipsolverFillMode_t uplo,
+                                                   int                 n,
+                                                   hipDoubleComplex*   A,
+                                                   int                 lda,
+                                                   hipDoubleComplex*   work,
+                                                   int                 lwork,
+                                                   int*                devInfo);
+
 // potrs
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpotrs_bufferSize(hipsolverHandle_t   handle,
                                                               hipsolverFillMode_t uplo,

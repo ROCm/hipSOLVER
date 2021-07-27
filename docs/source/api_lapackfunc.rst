@@ -211,6 +211,30 @@ Linear-systems solvers
    :local:
    :backlinks: top
 
+.. _potri_bufferSize:
+
+hipsolver<type>potri_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZpotri_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverCpotri_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDpotri_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverSpotri_bufferSize
+
+.. _potri:
+
+hipsolver<type>potri()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZpotri
+   :outline:
+.. doxygenfunction:: hipsolverCpotri
+   :outline:
+.. doxygenfunction:: hipsolverDpotri
+   :outline:
+.. doxygenfunction:: hipsolverSpotri
+
 .. _potrs_bufferSize:
 
 hipsolver<type>potrs_bufferSize()

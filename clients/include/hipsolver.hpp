@@ -2431,6 +2431,141 @@ inline hipsolverStatus_t hipsolver_potrf(bool                    FORTRAN,
 }
 /********************************************************/
 
+/******************** POTRI ********************/
+// normal and strided_batched
+inline hipsolverStatus_t hipsolver_potri_bufferSize(bool                FORTRAN,
+                                                    hipsolverHandle_t   handle,
+                                                    hipsolverFillMode_t uplo,
+                                                    int                 n,
+                                                    float*              A,
+                                                    int                 lda,
+                                                    int*                lwork)
+{
+    if(!FORTRAN)
+        return hipsolverSpotri_bufferSize(handle, uplo, n, A, lda, lwork);
+    else
+        return hipsolverSpotri_bufferSizeFortran(handle, uplo, n, A, lda, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_potri_bufferSize(bool                FORTRAN,
+                                                    hipsolverHandle_t   handle,
+                                                    hipsolverFillMode_t uplo,
+                                                    int                 n,
+                                                    double*             A,
+                                                    int                 lda,
+                                                    int*                lwork)
+{
+    if(!FORTRAN)
+        return hipsolverDpotri_bufferSize(handle, uplo, n, A, lda, lwork);
+    else
+        return hipsolverDpotri_bufferSizeFortran(handle, uplo, n, A, lda, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_potri_bufferSize(bool                FORTRAN,
+                                                    hipsolverHandle_t   handle,
+                                                    hipsolverFillMode_t uplo,
+                                                    int                 n,
+                                                    hipsolverComplex*   A,
+                                                    int                 lda,
+                                                    int*                lwork)
+{
+    if(!FORTRAN)
+        return hipsolverCpotri_bufferSize(handle, uplo, n, (hipFloatComplex*)A, lda, lwork);
+    else
+        return hipsolverCpotri_bufferSizeFortran(handle, uplo, n, (hipFloatComplex*)A, lda, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_potri_bufferSize(bool                    FORTRAN,
+                                                    hipsolverHandle_t       handle,
+                                                    hipsolverFillMode_t     uplo,
+                                                    int                     n,
+                                                    hipsolverDoubleComplex* A,
+                                                    int                     lda,
+                                                    int*                    lwork)
+{
+    if(!FORTRAN)
+        return hipsolverZpotri_bufferSize(handle, uplo, n, (hipDoubleComplex*)A, lda, lwork);
+    else
+        return hipsolverZpotri_bufferSizeFortran(handle, uplo, n, (hipDoubleComplex*)A, lda, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_potri(bool                FORTRAN,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverFillMode_t uplo,
+                                         int                 n,
+                                         float*              A,
+                                         int                 lda,
+                                         int                 stA,
+                                         float*              work,
+                                         int                 lwork,
+                                         int*                info,
+                                         int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverSpotri(handle, uplo, n, A, lda, work, lwork, info);
+    else
+        return hipsolverSpotriFortran(handle, uplo, n, A, lda, work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_potri(bool                FORTRAN,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverFillMode_t uplo,
+                                         int                 n,
+                                         double*             A,
+                                         int                 lda,
+                                         int                 stA,
+                                         double*             work,
+                                         int                 lwork,
+                                         int*                info,
+                                         int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverDpotri(handle, uplo, n, A, lda, work, lwork, info);
+    else
+        return hipsolverDpotriFortran(handle, uplo, n, A, lda, work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_potri(bool                FORTRAN,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverFillMode_t uplo,
+                                         int                 n,
+                                         hipsolverComplex*   A,
+                                         int                 lda,
+                                         int                 stA,
+                                         hipsolverComplex*   work,
+                                         int                 lwork,
+                                         int*                info,
+                                         int                 bc)
+{
+    if(!FORTRAN)
+        return hipsolverCpotri(
+            handle, uplo, n, (hipFloatComplex*)A, lda, (hipFloatComplex*)work, lwork, info);
+    else
+        return hipsolverCpotriFortran(
+            handle, uplo, n, (hipFloatComplex*)A, lda, (hipFloatComplex*)work, lwork, info);
+}
+
+inline hipsolverStatus_t hipsolver_potri(bool                    FORTRAN,
+                                         hipsolverHandle_t       handle,
+                                         hipsolverFillMode_t     uplo,
+                                         int                     n,
+                                         hipsolverDoubleComplex* A,
+                                         int                     lda,
+                                         int                     stA,
+                                         hipsolverDoubleComplex* work,
+                                         int                     lwork,
+                                         int*                    info,
+                                         int                     bc)
+{
+    if(!FORTRAN)
+        return hipsolverZpotri(
+            handle, uplo, n, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)work, lwork, info);
+    else
+        return hipsolverZpotriFortran(
+            handle, uplo, n, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)work, lwork, info);
+}
+/********************************************************/
+
 /******************** POTRS ********************/
 // normal and strided_batched
 inline hipsolverStatus_t hipsolver_potrs_bufferSize(bool                FORTRAN,

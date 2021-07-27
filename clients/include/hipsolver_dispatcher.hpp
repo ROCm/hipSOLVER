@@ -20,6 +20,7 @@
 #include "testing_ormqr_unmqr.hpp"
 #include "testing_ormtr_unmtr.hpp"
 #include "testing_potrf.hpp"
+#include "testing_potri.hpp"
 #include "testing_potrs.hpp"
 #include "testing_syevd_heevd.hpp"
 #include "testing_sygvd_hegvd.hpp"
@@ -51,6 +52,7 @@ class hipsolver_dispatcher
             {"getrs", testing_getrs<false, false, false, T>},
             {"potrf", testing_potrf<false, false, false, T>},
             {"potrf_batched", testing_potrf<false, true, false, T>},
+            {"potri", testing_potri<false, false, false, T>},
             {"potrs", testing_potrs<false, false, false, T>},
             {"potrs_batched", testing_potrs<false, true, false, T>},
         };
