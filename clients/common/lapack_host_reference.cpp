@@ -489,6 +489,11 @@ void dpotrf_(char* uplo, int* m, double* A, int* lda, int* info);
 void cpotrf_(char* uplo, int* m, hipsolverComplex* A, int* lda, int* info);
 void zpotrf_(char* uplo, int* m, hipsolverDoubleComplex* A, int* lda, int* info);
 
+void spotri_(char* uplo, int* n, float* A, int* lda, int* info);
+void dpotri_(char* uplo, int* n, double* A, int* lda, int* info);
+void cpotri_(char* uplo, int* n, hipsolverComplex* A, int* lda, int* info);
+void zpotri_(char* uplo, int* n, hipsolverDoubleComplex* A, int* lda, int* info);
+
 void spotrs_(char* uplo, int* n, int* nrhs, float* A, int* lda, float* B, int* ldb, int* info);
 void dpotrs_(char* uplo, int* n, int* nrhs, double* A, int* lda, double* B, int* ldb, int* info);
 void cpotrs_(char*             uplo,
@@ -1649,6 +1654,35 @@ void cblas_potrf<hipsolverDoubleComplex>(
 {
     char uploC = hipsolver2char_fill(uplo);
     zpotrf_(&uploC, &n, A, &lda, info);
+}
+
+// potri
+template <>
+void cblas_potri(hipsolverFillMode_t uplo, int n, float* A, int lda, int* info)
+{
+    char uploC = hipsolver2char_fill(uplo);
+    spotri_(&uploC, &n, A, &lda, info);
+}
+
+template <>
+void cblas_potri(hipsolverFillMode_t uplo, int n, double* A, int lda, int* info)
+{
+    char uploC = hipsolver2char_fill(uplo);
+    dpotri_(&uploC, &n, A, &lda, info);
+}
+
+template <>
+void cblas_potri(hipsolverFillMode_t uplo, int n, hipsolverComplex* A, int lda, int* info)
+{
+    char uploC = hipsolver2char_fill(uplo);
+    cpotri_(&uploC, &n, A, &lda, info);
+}
+
+template <>
+void cblas_potri(hipsolverFillMode_t uplo, int n, hipsolverDoubleComplex* A, int lda, int* info)
+{
+    char uploC = hipsolver2char_fill(uplo);
+    zpotri_(&uploC, &n, A, &lda, info);
 }
 
 // potrs

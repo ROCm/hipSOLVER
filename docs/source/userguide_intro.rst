@@ -91,6 +91,12 @@ LAPACK main functions
 .. csv-table:: Linear-systems solvers
     :header: "Function", "single", "double", "single complex", "double complex"
 
+    :ref:`hipsolverXpotri_bufferSize <potri_bufferSize>`, x, x, x, x
+    :ref:`hipsolverXpotri <potri>`, x, x, x, x
+    :ref:`hipsolverXpotrs_bufferSize <potrs_bufferSize>`, x, x, x, x
+    :ref:`hipsolverXpotrs <potrs>`, x, x, x, x
+    :ref:`hipsolverXpotrsBatched_bufferSize <potrs_batched_bufferSize>`, x, x, x, x
+    :ref:`hipsolverXpotrsBatched <potrs_batched>`, x, x, x, x
     :ref:`hipsolverXgetrs_bufferSize <getrs_bufferSize>`, x, x, x, x
     :ref:`hipsolverXgetrs <getrs>`, x, x, x, x
 
