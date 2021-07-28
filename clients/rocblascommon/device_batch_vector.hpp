@@ -165,6 +165,7 @@ public:
         return this->m_data[batch_index];
     }
 
+    // clang-format off
     //!
     //! @brief Const cast of the data on host.
     //!
@@ -173,7 +174,6 @@ public:
         return this->m_data;
     }
 
-    // clang-format off
     //!
     //! @brief Cast of the data on host.
     //!

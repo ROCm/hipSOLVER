@@ -129,7 +129,6 @@ public:
     {
         return this->m_data;
     }
-    // clang-format on
 
     //!
     //! @brief Constant cast to a double pointer.
@@ -138,6 +137,7 @@ public:
     {
         return this->m_data;
     }
+    // clang-format on
 
     //!
     //! @brief Copy from a host batched vector.
