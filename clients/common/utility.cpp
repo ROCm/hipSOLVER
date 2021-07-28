@@ -4,8 +4,8 @@
 
 #include <chrono>
 
-#include "utility.hpp"
 #include "hipsolver.h"
+#include "utility.hpp"
 
 hipsolver_rng_t hipsolver_rng(69069);
 hipsolver_rng_t hipsolver_seed(hipsolver_rng);
@@ -69,7 +69,7 @@ extern "C" {
  */
 double get_time_us_no_sync()
 {
-    namespace sc = std::chrono;
+    namespace sc                         = std::chrono;
     const sc::steady_clock::time_point t = sc::steady_clock::now();
     return double(sc::duration_cast<sc::microseconds>(t.time_since_epoch()).count());
 }
