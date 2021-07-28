@@ -103,7 +103,7 @@ if(WIN32)
     ${cblas_DIR}/bin/*.dll
     ${GTest_DIR}/bin/*.dll
     $ENV{rocblas_DIR}/bin/*.dll
-	$ENV{rocsolver_DIR}/bin/*.dll
+    $ENV{rocsolver_DIR}/bin/*.dll
     $ENV{HIP_DIR}/bin/*.dll
     $ENV{HIP_DIR}/bin/hipinfo.exe
     ${CMAKE_SOURCE_DIR}/rtest.*
