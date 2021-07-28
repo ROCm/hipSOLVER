@@ -26,7 +26,10 @@ if ( NOT DEFINED CMAKE_Fortran_COMPILER AND NOT DEFINED ENV{FC} )
   set( CMAKE_Fortran_COMPILER  "gfortran" )
 endif()
 
-project( hipsolver LANGUAGES CXX Fortran )
+project( hipsolver LANGUAGES CXX )
+if( UNIX )
+  enable_language( Fortran )
+endif( )
 
 # This finds the rocm-cmake project, and installs it if not found
 # rocm-cmake contains common cmake code for rocm projects to help setup and install
@@ -94,7 +97,7 @@ endif()
 if( USE_CUDA)
     find_package( HIP MODULE REQUIRED )
 else( )
-    find_package( hip REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm )
+    find_package( hip REQUIRED PATHS ${HIP_PATH} ${ROCM_PATH} /opt/rocm )
 endif( )
 
 if( USE_CUDA )
@@ -106,6 +109,14 @@ option(BUILD_CODE_COVERAGE "Build hipSOLVER with code coverage enabled" OFF)
 if(BUILD_CODE_COVERAGE)
   add_compile_options(-fprofile-arcs -ftest-coverage)
   add_link_options(--coverage)
+endif()
+
+if( WIN32 )
+  add_compile_definitions(
+    WIN32_LEAN_AND_MEAN
+    _CRT_SECURE_NO_WARNINGS
+    NOMINMAX
+  )
 endif()
 
 add_subdirectory( library )

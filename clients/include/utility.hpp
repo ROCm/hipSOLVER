@@ -18,7 +18,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/time.h>
 
 /*!\file
  * \brief provide data initialization, timing, hipsolver type <-> lapack char conversion utilities.
@@ -352,8 +351,6 @@ void print_matrix(T* CPU_result, T* GPU_result, int m, int n, int lda)
 /* =============================================================================================== */
 
 /* ============================================================================================ */
-// Return path of this executable
-std::string hipsolver_exepath();
 
 #endif // __cplusplus
 

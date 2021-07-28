@@ -9,8 +9,8 @@ add_executable( example-cpp-basic example_basic.cpp )
 set_source_files_properties(example_basic.c PROPERTIES LANGUAGE CXX)
 set_source_files_properties(example_basic.c PROPERTIES COMPILE_FLAGS "-xc -std=c99")
 
-# We test for C++11 compatibility in one of the samples
-set_source_files_properties(example_basic.cpp PROPERTIES COMPILE_FLAGS "-std=c++11")
+# Test for C++11 compatibility in one of the samples
+set_property(TARGET example-cpp-basic PROPERTY CXX_STANDARD 11)
 
 if( NOT TARGET hipsolver )
   find_package( hipsolver CONFIG PATHS ${ROCM_PATH}/hipsolver )

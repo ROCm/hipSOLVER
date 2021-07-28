@@ -1,9 +1,6 @@
 # ########################################################################
-# Copyright 2016-2020 Advanced Micro Devices, Inc.
+# Copyright 2016-2021 Advanced Micro Devices, Inc.
 # ########################################################################
-
-# The ROCm platform requires Ubuntu 16.04 or Fedora 24, which has cmake 3.5
-cmake_minimum_required( VERSION 3.5 )
 
 # Consider removing this in the future
 # This should appear before the project command, because it does not use FORCE
@@ -20,7 +17,10 @@ if( NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT DEFINED CMAKE_BUILD_TYPE )
 endif()
 
 # This project may compile dependencies for clients
-project( hipsolver-clients LANGUAGES CXX Fortran )
+project( hipsolver-clients LANGUAGES CXX )
+if( UNIX )
+  enable_language( Fortran )
+endif( )
 
 # We use C++14 features, this will add compile option: -std=c++14
 set( CMAKE_CXX_STANDARD 14 )
@@ -29,14 +29,18 @@ list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake )
 
 include( build-options )
 
-set(hipsolver_f90_source_clients
-  include/hipsolver_fortran.f90
-)
+if( UNIX )
+  set(hipsolver_f90_source_clients
+    include/hipsolver_fortran.f90
+  )
+endif( )
 
 if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS OR BUILD_CLIENTS_SAMPLES )
-  add_library(hipsolver_fortran_client ${hipsolver_f90_source_clients})
-  add_dependencies(hipsolver_fortran_client hipsolver_fortran)
-  include_directories(${CMAKE_BINARY_DIR}/include)
+  if( UNIX )
+    add_library(hipsolver_fortran_client ${hipsolver_f90_source_clients})
+    add_dependencies(hipsolver_fortran_client hipsolver_fortran)
+    include_directories(${CMAKE_BINARY_DIR}/include)
+  endif( )
 endif( )
 
 if( BUILD_CLIENTS_TESTS )
