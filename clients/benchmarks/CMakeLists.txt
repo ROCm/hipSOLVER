@@ -6,18 +6,10 @@ set( THREADS_PREFER_PTHREAD_FLAG ON )
 find_package( Threads REQUIRED )
 
 # Linking lapack library requires fortran flags
-enable_language( Fortran )
-find_package( cblas CONFIG REQUIRED )
-if( NOT cblas_FOUND )
-  message( FATAL_ERROR "cblas is a required dependency and is not found;  try adding cblas path to CMAKE_PREFIX_PATH" )
-endif( )
+find_package( cblas REQUIRED CONFIG )
 
 if( NOT TARGET hipsolver )
-  find_package( hipsolver CONFIG PATHS /opt/rocm/hipsolver )
-
-  if( NOT hipsolver_FOUND )
-    message( FATAL_ERROR "hipSOLVER is a required dependency and is not found; try adding hipsolver path to CMAKE_PREFIX_PATH")
-  endif( )
+  find_package( hipsolver REQUIRED CONFIG PATHS /opt/rocm/hipsolver )
 endif( )
 
 set(hipsolver_benchmark_common
@@ -27,9 +19,6 @@ set(hipsolver_benchmark_common
 )
 
 add_executable( hipsolver-bench client.cpp ${hipsolver_benchmark_common} )
-
-
-target_compile_features( hipsolver-bench PRIVATE cxx_static_assert cxx_nullptr cxx_auto_type )
 
 # Internal header includes
 target_include_directories( hipsolver-bench
@@ -44,7 +33,10 @@ target_include_directories( hipsolver-bench
     $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
 )
 
-target_link_libraries( hipsolver-bench PRIVATE hipsolver_fortran_client roc::hipsolver cblas lapack)
+target_link_libraries( hipsolver-bench PRIVATE cblas lapack blas roc::hipsolver )
+if( UNIX )
+  target_link_libraries( hipsolver-bench PRIVATE hipsolver_fortran_client )
+endif( )
 
 add_armor_flags( hipsolver-bench "${ARMOR_LEVEL}" )
 
@@ -58,7 +50,7 @@ if( NOT USE_CUDA )
     target_link_libraries( hipsolver-bench PRIVATE hip::${CUSTOM_TARGET} )
   endif( )
 
-  if( CMAKE_CXX_COMPILER MATCHES ".*/hcc$|.*/hipcc$" )
+  if( UNIX AND CMAKE_CXX_COMPILER MATCHES ".*/hcc$|.*/hipcc$" )
     # hip-clang needs specific flag to turn on pthread and m
     target_link_libraries( hipsolver-bench PRIVATE -lpthread -lm )
   endif()

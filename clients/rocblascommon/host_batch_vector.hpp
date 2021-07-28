@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2018-2020 Advanced Micro Devices, Inc.
+ * Copyright 2018-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 #pragma once
 
@@ -129,15 +129,15 @@ public:
     {
         return this->m_data;
     }
-    // clang-format on
 
     //!
     //! @brief Constant cast to a double pointer.
     //!
-    operator const T* const *()
+    operator const T* const*()
     {
         return this->m_data;
     }
+    // clang-format on
 
     //!
     //! @brief Copy from a host batched vector.

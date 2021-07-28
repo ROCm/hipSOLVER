@@ -165,15 +165,15 @@ public:
         return this->m_data[batch_index];
     }
 
+    // clang-format off
     //!
     //! @brief Const cast of the data on host.
     //!
-    operator const T* const *() const
+    operator const T* const*() const
     {
         return this->m_data;
     }
 
-    // clang-format off
     //!
     //! @brief Cast of the data on host.
     //!

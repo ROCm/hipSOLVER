@@ -31,8 +31,10 @@ set (hipsolver_f90_source
   hipsolver_module.f90
 )
 
-# Create hipSOLVER Fortran module
-add_library(hipsolver_fortran ${hipsolver_f90_source})
+if( UNIX )
+  # Create hipSOLVER Fortran module
+  add_library(hipsolver_fortran ${hipsolver_f90_source})
+endif( )
 
 if(BUILD_ADDRESS_SANITIZER)
   add_link_options(-fuse-ld=lld)
@@ -125,7 +127,6 @@ rocm_install_targets(
     ${CMAKE_BINARY_DIR}/include
   PREFIX hipsolver
 )
-#         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ
 
 if ( NOT USE_CUDA )
   rocm_export_targets(
@@ -143,8 +144,10 @@ else( )
   )
 endif( )
 
-# Force installation of .f90 module files
-install(FILES "hipsolver_module.f90"
-        DESTINATION "hipsolver/include")
+if( UNIX )
+  # Force installation of .f90 module files
+  install(FILES "hipsolver_module.f90"
+          DESTINATION "hipsolver/include")
+endif( )
 
 rocm_install_symlink_subdir( hipsolver )
