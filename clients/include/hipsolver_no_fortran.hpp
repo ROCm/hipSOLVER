@@ -73,6 +73,15 @@
 #define hipsolverDgeqrfFortran hipsolverDgeqrf
 #define hipsolverCgeqrfFortran hipsolverCgeqrf
 #define hipsolverZgeqrfFortran hipsolverZgeqrf
+// gesv
+#define hipsolverSSgesv_bufferSizeFortran hipsolverSSgesv_bufferSize
+#define hipsolverDDgesv_bufferSizeFortran hipsolverDDgesv_bufferSize
+#define hipsolverCCgesv_bufferSizeFortran hipsolverCCgesv_bufferSize
+#define hipsolverZZgesv_bufferSizeFortran hipsolverZZgesv_bufferSize
+#define hipsolverSSgesvFortran hipsolverSSgesv
+#define hipsolverDDgesvFortran hipsolverDDgesv
+#define hipsolverCCgesvFortran hipsolverCCgesv
+#define hipsolverZZgesvFortran hipsolverZZgesv
 // gesvd
 #define hipsolverSgesvd_bufferSizeFortran hipsolverSgesvd_bufferSize
 #define hipsolverDgesvd_bufferSizeFortran hipsolverDgesvd_bufferSize
