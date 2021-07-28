@@ -307,6 +307,30 @@ hipsolver<type>getrs()
    :outline:
 .. doxygenfunction:: hipsolverSgetrs
 
+.. _gesv_bufferSize:
+
+hipsolver<type><type>gesv_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZZgesv_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverCCgesv_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDDgesv_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverSSgesv_bufferSize
+
+.. _gesv:
+
+hipsolver<type><type>gesv()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZZgesv
+   :outline:
+.. doxygenfunction:: hipsolverCCgesv
+   :outline:
+.. doxygenfunction:: hipsolverDDgesv
+   :outline:
+.. doxygenfunction:: hipsolverSSgesv
+
 
 
 .. _eigens:
