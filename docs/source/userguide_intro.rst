@@ -99,6 +99,8 @@ LAPACK main functions
     :ref:`hipsolverXpotrsBatched <potrs_batched>`, x, x, x, x
     :ref:`hipsolverXgetrs_bufferSize <getrs_bufferSize>`, x, x, x, x
     :ref:`hipsolverXgetrs <getrs>`, x, x, x, x
+    :ref:`hipsolverXXgesv_bufferSize <gesv_bufferSize>`, x, x, x, x
+    :ref:`hipsolverXXgesv <gesv>`, x, x, x, x
 
 .. csv-table:: Symmetric eigensolvers
     :header: "Function", "single", "double", "single complex", "double complex"
@@ -152,4 +154,5 @@ When using the rocSOLVER backend, keep in mind the following differences:
   algorithm convergence. As a result, the `info` argument of many functions will not be referenced or altered by the rocSOLVER backend, excepting those that provide info on
   singularities or convergence.
 
+* The `niters` argument of :ref:`hipsolverXXgesv <gesv>` is not referenced by the rocSOLVER backend.
 

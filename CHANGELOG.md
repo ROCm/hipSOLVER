@@ -6,6 +6,9 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ## [(Unreleased) hipSOLVER]
 ### Added
 - Added functions
+  - gesv
+    - hipsolverSSgesv_bufferSize, hipsolverDDgesv_bufferSize, hipsolverCCgesv_bufferSize, hipsolverZZgesv_bufferSize
+    - hipsolverSSgesv, hipsolverDDgesv, hipsolverCCgesv, hipsolverZZgesv
   - potrs
     - hipsolverSpotrs_bufferSize, hipsolverDpotrs_bufferSize, hipsolverCpotrs_bufferSize, hipsolverZpotrs_bufferSize
     - hipsolverSpotrs, hipsolverDpotrs, hipsolverCpotrs, hipsolverZpotrs
