@@ -9,6 +9,9 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ### Deprecated
 ### Removed
 ### Fixed
+- Fixed use of incorrect `HIP_PATH` when building from source (#40).
+  Thanks [@jakub329homola](https://github.com/jakub329homola)!
+
 ### Known Issues
 ### Security
 
