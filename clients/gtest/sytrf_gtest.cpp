@@ -24,9 +24,11 @@ const vector<char> uplo_range = {'L', 'U'};
 
 // for checkin_lapack tests
 const vector<vector<int>> matrix_size_range = {
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // invalid
     {-1, 1},
     {20, 5},
+#endif
     // normal (valid) samples
     {32, 32},
     {50, 50},
