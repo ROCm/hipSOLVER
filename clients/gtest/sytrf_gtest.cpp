@@ -34,12 +34,12 @@ const vector<vector<int>> matrix_size_range = {
     {50, 50},
     {70, 100}};
 
-// for daily_lapack tests
-const vector<vector<int>> large_matrix_size_range = {
-    {192, 192},
-    {640, 640},
-    {1000, 1024},
-};
+// // for daily_lapack tests
+// const vector<vector<int>> large_matrix_size_range = {
+//     {192, 192},
+//     {640, 640},
+//     {1000, 1024},
+// };
 
 Arguments sytrf_setup_arguments(sytrf_tuple tup)
 {
@@ -131,17 +131,17 @@ TEST_P(SYTRF_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         SYTRF,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          SYTRF,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          SYTRF,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(uplo_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         SYTRF_FORTRAN,
-                         Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          SYTRF_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          SYTRF_FORTRAN,
