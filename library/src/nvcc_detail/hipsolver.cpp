@@ -3873,4 +3873,143 @@ catch(...)
     return exception2hip_status();
 }
 
+/******************** SYTRF ********************/
+hipsolverStatus_t
+    hipsolverSsytrf_bufferSize(hipsolverHandle_t handle, int n, float* A, int lda, int* lwork)
+try
+{
+    return cuda2hip_status(
+        cusolverDnSsytrf_bufferSize((cusolverDnHandle_t)handle, n, A, lda, lwork));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t
+    hipsolverDsytrf_bufferSize(hipsolverHandle_t handle, int n, double* A, int lda, int* lwork)
+try
+{
+    return cuda2hip_status(
+        cusolverDnDsytrf_bufferSize((cusolverDnHandle_t)handle, n, A, lda, lwork));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverCsytrf_bufferSize(
+    hipsolverHandle_t handle, int n, hipFloatComplex* A, int lda, int* lwork)
+try
+{
+    return cuda2hip_status(
+        cusolverDnCsytrf_bufferSize((cusolverDnHandle_t)handle, n, (cuComplex*)A, lda, lwork));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverZsytrf_bufferSize(
+    hipsolverHandle_t handle, int n, hipDoubleComplex* A, int lda, int* lwork)
+try
+{
+    return cuda2hip_status(cusolverDnZsytrf_bufferSize(
+        (cusolverDnHandle_t)handle, n, (cuDoubleComplex*)A, lda, lwork));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverSsytrf(hipsolverHandle_t   handle,
+                                  hipsolverFillMode_t uplo,
+                                  int                 n,
+                                  float*              A,
+                                  int                 lda,
+                                  int*                ipiv,
+                                  float*              work,
+                                  int                 lwork,
+                                  int*                devInfo)
+try
+{
+    return cuda2hip_status(cusolverDnSsytrf(
+        (cusolverDnHandle_t)handle, hip2cuda_fill(uplo), n, A, lda, ipiv, work, lwork, devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDsytrf(hipsolverHandle_t   handle,
+                                  hipsolverFillMode_t uplo,
+                                  int                 n,
+                                  double*             A,
+                                  int                 lda,
+                                  int*                ipiv,
+                                  double*             work,
+                                  int                 lwork,
+                                  int*                devInfo)
+try
+{
+    return cuda2hip_status(cusolverDnDsytrf(
+        (cusolverDnHandle_t)handle, hip2cuda_fill(uplo), n, A, lda, ipiv, work, lwork, devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverCsytrf(hipsolverHandle_t   handle,
+                                  hipsolverFillMode_t uplo,
+                                  int                 n,
+                                  hipFloatComplex*    A,
+                                  int                 lda,
+                                  int*                ipiv,
+                                  hipFloatComplex*    work,
+                                  int                 lwork,
+                                  int*                devInfo)
+try
+{
+    return cuda2hip_status(cusolverDnCsytrf((cusolverDnHandle_t)handle,
+                                            hip2cuda_fill(uplo),
+                                            n,
+                                            (cuComplex*)A,
+                                            lda,
+                                            ipiv,
+                                            (cuComplex*)work,
+                                            lwork,
+                                            devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverZsytrf(hipsolverHandle_t   handle,
+                                  hipsolverFillMode_t uplo,
+                                  int                 n,
+                                  hipDoubleComplex*   A,
+                                  int                 lda,
+                                  int*                ipiv,
+                                  hipDoubleComplex*   work,
+                                  int                 lwork,
+                                  int*                devInfo)
+try
+{
+    return cuda2hip_status(cusolverDnZsytrf((cusolverDnHandle_t)handle,
+                                            hip2cuda_fill(uplo),
+                                            n,
+                                            (cuDoubleComplex*)A,
+                                            lda,
+                                            ipiv,
+                                            (cuDoubleComplex*)work,
+                                            lwork,
+                                            devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
 } // extern C
