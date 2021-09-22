@@ -48,6 +48,21 @@ add_library( roc::hipsolver ALIAS hipsolver )
 
 add_armor_flags( hipsolver "${ARMOR_LEVEL}" )
 
+if( WIN32 )
+  if( BUILD_CLIENTS_BENCHMARKS OR BUILD_CLIENTS_TESTS )
+    add_custom_command( TARGET hipsolver
+      POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_BINARY_DIR}/staging/$<TARGET_FILE_NAME:hipsolver>" "${PROJECT_BINARY_DIR}/clients/staging/$<TARGET_FILE_NAME:hipsolver>"
+    )
+    if( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
+      add_custom_command( TARGET hipsolver
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_BINARY_DIR}/staging/hipsolver-d.pdb" "${PROJECT_BINARY_DIR}/clients/staging/hipsolver-d.pdb"
+      )
+    endif( )
+  endif( )
+endif( )
+
 # External header includes included as system files
 target_include_directories( hipsolver
   SYSTEM PRIVATE
