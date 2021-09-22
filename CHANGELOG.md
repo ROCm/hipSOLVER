@@ -3,24 +3,7 @@
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
 
-## [hipSOLVER 1.1.0]
-### Added
-- Added functions
-  - gesv
-    - hipsolverSSgesv_bufferSize, hipsolverDDgesv_bufferSize, hipsolverCCgesv_bufferSize, hipsolverZZgesv_bufferSize
-    - hipsolverSSgesv, hipsolverDDgesv, hipsolverCCgesv, hipsolverZZgesv
-  - potrs
-    - hipsolverSpotrs_bufferSize, hipsolverDpotrs_bufferSize, hipsolverCpotrs_bufferSize, hipsolverZpotrs_bufferSize
-    - hipsolverSpotrs, hipsolverDpotrs, hipsolverCpotrs, hipsolverZpotrs
-  - potrsBatched
-    - hipsolverSpotrsBatched_bufferSize, hipsolverDpotrsBatched_bufferSize, hipsolverCpotrsBatched_bufferSize, hipsolverZpotrsBatched_bufferSize
-    - hipsolverSpotrsBatched, hipsolverDpotrsBatched, hipsolverCpotrsBatched, hipsolverZpotrsBatched
-  - potri
-    - hipsolverSpotri_bufferSize, hipsolverDpotri_bufferSize, hipsolverCpotri_bufferSize, hipsolverZpotri_bufferSize
-    - hipsolverSpotri, hipsolverDpotri, hipsolverCpotri, hipsolverZpotri
-
-
-## [hipSOLVER 1.0.0 for ROCm 4.4.0]
+## hipSOLVER 1.1.0 for ROCm 4.5.0
 ### Added
 - Added functions
   - orgbr/ungbr
@@ -71,6 +54,18 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
   - auxiliary
     - hipsolverCreate, hipsolverDestroy
     - hipsolverSetStream, hipsolverGetStream
+  - gesv
+    - hipsolverSSgesv_bufferSize, hipsolverDDgesv_bufferSize, hipsolverCCgesv_bufferSize, hipsolverZZgesv_bufferSize
+    - hipsolverSSgesv, hipsolverDDgesv, hipsolverCCgesv, hipsolverZZgesv
+  - potrs
+    - hipsolverSpotrs_bufferSize, hipsolverDpotrs_bufferSize, hipsolverCpotrs_bufferSize, hipsolverZpotrs_bufferSize
+    - hipsolverSpotrs, hipsolverDpotrs, hipsolverCpotrs, hipsolverZpotrs
+  - potrsBatched
+    - hipsolverSpotrsBatched_bufferSize, hipsolverDpotrsBatched_bufferSize, hipsolverCpotrsBatched_bufferSize, hipsolverZpotrsBatched_bufferSize
+    - hipsolverSpotrsBatched, hipsolverDpotrsBatched, hipsolverCpotrsBatched, hipsolverZpotrsBatched
+  - potri
+    - hipsolverSpotri_bufferSize, hipsolverDpotri_bufferSize, hipsolverCpotri_bufferSize, hipsolverZpotri_bufferSize
+    - hipsolverSpotri, hipsolverDpotri, hipsolverCpotri, hipsolverZpotri
 
 ### Changed
 - hipSOLVER functions will now return HIPSOLVER_STATUS_INVALID_ENUM or HIPSOLVER_STATUS_UNKNOWN status codes rather than throw exceptions.
