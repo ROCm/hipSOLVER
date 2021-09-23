@@ -3,7 +3,7 @@
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
 
-## [hipSOLVER 1.1.0]
+## hipSOLVER 1.1.0 for ROCm 4.5.0
 ### Added
 - Added functions
   - gesv
@@ -18,11 +18,6 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
   - potri
     - hipsolverSpotri_bufferSize, hipsolverDpotri_bufferSize, hipsolverCpotri_bufferSize, hipsolverZpotri_bufferSize
     - hipsolverSpotri, hipsolverDpotri, hipsolverCpotri, hipsolverZpotri
-
-
-## [hipSOLVER 1.0.0 for ROCm 4.4.0]
-### Added
-- Added functions
   - orgbr/ungbr
     - hipsolverSorgbr_bufferSize, hipsolverDorgbr_bufferSize, hipsolverCungbr_bufferSize, hipsolverZungbr_bufferSize
     - hipsolverSorgbr, hipsolverDorgbr, hipsolverCungbr, hipsolverZungbr
