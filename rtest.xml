@@ -2,9 +2,9 @@
 <testset>
     <var name="TEST_COMMAND">hipsolver-test --gtest_color=yes </var>
     <test sets="psdb">
-        <run name="all-psdb">{TEST_COMMAND} --gtest_filter=*checkin_lapack* --gtest_output=xml:output_psdb.xml </run>
+        <run name="all-psdb">{TEST_COMMAND} --gtest_filter=*checkin_lapack*-*known_bug* --gtest_output=xml </run>
     </test>
     <test sets="osdb">
-        <run name="all-osdb">{TEST_COMMAND} --gtest_filter=*checkin_lapack* --gtest_output=xml:output_osdb.xml </run>
+        <run name="all-osdb">{TEST_COMMAND} --gtest_filter=*checkin_lapack*-*known_bug* --gtest_output=xml </run>
     </test>
 </testset>
