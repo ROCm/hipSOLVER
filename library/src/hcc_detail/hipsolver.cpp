@@ -6,7 +6,7 @@
 #include "exceptions.hpp"
 #include "internal/rocblas_device_malloc.hpp"
 #include "rocblas.h"
-#include "rocsolver.h"
+#include "rocsolver/rocsolver.h"
 #include <algorithm>
 #include <climits>
 #include <functional>
