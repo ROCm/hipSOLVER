@@ -98,6 +98,30 @@ hipsolver<type>getrf()
    :outline:
 .. doxygenfunction:: hipsolverSgetrf
 
+.. _sytrf_bufferSize:
+
+hipsolver<type>sytrf_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZsytrf_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverCsytrf_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDsytrf_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverSsytrf_bufferSize
+
+.. _sytrf:
+
+hipsolver<type>sytrf()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZsytrf
+   :outline:
+.. doxygenfunction:: hipsolverCsytrf
+   :outline:
+.. doxygenfunction:: hipsolverDsytrf
+   :outline:
+.. doxygenfunction:: hipsolverSsytrf
+
 
 
 .. _orthogonal:

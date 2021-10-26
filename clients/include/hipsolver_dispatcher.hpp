@@ -26,6 +26,7 @@
 #include "testing_syevd_heevd.hpp"
 #include "testing_sygvd_hegvd.hpp"
 #include "testing_sytrd_hetrd.hpp"
+#include "testing_sytrf.hpp"
 
 struct str_less
 {
@@ -57,6 +58,7 @@ class hipsolver_dispatcher
             {"potri", testing_potri<false, false, false, T>},
             {"potrs", testing_potrs<false, false, false, T>},
             {"potrs_batched", testing_potrs<false, true, false, T>},
+            {"sytrf", testing_sytrf<false, false, false, T>},
         };
 
         // Grab function from the map and execute
