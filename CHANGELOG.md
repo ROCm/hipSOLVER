@@ -4,15 +4,25 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ## [(Unreleased) hipSOLVER]
 ### Added
+- Added functions
+  - sytrf
+    - hipsolverSsytrf_bufferSize, hipsolverDsytrf_bufferSize, hipsolverCsytrf_bufferSize, hipsolverZsytrf_bufferSize
+    - hipsolverSsytrf, hipsolverDsytrf, hipsolverCsytrf, hipsolverZsytrf
+
 ### Optimized
+
 ### Changed
+
 ### Deprecated
+
 ### Removed
+
 ### Fixed
 - Fixed use of incorrect `HIP_PATH` when building from source (#40).
   Thanks [@jakub329homola](https://github.com/jakub329homola)!
 
 ### Known Issues
+
 ### Security
 
 

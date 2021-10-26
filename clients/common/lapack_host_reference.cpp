@@ -683,6 +683,26 @@ void zhetrd_(char*                   uplo,
              int*                    size_w,
              int*                    info);
 
+void ssytrf_(char* uplo, int* n, float* A, int* lda, int* ipiv, float* work, int* lwork, int* info);
+void dsytrf_(
+    char* uplo, int* n, double* A, int* lda, int* ipiv, double* work, int* lwork, int* info);
+void csytrf_(char*             uplo,
+             int*              n,
+             hipsolverComplex* A,
+             int*              lda,
+             int*              ipiv,
+             hipsolverComplex* work,
+             int*              lwork,
+             int*              info);
+void zsytrf_(char*                   uplo,
+             int*                    n,
+             hipsolverDoubleComplex* A,
+             int*                    lda,
+             int*                    ipiv,
+             hipsolverDoubleComplex* work,
+             int*                    lwork,
+             int*                    info);
+
 #ifdef __cplusplus
 }
 #endif
@@ -2062,4 +2082,61 @@ void cblas_sytrd_hetrd<hipsolverDoubleComplex, double>(hipsolverFillMode_t     u
     int  info;
     char uploC = hipsolver2char_fill(uplo);
     zhetrd_(&uploC, &n, A, &lda, D, E, tau, work, &size_w, &info);
+}
+
+// sytrf
+template <>
+void cblas_sytrf<float>(hipsolverFillMode_t uplo,
+                        int                 n,
+                        float*              A,
+                        int                 lda,
+                        int*                ipiv,
+                        float*              work,
+                        int                 lwork,
+                        int*                info)
+{
+    char uploC = hipsolver2char_fill(uplo);
+    ssytrf_(&uploC, &n, A, &lda, ipiv, work, &lwork, info);
+}
+
+template <>
+void cblas_sytrf<double>(hipsolverFillMode_t uplo,
+                         int                 n,
+                         double*             A,
+                         int                 lda,
+                         int*                ipiv,
+                         double*             work,
+                         int                 lwork,
+                         int*                info)
+{
+    char uploC = hipsolver2char_fill(uplo);
+    dsytrf_(&uploC, &n, A, &lda, ipiv, work, &lwork, info);
+}
+
+template <>
+void cblas_sytrf<hipsolverComplex>(hipsolverFillMode_t uplo,
+                                   int                 n,
+                                   hipsolverComplex*   A,
+                                   int                 lda,
+                                   int*                ipiv,
+                                   hipsolverComplex*   work,
+                                   int                 lwork,
+                                   int*                info)
+{
+    char uploC = hipsolver2char_fill(uplo);
+    csytrf_(&uploC, &n, A, &lda, ipiv, work, &lwork, info);
+}
+
+template <>
+void cblas_sytrf<hipsolverDoubleComplex>(hipsolverFillMode_t     uplo,
+                                         int                     n,
+                                         hipsolverDoubleComplex* A,
+                                         int                     lda,
+                                         int*                    ipiv,
+                                         hipsolverDoubleComplex* work,
+                                         int                     lwork,
+                                         int*                    info)
+{
+    char uploC = hipsolver2char_fill(uplo);
+    zsytrf_(&uploC, &n, A, &lda, ipiv, work, &lwork, info);
 }

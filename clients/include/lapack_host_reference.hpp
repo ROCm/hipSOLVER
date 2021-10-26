@@ -176,3 +176,7 @@ void cblas_sygvd_hegvd(hipsolverEigType_t  itype,
 template <typename T, typename S>
 void cblas_sytrd_hetrd(
     hipsolverFillMode_t uplo, int n, T* A, int lda, S* D, S* E, T* tau, T* work, int size_w);
+
+template <typename T>
+void cblas_sytrf(
+    hipsolverFillMode_t uplo, int n, T* A, int lda, int* ipiv, T* work, int lwork, int* info);
