@@ -16,7 +16,11 @@ public:
 #if __cplusplus >= 201103L
     hipsolverComplex() = default;
 #else
-    hipsolverComplex() {}
+    hipsolverComplex()
+        : x(0)
+        , y(0)
+    {
+    }
 #endif
 
     hipsolverComplex(float r, float i = 0)
@@ -52,7 +56,11 @@ public:
 #if __cplusplus >= 201103L
     hipsolverDoubleComplex() = default;
 #else
-    hipsolverDoubleComplex() {}
+    hipsolverDoubleComplex()
+        : x(0)
+        , y(0)
+    {
+    }
 #endif
 
     hipsolverDoubleComplex(double r, double i = 0)

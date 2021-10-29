@@ -136,8 +136,6 @@ inline bool hipsolver_isnan(hipsolverDoubleComplex arg)
 
 /* =============================================================================================== */
 /* Complex / real helpers.                                                                         */
-template <typename T>
-static constexpr bool is_complex = false;
 
 /* Workaround for clang bug:
    https://bugs.llvm.org/show_bug.cgi?id=35863
@@ -147,6 +145,9 @@ static constexpr bool is_complex = false;
 #else
 #define HIPSOLVER_CLANG_STATIC
 #endif
+
+template <typename T>
+HIPSOLVER_CLANG_STATIC constexpr bool is_complex = false;
 
 template <>
 HIPSOLVER_CLANG_STATIC constexpr bool is_complex<hipsolverComplex> = true;
