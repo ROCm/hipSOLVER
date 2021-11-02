@@ -4,6 +4,8 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ## (Unreleased) hipSOLVER
 ### Added
+- Added library version and device information to hipsolver-test output.
+
 ### Optimized
 ### Changed
 ### Deprecated
