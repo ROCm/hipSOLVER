@@ -1323,6 +1323,285 @@ inline hipsolverStatus_t hipsolver_gebrd(bool                    FORTRAN,
 
 /******************** GEQRF ********************/
 // normal and strided_batched
+inline hipsolverStatus_t hipsolver_gels_bufferSize(bool              FORTRAN,
+                                                   hipsolverHandle_t handle,
+                                                   int               m,
+                                                   int               n,
+                                                   int               nrhs,
+                                                   float*            A,
+                                                   int               lda,
+                                                   float*            B,
+                                                   int               ldb,
+                                                   float*            X,
+                                                   int               ldx,
+                                                   size_t*           lwork)
+{
+    if(!FORTRAN)
+        return hipsolverSSgels_bufferSize(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, lwork);
+    else
+        return hipsolverSSgels_bufferSizeFortran(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_gels_bufferSize(bool              FORTRAN,
+                                                   hipsolverHandle_t handle,
+                                                   int               m,
+                                                   int               n,
+                                                   int               nrhs,
+                                                   double*           A,
+                                                   int               lda,
+                                                   double*           B,
+                                                   int               ldb,
+                                                   double*           X,
+                                                   int               ldx,
+                                                   size_t*           lwork)
+{
+    if(!FORTRAN)
+        return hipsolverDDgels_bufferSize(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, lwork);
+    else
+        return hipsolverDDgels_bufferSizeFortran(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, lwork);
+}
+
+inline hipsolverStatus_t hipsolver_gels_bufferSize(bool              FORTRAN,
+                                                   hipsolverHandle_t handle,
+                                                   int               m,
+                                                   int               n,
+                                                   int               nrhs,
+                                                   hipsolverComplex* A,
+                                                   int               lda,
+                                                   hipsolverComplex* B,
+                                                   int               ldb,
+                                                   hipsolverComplex* X,
+                                                   int               ldx,
+                                                   size_t*           lwork)
+{
+    if(!FORTRAN)
+        return hipsolverCCgels_bufferSize(handle,
+                                          m,
+                                          n,
+                                          nrhs,
+                                          (hipFloatComplex*)A,
+                                          lda,
+                                          (hipFloatComplex*)B,
+                                          ldb,
+                                          (hipFloatComplex*)X,
+                                          ldx,
+                                          lwork);
+    else
+        return hipsolverCCgels_bufferSizeFortran(handle,
+                                                 m,
+                                                 n,
+                                                 nrhs,
+                                                 (hipFloatComplex*)A,
+                                                 lda,
+                                                 (hipFloatComplex*)B,
+                                                 ldb,
+                                                 (hipFloatComplex*)X,
+                                                 ldx,
+                                                 lwork);
+}
+
+inline hipsolverStatus_t hipsolver_gels_bufferSize(bool                    FORTRAN,
+                                                   hipsolverHandle_t       handle,
+                                                   int                     m,
+                                                   int                     n,
+                                                   int                     nrhs,
+                                                   hipsolverDoubleComplex* A,
+                                                   int                     lda,
+                                                   hipsolverDoubleComplex* B,
+                                                   int                     ldb,
+                                                   hipsolverDoubleComplex* X,
+                                                   int                     ldx,
+                                                   size_t*                 lwork)
+{
+    if(!FORTRAN)
+        return hipsolverZZgels_bufferSize(handle,
+                                          m,
+                                          n,
+                                          nrhs,
+                                          (hipDoubleComplex*)A,
+                                          lda,
+                                          (hipDoubleComplex*)B,
+                                          ldb,
+                                          (hipDoubleComplex*)X,
+                                          ldx,
+                                          lwork);
+    else
+        return hipsolverZZgels_bufferSizeFortran(handle,
+                                                 m,
+                                                 n,
+                                                 nrhs,
+                                                 (hipDoubleComplex*)A,
+                                                 lda,
+                                                 (hipDoubleComplex*)B,
+                                                 ldb,
+                                                 (hipDoubleComplex*)X,
+                                                 ldx,
+                                                 lwork);
+}
+
+inline hipsolverStatus_t hipsolver_gels(bool              FORTRAN,
+                                        hipsolverHandle_t handle,
+                                        int               m,
+                                        int               n,
+                                        int               nrhs,
+                                        float*            A,
+                                        int               lda,
+                                        int               stA,
+                                        float*            B,
+                                        int               ldb,
+                                        int               stB,
+                                        float*            X,
+                                        int               ldx,
+                                        int               stX,
+                                        float*            work,
+                                        size_t            lwork,
+                                        int*              niters,
+                                        int*              info,
+                                        int               bc)
+{
+    if(!FORTRAN)
+        return hipsolverSSgels(
+            handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info);
+    else
+        return hipsolverSSgelsFortran(
+            handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info);
+}
+
+inline hipsolverStatus_t hipsolver_gels(bool              FORTRAN,
+                                        hipsolverHandle_t handle,
+                                        int               m,
+                                        int               n,
+                                        int               nrhs,
+                                        double*           A,
+                                        int               lda,
+                                        int               stA,
+                                        double*           B,
+                                        int               ldb,
+                                        int               stB,
+                                        double*           X,
+                                        int               ldx,
+                                        int               stX,
+                                        double*           work,
+                                        size_t            lwork,
+                                        int*              niters,
+                                        int*              info,
+                                        int               bc)
+{
+    if(!FORTRAN)
+        return hipsolverDDgels(
+            handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info);
+    else
+        return hipsolverDDgelsFortran(
+            handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info);
+}
+
+inline hipsolverStatus_t hipsolver_gels(bool              FORTRAN,
+                                        hipsolverHandle_t handle,
+                                        int               m,
+                                        int               n,
+                                        int               nrhs,
+                                        hipsolverComplex* A,
+                                        int               lda,
+                                        int               stA,
+                                        hipsolverComplex* B,
+                                        int               ldb,
+                                        int               stB,
+                                        hipsolverComplex* X,
+                                        int               ldx,
+                                        int               stX,
+                                        hipsolverComplex* work,
+                                        size_t            lwork,
+                                        int*              niters,
+                                        int*              info,
+                                        int               bc)
+{
+    if(!FORTRAN)
+        return hipsolverCCgels(handle,
+                               m,
+                               n,
+                               nrhs,
+                               (hipFloatComplex*)A,
+                               lda,
+                               (hipFloatComplex*)B,
+                               ldb,
+                               (hipFloatComplex*)X,
+                               ldx,
+                               work,
+                               lwork,
+                               niters,
+                               info);
+    else
+        return hipsolverCCgelsFortran(handle,
+                                      m,
+                                      n,
+                                      nrhs,
+                                      (hipFloatComplex*)A,
+                                      lda,
+                                      (hipFloatComplex*)B,
+                                      ldb,
+                                      (hipFloatComplex*)X,
+                                      ldx,
+                                      work,
+                                      lwork,
+                                      niters,
+                                      info);
+}
+
+inline hipsolverStatus_t hipsolver_gels(bool                    FORTRAN,
+                                        hipsolverHandle_t       handle,
+                                        int                     m,
+                                        int                     n,
+                                        int                     nrhs,
+                                        hipsolverDoubleComplex* A,
+                                        int                     lda,
+                                        int                     stA,
+                                        hipsolverDoubleComplex* B,
+                                        int                     ldb,
+                                        int                     stB,
+                                        hipsolverDoubleComplex* X,
+                                        int                     ldx,
+                                        int                     stX,
+                                        hipsolverDoubleComplex* work,
+                                        size_t                  lwork,
+                                        int*                    niters,
+                                        int*                    info,
+                                        int                     bc)
+{
+    if(!FORTRAN)
+        return hipsolverZZgels(handle,
+                               m,
+                               n,
+                               nrhs,
+                               (hipDoubleComplex*)A,
+                               lda,
+                               (hipDoubleComplex*)B,
+                               ldb,
+                               (hipDoubleComplex*)X,
+                               ldx,
+                               work,
+                               lwork,
+                               niters,
+                               info);
+    else
+        return hipsolverZZgelsFortran(handle,
+                                      m,
+                                      n,
+                                      nrhs,
+                                      (hipDoubleComplex*)A,
+                                      lda,
+                                      (hipDoubleComplex*)B,
+                                      ldb,
+                                      (hipDoubleComplex*)X,
+                                      ldx,
+                                      work,
+                                      lwork,
+                                      niters,
+                                      info);
+}
+/********************************************************/
+
+/******************** GEQRF ********************/
+// normal and strided_batched
 inline hipsolverStatus_t hipsolver_geqrf_bufferSize(
     bool FORTRAN, hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
 {

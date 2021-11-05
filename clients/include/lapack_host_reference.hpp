@@ -102,6 +102,19 @@ template <typename T, typename S>
 void cblas_gebrd(int m, int n, T* A, int lda, S* D, S* E, T* tauq, T* taup, T* work, int size_w);
 
 template <typename T>
+void cblas_gels(hipsolverOperation_t transR,
+                int                  m,
+                int                  n,
+                int                  nrhs,
+                T*                   A,
+                int                  lda,
+                T*                   B,
+                int                  ldb,
+                T*                   work,
+                int                  lwork,
+                int*                 info);
+
+template <typename T>
 void cblas_geqrf(int m, int n, T* A, int lda, T* ipiv, T* work, int sizeW);
 
 template <typename T>
