@@ -13,15 +13,7 @@ private:
     float x, y;
 
 public:
-#if __cplusplus >= 201103L
     hipsolverComplex() = default;
-#else
-    hipsolverComplex()
-        : x(0)
-        , y(0)
-    {
-    }
-#endif
 
     hipsolverComplex(float r, float i = 0)
         : x(r)
@@ -53,15 +45,7 @@ private:
     double x, y;
 
 public:
-#if __cplusplus >= 201103L
     hipsolverDoubleComplex() = default;
-#else
-    hipsolverDoubleComplex()
-        : x(0)
-        , y(0)
-    {
-    }
-#endif
 
     hipsolverDoubleComplex(double r, double i = 0)
         : x(r)
