@@ -46,7 +46,6 @@ const vector<int> matrix_sizeB_range = {
 const vector<gels_params_A> large_matrix_sizeA_range = {
     {75, 25, 75, 75},
     {150, 150, 150, 150},
-    {500, 50, 600, 600},
 };
 const vector<int> large_matrix_sizeB_range = {
     100,
