@@ -42,17 +42,17 @@ const vector<int> matrix_sizeB_range = {
     20,
     30};
 
-// for daily_lapack tests
-const vector<gels_params_A> large_matrix_sizeA_range = {
-    {75, 25, 75, 75},
-    {150, 150, 150, 150},
-};
-const vector<int> large_matrix_sizeB_range = {
-    100,
-    200,
-    500,
-    1000,
-};
+// // for daily_lapack tests
+// const vector<gels_params_A> large_matrix_sizeA_range = {
+//     {75, 25, 75, 75},
+//     {150, 150, 150, 150},
+// };
+// const vector<int> large_matrix_sizeB_range = {
+//     100,
+//     200,
+//     500,
+//     1000,
+// };
 
 Arguments gels_setup_arguments(gels_tuple tup)
 {
@@ -147,19 +147,19 @@ TEST_P(GELS_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         GELS,
-                         Combine(ValuesIn(large_matrix_sizeA_range),
-                                 ValuesIn(large_matrix_sizeB_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GELS,
+//                          Combine(ValuesIn(large_matrix_sizeA_range),
+//                                  ValuesIn(large_matrix_sizeB_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GELS,
                          Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         GELS_FORTRAN,
-                         Combine(ValuesIn(large_matrix_sizeA_range),
-                                 ValuesIn(large_matrix_sizeB_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GELS_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_sizeA_range),
+//                                  ValuesIn(large_matrix_sizeB_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GELS_FORTRAN,
