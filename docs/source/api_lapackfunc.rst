@@ -12,6 +12,7 @@ in the following categories:
 * :ref:`orthogonal`. Based on Householder reflections.
 * :ref:`reductions`. Transformation of matrices and problems into equivalent forms.
 * :ref:`linears`. Based on triangular factorizations.
+* :ref:`leastsqr`. Based on orthogonal factorizations.
 * :ref:`eigens`. Eigenproblems for symmetric matrices.
 * :ref:`svds`. Singular values and related problems for general matrices.
 
@@ -354,6 +355,41 @@ hipsolver<type><type>gesv()
 .. doxygenfunction:: hipsolverDDgesv
    :outline:
 .. doxygenfunction:: hipsolverSSgesv
+
+
+
+.. _leastsqr:
+
+Least-squares solvers
+================================
+
+.. contents:: List of least-squares solvers
+   :local:
+   :backlinks: top
+
+.. _gels_bufferSize:
+
+hipsolver<type><type>gels_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZZgels_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverCCgels_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDDgels_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverSSgels_bufferSize
+
+.. _gels:
+
+hipsolver<type><type>gels()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZZgels
+   :outline:
+.. doxygenfunction:: hipsolverCCgels
+   :outline:
+.. doxygenfunction:: hipsolverDDgels
+   :outline:
+.. doxygenfunction:: hipsolverSSgels
 
 
 
