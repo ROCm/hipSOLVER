@@ -168,6 +168,6 @@ endif( )
 if( UNIX )
   # Force installation of .f90 module files
   install(FILES "hipsolver_module.f90"
-          DESTINATION "include/hipsolvei")
+          DESTINATION "include/hipsolver")
 endif( )
 
