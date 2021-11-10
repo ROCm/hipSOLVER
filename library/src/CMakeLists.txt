@@ -137,23 +137,29 @@ endif( )
 
 rocm_install_targets(
   TARGETS hipsolver
-  INCLUDE
-    ${CMAKE_SOURCE_DIR}/library/include
-    ${CMAKE_BINARY_DIR}/include
-  PREFIX hipsolver
 )
+
+install(
+       DIRECTORY "${CMAKE_SOURCE_DIR}/library/include/" "${CMAKE_BINARY_DIR}/include/"
+  DESTINATION include/hipsolver
+  FILES_MATCHING
+  PATTERN "*.h"
+  PATTERN "*.hpp"
+  PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
+)
+
+
+#         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ
 
 if ( NOT USE_CUDA )
   rocm_export_targets(
     TARGETS roc::hipsolver
-    PREFIX hipsolver
     DEPENDS PACKAGE hip
     NAMESPACE roc::
   )
 else( )
   rocm_export_targets(
     TARGETS roc::hipsolver
-    PREFIX hipsolver
     DEPENDS PACKAGE HIP
     NAMESPACE roc::
   )
@@ -162,7 +168,6 @@ endif( )
 if( UNIX )
   # Force installation of .f90 module files
   install(FILES "hipsolver_module.f90"
-          DESTINATION "hipsolver/include")
+          DESTINATION "include/hipsolvei")
 endif( )
 
-rocm_install_symlink_subdir( hipsolver )
