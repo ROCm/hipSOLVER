@@ -147,8 +147,9 @@ inline bool hipsolver_isnan(hipsolverDoubleComplex arg)
 #endif
 
 template <typename T>
-HIPSOLVER_CLANG_STATIC constexpr bool is_complex = false;
+static constexpr bool is_complex = false;
 
+// cppcheck-suppress syntaxError
 template <>
 HIPSOLVER_CLANG_STATIC constexpr bool is_complex<hipsolverComplex> = true;
 
