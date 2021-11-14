@@ -7,7 +7,7 @@
 // #include "clientcommon.hpp"
 // #include "rocblas.h"
 #include "../include/complex.h"
-#include "hipsolver.h"
+#include "hipsolver/hipsolver.h"
 
 using rocblas_float_complex  = hipsolverComplex;
 using rocblas_double_complex = hipsolverDoubleComplex;

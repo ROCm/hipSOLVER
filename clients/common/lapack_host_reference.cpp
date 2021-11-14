@@ -4,7 +4,7 @@
 
 #include "../include/lapack_host_reference.hpp"
 #include "cblas.h"
-#include "hipsolver.h"
+#include "hipsolver/hipsolver.h"
 
 /*!\file
  * \brief provide template functions interfaces to BLAS and LAPACK interfaces, it is
