@@ -13,8 +13,8 @@
 #ifndef HIPSOLVER_H
 #define HIPSOLVER_H
 
-#include "hipsolver-export.h"
-#include "hipsolver-version.h"
+#include "hipsolver/hipsolver-export.h"
+#include "hipsolver/hipsolver-version.h"
 #include <hip/hip_complex.h>
 #include <hip/hip_runtime_api.h>
 #include <stdint.h>

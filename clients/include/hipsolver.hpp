@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "hipsolver.h"
+#include "hipsolver/hipsolver.h"
 #include "hipsolver_fortran.hpp"
 
 // Most functions within this file exist to provide a consistent interface for our templated tests.

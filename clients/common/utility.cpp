@@ -3,7 +3,7 @@
  * ************************************************************************ */
 
 #include "utility.hpp"
-#include "hipsolver.h"
+#include "hipsolver/hipsolver.h"
 #include <sys/time.h>
 
 hipsolver_rng_t hipsolver_rng(69069);

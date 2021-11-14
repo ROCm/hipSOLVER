@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "hipsolver.h"
+#include "hipsolver/hipsolver.h"
 #include <exception>
 
 // Convert the current C++ exception to hipsolverStatus_t
