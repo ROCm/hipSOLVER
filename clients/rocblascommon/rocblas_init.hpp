@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "hipsolver.h"
+#include "hipsolver/hipsolver.h"
 //#include "rocblas_ostream.hpp"
 // #include "rocblas_math.hpp"
 // #include "rocblas_random.hpp"

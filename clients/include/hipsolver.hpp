@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "hipsolver.h"
+#include "hipsolver/hipsolver.h"
 #ifdef _WIN32
 #include "hipsolver_no_fortran.hpp"
 #else
