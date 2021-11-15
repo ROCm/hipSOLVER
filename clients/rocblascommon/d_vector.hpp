@@ -3,7 +3,7 @@
  * ************************************************************************ */
 #pragma once
 
-#include "hipsolver.h"
+#include "hipsolver/hipsolver.h"
 #include "rocblas_init.hpp"
 //#include "rocblas_test.hpp"
 #include <cinttypes>

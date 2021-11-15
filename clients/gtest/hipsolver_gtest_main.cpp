@@ -7,7 +7,7 @@
 #include <string>
 
 #include <gtest/gtest.h>
-#include <hipsolver.h>
+#include <hipsolver/hipsolver.h>
 
 #include "utility.hpp"
 
