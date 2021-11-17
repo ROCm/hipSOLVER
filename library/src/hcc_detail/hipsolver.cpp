@@ -4,7 +4,7 @@
 
 #include "hipsolver/hipsolver.h"
 #include "exceptions.hpp"
-#include "rocblas/rocblas_device_malloc.hpp"
+#include "rocblas/internal/rocblas_device_malloc.hpp"
 #include "rocblas/rocblas.h"
 #include "rocsolver/rocsolver.h"
 #include <algorithm>
