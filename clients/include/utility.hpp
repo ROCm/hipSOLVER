@@ -207,31 +207,31 @@ class hipsolver_nan_rng
 public:
     // Random integer
     template <typename T, typename std::enable_if<std::is_integral<T>{}, int>::type = 0>
-    explicit operator T()
+    explicit operator T() const
     {
         return std::uniform_int_distribution<T>{}(hipsolver_rng);
     }
 
     // Random NaN float
-    explicit operator float()
+    explicit operator float() const
     {
         return random_nan_data<float, uint32_t, 23, 8>();
     }
 
     // Random NaN double
-    explicit operator double()
+    explicit operator double() const
     {
         return random_nan_data<double, uint64_t, 52, 11>();
     }
 
     // Random NaN Complex
-    explicit operator hipsolverComplex()
+    explicit operator hipsolverComplex() const
     {
         return {float(*this), float(*this)};
     }
 
     // Random NaN Double Complex
-    explicit operator hipsolverDoubleComplex()
+    explicit operator hipsolverDoubleComplex() const
     {
         return {double(*this), double(*this)};
     }
@@ -254,7 +254,6 @@ template <>
 inline hipsolverComplex random_generator<hipsolverComplex>()
 {
     return hipsolverComplex(rand() % 10 + 1, rand() % 10 + 1);
-    return {float(rand() % 10 + 1), float(rand() % 10 + 1)};
 }
 
 // for hipsolverDoubleComplex, generate 2 doubles
@@ -263,7 +262,6 @@ template <>
 inline hipsolverDoubleComplex random_generator<hipsolverDoubleComplex>()
 {
     return hipsolverDoubleComplex(rand() % 10 + 1, rand() % 10 + 1);
-    return {double(rand() % 10 + 1), double(rand() % 10 + 1)};
 }
 
 /*! \brief  generate a random number in range [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10] */

@@ -403,9 +403,8 @@ void testing_orgbr_ungbr(Arguments& argus)
 
     // validate results for rocsolver-test
     // using s * machine_precision as tolerance
-    int s = row ? n : m;
     if(argus.unit_check)
-        ROCSOLVER_TEST_CHECK(T, max_error, s);
+        ROCSOLVER_TEST_CHECK(T, max_error, (row ? n : m));
 
     // output results for rocsolver-bench
     if(argus.timing)
