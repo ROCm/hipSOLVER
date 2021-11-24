@@ -95,8 +95,8 @@ double get_time_us_sync(hipStream_t stream)
 int query_device_property()
 {
     int               device_count;
-    hipsolverStatus_t status = (hipsolverStatus_t)hipGetDeviceCount(&device_count);
-    if(status != HIPSOLVER_STATUS_SUCCESS)
+    hipsolverStatus_t count_status = (hipsolverStatus_t)hipGetDeviceCount(&device_count);
+    if(count_status != HIPSOLVER_STATUS_SUCCESS)
     {
         printf("Query device error: cannot get device count \n");
         return -1;
@@ -109,8 +109,8 @@ int query_device_property()
     for(int i = 0; i < device_count; i++)
     {
         hipDeviceProp_t   props;
-        hipsolverStatus_t status = (hipsolverStatus_t)hipGetDeviceProperties(&props, i);
-        if(status != HIPSOLVER_STATUS_SUCCESS)
+        hipsolverStatus_t props_status = (hipsolverStatus_t)hipGetDeviceProperties(&props, i);
+        if(props_status != HIPSOLVER_STATUS_SUCCESS)
         {
             printf("Query device error: cannot get device ID %d's property\n", i);
         }

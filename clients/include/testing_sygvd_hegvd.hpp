@@ -199,7 +199,6 @@ void testing_sygvd_hegvd_bad_arg()
     int                    stA   = 1;
     int                    stB   = 1;
     int                    stD   = 1;
-    int                    lwork = 1;
     int                    bc    = 1;
     hipsolverEigType_t     itype = HIPSOLVER_EIG_TYPE_1;
     hipsolverEigMode_t     evect = HIPSOLVER_EIG_MODE_NOVECTOR;
@@ -324,7 +323,6 @@ void sygvd_hegvd_initData(const hipsolverHandle_t       handle,
 {
     if(CPU)
     {
-        int info;
         rocblas_init<T>(hA, true);
         rocblas_init<T>(hB, false);
 
