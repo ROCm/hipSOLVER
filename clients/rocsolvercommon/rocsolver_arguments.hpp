@@ -95,7 +95,7 @@ public:
     }
 
     // validate function arguments
-    void validate_precision(const std::string name) const
+    void validate_precision(const std::string& name) const
     {
         auto val = find(name);
         if(val == end())
@@ -106,7 +106,7 @@ public:
             throw std::invalid_argument("Invalid value for " + name);
     }
 
-    void validate_operation(const std::string name) const
+    void validate_operation(const std::string& name) const
     {
         auto val = find(name);
         if(val == end())
@@ -117,7 +117,7 @@ public:
             throw std::invalid_argument("Invalid value for " + name);
     }
 
-    void validate_side(const std::string name) const
+    void validate_side(const std::string& name) const
     {
         auto val = find(name);
         if(val == end())
@@ -128,7 +128,7 @@ public:
             throw std::invalid_argument("Invalid value for " + name);
     }
 
-    void validate_fill(const std::string name) const
+    void validate_fill(const std::string& name) const
     {
         auto val = find(name);
         if(val == end())
@@ -139,7 +139,7 @@ public:
             throw std::invalid_argument("Invalid value for " + name);
     }
 
-    void validate_direct(const std::string name) const
+    void validate_direct(const std::string& name) const
     {
         auto val = find(name);
         if(val == end())
@@ -150,7 +150,7 @@ public:
             throw std::invalid_argument("Invalid value for " + name);
     }
 
-    void validate_storev(const std::string name) const
+    void validate_storev(const std::string& name) const
     {
         auto val = find(name);
         if(val == end())
@@ -161,7 +161,7 @@ public:
             throw std::invalid_argument("Invalid value for " + name);
     }
 
-    void validate_svect(const std::string name) const
+    void validate_svect(const std::string& name) const
     {
         auto val = find(name);
         if(val == end())
@@ -172,7 +172,7 @@ public:
             throw std::invalid_argument("Invalid value for " + name);
     }
 
-    void validate_workmode(const std::string name) const
+    void validate_workmode(const std::string& name) const
     {
         auto val = find(name);
         if(val == end())
@@ -183,7 +183,7 @@ public:
             throw std::invalid_argument("Invalid value for " + name);
     }
 
-    void validate_evect(const std::string name) const
+    void validate_evect(const std::string& name) const
     {
         auto val = find(name);
         if(val == end())
@@ -194,7 +194,7 @@ public:
             throw std::invalid_argument("Invalid value for " + name);
     }
 
-    void validate_itype(const std::string name) const
+    void validate_itype(const std::string& name) const
     {
         auto val = find(name);
         if(val == end())
