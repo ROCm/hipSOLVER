@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "hipsolver.h"
+#include "hipsolver/hipsolver.h"
 
 /*!\file
  *  This file interfaces with our Fortran LAPACK interface.

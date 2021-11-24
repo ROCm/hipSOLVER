@@ -8,7 +8,7 @@
 #include <string>
 
 #include "complex.hpp"
-#include "hipsolver.h"
+#include "hipsolver/hipsolver.h"
 
 // Complex output
 inline std::ostream& operator<<(std::ostream& os, const hipsolverComplex& x)

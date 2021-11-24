@@ -2,11 +2,11 @@
  * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
-#include "hipsolver.h"
+#include "hipsolver/hipsolver.h"
 #include "exceptions.hpp"
-#include "internal/rocblas_device_malloc.hpp"
-#include "rocblas.h"
-#include "rocsolver.h"
+#include "rocblas/internal/rocblas_device_malloc.hpp"
+#include "rocblas/rocblas.h"
+#include "rocsolver/rocsolver.h"
 #include <algorithm>
 #include <climits>
 #include <functional>

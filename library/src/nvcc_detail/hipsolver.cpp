@@ -2,7 +2,7 @@
  * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
-#include "hipsolver.h"
+#include "hipsolver/hipsolver.h"
 #include "exceptions.hpp"
 #include <cuda_runtime.h>
 #include <cusolverDn.h>

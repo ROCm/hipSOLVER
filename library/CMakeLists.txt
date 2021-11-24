@@ -5,7 +5,7 @@
 # This is incremented when the ABI to the library changes
 set( hipsolver_SOVERSION 0.1 )
 
-list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${HIP_PATH}/cmake )
+list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${HIP_PATH}/lib/cmake/hip )
 
 # This option only works for make/nmake and the ninja generators, but no reason it shouldn't be on all the time
 # This tells cmake to create a compile_commands.json file that can be used with clang tooling or vim
@@ -34,11 +34,17 @@ else()
 endif()
 
 # configure a header file to pass the CMake version settings to the source, and package the header files in the output archive
-configure_file( "${CMAKE_CURRENT_SOURCE_DIR}/include/hipsolver-version.h.in" "${PROJECT_BINARY_DIR}/include/hipsolver-version.h" )
+configure_file( "${CMAKE_CURRENT_SOURCE_DIR}/include/hipsolver/hipsolver-version.h.in" 
+	"${PROJECT_BINARY_DIR}/include/hipsolver/hipsolver-version.h" )
+
+# Copy Public Headers to Build Dir 
+configure_file( "${CMAKE_CURRENT_SOURCE_DIR}/include/hipsolver/hipsolver.h"
+	"${PROJECT_BINARY_DIR}/include/hipsolver/hipsolver.h" COPYONLY )
+
 
 set( hipsolver_headers_public
-  include/hipsolver.h
-  ${PROJECT_BINARY_DIR}/include/hipsolver-version.h
+  include/hipsolver/hipsolver.h
+  ${PROJECT_BINARY_DIR}/include/hipsolver/hipsolver-version.h
 )
 
 source_group( "Header Files\\Public" FILES ${hipsolver_headers_public} )

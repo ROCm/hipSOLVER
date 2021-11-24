@@ -4,7 +4,7 @@
 
 #include <chrono>
 
-#include "hipsolver.h"
+#include "hipsolver/hipsolver.h"
 #include "utility.hpp"
 
 hipsolver_rng_t hipsolver_rng(69069);
