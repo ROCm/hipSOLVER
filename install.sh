@@ -10,18 +10,18 @@ function display_help()
 {
   echo "hipSOLVER build & installation helper script"
   echo "./install [-h|--help] "
-  echo "    [-h|--help] prints this help message"
-  echo "    [-i|--install] install after build"
-  echo "    [-d|--dependencies] install build dependencies"
-  echo "    [-c|--clients] build library clients too (combines with -i & -d)"
+  echo "    [-h|--help] Prints this help message"
+  echo "    [-i|--install] Install after build"
+  echo "    [-d|--dependencies] Install build dependencies"
+  echo "    [-c|--clients] Build library clients too (combines with -i & -d)"
   echo "    [-g|--debug] -DCMAKE_BUILD_TYPE=Debug (default is =Release)"
   echo "    [-k|--relwithdebinfo] -DCMAKE_BUILD_TYPE=RelWithDebInfo."
-  echo "    [-r]--relocatable] create a package to support relocatable ROCm"
-  echo "    [--cuda|--use-cuda] build library for cuda backend"
+  echo "    [-r]--relocatable] Create a package to support relocatable ROCm"
+  echo "    [--cuda|--use-cuda] Build library for cuda backend"
   echo "    [--[no-]hip-clang] Whether to build library with hip-clang"
-  echo "    [--compiler] specify host compiler"
-  echo "    [-p|--cmakepp] addition to CMAKE_PREFIX_PATH"
-  echo "    [--custom-target] link against custom target (e.g. host, device)"
+  echo "    [--compiler] Specify host compiler"
+  echo "    [-p|--cmakepp] Addition to CMAKE_PREFIX_PATH"
+  echo "    [--custom-target] Link against custom target (e.g. host, device)"
   echo "    [-v|--rocm-dev] Set specific rocm-dev version"
   echo "    [-b|--rocblas] Set specific rocblas version"
   echo "    [--rocblas-path] Set specific path to custom built rocblas"
@@ -29,7 +29,8 @@ function display_help()
   echo "    [--rocsolver-path] Set specific path to custom built rocsolver"
   echo "    [--static] Create static library instead of shared library"
   echo "    [--codecoverage] Build with code coverage profiling enabled, excluding release mode."
-  echo "    [--address-sanitizer] build with address sanitizer enabled. Uses hipcc to compile"
+  echo "    [--address-sanitizer] Build with address sanitizer enabled. Uses hipcc to compile"
+  echo "    [--cmake-arg] Forward the given argument to CMake when configuring the build"
 }
 
 
@@ -261,6 +262,11 @@ install_zypper_packages( )
   done
 }
 
+# given a relative path, returns the absolute path
+make_absolute_path( ) {
+  (cd "$1" && pwd -P)
+}
+
 # #################################################
 # Pre-requisites check
 # #################################################
@@ -304,6 +310,8 @@ build_static=false
 build_release_debug=false
 build_codecoverage=false
 build_address_sanitizer=false
+declare -a cmake_common_options
+declare -a cmake_client_options
 
 # #################################################
 # Parameter parsing
@@ -312,7 +320,7 @@ build_address_sanitizer=false
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,address-sanitizer --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,address-sanitizer,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -396,6 +404,9 @@ while true; do
     --prefix)
         install_prefix=${2}
         shift 2 ;;
+    --cmake-arg)
+        cmake_common_options+=("${2}")
+        shift 2 ;;
     --) shift ; break ;;
     *)  echo "Unexpected command line parameter received; aborting";
         exit 1
@@ -427,6 +438,14 @@ elif [[ "${build_release_debug}" == true ]]; then
   rm -rf ${build_dir}/release-debug
 else
   rm -rf ${build_dir}/debug
+fi
+
+# resolve relative paths
+if [[ -n "${rocblas_path+x}" ]]; then
+  rocblas_path="$(make_absolute_path "${rocblas_path}")"
+fi
+if [[ -n "${rocsolver_path+x}" ]]; then
+  rocsolver_path="$(make_absolute_path "${rocsolver_path}")"
 fi
 
 # Default cmake executable is called cmake
@@ -462,8 +481,6 @@ pushd .
   # #################################################
   # configure & build
   # #################################################
-  cmake_common_options=""
-  cmake_client_options=""
 
   if [[ "${build_static}" == true ]]; then
     if [[ "${build_cuda}" == true ]]; then
