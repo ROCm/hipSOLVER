@@ -487,7 +487,7 @@ pushd .
       printf "Static library not supported for CUDA backend.\n"
       exit 1
     fi
-    cmake_common_options="${cmake_common_options} -DBUILD_SHARED_LIBS=OFF"
+    cmake_common_options+=("-DBUILD_SHARED_LIBS=OFF")
     compiler="${rocm_path}/bin/hipcc" #force hipcc for static libs, g++ doesn't work
     printf "Forcing compiler to hipcc for static library.\n"
   fi
@@ -495,39 +495,39 @@ pushd .
   # build type
   if [[ "${build_release}" == true ]]; then
     mkdir -p ${build_dir}/release/clients && cd ${build_dir}/release
-    cmake_common_options="${cmake_common_options} -DCMAKE_BUILD_TYPE=Release"
+    cmake_common_options+=("-DCMAKE_BUILD_TYPE=Release")
   elif [[ "${build_release_debug}" == true ]]; then
     mkdir -p ${build_dir}/release-debug/clients && cd ${build_dir}/release-debug
-    cmake_common_options="${cmake_common_options} -DCMAKE_BUILD_TYPE=RelWithDebInfo"
+    cmake_common_options+=("-DCMAKE_BUILD_TYPE=RelWithDebInfo")
   else
     mkdir -p ${build_dir}/debug/clients && cd ${build_dir}/debug
-    cmake_common_options="${cmake_common_options} -DCMAKE_BUILD_TYPE=Debug"
+    cmake_common_options+=("-DCMAKE_BUILD_TYPE=Debug")
   fi
 
   # cuda
   if [[ "${build_cuda}" == true ]]; then
-    cmake_common_options="${cmake_common_options} -DUSE_CUDA=ON"
+    cmake_common_options+=("-DUSE_CUDA=ON")
   else
-    cmake_common_options="${cmake_common_options} -DUSE_CUDA=OFF"
+    cmake_common_options+=("-DUSE_CUDA=OFF")
   fi
 
   # clients
   if [[ "${build_clients}" == true ]]; then
-    cmake_client_options="${cmake_client_options} -DBUILD_CLIENTS_SAMPLES=ON -DBUILD_CLIENTS_TESTS=ON -DBUILD_CLIENTS_BENCHMARKS=ON"
+    cmake_client_options+=("-DBUILD_CLIENTS_SAMPLES=ON -DBUILD_CLIENTS_TESTS=ON -DBUILD_CLIENTS_BENCHMARKS=ON")
   fi
 
   if [[ ${custom_target+foo} ]]; then
-    cmake_common_options="${cmake_common_options} -DCUSTOM_TARGET=${custom_target}"
+    cmake_common_options+=("-DCUSTOM_TARGET=${custom_target}")
   fi
 
   # custom rocblas
   if [[ ${rocblas_path+foo} ]]; then
-    cmake_common_options="${cmake_common_options} -DCUSTOM_ROCBLAS=${rocblas_path}"
+    cmake_common_options+=("-DCUSTOM_ROCBLAS=${rocblas_path}")
   fi
 
   # custom rocsolver
   if [[ ${rocsolver_path+foo} ]]; then
-    cmake_common_options="${cmake_common_options} -DCUSTOM_ROCSOLVER=${rocsolver_path}"
+    cmake_common_options+=("-DCUSTOM_ROCSOLVER=${rocsolver_path}")
   fi
 
   # code coverage
@@ -536,12 +536,12 @@ pushd .
           echo "Code coverage is disabled in Release mode, to enable code coverage select either Debug mode (-g | --debug) or RelWithDebInfo mode (-k | --relwithdebinfo); aborting";
           exit 1
       fi
-      cmake_common_options="${cmake_common_options} -DBUILD_CODE_COVERAGE=ON"
+      cmake_common_options+=("-DBUILD_CODE_COVERAGE=ON")
   fi
 
   # address sanitizer
   if [[ "${build_address_sanitizer}" == true ]]; then
-    cmake_common_options="$cmake_common_options -DBUILD_ADDRESS_SANITIZER=ON"
+    cmake_common_options+=("-DBUILD_ADDRESS_SANITIZER=ON")
   fi
 
   # Build library
