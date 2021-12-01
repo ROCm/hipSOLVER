@@ -9,6 +9,7 @@
 #include <string>
 
 #include "testing_gebrd.hpp"
+#include "testing_gels.hpp"
 #include "testing_geqrf.hpp"
 #include "testing_gesv.hpp"
 #include "testing_gesvd.hpp"
@@ -48,6 +49,7 @@ class hipsolver_dispatcher
         // Map for functions that support all precisions
         static const func_map map = {
             {"gebrd", testing_gebrd<false, false, false, T>},
+            {"gels", testing_gels<false, false, false, T>},
             {"geqrf", testing_geqrf<false, false, false, T>},
             {"gesv", testing_gesv<false, false, false, T>},
             {"gesvd", testing_gesvd<false, false, false, T>},
