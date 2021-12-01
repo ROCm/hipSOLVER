@@ -1080,6 +1080,187 @@ module hipsolver
         end function hipsolverZgebrd
     end interface
     
+    ! ******************** GELS ********************
+    interface
+        function hipsolverSSgels_bufferSize(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSSgels_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: X
+            integer(c_int), value :: ldx
+            type(c_ptr), value :: lwork
+        end function hipsolverSSgels_bufferSize
+    end interface
+    
+    interface
+        function hipsolverDDgels_bufferSize(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDDgels_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: X
+            integer(c_int), value :: ldx
+            type(c_ptr), value :: lwork
+        end function hipsolverDDgels_bufferSize
+    end interface
+    
+    interface
+        function hipsolverCCgels_bufferSize(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCCgels_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: X
+            integer(c_int), value :: ldx
+            type(c_ptr), value :: lwork
+        end function hipsolverCCgels_bufferSize
+    end interface
+    
+    interface
+        function hipsolverZZgels_bufferSize(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, lwork) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZZgels_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: X
+            integer(c_int), value :: ldx
+            type(c_ptr), value :: lwork
+        end function hipsolverZZgels_bufferSize
+    end interface
+
+    interface
+        function hipsolverSSgels(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverSSgels')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: X
+            integer(c_int), value :: ldx
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: niters
+            type(c_ptr), value :: info
+        end function hipsolverSSgels
+    end interface
+
+    interface
+        function hipsolverDDgels(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverDDgels')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: X
+            integer(c_int), value :: ldx
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: niters
+            type(c_ptr), value :: info
+        end function hipsolverDDgels
+    end interface
+
+    interface
+        function hipsolverCCgels(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverCCgels')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: X
+            integer(c_int), value :: ldx
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: niters
+            type(c_ptr), value :: info
+        end function hipsolverCCgels
+    end interface
+
+    interface
+        function hipsolverZZgels(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info) &
+                result(c_int) &
+                bind(c, name = 'hipsolverZZgels')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            type(c_ptr), value :: handle
+            integer(c_int), value :: m
+            integer(c_int), value :: n
+            integer(c_int), value :: nrhs
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: B
+            integer(c_int), value :: ldb
+            type(c_ptr), value :: X
+            integer(c_int), value :: ldx
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: niters
+            type(c_ptr), value :: info
+        end function hipsolverZZgels
+    end interface
+    
     ! ******************** GEQRF ********************
     interface
         function hipsolverSgeqrf_bufferSize(handle, m, n, A, lda, lwork) &

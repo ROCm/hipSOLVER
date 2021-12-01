@@ -104,6 +104,12 @@ LAPACK main functions
     :ref:`hipsolverXXgesv_bufferSize <gesv_bufferSize>`, x, x, x, x
     :ref:`hipsolverXXgesv <gesv>`, x, x, x, x
 
+.. csv-table:: Least-square solvers
+    :header: "Function", "single", "double", "single complex", "double complex"
+
+    :ref:`hipsolverXXgels_bufferSize <gels_bufferSize>`, x, x, x, x
+    :ref:`hipsolverXXgels <gels>`, x, x, x, x
+
 .. csv-table:: Symmetric eigensolvers
     :header: "Function", "single", "double", "single complex", "double complex"
 
@@ -130,6 +136,8 @@ Differences with the cuSOLVER API
 
 While the API of hipSOLVER is similar to that of cuSOLVER, there are some notable differences. In particular:
 
+* :ref:`hipsolverXXgels_bufferSize <gels_bufferSize>` does not require `dwork` as an argument
+* :ref:`hipsolverXXgesv_bufferSize <gesv_bufferSize>` does not require `dwork` as an argument
 * :ref:`hipsolverXgesvd_bufferSize <gesvd_bufferSize>` requires `jobu` and `jobv` as arguments
 * :ref:`hipsolverXgetrf <getrf>` requires `lwork` as an argument
 * :ref:`hipsolverXgetrs <getrs>` requires `work` and `lwork` as arguments
@@ -156,5 +164,5 @@ When using the rocSOLVER backend, keep in mind the following differences:
   algorithm convergence. As a result, the `info` argument of many functions will not be referenced or altered by the rocSOLVER backend, excepting those that provide info on
   singularities or convergence.
 
-* The `niters` argument of :ref:`hipsolverXXgesv <gesv>` is not referenced by the rocSOLVER backend.
+* The `niters` argument of :ref:`hipsolverXXgels <gels>` and :ref:`hipsolverXXgesv <gesv>` is not referenced by the rocSOLVER backend.
 

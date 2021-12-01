@@ -16,6 +16,7 @@ set(hipsolver_test_source
   getrs_gtest.cpp
   getrf_gtest.cpp
   gebrd_gtest.cpp
+  gels_gtest.cpp
   geqrf_gtest.cpp
   gesv_gtest.cpp
   gesvd_gtest.cpp

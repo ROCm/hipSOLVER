@@ -64,6 +64,15 @@
 #define hipsolverDgebrdFortran hipsolverDgebrd
 #define hipsolverCgebrdFortran hipsolverCgebrd
 #define hipsolverZgebrdFortran hipsolverZgebrd
+// gels
+#define hipsolverSSgels_bufferSizeFortran hipsolverSSgels_bufferSize
+#define hipsolverDDgels_bufferSizeFortran hipsolverDDgels_bufferSize
+#define hipsolverCCgels_bufferSizeFortran hipsolverCCgels_bufferSize
+#define hipsolverZZgels_bufferSizeFortran hipsolverZZgels_bufferSize
+#define hipsolverSSgelsFortran hipsolverSSgels
+#define hipsolverDDgelsFortran hipsolverDDgels
+#define hipsolverCCgelsFortran hipsolverCCgels
+#define hipsolverZZgelsFortran hipsolverZZgels
 // geqrf
 #define hipsolverSgeqrf_bufferSizeFortran hipsolverSgeqrf_bufferSize
 #define hipsolverDgeqrf_bufferSizeFortran hipsolverDgeqrf_bufferSize
