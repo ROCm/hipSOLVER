@@ -71,7 +71,7 @@ Arguments gesv_setup_arguments(gesv_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class GESV_BASE : public ::TestWithParam<gesv_tuple>
 {
 protected:
@@ -85,18 +85,22 @@ protected:
         Arguments arg = gesv_setup_arguments(GetParam());
 
         if(arg.peek<rocblas_int>("n") == -1 && arg.peek<rocblas_int>("nrhs") == -1)
-            testing_gesv_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
+            testing_gesv_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_gesv<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_gesv<API, BATCHED, STRIDED, T>(arg);
     }
 };
 
-class GESV : public GESV_BASE<false>
+class GESV : public GESV_BASE<API_NORMAL>
 {
 };
 
-class GESV_FORTRAN : public GESV_BASE<true>
+class GESV_FORTRAN : public GESV_BASE<API_FORTRAN>
+{
+};
+
+class GESV_COMPAT : public GESV_BASE<API_COMPAT>
 {
 };
 
@@ -142,6 +146,26 @@ TEST_P(GESV_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
+TEST_P(GESV_COMPAT, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(GESV_COMPAT, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(GESV_COMPAT, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(GESV_COMPAT, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          GESV,
 //                          Combine(ValuesIn(large_matrix_sizeA_range),
@@ -158,4 +182,13 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GESV_FORTRAN,
+                         Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GESV_COMPAT,
+//                          Combine(ValuesIn(large_matrix_sizeA_range),
+//                                  ValuesIn(large_matrix_sizeB_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         GESV_COMPAT,
                          Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));

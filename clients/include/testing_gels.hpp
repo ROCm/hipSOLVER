@@ -6,7 +6,7 @@
 
 #include "clientcommon.hpp"
 
-template <bool FORTRAN, typename U>
+template <testAPI_t API, typename U>
 void gels_checkBadArgs(const hipsolverHandle_t handle,
                        const int               m,
                        const int               n,
@@ -28,7 +28,7 @@ void gels_checkBadArgs(const hipsolverHandle_t handle,
 {
 #if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // handle
-    EXPECT_ROCBLAS_STATUS(hipsolver_gels(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
                                          nullptr,
                                          m,
                                          n,
@@ -53,7 +53,7 @@ void gels_checkBadArgs(const hipsolverHandle_t handle,
     // N/A
 
     // pointers
-    EXPECT_ROCBLAS_STATUS(hipsolver_gels(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
                                          handle,
                                          m,
                                          n,
@@ -73,7 +73,7 @@ void gels_checkBadArgs(const hipsolverHandle_t handle,
                                          info,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gels(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
                                          handle,
                                          m,
                                          n,
@@ -93,7 +93,7 @@ void gels_checkBadArgs(const hipsolverHandle_t handle,
                                          info,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gels(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
                                          handle,
                                          m,
                                          n,
@@ -113,7 +113,7 @@ void gels_checkBadArgs(const hipsolverHandle_t handle,
                                          info,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gels(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
                                          handle,
                                          m,
                                          n,
@@ -136,7 +136,7 @@ void gels_checkBadArgs(const hipsolverHandle_t handle,
 #endif
 }
 
-template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+template <testAPI_t API, bool BATCHED, bool STRIDED, typename T>
 void testing_gels_bad_arg()
 {
     // safe arguments
@@ -167,13 +167,13 @@ void testing_gels_bad_arg()
 
         // size_t size_W;
         // hipsolver_gels_bufferSize(
-        //     FORTRAN, handle, m, n, nrhs, dA.data(), lda, dB.data(), ldb, dX.data(), ldx, &size_W);
+        //     API, handle, m, n, nrhs, dA.data(), lda, dB.data(), ldb, dX.data(), ldx, &size_W);
         // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check bad arguments
-        // gels_checkBadArgs<FORTRAN>(handle,
+        // gels_checkBadArgs<API>(handle,
         //                            m,
         //                            n,
         //                            nrhs,
@@ -207,30 +207,30 @@ void testing_gels_bad_arg()
 
         size_t size_W;
         hipsolver_gels_bufferSize(
-            FORTRAN, handle, m, n, nrhs, dA.data(), lda, dB.data(), ldb, dX.data(), ldx, &size_W);
+            API, handle, m, n, nrhs, dA.data(), lda, dB.data(), ldb, dX.data(), ldx, &size_W);
         device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
         // check bad arguments
-        gels_checkBadArgs<FORTRAN>(handle,
-                                   m,
-                                   n,
-                                   nrhs,
-                                   dA.data(),
-                                   lda,
-                                   stA,
-                                   dB.data(),
-                                   ldb,
-                                   stB,
-                                   dX.data(),
-                                   ldx,
-                                   stX,
-                                   dWork.data(),
-                                   size_W,
-                                   hNIters.data(),
-                                   dInfo.data(),
-                                   bc);
+        gels_checkBadArgs<API>(handle,
+                               m,
+                               n,
+                               nrhs,
+                               dA.data(),
+                               lda,
+                               stA,
+                               dB.data(),
+                               ldb,
+                               stB,
+                               dX.data(),
+                               ldx,
+                               stX,
+                               dWork.data(),
+                               size_W,
+                               hNIters.data(),
+                               dInfo.data(),
+                               bc);
     }
 }
 
@@ -292,7 +292,7 @@ void gels_initData(const hipsolverHandle_t handle,
     }
 }
 
-template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void gels_getError(const hipsolverHandle_t handle,
                    const int               m,
                    const int               n,
@@ -329,7 +329,7 @@ void gels_getError(const hipsolverHandle_t handle,
 
     // execute computations
     // GPU lapack
-    CHECK_ROCBLAS_ERROR(hipsolver_gels(FORTRAN,
+    CHECK_ROCBLAS_ERROR(hipsolver_gels(API,
                                        handle,
                                        m,
                                        n,
@@ -385,7 +385,7 @@ void gels_getError(const hipsolverHandle_t handle,
     *max_err += err;
 }
 
-template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void gels_getPerfData(const hipsolverHandle_t handle,
                       const int               m,
                       const int               n,
@@ -449,7 +449,7 @@ void gels_getPerfData(const hipsolverHandle_t handle,
         gels_initData<false, true, T>(
             handle, m, n, nrhs, dA, lda, stA, dB, ldb, stB, dInfo, bc, hA, hB, hX, hInfo);
 
-        CHECK_ROCBLAS_ERROR(hipsolver_gels(FORTRAN,
+        CHECK_ROCBLAS_ERROR(hipsolver_gels(API,
                                            handle,
                                            m,
                                            n,
@@ -481,7 +481,7 @@ void gels_getPerfData(const hipsolverHandle_t handle,
             handle, m, n, nrhs, dA, lda, stA, dB, ldb, stB, dInfo, bc, hA, hB, hX, hInfo);
 
         start = get_time_us_sync(stream);
-        hipsolver_gels(FORTRAN,
+        hipsolver_gels(API,
                        handle,
                        m,
                        n,
@@ -505,7 +505,7 @@ void gels_getPerfData(const hipsolverHandle_t handle,
     *gpu_time_used /= hot_calls;
 }
 
-template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T, bool COMPLEX = is_complex<T>>
+template <testAPI_t API, bool BATCHED, bool STRIDED, typename T, bool COMPLEX = is_complex<T>>
 void testing_gels(Arguments& argus)
 {
     // get arguments
@@ -544,7 +544,7 @@ void testing_gels(Arguments& argus)
     {
         if(BATCHED)
         {
-            // EXPECT_ROCBLAS_STATUS(hipsolver_gels(FORTRAN,
+            // EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
             //                                      handle,
             //                                      m,
             //                                      n,
@@ -567,7 +567,7 @@ void testing_gels(Arguments& argus)
         }
         else
         {
-            EXPECT_ROCBLAS_STATUS(hipsolver_gels(FORTRAN,
+            EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
                                                  handle,
                                                  m,
                                                  n,
@@ -621,14 +621,14 @@ void testing_gels(Arguments& argus)
 
         // size_t size_W;
         // hipsolver_gels_bufferSize(
-        //     FORTRAN, handle, m, n, nrhs, dA.data(), lda, dB.data(), ldb, dX.data(), ldx, &size_W);
+        //     API, handle, m, n, nrhs, dA.data(), lda, dB.data(), ldb, dX.data(), ldx, &size_W);
         // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check computations
         // if(argus.unit_check || argus.norm_check)
-        //     gels_getError<FORTRAN, T>(handle,
+        //     gels_getError<API, T>(handle,
         //                               m,
         //                               n,
         //                               nrhs,
@@ -657,7 +657,7 @@ void testing_gels(Arguments& argus)
 
         // // collect performance data
         // if(argus.timing)
-        //     gels_getPerfData<FORTRAN, T>(handle,
+        //     gels_getPerfData<API, T>(handle,
         //                                  m,
         //                                  n,
         //                                  nrhs,
@@ -710,68 +710,68 @@ void testing_gels(Arguments& argus)
 
         size_t size_W;
         hipsolver_gels_bufferSize(
-            FORTRAN, handle, m, n, nrhs, dA.data(), lda, dB.data(), ldb, dX.data(), ldx, &size_W);
+            API, handle, m, n, nrhs, dA.data(), lda, dB.data(), ldb, dX.data(), ldx, &size_W);
         device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
         // check computations
         if(argus.unit_check || argus.norm_check)
-            gels_getError<FORTRAN, T>(handle,
-                                      m,
-                                      n,
-                                      nrhs,
-                                      dA,
-                                      lda,
-                                      stA,
-                                      dB,
-                                      ldb,
-                                      stB,
-                                      dX,
-                                      ldx,
-                                      stX,
-                                      dWork,
-                                      size_W,
-                                      dInfo,
-                                      bc,
-                                      hA,
-                                      hB,
-                                      hBRes,
-                                      hX,
-                                      hXRes,
-                                      hNIters,
-                                      hInfo,
-                                      hInfoRes,
-                                      &max_error);
+            gels_getError<API, T>(handle,
+                                  m,
+                                  n,
+                                  nrhs,
+                                  dA,
+                                  lda,
+                                  stA,
+                                  dB,
+                                  ldb,
+                                  stB,
+                                  dX,
+                                  ldx,
+                                  stX,
+                                  dWork,
+                                  size_W,
+                                  dInfo,
+                                  bc,
+                                  hA,
+                                  hB,
+                                  hBRes,
+                                  hX,
+                                  hXRes,
+                                  hNIters,
+                                  hInfo,
+                                  hInfoRes,
+                                  &max_error);
 
         // collect performance data
         if(argus.timing)
-            gels_getPerfData<FORTRAN, T>(handle,
-                                         m,
-                                         n,
-                                         nrhs,
-                                         dA,
-                                         lda,
-                                         stA,
-                                         dB,
-                                         ldb,
-                                         stB,
-                                         dX,
-                                         ldx,
-                                         stX,
-                                         dWork,
-                                         size_W,
-                                         dInfo,
-                                         bc,
-                                         hA,
-                                         hB,
-                                         hX,
-                                         hNIters,
-                                         hInfo,
-                                         &gpu_time_used,
-                                         &cpu_time_used,
-                                         hot_calls,
-                                         argus.perf);
+            gels_getPerfData<API, T>(handle,
+                                     m,
+                                     n,
+                                     nrhs,
+                                     dA,
+                                     lda,
+                                     stA,
+                                     dB,
+                                     ldb,
+                                     stB,
+                                     dX,
+                                     ldx,
+                                     stX,
+                                     dWork,
+                                     size_W,
+                                     dInfo,
+                                     bc,
+                                     hA,
+                                     hB,
+                                     hX,
+                                     hNIters,
+                                     hInfo,
+                                     &gpu_time_used,
+                                     &cpu_time_used,
+                                     hot_calls,
+                                     argus.perf);
     }
     // validate results for rocsolver-test
     // using max(m,n) * machine_precision as tolerance
