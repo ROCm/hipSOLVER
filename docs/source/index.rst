@@ -10,4 +10,5 @@ Welcome to hipSOLVER's documentation!
    disclaimer
    userguide_index
    api_index
+   compat_index
 

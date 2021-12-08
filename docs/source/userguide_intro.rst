@@ -129,12 +129,24 @@ LAPACK main functions
     :ref:`hipsolverXgesvd <gesvd>`, x, x, x, x
 
 
+Porting a cuSOLVER application to hipSOLVER
+============================================
+
+hipSOLVER is designed to make it easy for users of cuSOLVER to port their applications to hipSOLVER, and provides two separate but interchangeable APIs in order to facilitate
+a two-stage transition process. Users are encouraged to start with hipSOLVER's :ref:`compatibility API <library_compat>`, which uses the `hipsolverDn` prefix and has method
+signatures that are consistent with cusolverDn functions.
+
+Afterwards, it is recommended to begin the switch to hipSOLVER's :ref:`regular API <library_api>`, which uses the `hipsolver` prefix and introduces minor adjustments to the
+API (see below) in order to get the best performance out of the rocSOLVER backend. In most cases, switching to the regular API is as simple as removing `Dn` from the
+`hipsolverDn` prefix.
+
 .. _api_differences:
 
 Differences with the cuSOLVER API
-==================================
+----------------------------------
 
-While the API of hipSOLVER is similar to that of cuSOLVER, there are some notable differences. In particular:
+While hipSOLVER's :ref:`compatibility API <library_compat>` and :ref:`regular API <library_api>` are similar to each other, the argument lists of the following functions
+differ in the following ways:
 
 * :ref:`hipsolverXXgels_bufferSize <gels_bufferSize>` does not require `dwork` as an argument
 * :ref:`hipsolverXXgesv_bufferSize <gesv_bufferSize>` does not require `dwork` as an argument
@@ -145,24 +157,29 @@ While the API of hipSOLVER is similar to that of cuSOLVER, there are some notabl
 * :ref:`hipsolverXpotrs <potrs>` requires `work` and `lwork` as arguments, and
 * :ref:`hipsolverXpotrsBatched <potrs_batched>` requires `work` and `lwork` as arguments.
 
-In order to support these changes, hipSOLVER adds the following functions as well:
+In order to support these changes, the regular API adds the following functions as well:
 
 * :ref:`hipsolverXgetrs_bufferSize <getrs_bufferSize>`
 * :ref:`hipsolverXpotrfBatched_bufferSize <potrf_batched_bufferSize>`
 * :ref:`hipsolverXpotrs_bufferSize <potrs_bufferSize>`
 * :ref:`hipsolverXpotrsBatched_bufferSize <potrs_batched_bufferSize>`
 
-Furthermore, due to differences in implementation and API design between rocSOLVER and cuSOLVER, not all arguments are handled identically between the two backends.
-When using the rocSOLVER backend, keep in mind the following differences:
+Note that while most hipSOLVER functions take a workspace pointer and size as arguments, rocSOLVER maintains its own internal device workspace by default. In order to take
+advantage of this feature, users may pass a null pointer for the `work` argument or a zero size for the `lwork` argument of any function when using the rocSOLVER backend,
+and the workspace will be automatically managed behind-the-scenes. It is recommended to use a consistent strategy for workspace management, as performance issues may arise
+if the internal workspace is made to flip-flop between user-provided and automatically allocated workspaces, and this feature should not be used with the cuSOLVER backend.
 
-* While many cuSOLVER and hipSOLVER functions take a workspace pointer and size as arguments, rocSOLVER maintains its own internal device
-  workspace by default. In order to take advantage of this feature, users may pass a null pointer for the `work` argument of any function when using the rocSOLVER backend,
-  and the workspace will be automatically managed behind-the-scenes. It is recommended to use a consistent strategy for workspace management, as performance issues may arise
-  if the internal workspace is made to flip-flop between user-provided and automatically allocated workspaces.
+.. _unused_arguments:
 
-* Additionally, unlike cuSOLVER, rocSOLVER does not provide information on invalid arguments in its `info` arguments, though it will provide info on singularities and
-  algorithm convergence. As a result, the `info` argument of many functions will not be referenced or altered by the rocSOLVER backend, excepting those that provide info on
-  singularities or convergence.
+Arguments not referenced by rocSOLVER
+--------------------------------------
+
+Due to differences in implementation and API design between rocSOLVER and cuSOLVER, certain arguments will not be referenced by the rocSOLVER backend. Keep in mind the
+following when using either the API:
+
+* Unlike cuSOLVER, rocSOLVER does not provide information on invalid arguments in its `info` arguments, though it will provide info on singularities and algorithm convergence.
+  As a result, the `info` argument of many functions will not be referenced or altered by the rocSOLVER backend, excepting those that provide info on singularities or
+  convergence.
 
 * The `niters` argument of :ref:`hipsolverXXgels <gels>` and :ref:`hipsolverXXgesv <gesv>` is not referenced by the rocSOLVER backend.
 

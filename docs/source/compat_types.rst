@@ -10,43 +10,31 @@ rocBLAS/rocSOLVER types at runtime.
    :local:
    :backlinks: top
 
-hipsolverHandle_t
+hipsolverDnHandle_t
 --------------------
-.. doxygentypedef:: hipsolverHandle_t
-
-.. _status_t:
+.. doxygentypedef:: hipsolverDnHandle_t
 
 hipsolverStatus_t
 --------------------
-.. doxygenenum:: hipsolverStatus_t
-
-.. _operation_t:
+See :ref:`hipsolverStatus_t <status_t>`.
 
 hipsolverOperation_t
 --------------------
-.. doxygenenum:: hipsolverOperation_t
-
-.. _fillmode_t:
+See :ref:`hipsolverOperation_t <operation_t>`.
 
 hipsolverFillMode_t
 --------------------
-.. doxygenenum:: hipsolverFillMode_t
-
-.. _sidemode_t:
+See :ref:`hipsolverFillMode_t <fillmode_t>`.
 
 hipsolverSideMode_t
 --------------------
-.. doxygenenum:: hipsolverSideMode_t
-
-.. _eigmode_t:
+See :ref:`hipsolverSideMode_t <sidemode_t>`.
 
 hipsolverEigMode_t
 --------------------
-.. doxygenenum:: hipsolverEigMode_t
-
-.. _eigtype_t:
+See :ref:`hipsolverEigMode_t <eigmode_t>`.
 
 hipsolverEigType_t
 --------------------
-.. doxygenenum:: hipsolverEigType_t
+See :ref:`hipsolverEigType_t <eigtype_t>`.
 
