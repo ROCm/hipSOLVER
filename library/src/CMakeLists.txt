@@ -36,15 +36,15 @@ if( UNIX )
   add_library(hipsolver_fortran ${hipsolver_f90_source})
 endif( )
 
-if(BUILD_ADDRESS_SANITIZER)
-  add_link_options(-fuse-ld=lld)
-endif()
-
 add_library( hipsolver
   ${hipsolver_source}
   ${relative_hipsolver_headers_public}
 )
 add_library( roc::hipsolver ALIAS hipsolver )
+
+target_link_libraries(hipsolver PRIVATE
+  $<BUILD_INTERFACE:hipsolver-common> # https://gitlab.kitware.com/cmake/cmake/-/issues/15415
+)
 
 add_armor_flags( hipsolver "${ARMOR_LEVEL}" )
 
