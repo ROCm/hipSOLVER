@@ -69,6 +69,10 @@ if( UNIX )
   target_link_libraries( hipsolver-test PRIVATE hipsolver_fortran_client )
 endif( )
 
+target_link_libraries(hipsolver-test PRIVATE
+  $<BUILD_INTERFACE:hipsolver-common>
+)
+
 # need mf16c flag for float->half convertion
 target_compile_options( hipsolver-test PRIVATE -mf16c )
 

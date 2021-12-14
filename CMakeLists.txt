@@ -74,9 +74,17 @@ option( BUILD_VERBOSE "Output additional build information" OFF )
 option( BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON )
 option(BUILD_ADDRESS_SANITIZER "Build with address sanitizer enabled" OFF)
 
+add_library(hipsolver-common INTERFACE)
 if(BUILD_ADDRESS_SANITIZER)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -shared-libasan")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -shared-libasan")
+  target_compile_options(hipsolver-common INTERFACE
+    -fsanitize=address
+    -shared-libasan
+  )
+  target_link_options(hipsolver-common INTERFACE
+    -fsanitize=address
+    -shared-libasan
+    -fuse-ld=lld
+  )
 endif()
 
 if( CMAKE_BUILD_TYPE STREQUAL "Debug" )

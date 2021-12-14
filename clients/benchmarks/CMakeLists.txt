@@ -38,6 +38,10 @@ if( UNIX )
   target_link_libraries( hipsolver-bench PRIVATE hipsolver_fortran_client )
 endif( )
 
+target_link_libraries(hipsolver-bench PRIVATE
+  $<BUILD_INTERFACE:hipsolver-common>
+)
+
 add_armor_flags( hipsolver-bench "${ARMOR_LEVEL}" )
 
 # need mf16c flag for float->half convertion
