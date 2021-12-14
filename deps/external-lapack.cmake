@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright 2016-2020 Advanced Micro Devices, Inc.
+# Copyright 2016-2021 Advanced Micro Devices, Inc.
 # ########################################################################
 
 message( STATUS "Configuring lapack external dependency" )
@@ -32,7 +32,7 @@ ExternalProject_Add(
   PREFIX ${CMAKE_BINARY_DIR}/lapack
   GIT_REPOSITORY ${lapack_git_repository}
   GIT_TAG ${lapack_git_tag}
-  CMAKE_ARGS ${lapack_cmake_args} -DCBLAS=ON -DLAPACKE=OFF -DBUILD_TESTING=OFF
+  CMAKE_ARGS ${lapack_cmake_args} -DCBLAS=ON -DLAPACKE=OFF -DBUILD_TESTING=OFF -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
   LOG_BUILD 1
   INSTALL_COMMAND ""
   LOG_INSTALL 1
