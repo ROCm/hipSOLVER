@@ -13,20 +13,20 @@
 #ifndef HIPSOLVER_H
 #define HIPSOLVER_H
 
-#include "hipsolver-export.h"
-#include "hipsolver-version.h"
+#include "internal/hipsolver-export.h"
+#include "internal/hipsolver-version.h"
 
 /* Defines types used across the hipSOLVER library. */
-#include "hipsolver-types.h"
+#include "internal/hipsolver-types.h"
 
 /* Defines functions with the hipsolver prefix. APIs differ from cuSOLVER in some cases
  * in order to enable better rocSOLVER performance.
  */
-#include "hipsolver-functions.h"
+#include "internal/hipsolver-functions.h"
 
 /* Defines functions with the hipsolverDn prefix. APIs match those from cuSOLVER but may
  * result in degraded rocSOLVER performance.
  */
-#include "hipsolver-compat.h"
+#include "internal/hipsolver-compat.h"
 
 #endif // HIPSOLVER_H
