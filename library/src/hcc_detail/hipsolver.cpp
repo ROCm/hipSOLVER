@@ -3041,7 +3041,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array (aka rwork)
-    sz += sizeof(float) * min(m, n);
+    if(min(m, n) > 0)
+        sz += sizeof(float) * min(m, n);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -3085,7 +3086,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array (aka rwork)
-    sz += sizeof(double) * min(m, n);
+    if(min(m, n) > 0)
+        sz += sizeof(double) * min(m, n);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -3129,7 +3131,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array (aka rwork)
-    sz += sizeof(float) * min(m, n);
+    if(min(m, n) > 0)
+        sz += sizeof(float) * min(m, n);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -3173,7 +3176,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array (aka rwork)
-    sz += sizeof(double) * min(m, n);
+    if(min(m, n) > 0)
+        sz += sizeof(double) * min(m, n);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -3208,7 +3212,7 @@ try
 {
     if(work && lwork)
     {
-        if(!rwork)
+        if(!rwork && min(m, n) > 1)
         {
             rwork = work;
             work  = rwork + min(m, n);
@@ -3239,7 +3243,7 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(float) * min(m, n));
-        if(!rwork)
+        if(!rwork && min(m, n) > 1)
         {
             if(!mem)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
@@ -3288,7 +3292,7 @@ try
 {
     if(work && lwork)
     {
-        if(!rwork)
+        if(!rwork && min(m, n) > 1)
         {
             rwork = work;
             work  = rwork + min(m, n);
@@ -3319,7 +3323,7 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(double) * min(m, n));
-        if(!rwork)
+        if(!rwork && min(m, n) > 1)
         {
             if(!mem)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
@@ -3368,7 +3372,7 @@ try
 {
     if(work && lwork)
     {
-        if(!rwork)
+        if(!rwork && min(m, n) > 1)
         {
             rwork = (float*)work;
             work  = (hipFloatComplex*)(rwork + min(m, n));
@@ -3399,7 +3403,7 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(float) * min(m, n));
-        if(!rwork)
+        if(!rwork && min(m, n) > 1)
         {
             if(!mem)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
@@ -3448,7 +3452,7 @@ try
 {
     if(work && lwork)
     {
-        if(!rwork)
+        if(!rwork && min(m, n) > 1)
         {
             rwork = (double*)work;
             work  = (hipDoubleComplex*)(rwork + min(m, n));
@@ -3479,7 +3483,7 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(double) * min(m, n));
-        if(!rwork)
+        if(!rwork && min(m, n) > 1)
         {
             if(!mem)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
@@ -5407,7 +5411,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(float) * n;
+    if(n > 0)
+        sz += sizeof(float) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5451,7 +5456,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(double) * n;
+    if(n > 0)
+        sz += sizeof(double) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5495,7 +5501,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(float) * n;
+    if(n > 0)
+        sz += sizeof(float) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5539,7 +5546,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(double) * n;
+    if(n > 0)
+        sz += sizeof(double) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5569,7 +5577,8 @@ try
     if(work && lwork)
     {
         float* E = work;
-        work     = E + n;
+        if(n > 0)
+            work = E + n;
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -5587,8 +5596,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(
             hipsolverSsyevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(float) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(float) * n);
         if(!mem)
@@ -5626,7 +5634,8 @@ try
     if(work && lwork)
     {
         double* E = work;
-        work      = E + n;
+        if(n > 0)
+            work = E + n;
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -5644,8 +5653,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(
             hipsolverDsyevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(double) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(double) * n);
         if(!mem)
@@ -5683,7 +5691,8 @@ try
     if(work && lwork)
     {
         float* E = (float*)work;
-        work     = (hipFloatComplex*)(E + n);
+        if(n > 0)
+            work = (hipFloatComplex*)(E + n);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -5701,8 +5710,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(
             hipsolverCheevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(float) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(float) * n);
         if(!mem)
@@ -5740,7 +5748,8 @@ try
     if(work && lwork)
     {
         double* E = (double*)work;
-        work      = (hipDoubleComplex*)(E + n);
+        if(n > 0)
+            work = (hipDoubleComplex*)(E + n);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -5758,8 +5767,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(
             hipsolverZheevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(double) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(double) * n);
         if(!mem)
@@ -5818,7 +5826,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(float) * n;
+    if(n > 0)
+        sz += sizeof(float) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5868,7 +5877,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(double) * n;
+    if(n > 0)
+        sz += sizeof(double) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5918,7 +5928,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(float) * n;
+    if(n > 0)
+        sz += sizeof(float) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5968,7 +5979,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(double) * n;
+    if(n > 0)
+        sz += sizeof(double) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -6001,7 +6013,8 @@ try
     if(work && lwork)
     {
         float* E = work;
-        work     = E + n;
+        if(n > 0)
+            work = E + n;
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -6022,8 +6035,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(hipsolverSsygvd_bufferSize(
             (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(float) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(float) * n);
         if(!mem)
@@ -6067,7 +6079,8 @@ try
     if(work && lwork)
     {
         double* E = work;
-        work      = E + n;
+        if(n > 0)
+            work = E + n;
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -6088,8 +6101,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(hipsolverDsygvd_bufferSize(
             (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(double) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(double) * n);
         if(!mem)
@@ -6133,7 +6145,8 @@ try
     if(work && lwork)
     {
         float* E = (float*)work;
-        work     = (hipFloatComplex*)(E + n);
+        if(n > 0)
+            work = (hipFloatComplex*)(E + n);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -6154,8 +6167,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(hipsolverChegvd_bufferSize(
             (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(float) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(float) * n);
         if(!mem)
@@ -6199,7 +6211,8 @@ try
     if(work && lwork)
     {
         double* E = (double*)work;
-        work      = (hipDoubleComplex*)(E + n);
+        if(n > 0)
+            work = (hipDoubleComplex*)(E + n);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -6220,8 +6233,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(hipsolverZhegvd_bufferSize(
             (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(double) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(double) * n);
         if(!mem)
