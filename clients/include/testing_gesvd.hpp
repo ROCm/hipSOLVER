@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -224,30 +224,6 @@ void gesvd_checkBadArgs(const hipsolverHandle_t handle,
                                           dWork,
                                           lwork,
                                           dE,
-                                          stE,
-                                          dinfo,
-                                          bc),
-                          HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
-                                          handle,
-                                          left_svect,
-                                          right_svect,
-                                          m,
-                                          n,
-                                          dA,
-                                          lda,
-                                          stA,
-                                          dS,
-                                          stS,
-                                          dU,
-                                          ldu,
-                                          stU,
-                                          dV,
-                                          ldv,
-                                          stV,
-                                          dWork,
-                                          lwork,
-                                          (TT) nullptr,
                                           stE,
                                           dinfo,
                                           bc),
