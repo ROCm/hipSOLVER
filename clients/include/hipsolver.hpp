@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -2387,6 +2387,7 @@ inline hipsolverStatus_t hipsolver_gesvd_bufferSize(testAPI_t               API,
 }
 
 inline hipsolverStatus_t hipsolver_gesvd(testAPI_t         API,
+                                         bool              NRWK,
                                          hipsolverHandle_t handle,
                                          signed char       jobu,
                                          signed char       jobv,
@@ -2410,15 +2411,18 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t         API,
                                          int*              info,
                                          int               bc)
 {
-    switch(API)
+    switch(api2marshal(API, NRWK))
     {
-    case API_NORMAL:
+    case C_NORMAL:
         return hipsolverSgesvd(
             handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
-    case API_FORTRAN:
+    case C_NORMAL_ALT:
+        return hipsolverSgesvd(
+            handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, nullptr, info);
+    case FORTRAN_NORMAL:
         return hipsolverSgesvdFortran(
             handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnSgesvd(
             handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
     default:
@@ -2427,6 +2431,7 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t         API,
 }
 
 inline hipsolverStatus_t hipsolver_gesvd(testAPI_t         API,
+                                         bool              NRWK,
                                          hipsolverHandle_t handle,
                                          signed char       jobu,
                                          signed char       jobv,
@@ -2450,15 +2455,18 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t         API,
                                          int*              info,
                                          int               bc)
 {
-    switch(API)
+    switch(api2marshal(API, NRWK))
     {
-    case API_NORMAL:
+    case C_NORMAL:
         return hipsolverDgesvd(
             handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
-    case API_FORTRAN:
+    case C_NORMAL_ALT:
+        return hipsolverDgesvd(
+            handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, nullptr, info);
+    case FORTRAN_NORMAL:
         return hipsolverDgesvdFortran(
             handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnDgesvd(
             handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info);
     default:
@@ -2467,6 +2475,7 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t         API,
 }
 
 inline hipsolverStatus_t hipsolver_gesvd(testAPI_t         API,
+                                         bool              NRWK,
                                          hipsolverHandle_t handle,
                                          signed char       jobu,
                                          signed char       jobv,
@@ -2490,9 +2499,9 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t         API,
                                          int*              info,
                                          int               bc)
 {
-    switch(API)
+    switch(api2marshal(API, NRWK))
     {
-    case API_NORMAL:
+    case C_NORMAL:
         return hipsolverCgesvd(handle,
                                jobu,
                                jobv,
@@ -2509,7 +2518,24 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t         API,
                                lwork,
                                rwork,
                                info);
-    case API_FORTRAN:
+    case C_NORMAL_ALT:
+        return hipsolverCgesvd(handle,
+                               jobu,
+                               jobv,
+                               m,
+                               n,
+                               (hipFloatComplex*)A,
+                               lda,
+                               S,
+                               (hipFloatComplex*)U,
+                               ldu,
+                               (hipFloatComplex*)V,
+                               ldv,
+                               (hipFloatComplex*)work,
+                               lwork,
+                               nullptr,
+                               info);
+    case FORTRAN_NORMAL:
         return hipsolverCgesvdFortran(handle,
                                       jobu,
                                       jobv,
@@ -2526,7 +2552,7 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t         API,
                                       lwork,
                                       rwork,
                                       info);
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnCgesvd(handle,
                                  jobu,
                                  jobv,
@@ -2549,6 +2575,7 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t         API,
 }
 
 inline hipsolverStatus_t hipsolver_gesvd(testAPI_t               API,
+                                         bool                    NRWK,
                                          hipsolverHandle_t       handle,
                                          signed char             jobu,
                                          signed char             jobv,
@@ -2572,9 +2599,9 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t               API,
                                          int*                    info,
                                          int                     bc)
 {
-    switch(API)
+    switch(api2marshal(API, NRWK))
     {
-    case API_NORMAL:
+    case C_NORMAL:
         return hipsolverZgesvd(handle,
                                jobu,
                                jobv,
@@ -2591,7 +2618,24 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t               API,
                                lwork,
                                rwork,
                                info);
-    case API_FORTRAN:
+    case C_NORMAL_ALT:
+        return hipsolverZgesvd(handle,
+                               jobu,
+                               jobv,
+                               m,
+                               n,
+                               (hipDoubleComplex*)A,
+                               lda,
+                               S,
+                               (hipDoubleComplex*)U,
+                               ldu,
+                               (hipDoubleComplex*)V,
+                               ldv,
+                               (hipDoubleComplex*)work,
+                               lwork,
+                               nullptr,
+                               info);
+    case FORTRAN_NORMAL:
         return hipsolverZgesvdFortran(handle,
                                       jobu,
                                       jobv,
@@ -2608,7 +2652,7 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t               API,
                                       lwork,
                                       rwork,
                                       info);
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnZgesvd(handle,
                                  jobu,
                                  jobv,

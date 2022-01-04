@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  *
  * ************************************************************************ */
 
@@ -127,7 +127,7 @@ Arguments gesvd_setup_arguments(gesvd_tuple tup)
     return arg;
 }
 
-template <testAPI_t API>
+template <testAPI_t API, bool NRWK>
 class GESVD_BASE : public ::TestWithParam<gesvd_tuple>
 {
 protected:
@@ -145,19 +145,23 @@ protected:
             testing_gesvd_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_gesvd<API, BATCHED, STRIDED, T>(arg);
+        testing_gesvd<API, BATCHED, STRIDED, NRWK, T>(arg);
     }
 };
 
-class GESVD : public GESVD_BASE<API_NORMAL>
+class GESVD : public GESVD_BASE<API_NORMAL, false>
 {
 };
 
-class GESVD_FORTRAN : public GESVD_BASE<API_FORTRAN>
+class GESVD_FORTRAN : public GESVD_BASE<API_FORTRAN, false>
 {
 };
 
-class GESVD_COMPAT : public GESVD_BASE<API_COMPAT>
+class GESVD_COMPAT : public GESVD_BASE<API_COMPAT, false>
+{
+};
+
+class GESVD_NRWK : public GESVD_BASE<API_NORMAL, true>
 {
 };
 
@@ -223,6 +227,26 @@ TEST_P(GESVD_COMPAT, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
+TEST_P(GESVD_NRWK, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(GESVD_NRWK, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(GESVD_NRWK, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(GESVD_NRWK, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          GESVD,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
@@ -243,4 +267,12 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GESVD_COMPAT,
+                         Combine(ValuesIn(size_range), ValuesIn(opt_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GESVD_NRWK,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         GESVD_NRWK,
                          Combine(ValuesIn(size_range), ValuesIn(opt_range)));
