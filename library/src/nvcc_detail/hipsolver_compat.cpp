@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #include "hipsolver.h"
@@ -27,113 +27,53 @@ hipsolverStatus_t hipsolverDnZgesvd_bufferSize(hipsolverDnHandle_t handle, int m
     return hipsolverZgesvd_bufferSize(handle, 'N', 'N', m, n, lwork);
 }
 
-hipsolverStatus_t hipsolverDnSgesvd(hipsolverDnHandle_t handle,
-                                    signed char         jobu,
-                                    signed char         jobv,
+// getrf
+hipsolverStatus_t hipsolverDnSgetrf(hipsolverDnHandle_t handle,
                                     int                 m,
                                     int                 n,
                                     float*              A,
                                     int                 lda,
-                                    float*              S,
-                                    float*              U,
-                                    int                 ldu,
-                                    float*              V,
-                                    int                 ldv,
                                     float*              work,
-                                    int                 lwork,
-                                    float*              rwork,
+                                    int*                devIpiv,
                                     int*                devInfo)
 {
-    return hipsolverSgesvd(
-        handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, devInfo);
+    return hipsolverSgetrf(handle, m, n, A, lda, work, 0, devIpiv, devInfo);
 }
 
-hipsolverStatus_t hipsolverDnDgesvd(hipsolverDnHandle_t handle,
-                                    signed char         jobu,
-                                    signed char         jobv,
+hipsolverStatus_t hipsolverDnDgetrf(hipsolverDnHandle_t handle,
                                     int                 m,
                                     int                 n,
                                     double*             A,
                                     int                 lda,
-                                    double*             S,
-                                    double*             U,
-                                    int                 ldu,
-                                    double*             V,
-                                    int                 ldv,
                                     double*             work,
-                                    int                 lwork,
-                                    double*             rwork,
+                                    int*                devIpiv,
                                     int*                devInfo)
 {
-    return hipsolverDgesvd(
-        handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, devInfo);
+    return hipsolverDgetrf(handle, m, n, A, lda, work, 0, devIpiv, devInfo);
 }
 
-hipsolverStatus_t hipsolverDnCgesvd(hipsolverDnHandle_t handle,
-                                    signed char         jobu,
-                                    signed char         jobv,
+hipsolverStatus_t hipsolverDnCgetrf(hipsolverDnHandle_t handle,
                                     int                 m,
                                     int                 n,
                                     hipFloatComplex*    A,
                                     int                 lda,
-                                    float*              S,
-                                    hipFloatComplex*    U,
-                                    int                 ldu,
-                                    hipFloatComplex*    V,
-                                    int                 ldv,
                                     hipFloatComplex*    work,
-                                    int                 lwork,
-                                    float*              rwork,
+                                    int*                devIpiv,
                                     int*                devInfo)
 {
-    return hipsolverCgesvd(
-        handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, devInfo);
+    return hipsolverCgetrf(handle, m, n, A, lda, work, 0, devIpiv, devInfo);
 }
 
-hipsolverStatus_t hipsolverDnZgesvd(hipsolverDnHandle_t handle,
-                                    signed char         jobu,
-                                    signed char         jobv,
+hipsolverStatus_t hipsolverDnZgetrf(hipsolverDnHandle_t handle,
                                     int                 m,
                                     int                 n,
                                     hipDoubleComplex*   A,
                                     int                 lda,
-                                    double*             S,
-                                    hipDoubleComplex*   U,
-                                    int                 ldu,
-                                    hipDoubleComplex*   V,
-                                    int                 ldv,
                                     hipDoubleComplex*   work,
-                                    int                 lwork,
-                                    double*             rwork,
+                                    int*                devIpiv,
                                     int*                devInfo)
 {
-    return hipsolverZgesvd(
-        handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, devInfo);
-}
-
-// getrf
-hipsolverStatus_t hipsolverDnSgetrf_bufferSize(
-    hipsolverDnHandle_t handle, int m, int n, float* A, int lda, int* lwork)
-{
-    return hipsolverSgetrf_bufferSize(handle, m, n, A, lda, lwork);
-}
-
-hipsolverStatus_t hipsolverDnDgetrf_bufferSize(
-    hipsolverDnHandle_t handle, int m, int n, double* A, int lda, int* lwork)
-{
-    return hipsolverDgetrf_bufferSize(handle, m, n, A, lda, lwork);
-}
-
-hipsolverStatus_t hipsolverDnCgetrf_bufferSize(
-    hipsolverDnHandle_t handle, int m, int n, hipFloatComplex* A, int lda, int* lwork)
-{
-    return hipsolverCgetrf_bufferSize(handle, m, n, A, lda, lwork);
-}
-
-hipsolverStatus_t hipsolverDnZgetrf_bufferSize(
-    hipsolverDnHandle_t handle, int m, int n, hipDoubleComplex* A, int lda, int* lwork)
-{
-    return hipsolverZgetrf_bufferSize(handle, m, n, A, lda, lwork);
+    return hipsolverZgetrf(handle, m, n, A, lda, work, 0, devIpiv, devInfo);
 }
 
 } //extern C

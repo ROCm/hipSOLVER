@@ -1,8 +1,9 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #include "hipsolver.h"
+#include "error_macros.hpp"
 #include "exceptions.hpp"
 #include "internal/rocblas_device_malloc.hpp"
 #include "rocblas.h"
@@ -312,22 +313,6 @@ hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
         return HIPSOLVER_STATUS_UNKNOWN;
     }
 }
-
-#define CHECK_HIPSOLVER_ERROR(STATUS)           \
-    do                                          \
-    {                                           \
-        hipsolverStatus_t _status = (STATUS);   \
-        if(_status != HIPSOLVER_STATUS_SUCCESS) \
-            return _status;                     \
-    } while(0)
-
-#define CHECK_ROCBLAS_ERROR(STATUS)             \
-    do                                          \
-    {                                           \
-        rocblas_status _status = (STATUS);      \
-        if(_status != rocblas_status_success)   \
-            return rocblas2hip_status(_status); \
-    } while(0)
 
 inline rocblas_status hipsolverManageWorkspace(rocblas_handle handle, size_t new_size)
 {
