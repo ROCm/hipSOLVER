@@ -24,9 +24,6 @@ const vector<vector<char>> op_range = {{'N', 'L'}, {'N', 'U'}, {'V', 'L'}, {'V',
 
 // for checkin_lapack tests
 const vector<vector<int>> size_range = {
-    // invalid
-    {-1, 1},
-    {10, 5},
     // normal (valid) samples
     {1, 1},
     {12, 12},
