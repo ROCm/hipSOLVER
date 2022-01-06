@@ -2,7 +2,7 @@
 
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
-## [(Unreleased) hipSOLVER]
+## hipSOLVER 1.2.0 for ROCm 5.0.0
 ### Added
 - Added functions
   - sytrf
