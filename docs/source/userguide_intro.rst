@@ -139,4 +139,17 @@ LAPACK main functions
     :ref:`hipsolverXgesvd <gesvd>`, x, x, x, x
 
 
+Compatibility-only functions
+====================================
+
+The following functions have not been implemented in rocSOLVER, but can each be computed with an equivalent function that uses a different algorithmic approach. These
+functions are provided as part of the compatibility API only, pending their implementation in rocSOLVER.
+
+.. csv-table:: Symmetric eigensolvers
+    :header: "Function", "single", "double", "single complex", "double complex"
+
+    :ref:`hipsolverDnXsyevj_bufferSize <compat_syevj_bufferSize>`, x, x, ,
+    :ref:`hipsolverDnXsyevj <compat_syevj>`, x, x, ,
+    :ref:`hipsolverDnXheevj_bufferSize <compat_heevj_bufferSize>`, , , x, x
+    :ref:`hipsolverDnXheevj <compat_heevj>`, , , x, x
 
