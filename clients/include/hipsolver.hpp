@@ -2809,12 +2809,8 @@ inline hipsolverStatus_t hipsolver_getrf(testAPI_t         API,
         return hipsolverSgetrf(handle, m, n, A, lda, work, lwork, nullptr, info);
     case FORTRAN_NORMAL:
         return hipsolverSgetrfFortran(handle, m, n, A, lda, work, lwork, ipiv, info);
-    case FORTRAN_NORMAL_ALT:
-        return hipsolverSgetrfFortran(handle, m, n, A, lda, work, lwork, nullptr, info);
     case COMPAT_NORMAL:
         return hipsolverDnSgetrf(handle, m, n, A, lda, work, ipiv, info);
-    case COMPAT_NORMAL_ALT:
-        return hipsolverDnSgetrf(handle, m, n, A, lda, work, nullptr, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -2843,12 +2839,8 @@ inline hipsolverStatus_t hipsolver_getrf(testAPI_t         API,
         return hipsolverDgetrf(handle, m, n, A, lda, work, lwork, nullptr, info);
     case FORTRAN_NORMAL:
         return hipsolverDgetrfFortran(handle, m, n, A, lda, work, lwork, ipiv, info);
-    case FORTRAN_NORMAL_ALT:
-        return hipsolverDgetrfFortran(handle, m, n, A, lda, work, lwork, nullptr, info);
     case COMPAT_NORMAL:
         return hipsolverDnDgetrf(handle, m, n, A, lda, work, ipiv, info);
-    case COMPAT_NORMAL_ALT:
-        return hipsolverDnDgetrf(handle, m, n, A, lda, work, nullptr, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -2880,15 +2872,9 @@ inline hipsolverStatus_t hipsolver_getrf(testAPI_t         API,
     case FORTRAN_NORMAL:
         return hipsolverCgetrfFortran(
             handle, m, n, (hipFloatComplex*)A, lda, (hipFloatComplex*)work, lwork, ipiv, info);
-    case FORTRAN_NORMAL_ALT:
-        return hipsolverCgetrfFortran(
-            handle, m, n, (hipFloatComplex*)A, lda, (hipFloatComplex*)work, lwork, nullptr, info);
     case COMPAT_NORMAL:
         return hipsolverDnCgetrf(
             handle, m, n, (hipFloatComplex*)A, lda, (hipFloatComplex*)work, ipiv, info);
-    case COMPAT_NORMAL_ALT:
-        return hipsolverDnCgetrf(
-            handle, m, n, (hipFloatComplex*)A, lda, (hipFloatComplex*)work, nullptr, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -2920,15 +2906,9 @@ inline hipsolverStatus_t hipsolver_getrf(testAPI_t               API,
     case FORTRAN_NORMAL:
         return hipsolverZgetrfFortran(
             handle, m, n, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)work, lwork, ipiv, info);
-    case FORTRAN_NORMAL_ALT:
-        return hipsolverZgetrfFortran(
-            handle, m, n, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)work, lwork, nullptr, info);
     case COMPAT_NORMAL:
         return hipsolverDnZgetrf(
             handle, m, n, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)work, ipiv, info);
-    case COMPAT_NORMAL_ALT:
-        return hipsolverDnZgetrf(
-            handle, m, n, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)work, nullptr, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
