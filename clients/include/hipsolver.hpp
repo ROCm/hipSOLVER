@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -1519,6 +1519,7 @@ inline hipsolverStatus_t hipsolver_gels_bufferSize(testAPI_t               API,
 }
 
 inline hipsolverStatus_t hipsolver_gels(testAPI_t         API,
+                                        bool              INPLACE,
                                         hipsolverHandle_t handle,
                                         int               m,
                                         int               n,
@@ -1538,15 +1539,18 @@ inline hipsolverStatus_t hipsolver_gels(testAPI_t         API,
                                         int*              info,
                                         int               bc)
 {
-    switch(API)
+    switch(api2marshal(API, INPLACE))
     {
-    case API_NORMAL:
+    case C_NORMAL:
         return hipsolverSSgels(
             handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info);
-    case API_FORTRAN:
+    case C_NORMAL_ALT:
+        return hipsolverSSgels(
+            handle, m, n, nrhs, A, lda, B, ldb, B, ldb, work, lwork, niters, info);
+    case FORTRAN_NORMAL:
         return hipsolverSSgelsFortran(
             handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info);
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnSSgels(
             handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info);
     default:
@@ -1555,6 +1559,7 @@ inline hipsolverStatus_t hipsolver_gels(testAPI_t         API,
 }
 
 inline hipsolverStatus_t hipsolver_gels(testAPI_t         API,
+                                        bool              INPLACE,
                                         hipsolverHandle_t handle,
                                         int               m,
                                         int               n,
@@ -1574,15 +1579,18 @@ inline hipsolverStatus_t hipsolver_gels(testAPI_t         API,
                                         int*              info,
                                         int               bc)
 {
-    switch(API)
+    switch(api2marshal(API, INPLACE))
     {
-    case API_NORMAL:
+    case C_NORMAL:
         return hipsolverDDgels(
             handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info);
-    case API_FORTRAN:
+    case C_NORMAL_ALT:
+        return hipsolverDDgels(
+            handle, m, n, nrhs, A, lda, B, ldb, B, ldb, work, lwork, niters, info);
+    case FORTRAN_NORMAL:
         return hipsolverDDgelsFortran(
             handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info);
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnDDgels(
             handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info);
     default:
@@ -1591,6 +1599,7 @@ inline hipsolverStatus_t hipsolver_gels(testAPI_t         API,
 }
 
 inline hipsolverStatus_t hipsolver_gels(testAPI_t         API,
+                                        bool              INPLACE,
                                         hipsolverHandle_t handle,
                                         int               m,
                                         int               n,
@@ -1610,9 +1619,9 @@ inline hipsolverStatus_t hipsolver_gels(testAPI_t         API,
                                         int*              info,
                                         int               bc)
 {
-    switch(API)
+    switch(api2marshal(API, INPLACE))
     {
-    case API_NORMAL:
+    case C_NORMAL:
         return hipsolverCCgels(handle,
                                m,
                                n,
@@ -1627,7 +1636,22 @@ inline hipsolverStatus_t hipsolver_gels(testAPI_t         API,
                                lwork,
                                niters,
                                info);
-    case API_FORTRAN:
+    case C_NORMAL_ALT:
+        return hipsolverCCgels(handle,
+                               m,
+                               n,
+                               nrhs,
+                               (hipFloatComplex*)A,
+                               lda,
+                               (hipFloatComplex*)B,
+                               ldb,
+                               (hipFloatComplex*)B,
+                               ldb,
+                               work,
+                               lwork,
+                               niters,
+                               info);
+    case FORTRAN_NORMAL:
         return hipsolverCCgelsFortran(handle,
                                       m,
                                       n,
@@ -1642,7 +1666,7 @@ inline hipsolverStatus_t hipsolver_gels(testAPI_t         API,
                                       lwork,
                                       niters,
                                       info);
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnCCgels(handle,
                                  m,
                                  n,
@@ -1663,6 +1687,7 @@ inline hipsolverStatus_t hipsolver_gels(testAPI_t         API,
 }
 
 inline hipsolverStatus_t hipsolver_gels(testAPI_t               API,
+                                        bool                    INPLACE,
                                         hipsolverHandle_t       handle,
                                         int                     m,
                                         int                     n,
@@ -1682,9 +1707,9 @@ inline hipsolverStatus_t hipsolver_gels(testAPI_t               API,
                                         int*                    info,
                                         int                     bc)
 {
-    switch(API)
+    switch(api2marshal(API, INPLACE))
     {
-    case API_NORMAL:
+    case C_NORMAL:
         return hipsolverZZgels(handle,
                                m,
                                n,
@@ -1699,7 +1724,22 @@ inline hipsolverStatus_t hipsolver_gels(testAPI_t               API,
                                lwork,
                                niters,
                                info);
-    case API_FORTRAN:
+    case C_NORMAL_ALT:
+        return hipsolverZZgels(handle,
+                               m,
+                               n,
+                               nrhs,
+                               (hipDoubleComplex*)A,
+                               lda,
+                               (hipDoubleComplex*)B,
+                               ldb,
+                               (hipDoubleComplex*)B,
+                               ldb,
+                               work,
+                               lwork,
+                               niters,
+                               info);
+    case FORTRAN_NORMAL:
         return hipsolverZZgelsFortran(handle,
                                       m,
                                       n,
@@ -1714,7 +1754,7 @@ inline hipsolverStatus_t hipsolver_gels(testAPI_t               API,
                                       lwork,
                                       niters,
                                       info);
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnZZgels(handle,
                                  m,
                                  n,
@@ -2068,6 +2108,7 @@ inline hipsolverStatus_t hipsolver_gesv_bufferSize(testAPI_t               API,
 }
 
 inline hipsolverStatus_t hipsolver_gesv(testAPI_t         API,
+                                        bool              INPLACE,
                                         hipsolverHandle_t handle,
                                         int               n,
                                         int               nrhs,
@@ -2088,15 +2129,18 @@ inline hipsolverStatus_t hipsolver_gesv(testAPI_t         API,
                                         int*              info,
                                         int               bc)
 {
-    switch(API)
+    switch(api2marshal(API, INPLACE))
     {
-    case API_NORMAL:
+    case C_NORMAL:
         return hipsolverSSgesv(
             handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, work, lwork, niters, info);
-    case API_FORTRAN:
+    case C_NORMAL_ALT:
+        return hipsolverSSgesv(
+            handle, n, nrhs, A, lda, ipiv, B, ldb, B, ldb, work, lwork, niters, info);
+    case FORTRAN_NORMAL:
         return hipsolverSSgesvFortran(
             handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, work, lwork, niters, info);
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnSSgesv(
             handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, work, lwork, niters, info);
     default:
@@ -2105,6 +2149,7 @@ inline hipsolverStatus_t hipsolver_gesv(testAPI_t         API,
 }
 
 inline hipsolverStatus_t hipsolver_gesv(testAPI_t         API,
+                                        bool              INPLACE,
                                         hipsolverHandle_t handle,
                                         int               n,
                                         int               nrhs,
@@ -2125,15 +2170,18 @@ inline hipsolverStatus_t hipsolver_gesv(testAPI_t         API,
                                         int*              info,
                                         int               bc)
 {
-    switch(API)
+    switch(api2marshal(API, INPLACE))
     {
-    case API_NORMAL:
+    case C_NORMAL:
         return hipsolverDDgesv(
             handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, work, lwork, niters, info);
-    case API_FORTRAN:
+    case C_NORMAL_ALT:
+        return hipsolverDDgesv(
+            handle, n, nrhs, A, lda, ipiv, B, ldb, B, ldb, work, lwork, niters, info);
+    case FORTRAN_NORMAL:
         return hipsolverDDgesvFortran(
             handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, work, lwork, niters, info);
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnDDgesv(
             handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, work, lwork, niters, info);
     default:
@@ -2142,6 +2190,7 @@ inline hipsolverStatus_t hipsolver_gesv(testAPI_t         API,
 }
 
 inline hipsolverStatus_t hipsolver_gesv(testAPI_t         API,
+                                        bool              INPLACE,
                                         hipsolverHandle_t handle,
                                         int               n,
                                         int               nrhs,
@@ -2162,9 +2211,9 @@ inline hipsolverStatus_t hipsolver_gesv(testAPI_t         API,
                                         int*              info,
                                         int               bc)
 {
-    switch(API)
+    switch(api2marshal(API, INPLACE))
     {
-    case API_NORMAL:
+    case C_NORMAL:
         return hipsolverCCgesv(handle,
                                n,
                                nrhs,
@@ -2179,7 +2228,22 @@ inline hipsolverStatus_t hipsolver_gesv(testAPI_t         API,
                                lwork,
                                niters,
                                info);
-    case API_FORTRAN:
+    case C_NORMAL_ALT:
+        return hipsolverCCgesv(handle,
+                               n,
+                               nrhs,
+                               (hipFloatComplex*)A,
+                               lda,
+                               ipiv,
+                               (hipFloatComplex*)B,
+                               ldb,
+                               (hipFloatComplex*)B,
+                               ldb,
+                               work,
+                               lwork,
+                               niters,
+                               info);
+    case FORTRAN_NORMAL:
         return hipsolverCCgesvFortran(handle,
                                       n,
                                       nrhs,
@@ -2194,7 +2258,7 @@ inline hipsolverStatus_t hipsolver_gesv(testAPI_t         API,
                                       lwork,
                                       niters,
                                       info);
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnCCgesv(handle,
                                  n,
                                  nrhs,
@@ -2215,6 +2279,7 @@ inline hipsolverStatus_t hipsolver_gesv(testAPI_t         API,
 }
 
 inline hipsolverStatus_t hipsolver_gesv(testAPI_t               API,
+                                        bool                    INPLACE,
                                         hipsolverHandle_t       handle,
                                         int                     n,
                                         int                     nrhs,
@@ -2235,9 +2300,9 @@ inline hipsolverStatus_t hipsolver_gesv(testAPI_t               API,
                                         int*                    info,
                                         int                     bc)
 {
-    switch(API)
+    switch(api2marshal(API, INPLACE))
     {
-    case API_NORMAL:
+    case C_NORMAL:
         return hipsolverZZgesv(handle,
                                n,
                                nrhs,
@@ -2252,7 +2317,22 @@ inline hipsolverStatus_t hipsolver_gesv(testAPI_t               API,
                                lwork,
                                niters,
                                info);
-    case API_FORTRAN:
+    case C_NORMAL_ALT:
+        return hipsolverZZgesv(handle,
+                               n,
+                               nrhs,
+                               (hipDoubleComplex*)A,
+                               lda,
+                               ipiv,
+                               (hipDoubleComplex*)B,
+                               ldb,
+                               (hipDoubleComplex*)B,
+                               ldb,
+                               work,
+                               lwork,
+                               niters,
+                               info);
+    case FORTRAN_NORMAL:
         return hipsolverZZgesvFortran(handle,
                                       n,
                                       nrhs,
@@ -2267,7 +2347,7 @@ inline hipsolverStatus_t hipsolver_gesv(testAPI_t               API,
                                       lwork,
                                       niters,
                                       info);
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnZZgesv(handle,
                                  n,
                                  nrhs,

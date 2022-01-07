@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -29,6 +29,7 @@ void gels_checkBadArgs(const hipsolverHandle_t handle,
 #if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // handle
     EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
+                                         false,
                                          nullptr,
                                          m,
                                          n,
@@ -54,6 +55,7 @@ void gels_checkBadArgs(const hipsolverHandle_t handle,
 
     // pointers
     EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
+                                         false,
                                          handle,
                                          m,
                                          n,
@@ -74,6 +76,7 @@ void gels_checkBadArgs(const hipsolverHandle_t handle,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
     EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
+                                         false,
                                          handle,
                                          m,
                                          n,
@@ -94,6 +97,7 @@ void gels_checkBadArgs(const hipsolverHandle_t handle,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
     EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
+                                         false,
                                          handle,
                                          m,
                                          n,
@@ -114,6 +118,7 @@ void gels_checkBadArgs(const hipsolverHandle_t handle,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
     EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
+                                         false,
                                          handle,
                                          m,
                                          n,
@@ -174,23 +179,23 @@ void testing_gels_bad_arg()
 
         // // check bad arguments
         // gels_checkBadArgs<API>(handle,
-        //                            m,
-        //                            n,
-        //                            nrhs,
-        //                            dA.data(),
-        //                            lda,
-        //                            stA,
-        //                            dB.data(),
-        //                            ldb,
-        //                            stB,
-        //                            dX.data(),
-        //                            ldx,
-        //                            stX,
-        //                            dWork.data(),
-        //                            size_W,
-        //                            hNIters.data(),
-        //                            dInfo.data(),
-        //                            bc);
+        //                        m,
+        //                        n,
+        //                        nrhs,
+        //                        dA.data(),
+        //                        lda,
+        //                        stA,
+        //                        dB.data(),
+        //                        ldb,
+        //                        stB,
+        //                        dX.data(),
+        //                        ldx,
+        //                        stX,
+        //                        dWork.data(),
+        //                        size_W,
+        //                        hNIters.data(),
+        //                        dInfo.data(),
+        //                        bc);
     }
     else
     {
@@ -292,7 +297,13 @@ void gels_initData(const hipsolverHandle_t handle,
     }
 }
 
-template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API,
+          bool      INPLACE,
+          typename T,
+          typename Td,
+          typename Ud,
+          typename Th,
+          typename Uh>
 void gels_getError(const hipsolverHandle_t handle,
                    const int               m,
                    const int               n,
@@ -330,6 +341,7 @@ void gels_getError(const hipsolverHandle_t handle,
     // execute computations
     // GPU lapack
     CHECK_ROCBLAS_ERROR(hipsolver_gels(API,
+                                       INPLACE,
                                        handle,
                                        m,
                                        n,
@@ -367,13 +379,24 @@ void gels_getError(const hipsolverHandle_t handle,
     *max_err = 0;
     for(int b = 0; b < bc; ++b)
     {
-        err      = norm_error('F', m, nrhs, ldb, hB[b], hBRes[b]);
-        *max_err = err > *max_err ? err : *max_err;
-
-        if(hInfo[b][0] == 0)
+        if(!INPLACE)
         {
-            err      = norm_error('I', n, nrhs, max(m, n), hX[b], hXRes[b], ldx);
+            err      = norm_error('F', m, nrhs, ldb, hB[b], hBRes[b]);
             *max_err = err > *max_err ? err : *max_err;
+
+            if(hInfo[b][0] == 0)
+            {
+                err      = norm_error('I', n, nrhs, max(m, n), hX[b], hXRes[b], ldx);
+                *max_err = err > *max_err ? err : *max_err;
+            }
+        }
+        else
+        {
+            if(hInfo[b][0] == 0)
+            {
+                err      = norm_error('I', n, nrhs, max(m, n), hX[b], hBRes[b], ldb);
+                *max_err = err > *max_err ? err : *max_err;
+            }
         }
     }
 
@@ -385,7 +408,13 @@ void gels_getError(const hipsolverHandle_t handle,
     *max_err += err;
 }
 
-template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API,
+          bool      INPLACE,
+          typename T,
+          typename Td,
+          typename Ud,
+          typename Th,
+          typename Uh>
 void gels_getPerfData(const hipsolverHandle_t handle,
                       const int               m,
                       const int               n,
@@ -450,6 +479,7 @@ void gels_getPerfData(const hipsolverHandle_t handle,
             handle, m, n, nrhs, dA, lda, stA, dB, ldb, stB, dInfo, bc, hA, hB, hX, hInfo);
 
         CHECK_ROCBLAS_ERROR(hipsolver_gels(API,
+                                           INPLACE,
                                            handle,
                                            m,
                                            n,
@@ -482,6 +512,7 @@ void gels_getPerfData(const hipsolverHandle_t handle,
 
         start = get_time_us_sync(stream);
         hipsolver_gels(API,
+                       INPLACE,
                        handle,
                        m,
                        n,
@@ -505,7 +536,12 @@ void gels_getPerfData(const hipsolverHandle_t handle,
     *gpu_time_used /= hot_calls;
 }
 
-template <testAPI_t API, bool BATCHED, bool STRIDED, typename T, bool COMPLEX = is_complex<T>>
+template <testAPI_t API,
+          bool      BATCHED,
+          bool      STRIDED,
+          bool      INPLACE,
+          typename T,
+          bool COMPLEX = is_complex<T>>
 void testing_gels(Arguments& argus)
 {
     // get arguments
@@ -545,6 +581,7 @@ void testing_gels(Arguments& argus)
         if(BATCHED)
         {
             // EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
+            //                                      INPLACE,
             //                                      handle,
             //                                      m,
             //                                      n,
@@ -568,6 +605,7 @@ void testing_gels(Arguments& argus)
         else
         {
             EXPECT_ROCBLAS_STATUS(hipsolver_gels(API,
+                                                 INPLACE,
                                                  handle,
                                                  m,
                                                  n,
@@ -628,61 +666,61 @@ void testing_gels(Arguments& argus)
 
         // // check computations
         // if(argus.unit_check || argus.norm_check)
-        //     gels_getError<API, T>(handle,
-        //                               m,
-        //                               n,
-        //                               nrhs,
-        //                               dA,
-        //                               lda,
-        //                               stA,
-        //                               dB,
-        //                               ldb,
-        //                               stB,
-        //                               dX,
-        //                               ldx,
-        //                               stX,
-        //                               dWork,
-        //                               size_W,
-        //                               dInfo,
-        //                               bc,
-        //                               hA,
-        //                               hB,
-        //                               hBRes,
-        //                               hX,
-        //                               hXRes,
-        //                               hNIters,
-        //                               hInfo,
-        //                               hInfoRes,
-        //                               &max_error);
+        //     gels_getError<API, INPLACE, T>(handle,
+        //                                    m,
+        //                                    n,
+        //                                    nrhs,
+        //                                    dA,
+        //                                    lda,
+        //                                    stA,
+        //                                    dB,
+        //                                    ldb,
+        //                                    stB,
+        //                                    dX,
+        //                                    ldx,
+        //                                    stX,
+        //                                    dWork,
+        //                                    size_W,
+        //                                    dInfo,
+        //                                    bc,
+        //                                    hA,
+        //                                    hB,
+        //                                    hBRes,
+        //                                    hX,
+        //                                    hXRes,
+        //                                    hNIters,
+        //                                    hInfo,
+        //                                    hInfoRes,
+        //                                    &max_error);
 
         // // collect performance data
         // if(argus.timing)
-        //     gels_getPerfData<API, T>(handle,
-        //                                  m,
-        //                                  n,
-        //                                  nrhs,
-        //                                  dA,
-        //                                  lda,
-        //                                  stA,
-        //                                  dB,
-        //                                  ldb,
-        //                                  stB,
-        //                                  dX,
-        //                                  ldx,
-        //                                  stX,
-        //                                  dWork,
-        //                                  size_W,
-        //                                  dInfo,
-        //                                  bc,
-        //                                  hA,
-        //                                  hB,
-        //                                  hX,
-        //                                  hNIters,
-        //                                  hInfo,
-        //                                  &gpu_time_used,
-        //                                  &cpu_time_used,
-        //                                  hot_calls,
-        //                                  argus.perf);
+        //     gels_getPerfData<API, INPLACE, T>(handle,
+        //                                       m,
+        //                                       n,
+        //                                       nrhs,
+        //                                       dA,
+        //                                       lda,
+        //                                       stA,
+        //                                       dB,
+        //                                       ldb,
+        //                                       stB,
+        //                                       dX,
+        //                                       ldx,
+        //                                       stX,
+        //                                       dWork,
+        //                                       size_W,
+        //                                       dInfo,
+        //                                       bc,
+        //                                       hA,
+        //                                       hB,
+        //                                       hX,
+        //                                       hNIters,
+        //                                       hInfo,
+        //                                       &gpu_time_used,
+        //                                       &cpu_time_used,
+        //                                       hot_calls,
+        //                                       argus.perf);
     }
     else
     {
@@ -717,61 +755,61 @@ void testing_gels(Arguments& argus)
 
         // check computations
         if(argus.unit_check || argus.norm_check)
-            gels_getError<API, T>(handle,
-                                  m,
-                                  n,
-                                  nrhs,
-                                  dA,
-                                  lda,
-                                  stA,
-                                  dB,
-                                  ldb,
-                                  stB,
-                                  dX,
-                                  ldx,
-                                  stX,
-                                  dWork,
-                                  size_W,
-                                  dInfo,
-                                  bc,
-                                  hA,
-                                  hB,
-                                  hBRes,
-                                  hX,
-                                  hXRes,
-                                  hNIters,
-                                  hInfo,
-                                  hInfoRes,
-                                  &max_error);
+            gels_getError<API, INPLACE, T>(handle,
+                                           m,
+                                           n,
+                                           nrhs,
+                                           dA,
+                                           lda,
+                                           stA,
+                                           dB,
+                                           ldb,
+                                           stB,
+                                           dX,
+                                           ldx,
+                                           stX,
+                                           dWork,
+                                           size_W,
+                                           dInfo,
+                                           bc,
+                                           hA,
+                                           hB,
+                                           hBRes,
+                                           hX,
+                                           hXRes,
+                                           hNIters,
+                                           hInfo,
+                                           hInfoRes,
+                                           &max_error);
 
         // collect performance data
         if(argus.timing)
-            gels_getPerfData<API, T>(handle,
-                                     m,
-                                     n,
-                                     nrhs,
-                                     dA,
-                                     lda,
-                                     stA,
-                                     dB,
-                                     ldb,
-                                     stB,
-                                     dX,
-                                     ldx,
-                                     stX,
-                                     dWork,
-                                     size_W,
-                                     dInfo,
-                                     bc,
-                                     hA,
-                                     hB,
-                                     hX,
-                                     hNIters,
-                                     hInfo,
-                                     &gpu_time_used,
-                                     &cpu_time_used,
-                                     hot_calls,
-                                     argus.perf);
+            gels_getPerfData<API, INPLACE, T>(handle,
+                                              m,
+                                              n,
+                                              nrhs,
+                                              dA,
+                                              lda,
+                                              stA,
+                                              dB,
+                                              ldb,
+                                              stB,
+                                              dX,
+                                              ldx,
+                                              stX,
+                                              dWork,
+                                              size_W,
+                                              dInfo,
+                                              bc,
+                                              hA,
+                                              hB,
+                                              hX,
+                                              hNIters,
+                                              hInfo,
+                                              &gpu_time_used,
+                                              &cpu_time_used,
+                                              hot_calls,
+                                              argus.perf);
     }
     // validate results for rocsolver-test
     // using max(m,n) * machine_precision as tolerance

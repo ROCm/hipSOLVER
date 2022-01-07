@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2021 Advanced Micro Devices, Inc.
+ * Copyright 2021-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -49,9 +49,9 @@ class hipsolver_dispatcher
         // Map for functions that support all precisions
         static const func_map map = {
             {"gebrd", testing_gebrd<false, false, false, T>},
-            {"gels", testing_gels<API_NORMAL, false, false, T>},
+            {"gels", testing_gels<API_NORMAL, false, false, false, T>},
             {"geqrf", testing_geqrf<false, false, false, T>},
-            {"gesv", testing_gesv<API_NORMAL, false, false, T>},
+            {"gesv", testing_gesv<API_NORMAL, false, false, false, T>},
             {"gesvd", testing_gesvd<API_NORMAL, false, false, T>},
             {"getrf", testing_getrf<API_NORMAL, false, false, T>},
             {"getrs", testing_getrs<API_NORMAL, false, false, T>},
