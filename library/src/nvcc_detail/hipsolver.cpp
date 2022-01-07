@@ -3960,6 +3960,247 @@ catch(...)
     return exception2hip_status();
 }
 
+/******************** SYEVJ_BATCHED/HEEVJ_BATCHED ********************/
+hipsolverStatus_t hipsolverDnSsyevjBatched_bufferSize(hipsolverDnHandle_t  handle,
+                                                      hipsolverEigMode_t   jobz,
+                                                      hipsolverFillMode_t  uplo,
+                                                      int                  n,
+                                                      float*               A,
+                                                      int                  lda,
+                                                      float*               D,
+                                                      int*                 lwork,
+                                                      hipsolverSyevjInfo_t params,
+                                                      int                  batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnSsyevjBatched_bufferSize((cusolverDnHandle_t)handle,
+                                                              hip2cuda_evect(jobz),
+                                                              hip2cuda_fill(uplo),
+                                                              n,
+                                                              A,
+                                                              lda,
+                                                              D,
+                                                              lwork,
+                                                              (syevjInfo_t)params,
+                                                              batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnDsyevjBatched_bufferSize(hipsolverDnHandle_t  handle,
+                                                      hipsolverEigMode_t   jobz,
+                                                      hipsolverFillMode_t  uplo,
+                                                      int                  n,
+                                                      double*              A,
+                                                      int                  lda,
+                                                      double*              D,
+                                                      int*                 lwork,
+                                                      hipsolverSyevjInfo_t params,
+                                                      int                  batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnDsyevjBatched_bufferSize((cusolverDnHandle_t)handle,
+                                                              hip2cuda_evect(jobz),
+                                                              hip2cuda_fill(uplo),
+                                                              n,
+                                                              A,
+                                                              lda,
+                                                              D,
+                                                              lwork,
+                                                              (syevjInfo_t)params,
+                                                              batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnCheevjBatched_bufferSize(hipsolverDnHandle_t  handle,
+                                                      hipsolverEigMode_t   jobz,
+                                                      hipsolverFillMode_t  uplo,
+                                                      int                  n,
+                                                      hipFloatComplex*     A,
+                                                      int                  lda,
+                                                      float*               D,
+                                                      int*                 lwork,
+                                                      hipsolverSyevjInfo_t params,
+                                                      int                  batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnCheevjBatched_bufferSize((cusolverDnHandle_t)handle,
+                                                              hip2cuda_evect(jobz),
+                                                              hip2cuda_fill(uplo),
+                                                              n,
+                                                              (cuComplex*)A,
+                                                              lda,
+                                                              D,
+                                                              lwork,
+                                                              (syevjInfo_t)params,
+                                                              batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnZheevjBatched_bufferSize(hipsolverDnHandle_t  handle,
+                                                      hipsolverEigMode_t   jobz,
+                                                      hipsolverFillMode_t  uplo,
+                                                      int                  n,
+                                                      hipDoubleComplex*    A,
+                                                      int                  lda,
+                                                      double*              D,
+                                                      int*                 lwork,
+                                                      hipsolverSyevjInfo_t params,
+                                                      int                  batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnZheevjBatched_bufferSize((cusolverDnHandle_t)handle,
+                                                              hip2cuda_evect(jobz),
+                                                              hip2cuda_fill(uplo),
+                                                              n,
+                                                              (cuDoubleComplex*)A,
+                                                              lda,
+                                                              D,
+                                                              lwork,
+                                                              (syevjInfo_t)params,
+                                                              batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnSsyevjBatched(hipsolverDnHandle_t  handle,
+                                           hipsolverEigMode_t   jobz,
+                                           hipsolverFillMode_t  uplo,
+                                           int                  n,
+                                           float*               A,
+                                           int                  lda,
+                                           float*               D,
+                                           float*               work,
+                                           int                  lwork,
+                                           int*                 devInfo,
+                                           hipsolverSyevjInfo_t params,
+                                           int                  batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnSsyevjBatched((cusolverDnHandle_t)handle,
+                                                   hip2cuda_evect(jobz),
+                                                   hip2cuda_fill(uplo),
+                                                   n,
+                                                   A,
+                                                   lda,
+                                                   D,
+                                                   work,
+                                                   lwork,
+                                                   devInfo,
+                                                   (syevjInfo_t)params,
+                                                   batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnDsyevjBatched(hipsolverDnHandle_t  handle,
+                                           hipsolverEigMode_t   jobz,
+                                           hipsolverFillMode_t  uplo,
+                                           int                  n,
+                                           double*              A,
+                                           int                  lda,
+                                           double*              D,
+                                           double*              work,
+                                           int                  lwork,
+                                           int*                 devInfo,
+                                           hipsolverSyevjInfo_t params,
+                                           int                  batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnDsyevjBatched((cusolverDnHandle_t)handle,
+                                                   hip2cuda_evect(jobz),
+                                                   hip2cuda_fill(uplo),
+                                                   n,
+                                                   A,
+                                                   lda,
+                                                   D,
+                                                   work,
+                                                   lwork,
+                                                   devInfo,
+                                                   (syevjInfo_t)params,
+                                                   batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnCheevjBatched(hipsolverDnHandle_t  handle,
+                                           hipsolverEigMode_t   jobz,
+                                           hipsolverFillMode_t  uplo,
+                                           int                  n,
+                                           hipFloatComplex*     A,
+                                           int                  lda,
+                                           float*               D,
+                                           hipFloatComplex*     work,
+                                           int                  lwork,
+                                           int*                 devInfo,
+                                           hipsolverSyevjInfo_t params,
+                                           int                  batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnCheevjBatched((cusolverDnHandle_t)handle,
+                                                   hip2cuda_evect(jobz),
+                                                   hip2cuda_fill(uplo),
+                                                   n,
+                                                   (cuComplex*)A,
+                                                   lda,
+                                                   D,
+                                                   (cuComplex*)work,
+                                                   lwork,
+                                                   devInfo,
+                                                   (syevjInfo_t)params,
+                                                   batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnZheevjBatched(hipsolverDnHandle_t  handle,
+                                           hipsolverEigMode_t   jobz,
+                                           hipsolverFillMode_t  uplo,
+                                           int                  n,
+                                           hipDoubleComplex*    A,
+                                           int                  lda,
+                                           double*              D,
+                                           hipDoubleComplex*    work,
+                                           int                  lwork,
+                                           int*                 devInfo,
+                                           hipsolverSyevjInfo_t params,
+                                           int                  batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnZheevjBatched((cusolverDnHandle_t)handle,
+                                                   hip2cuda_evect(jobz),
+                                                   hip2cuda_fill(uplo),
+                                                   n,
+                                                   (cuDoubleComplex*)A,
+                                                   lda,
+                                                   D,
+                                                   (cuDoubleComplex*)work,
+                                                   lwork,
+                                                   devInfo,
+                                                   (syevjInfo_t)params,
+                                                   batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
 /******************** SYGVD/HEGVD ********************/
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd_bufferSize(hipsolverHandle_t   handle,
                                                               hipsolverEigType_t  itype,
