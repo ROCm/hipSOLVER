@@ -150,6 +150,10 @@ functions are provided as part of the compatibility API only, pending their impl
 
     :ref:`hipsolverDnXsyevj_bufferSize <compat_syevj_bufferSize>`, x, x, ,
     :ref:`hipsolverDnXsyevj <compat_syevj>`, x, x, ,
+    :ref:`hipsolverDnXsyevjBatched_bufferSize <compat_syevj_batched_bufferSize>`, x, x, ,
+    :ref:`hipsolverDnXsyevjBatched <compat_syevj_batched>`, x, x, ,
     :ref:`hipsolverDnXheevj_bufferSize <compat_heevj_bufferSize>`, , , x, x
     :ref:`hipsolverDnXheevj <compat_heevj>`, , , x, x
+    :ref:`hipsolverDnXheevjBatched_bufferSize <compat_heevj_batched_bufferSize>`, , , x, x
+    :ref:`hipsolverDnXheevjBatched <compat_heevj_batched>`, , , x, x
 
