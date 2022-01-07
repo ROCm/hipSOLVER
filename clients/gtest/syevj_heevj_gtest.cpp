@@ -71,7 +71,7 @@ protected:
            && arg.peek<char>("uplo") == 'L')
             testing_syevj_heevj_bad_arg<API, BATCHED, STRIDED, T>();
 
-        arg.batch_count = 1;
+        arg.batch_count = (BATCHED || STRIDED ? 3 : 1);
         testing_syevj_heevj<API, BATCHED, STRIDED, T>(arg);
     }
 };
@@ -104,6 +104,28 @@ TEST_P(HEEVJ_COMPAT, __float_complex)
 TEST_P(HEEVJ_COMPAT, __double_complex)
 {
     run_tests<false, false, rocblas_double_complex>();
+}
+
+// strided_batched tests
+
+TEST_P(SYEVJ_COMPAT, strided_batched__float)
+{
+    run_tests<false, true, float>();
+}
+
+TEST_P(SYEVJ_COMPAT, strided_batched__double)
+{
+    run_tests<false, true, double>();
+}
+
+TEST_P(HEEVJ_COMPAT, strided_batched__float_complex)
+{
+    run_tests<false, true, rocblas_float_complex>();
+}
+
+TEST_P(HEEVJ_COMPAT, strided_batched__double_complex)
+{
+    run_tests<false, true, rocblas_double_complex>();
 }
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,

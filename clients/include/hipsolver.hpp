@@ -4447,6 +4447,7 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                    FORTRAN,
 /******************** SYEVJ/HEEVJ ********************/
 // normal and strided_batched
 inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            API,
+                                                          bool                 STRIDED,
                                                           hipsolverHandle_t    handle,
                                                           hipsolverEigMode_t   jobz,
                                                           hipsolverFillMode_t  uplo,
@@ -4455,18 +4456,23 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            A
                                                           int                  lda,
                                                           float*               D,
                                                           int*                 lwork,
-                                                          hipsolverSyevjInfo_t params)
+                                                          hipsolverSyevjInfo_t params,
+                                                          int                  bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnSsyevj_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork, params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnSsyevjBatched_bufferSize(
+            handle, jobz, uplo, n, A, lda, D, lwork, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            API,
+                                                          bool                 STRIDED,
                                                           hipsolverHandle_t    handle,
                                                           hipsolverEigMode_t   jobz,
                                                           hipsolverFillMode_t  uplo,
@@ -4475,18 +4481,23 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            A
                                                           int                  lda,
                                                           double*              D,
                                                           int*                 lwork,
-                                                          hipsolverSyevjInfo_t params)
+                                                          hipsolverSyevjInfo_t params,
+                                                          int                  bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnDsyevj_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork, params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnDsyevjBatched_bufferSize(
+            handle, jobz, uplo, n, A, lda, D, lwork, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            API,
+                                                          bool                 STRIDED,
                                                           hipsolverHandle_t    handle,
                                                           hipsolverEigMode_t   jobz,
                                                           hipsolverFillMode_t  uplo,
@@ -4495,19 +4506,24 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            A
                                                           int                  lda,
                                                           float*               D,
                                                           int*                 lwork,
-                                                          hipsolverSyevjInfo_t params)
+                                                          hipsolverSyevjInfo_t params,
+                                                          int                  bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnCheevj_bufferSize(
             handle, jobz, uplo, n, (hipFloatComplex*)A, lda, D, lwork, params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnCheevjBatched_bufferSize(
+            handle, jobz, uplo, n, (hipFloatComplex*)A, lda, D, lwork, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t               API,
+                                                          bool                    STRIDED,
                                                           hipsolverHandle_t       handle,
                                                           hipsolverEigMode_t      jobz,
                                                           hipsolverFillMode_t     uplo,
@@ -4516,19 +4532,24 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t             
                                                           int                     lda,
                                                           double*                 D,
                                                           int*                    lwork,
-                                                          hipsolverSyevjInfo_t    params)
+                                                          hipsolverSyevjInfo_t    params,
+                                                          int                     bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnZheevj_bufferSize(
             handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, D, lwork, params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnZheevjBatched_bufferSize(
+            handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, D, lwork, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
+                                               bool                 STRIDED,
                                                hipsolverHandle_t    handle,
                                                hipsolverEigMode_t   jobz,
                                                hipsolverFillMode_t  uplo,
@@ -4544,16 +4565,20 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
                                                hipsolverSyevjInfo_t params,
                                                int                  bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnSsyevj(handle, jobz, uplo, n, A, lda, D, work, lwork, info, params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnSsyevjBatched(
+            handle, jobz, uplo, n, A, lda, D, work, lwork, info, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
+                                               bool                 STRIDED,
                                                hipsolverHandle_t    handle,
                                                hipsolverEigMode_t   jobz,
                                                hipsolverFillMode_t  uplo,
@@ -4569,16 +4594,20 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
                                                hipsolverSyevjInfo_t params,
                                                int                  bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnDsyevj(handle, jobz, uplo, n, A, lda, D, work, lwork, info, params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnDsyevjBatched(
+            handle, jobz, uplo, n, A, lda, D, work, lwork, info, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
+                                               bool                 STRIDED,
                                                hipsolverHandle_t    handle,
                                                hipsolverEigMode_t   jobz,
                                                hipsolverFillMode_t  uplo,
@@ -4594,9 +4623,9 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
                                                hipsolverSyevjInfo_t params,
                                                int                  bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnCheevj(handle,
                                  jobz,
                                  uplo,
@@ -4608,12 +4637,26 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
                                  lwork,
                                  info,
                                  params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnCheevjBatched(handle,
+                                        jobz,
+                                        uplo,
+                                        n,
+                                        (hipFloatComplex*)A,
+                                        lda,
+                                        D,
+                                        (hipFloatComplex*)work,
+                                        lwork,
+                                        info,
+                                        params,
+                                        bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t               API,
+                                               bool                    STRIDED,
                                                hipsolverHandle_t       handle,
                                                hipsolverEigMode_t      jobz,
                                                hipsolverFillMode_t     uplo,
@@ -4629,9 +4672,9 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t               API,
                                                hipsolverSyevjInfo_t    params,
                                                int                     bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnZheevj(handle,
                                  jobz,
                                  uplo,
@@ -4643,6 +4686,19 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t               API,
                                  lwork,
                                  info,
                                  params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnZheevjBatched(handle,
+                                        jobz,
+                                        uplo,
+                                        n,
+                                        (hipDoubleComplex*)A,
+                                        lda,
+                                        D,
+                                        (hipDoubleComplex*)work,
+                                        lwork,
+                                        info,
+                                        params,
+                                        bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }

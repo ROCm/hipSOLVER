@@ -6,7 +6,7 @@
 
 #include "clientcommon.hpp"
 
-template <testAPI_t API, typename T, typename S, typename U>
+template <testAPI_t API, bool STRIDED, typename T, typename S, typename U>
 void syevj_heevj_checkBadArgs(const hipsolverHandle_t    handle,
                               const hipsolverEigMode_t   evect,
                               const hipsolverFillMode_t  uplo,
@@ -24,13 +24,27 @@ void syevj_heevj_checkBadArgs(const hipsolverHandle_t    handle,
 {
 #if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // handle
-    EXPECT_ROCBLAS_STATUS(
-        hipsolver_syevj_heevj(
-            API, nullptr, evect, uplo, n, dA, lda, stA, dD, stD, dWork, lwork, dinfo, params, bc),
-        HIPSOLVER_STATUS_NOT_INITIALIZED);
+    EXPECT_ROCBLAS_STATUS(hipsolver_syevj_heevj(API,
+                                                STRIDED,
+                                                nullptr,
+                                                evect,
+                                                uplo,
+                                                n,
+                                                dA,
+                                                lda,
+                                                stA,
+                                                dD,
+                                                stD,
+                                                dWork,
+                                                lwork,
+                                                dinfo,
+                                                params,
+                                                bc),
+                          HIPSOLVER_STATUS_NOT_INITIALIZED);
 
     // values
     EXPECT_ROCBLAS_STATUS(hipsolver_syevj_heevj(API,
+                                                STRIDED,
                                                 handle,
                                                 hipsolverEigMode_t(-1),
                                                 uplo,
@@ -47,6 +61,7 @@ void syevj_heevj_checkBadArgs(const hipsolverHandle_t    handle,
                                                 bc),
                           HIPSOLVER_STATUS_INVALID_ENUM);
     EXPECT_ROCBLAS_STATUS(hipsolver_syevj_heevj(API,
+                                                STRIDED,
                                                 handle,
                                                 evect,
                                                 hipsolverFillMode_t(-1),
@@ -65,6 +80,7 @@ void syevj_heevj_checkBadArgs(const hipsolverHandle_t    handle,
 
     // pointers
     EXPECT_ROCBLAS_STATUS(hipsolver_syevj_heevj(API,
+                                                STRIDED,
                                                 handle,
                                                 evect,
                                                 uplo,
@@ -81,6 +97,7 @@ void syevj_heevj_checkBadArgs(const hipsolverHandle_t    handle,
                                                 bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
     EXPECT_ROCBLAS_STATUS(hipsolver_syevj_heevj(API,
+                                                STRIDED,
                                                 handle,
                                                 evect,
                                                 uplo,
@@ -97,6 +114,7 @@ void syevj_heevj_checkBadArgs(const hipsolverHandle_t    handle,
                                                 bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
     EXPECT_ROCBLAS_STATUS(hipsolver_syevj_heevj(API,
+                                                STRIDED,
                                                 handle,
                                                 evect,
                                                 uplo,
@@ -143,26 +161,26 @@ void testing_syevj_heevj_bad_arg()
 
         // int size_W;
         // hipsolver_syevj_heevj_bufferSize(
-        //     API, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W, params);
+        //     API, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W, params, bc);
         // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check bad arguments
-        // syevj_heevj_checkBadArgs<API>(handle,
-        //                                   evect,
-        //                                   uplo,
-        //                                   n,
-        //                                   dA.data(),
-        //                                   lda,
-        //                                   stA,
-        //                                   dD.data(),
-        //                                   stD,
-        //                                   dWork.data(),
-        //                                   size_W,
-        //                                   dinfo.data(),
-        //                                   params,
-        //                                   bc);
+        // syevj_heevj_checkBadArgs<API, STRIDED>(handle,
+        //                                        evect,
+        //                                        uplo,
+        //                                        n,
+        //                                        dA.data(),
+        //                                        lda,
+        //                                        stA,
+        //                                        dD.data(),
+        //                                        stD,
+        //                                        dWork.data(),
+        //                                        size_W,
+        //                                        dinfo.data(),
+        //                                        params,
+        //                                        bc);
     }
     else
     {
@@ -176,26 +194,26 @@ void testing_syevj_heevj_bad_arg()
 
         int size_W;
         hipsolver_syevj_heevj_bufferSize(
-            API, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W, params);
+            API, STRIDED, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W, params, bc);
         device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
         // check bad arguments
-        syevj_heevj_checkBadArgs<API>(handle,
-                                      evect,
-                                      uplo,
-                                      n,
-                                      dA.data(),
-                                      lda,
-                                      stA,
-                                      dD.data(),
-                                      stD,
-                                      dWork.data(),
-                                      size_W,
-                                      dinfo.data(),
-                                      params,
-                                      bc);
+        syevj_heevj_checkBadArgs<API, STRIDED>(handle,
+                                               evect,
+                                               uplo,
+                                               n,
+                                               dA.data(),
+                                               lda,
+                                               stA,
+                                               dD.data(),
+                                               stD,
+                                               dWork.data(),
+                                               size_W,
+                                               dinfo.data(),
+                                               params,
+                                               bc);
     }
 }
 
@@ -248,6 +266,7 @@ void syevj_heevj_initData(const hipsolverHandle_t  handle,
 }
 
 template <testAPI_t API,
+          bool      STRIDED,
           typename T,
           typename Sd,
           typename Td,
@@ -304,6 +323,7 @@ void syevj_heevj_getError(const hipsolverHandle_t   handle,
     // execute computations
     // GPU lapack
     CHECK_ROCBLAS_ERROR(hipsolver_syevj_heevj(API,
+                                              STRIDED,
                                               handle,
                                               evect,
                                               uplo,
@@ -399,6 +419,7 @@ void syevj_heevj_getError(const hipsolverHandle_t   handle,
 }
 
 template <testAPI_t API,
+          bool      STRIDED,
           typename T,
           typename Sd,
           typename Td,
@@ -480,6 +501,7 @@ void syevj_heevj_getPerfData(const hipsolverHandle_t   handle,
         syevj_heevj_initData<false, true, T>(handle, evect, n, dA, lda, bc, hA, A, 0);
 
         CHECK_ROCBLAS_ERROR(hipsolver_syevj_heevj(API,
+                                                  STRIDED,
                                                   handle,
                                                   evect,
                                                   uplo,
@@ -507,6 +529,7 @@ void syevj_heevj_getPerfData(const hipsolverHandle_t   handle,
 
         start = get_time_us_sync(stream);
         hipsolver_syevj_heevj(API,
+                              STRIDED,
                               handle,
                               evect,
                               uplo,
@@ -538,8 +561,8 @@ void testing_syevj_heevj(Arguments& argus)
     char                       uploC  = argus.get<char>("uplo");
     int                        n      = argus.get<int>("n");
     int                        lda    = argus.get<int>("lda", n);
-    int                        stA    = argus.get<int>("strideA", lda * n);
-    int                        stD    = argus.get<int>("strideD", n);
+    int                        stA    = lda * n;
+    int                        stD    = n;
 
     hipsolverEigMode_t  evect     = char2hipsolver_evect(evectC);
     hipsolverFillMode_t uplo      = char2hipsolver_fill(uploC);
@@ -561,6 +584,7 @@ void testing_syevj_heevj(Arguments& argus)
         if(BATCHED)
         {
             // EXPECT_ROCBLAS_STATUS(hipsolver_syevj_heevj(API,
+            //                                             STRIDED,
             //                                             handle,
             //                                             evect,
             //                                             uplo,
@@ -580,6 +604,7 @@ void testing_syevj_heevj(Arguments& argus)
         else
         {
             EXPECT_ROCBLAS_STATUS(hipsolver_syevj_heevj(API,
+                                                        STRIDED,
                                                         handle,
                                                         evect,
                                                         uplo,
@@ -627,7 +652,7 @@ void testing_syevj_heevj(Arguments& argus)
 
         // int size_W;
         // hipsolver_syevj_heevj_bufferSize(
-        //     API, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W, params);
+        //     API, STRIDED, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W, params, bc);
         // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
@@ -635,53 +660,53 @@ void testing_syevj_heevj(Arguments& argus)
         // // check computations
         // if(argus.unit_check || argus.norm_check)
         // {
-        //     syevj_heevj_getError<API, T>(handle,
-        //                                      evect,
-        //                                      uplo,
-        //                                      n,
-        //                                      dA,
-        //                                      lda,
-        //                                      stA,
-        //                                      dD,
-        //                                      stD,
-        //                                      dWork,
-        //                                      size_W,
-        //                                      dinfo,
-        //                                      bc,
-        //                                      hA,
-        //                                      hAres,
-        //                                      hD,
-        //                                      hDres,
-        //                                      hinfo,
-        //                                      hinfoRes,
-        //                                      params,
-        //                                      &max_error);
+        //     syevj_heevj_getError<API, STRIDED, T>(handle,
+        //                                          evect,
+        //                                          uplo,
+        //                                          n,
+        //                                          dA,
+        //                                          lda,
+        //                                          stA,
+        //                                          dD,
+        //                                          stD,
+        //                                          dWork,
+        //                                          size_W,
+        //                                          dinfo,
+        //                                          bc,
+        //                                          hA,
+        //                                          hAres,
+        //                                          hD,
+        //                                          hDres,
+        //                                          hinfo,
+        //                                          hinfoRes,
+        //                                          params,
+        //                                          &max_error);
         // }
 
         // // collect performance data
         // if(argus.timing)
         // {
-        //     syevj_heevj_getPerfData<API, T>(handle,
-        //                                         evect,
-        //                                         uplo,
-        //                                         n,
-        //                                         dA,
-        //                                         lda,
-        //                                         stA,
-        //                                         dD,
-        //                                         stD,
-        //                                         dWork,
-        //                                         size_W,
-        //                                         dinfo,
-        //                                         bc,
-        //                                         hA,
-        //                                         hD,
-        //                                         hinfo,
-        //                                         params,
-        //                                         &gpu_time_used,
-        //                                         &cpu_time_used,
-        //                                         hot_calls,
-        //                                         argus.perf);
+        //     syevj_heevj_getPerfData<API, STRIDED, T>(handle,
+        //                                              evect,
+        //                                              uplo,
+        //                                              n,
+        //                                              dA,
+        //                                              lda,
+        //                                              stA,
+        //                                              dD,
+        //                                              stD,
+        //                                              dWork,
+        //                                              size_W,
+        //                                              dinfo,
+        //                                              bc,
+        //                                              hA,
+        //                                              hD,
+        //                                              hinfo,
+        //                                              params,
+        //                                              &gpu_time_used,
+        //                                              &cpu_time_used,
+        //                                              hot_calls,
+        //                                              argus.perf);
         // }
     }
 
@@ -696,7 +721,7 @@ void testing_syevj_heevj(Arguments& argus)
 
         int size_W;
         hipsolver_syevj_heevj_bufferSize(
-            API, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W, params);
+            API, STRIDED, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W, params, bc);
         device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
@@ -704,53 +729,53 @@ void testing_syevj_heevj(Arguments& argus)
         // check computations
         if(argus.unit_check || argus.norm_check)
         {
-            syevj_heevj_getError<API, T>(handle,
-                                         evect,
-                                         uplo,
-                                         n,
-                                         dA,
-                                         lda,
-                                         stA,
-                                         dD,
-                                         stD,
-                                         dWork,
-                                         size_W,
-                                         dinfo,
-                                         bc,
-                                         hA,
-                                         hAres,
-                                         hD,
-                                         hDres,
-                                         hinfo,
-                                         hinfoRes,
-                                         params,
-                                         &max_error);
+            syevj_heevj_getError<API, STRIDED, T>(handle,
+                                                  evect,
+                                                  uplo,
+                                                  n,
+                                                  dA,
+                                                  lda,
+                                                  stA,
+                                                  dD,
+                                                  stD,
+                                                  dWork,
+                                                  size_W,
+                                                  dinfo,
+                                                  bc,
+                                                  hA,
+                                                  hAres,
+                                                  hD,
+                                                  hDres,
+                                                  hinfo,
+                                                  hinfoRes,
+                                                  params,
+                                                  &max_error);
         }
 
         // collect performance data
         if(argus.timing)
         {
-            syevj_heevj_getPerfData<API, T>(handle,
-                                            evect,
-                                            uplo,
-                                            n,
-                                            dA,
-                                            lda,
-                                            stA,
-                                            dD,
-                                            stD,
-                                            dWork,
-                                            size_W,
-                                            dinfo,
-                                            bc,
-                                            hA,
-                                            hD,
-                                            hinfo,
-                                            params,
-                                            &gpu_time_used,
-                                            &cpu_time_used,
-                                            hot_calls,
-                                            argus.perf);
+            syevj_heevj_getPerfData<API, STRIDED, T>(handle,
+                                                     evect,
+                                                     uplo,
+                                                     n,
+                                                     dA,
+                                                     lda,
+                                                     stA,
+                                                     dD,
+                                                     stD,
+                                                     dWork,
+                                                     size_W,
+                                                     dinfo,
+                                                     bc,
+                                                     hA,
+                                                     hD,
+                                                     hinfo,
+                                                     params,
+                                                     &gpu_time_used,
+                                                     &cpu_time_used,
+                                                     hot_calls,
+                                                     argus.perf);
         }
     }
 
