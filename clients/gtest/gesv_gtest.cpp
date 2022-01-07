@@ -217,6 +217,7 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GESV_COMPAT,
                          Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
 
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          GESV_INPLACE,
 //                          Combine(ValuesIn(large_matrix_sizeA_range),
@@ -225,3 +226,4 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GESV_INPLACE,
                          Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
+#endif
