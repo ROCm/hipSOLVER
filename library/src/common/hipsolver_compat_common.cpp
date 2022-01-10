@@ -2,10 +2,17 @@
  * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
+/*! \file
+ *  \brief hipsolver_compat_common.cpp provides implementation of the compatibility APIs 
+ *  that are equivalent to both, cuSOLVER and rocSOLVER. These simply call hipSOLVER's
+ *  regular APIs.   
+ */
+
 #include "hipsolver.h"
 
 extern "C" {
 
+// helpers
 hipsolverStatus_t hipsolverDnCreate(hipsolverDnHandle_t* handle)
 {
     return hipsolverCreate(handle);

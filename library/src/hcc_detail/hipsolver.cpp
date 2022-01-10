@@ -2,6 +2,10 @@
  * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
+/*! \file
+ *  \brief Implementation of the hipSOLVER regular APIs on the rocSOLVER side.
+ */
+
 #include "hipsolver.h"
 #include "error_macros.hpp"
 #include "exceptions.hpp"
@@ -2680,7 +2684,7 @@ catch(...)
     return exception2hip_status();
 }
 
-/******************** GESVD ********************/
+/******************** GESV ********************/
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSSgesv_bufferSize(hipsolverHandle_t handle,
                                                               int               n,
                                                               int               nrhs,

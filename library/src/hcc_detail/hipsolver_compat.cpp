@@ -2,6 +2,11 @@
  * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
+/*! \file
+ *  \brief Implementation of the compatibility APIs that require especial calls
+ *  to hipSOLVER on the rocSOLVER side.
+ */
+
 #include "error_macros.hpp"
 #include "hipsolver.h"
 #include <algorithm>

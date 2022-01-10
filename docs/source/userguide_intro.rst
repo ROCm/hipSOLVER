@@ -15,18 +15,30 @@ Library overview
 ==========================
 
 hipSOLVER is an open-source marshalling library for `LAPACK routines <https://www.netlib.org/lapack/explore-html/modules.html>`_ on the GPU.
-It sits between the backend library and the user application, marshalling inputs to and outputs from the backend library. Currently, two
+It sits between a backend library and the user application, marshalling inputs to and outputs from the backend library so that the user
+aplication remains unchanged when using different backends. Currently, two
 backend libraries are supported by hipSOLVER: NVIDIA's `cuSOLVER library <https://developer.nvidia.com/cusolver>`_ and AMD's open-source
 `rocSOLVER library <https://github.com/ROCmSoftwarePlatform/rocSOLVER>`_.
+
+Technically, the :ref:`regular hipSOLVER API <library_api>` is a thin wrapper layer around the different backends. As such, it is not
+expected to introduce a significant overhead; however, its main purpose is portability, so when performance is critical, directly
+using the library backend corresponding to the given architecture is recommended. 
+
+Another purpose of hipSOLVER is to facilitate translating cuSOLVER
+applications to the `AMD's open source ROCm platform <https://rocmdocs.amd.com/en/latest/index.html>`_ ecosystem; to that end, hipSOLVER also
+includes a :ref:`compatibility API <library_compat>` with method signatures that match exactly those of cuSOLVER. For more details see the 
+section :ref:`usage_label`,  
 
 
 Currently implemented functionality
 ====================================
 
-As with rocSOLVER, the hipSOLVER library remains in active development. New features are being
+The hipSOLVER library remains in active development. New features are being
 continuously added, with new functionality documented at each `release of the ROCm platform <https://rocmdocs.amd.com/en/latest/Current_Release_Notes/Current-Release-Notes.html>`_.
 
-The following tables summarize the wrapper functions that are implemented for the different supported precisions in hipSOLVER's latest release.
+The following tables summarize the wrapper functions that are implemented in the regular API for the 
+different supported precisions in hipSOLVER's latest release. Most of these functions have their corresponding version on the
+compatibility API when applicable. 
 
 LAPACK auxiliary functions
 ----------------------------
@@ -129,57 +141,4 @@ LAPACK main functions
     :ref:`hipsolverXgesvd <gesvd>`, x, x, x, x
 
 
-Porting a cuSOLVER application to hipSOLVER
-============================================
-
-hipSOLVER is designed to make it easy for users of cuSOLVER to port their applications to hipSOLVER, and provides two separate but interchangeable APIs in order to facilitate
-a two-stage transition process. Users are encouraged to start with hipSOLVER's :ref:`compatibility API <library_compat>`, which uses the `hipsolverDn` prefix and has method
-signatures that are consistent with cusolverDn functions.
-
-Afterwards, it is recommended to begin the switch to hipSOLVER's :ref:`regular API <library_api>`, which uses the `hipsolver` prefix and introduces minor adjustments to the
-API (see below) in order to get the best performance out of the rocSOLVER backend. In most cases, switching to the regular API is as simple as removing `Dn` from the
-`hipsolverDn` prefix.
-
-.. _api_differences:
-
-Differences with the cuSOLVER API
-----------------------------------
-
-While hipSOLVER's :ref:`compatibility API <library_compat>` and :ref:`regular API <library_api>` are similar to each other, the argument lists of the following functions
-differ in the following ways:
-
-* :ref:`hipsolverXXgels_bufferSize <gels_bufferSize>` does not require `dwork` as an argument
-* :ref:`hipsolverXXgesv_bufferSize <gesv_bufferSize>` does not require `dwork` as an argument
-* :ref:`hipsolverXgesvd_bufferSize <gesvd_bufferSize>` requires `jobu` and `jobv` as arguments
-* :ref:`hipsolverXgetrf <getrf>` requires `lwork` as an argument
-* :ref:`hipsolverXgetrs <getrs>` requires `work` and `lwork` as arguments
-* :ref:`hipsolverXpotrfBatched <potrf_batched>` requires `work` and `lwork` as arguments
-* :ref:`hipsolverXpotrs <potrs>` requires `work` and `lwork` as arguments, and
-* :ref:`hipsolverXpotrsBatched <potrs_batched>` requires `work` and `lwork` as arguments.
-
-In order to support these changes, the regular API adds the following functions as well:
-
-* :ref:`hipsolverXgetrs_bufferSize <getrs_bufferSize>`
-* :ref:`hipsolverXpotrfBatched_bufferSize <potrf_batched_bufferSize>`
-* :ref:`hipsolverXpotrs_bufferSize <potrs_bufferSize>`
-* :ref:`hipsolverXpotrsBatched_bufferSize <potrs_batched_bufferSize>`
-
-Note that while most hipSOLVER functions take a workspace pointer and size as arguments, rocSOLVER maintains its own internal device workspace by default. In order to take
-advantage of this feature, users may pass a null pointer for the `work` argument or a zero size for the `lwork` argument of any function when using the rocSOLVER backend,
-and the workspace will be automatically managed behind-the-scenes. It is recommended to use a consistent strategy for workspace management, as performance issues may arise
-if the internal workspace is made to flip-flop between user-provided and automatically allocated workspaces, and this feature should not be used with the cuSOLVER backend.
-
-.. _unused_arguments:
-
-Arguments not referenced by rocSOLVER
---------------------------------------
-
-Due to differences in implementation and API design between rocSOLVER and cuSOLVER, certain arguments will not be referenced by the rocSOLVER backend. Keep in mind the
-following when using either the API:
-
-* Unlike cuSOLVER, rocSOLVER does not provide information on invalid arguments in its `info` arguments, though it will provide info on singularities and algorithm convergence.
-  As a result, the `info` argument of many functions will not be referenced or altered by the rocSOLVER backend, excepting those that provide info on singularities or
-  convergence.
-
-* The `niters` argument of :ref:`hipsolverXXgels <gels>` and :ref:`hipsolverXXgesv <gesv>` is not referenced by the rocSOLVER backend.
 

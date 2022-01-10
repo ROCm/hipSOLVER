@@ -8,12 +8,12 @@ Currently, this API document only provides the method signatures for the wrapper
 For a complete description of the functions' behavior and arguments, see the corresponding backends' documentation
 at `cuSOLVER API <https://docs.nvidia.com/cuda/cusolver/index.html#cuds-api>`_ and/or `rocSOLVER API <https://rocsolver.readthedocs.io/en/latest/api_index.html>`_.
 
-The hipSOLVER API is designed to be similar to the cusolverDn interface, but includes some minor adjustments for the sake of the rocSOLVER
-backend. Generally, this involves the addition of workspace parameters `work` and `lwork` to those functions that do not otherwise require
-both workspace arguments. Please refer to the user guide for a complete listing of :ref:`these parameter adjustments <api_differences>`,
-along with a listing of :ref:`those arguments that are not referenced <unused_arguments>` by the rocSOLVER backend.
+The hipSOLVER API is designed to be similar to the cusolverDn and rocSOLVER interfaces, but it requires some minor adjustments to ensure the best performance out of 
+either backend. Generally, this involves the addition of workspace parameters and some additional API methods. 
+Please refer to the user guide for a complete listing of :ref:`these API adjustments <api_differences>`.
 
-Users interested in using hipSOLVER without these adjustments should instead consult the :ref:`compatibility API documentation <library_compat>`.
+Users interested in using hipSOLVER without these adjustments, having an interface that matches cuSOLVER, should instead consult the :ref:`compatibility API documentation <library_compat>`.
+See also :ref:`this section <porting>` for more details.
 
 .. toctree::
    :maxdepth: 5

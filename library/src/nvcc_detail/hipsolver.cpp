@@ -2,6 +2,10 @@
  * Copyright 2020-2021 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
+/*! \file
+ *  \brief Implementation of the hipSOLVER regular APIs on the cuSOLVER side.
+ */
+
 #include "hipsolver.h"
 #include "exceptions.hpp"
 #include <cuda_runtime.h>
