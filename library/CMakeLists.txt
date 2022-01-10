@@ -34,11 +34,14 @@ else()
 endif()
 
 # configure a header file to pass the CMake version settings to the source, and package the header files in the output archive
-configure_file( "${CMAKE_CURRENT_SOURCE_DIR}/include/hipsolver-version.h.in" "${PROJECT_BINARY_DIR}/include/hipsolver-version.h" )
+configure_file( "${CMAKE_CURRENT_SOURCE_DIR}/include/internal/hipsolver-version.h.in" "${PROJECT_BINARY_DIR}/include/internal/hipsolver-version.h" )
 
 set( hipsolver_headers_public
   include/hipsolver.h
-  ${PROJECT_BINARY_DIR}/include/hipsolver-version.h
+  include/internal/hipsolver-types.h
+  include/internal/hipsolver-functions.h
+  include/internal/hipsolver-compat.h
+  ${PROJECT_BINARY_DIR}/include/internal/hipsolver-version.h
 )
 
 source_group( "Header Files\\Public" FILES ${hipsolver_headers_public} )
@@ -49,7 +52,7 @@ set( BIN_INSTALL_DIR ${CMAKE_INSTALL_BINDIR} )
 set( LIB_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR} )
 set( INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR} )
 
-set(CMAKE_Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/include)
+set(CMAKE_Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/include/internal)
 
 # Build into subdirectories
 add_subdirectory( src )

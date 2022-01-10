@@ -78,18 +78,23 @@ todo_include_todos = False
 #
 # html_theme = 'alabaster'
 
-if read_the_docs_build:
-    html_theme = 'default'
-else:
-    import sphinx_rtd_theme
-    html_theme = "sphinx_rtd_theme"
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+#if read_the_docs_build:
+#    html_theme = 'default'
+#else:
+import sphinx_rtd_theme
+html_theme = "sphinx_rtd_theme"
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    'navigation_depth': 4,
+    'prev_next_buttons_location': 'both',
+    'display_version': True,
+    'collapse_navigation': False,
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -119,16 +124,13 @@ htmlhelp_basename = 'hipSOLVERdoc'
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
-    #
-    # 'papersize': 'letterpaper',
+    'papersize': 'letterpaper',
 
     # The font size ('10pt', '11pt' or '12pt').
-    #
-    # 'pointsize': '10pt',
+    'pointsize': '10pt',
 
     # Additional stuff for the LaTeX preamble.
-    #
-    # 'preamble': '',
+    'preamble': '\setcounter{tocdepth}{5}',
 
     # Latex figure (float) alignment
     #
@@ -161,6 +163,6 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'hipSOLVER', u'hipSOLVER Documentation',
-     author, 'hipSOLVER', 'One line description of project.',
+     author, 'hipSOLVER development team', 'Marshalling library for LAPACK routines on the GPU',
      'Miscellaneous'),
 ]

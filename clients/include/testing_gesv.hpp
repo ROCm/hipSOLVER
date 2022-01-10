@@ -6,7 +6,7 @@
 
 #include "clientcommon.hpp"
 
-template <bool FORTRAN, typename T, typename U>
+template <testAPI_t API, typename T, typename U>
 void gesv_checkBadArgs(const hipsolverHandle_t handle,
                        const int               n,
                        const int               nrhs,
@@ -29,7 +29,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
 {
 #if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // handle
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesv(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
                                          nullptr,
                                          n,
                                          nrhs,
@@ -55,7 +55,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
     // N/A
 
     // pointers
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesv(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
                                          handle,
                                          n,
                                          nrhs,
@@ -76,7 +76,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
                                          dInfo,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesv(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
                                          handle,
                                          n,
                                          nrhs,
@@ -97,7 +97,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
                                          dInfo,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesv(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
                                          handle,
                                          n,
                                          nrhs,
@@ -118,7 +118,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
                                          dInfo,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesv(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
                                          handle,
                                          n,
                                          nrhs,
@@ -139,7 +139,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
                                          dInfo,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesv(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
                                          handle,
                                          n,
                                          nrhs,
@@ -163,7 +163,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
 #endif
 }
 
-template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+template <testAPI_t API, bool BATCHED, bool STRIDED, typename T>
 void testing_gesv_bad_arg()
 {
     // safe arguments
@@ -195,7 +195,7 @@ void testing_gesv_bad_arg()
         // CHECK_HIP_ERROR(dInfo.memcheck());
 
         // size_t size_W;
-        // hipsolver_gesv_bufferSize(FORTRAN,
+        // hipsolver_gesv_bufferSize(API,
         //                           handle,
         //                           n,
         //                           nrhs,
@@ -212,7 +212,7 @@ void testing_gesv_bad_arg()
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check bad arguments
-        // gesv_checkBadArgs<FORTRAN>(handle,
+        // gesv_checkBadArgs<API>(handle,
         //                            n,
         //                            nrhs,
         //                            dA.data(),
@@ -248,7 +248,7 @@ void testing_gesv_bad_arg()
         CHECK_HIP_ERROR(dInfo.memcheck());
 
         size_t size_W;
-        hipsolver_gesv_bufferSize(FORTRAN,
+        hipsolver_gesv_bufferSize(API,
                                   handle,
                                   n,
                                   nrhs,
@@ -265,25 +265,25 @@ void testing_gesv_bad_arg()
             CHECK_HIP_ERROR(dWork.memcheck());
 
         // check bad arguments
-        gesv_checkBadArgs<FORTRAN>(handle,
-                                   n,
-                                   nrhs,
-                                   dA.data(),
-                                   lda,
-                                   stA,
-                                   dIpiv.data(),
-                                   stP,
-                                   dB.data(),
-                                   ldb,
-                                   stB,
-                                   dX.data(),
-                                   ldx,
-                                   stX,
-                                   dWork.data(),
-                                   size_W,
-                                   hNiters.data(),
-                                   dInfo.data(),
-                                   bc);
+        gesv_checkBadArgs<API>(handle,
+                               n,
+                               nrhs,
+                               dA.data(),
+                               lda,
+                               stA,
+                               dIpiv.data(),
+                               stP,
+                               dB.data(),
+                               ldb,
+                               stB,
+                               dX.data(),
+                               ldx,
+                               stX,
+                               dWork.data(),
+                               size_W,
+                               hNiters.data(),
+                               dInfo.data(),
+                               bc);
     }
 }
 
@@ -334,7 +334,7 @@ void gesv_initData(const hipsolverHandle_t handle,
     }
 }
 
-template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void gesv_getError(const hipsolverHandle_t handle,
                    const int               n,
                    const int               nrhs,
@@ -368,7 +368,7 @@ void gesv_getError(const hipsolverHandle_t handle,
 
     // execute computations
     // GPU lapack
-    CHECK_ROCBLAS_ERROR(hipsolver_gesv(FORTRAN,
+    CHECK_ROCBLAS_ERROR(hipsolver_gesv(API,
                                        handle,
                                        n,
                                        nrhs,
@@ -420,7 +420,7 @@ void gesv_getError(const hipsolverHandle_t handle,
     *max_err += err;
 }
 
-template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void gesv_getPerfData(const hipsolverHandle_t handle,
                       const int               n,
                       const int               nrhs,
@@ -472,7 +472,7 @@ void gesv_getPerfData(const hipsolverHandle_t handle,
         gesv_initData<false, true, T>(
             handle, n, nrhs, dA, lda, stA, dIpiv, stP, dB, ldb, stB, bc, hA, hIpiv, hB);
 
-        CHECK_ROCBLAS_ERROR(hipsolver_gesv(FORTRAN,
+        CHECK_ROCBLAS_ERROR(hipsolver_gesv(API,
                                            handle,
                                            n,
                                            nrhs,
@@ -505,7 +505,7 @@ void gesv_getPerfData(const hipsolverHandle_t handle,
             handle, n, nrhs, dA, lda, stA, dIpiv, stP, dB, ldb, stB, bc, hA, hIpiv, hB);
 
         start = get_time_us_sync(stream);
-        hipsolver_gesv(FORTRAN,
+        hipsolver_gesv(API,
                        handle,
                        n,
                        nrhs,
@@ -530,7 +530,7 @@ void gesv_getPerfData(const hipsolverHandle_t handle,
     *gpu_time_used /= hot_calls;
 }
 
-template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+template <testAPI_t API, bool BATCHED, bool STRIDED, typename T>
 void testing_gesv(Arguments& argus)
 {
     // get arguments
@@ -568,7 +568,7 @@ void testing_gesv(Arguments& argus)
     {
         if(BATCHED)
         {
-            // EXPECT_ROCBLAS_STATUS(hipsolver_gesv(FORTRAN,
+            // EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
             //                                      handle,
             //                                      n,
             //                                      nrhs,
@@ -592,7 +592,7 @@ void testing_gesv(Arguments& argus)
         }
         else
         {
-            EXPECT_ROCBLAS_STATUS(hipsolver_gesv(FORTRAN,
+            EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
                                                  handle,
                                                  n,
                                                  nrhs,
@@ -647,7 +647,7 @@ void testing_gesv(Arguments& argus)
         // CHECK_HIP_ERROR(dInfo.memcheck());
 
         // size_t size_W;
-        // hipsolver_gesv_bufferSize(FORTRAN,
+        // hipsolver_gesv_bufferSize(API,
         //                           handle,
         //                           n,
         //                           nrhs,
@@ -665,7 +665,7 @@ void testing_gesv(Arguments& argus)
 
         // // check computations
         // if(argus.unit_check || argus.norm_check)
-        //     gesv_getError<FORTRAN, T>(handle,
+        //     gesv_getError<API, T>(handle,
         //                               n,
         //                               nrhs,
         //                               dA,
@@ -694,7 +694,7 @@ void testing_gesv(Arguments& argus)
 
         // // collect performance data
         // if(argus.timing)
-        //     gesv_getPerfData<FORTRAN, T>(handle,
+        //     gesv_getPerfData<API, T>(handle,
         //                                  n,
         //                                  nrhs,
         //                                  dA,
@@ -749,7 +749,7 @@ void testing_gesv(Arguments& argus)
         CHECK_HIP_ERROR(dInfo.memcheck());
 
         size_t size_W;
-        hipsolver_gesv_bufferSize(FORTRAN,
+        hipsolver_gesv_bufferSize(API,
                                   handle,
                                   n,
                                   nrhs,
@@ -767,62 +767,62 @@ void testing_gesv(Arguments& argus)
 
         // check computations
         if(argus.unit_check || argus.norm_check)
-            gesv_getError<FORTRAN, T>(handle,
-                                      n,
-                                      nrhs,
-                                      dA,
-                                      lda,
-                                      stA,
-                                      dIpiv,
-                                      stP,
-                                      dB,
-                                      ldb,
-                                      stB,
-                                      dX,
-                                      ldx,
-                                      stX,
-                                      dWork,
-                                      size_W,
-                                      dInfo,
-                                      bc,
-                                      hA,
-                                      hIpiv,
-                                      hB,
-                                      hBRes,
-                                      hNiters,
-                                      hInfo,
-                                      hInfoRes,
-                                      &max_error);
+            gesv_getError<API, T>(handle,
+                                  n,
+                                  nrhs,
+                                  dA,
+                                  lda,
+                                  stA,
+                                  dIpiv,
+                                  stP,
+                                  dB,
+                                  ldb,
+                                  stB,
+                                  dX,
+                                  ldx,
+                                  stX,
+                                  dWork,
+                                  size_W,
+                                  dInfo,
+                                  bc,
+                                  hA,
+                                  hIpiv,
+                                  hB,
+                                  hBRes,
+                                  hNiters,
+                                  hInfo,
+                                  hInfoRes,
+                                  &max_error);
 
         // collect performance data
         if(argus.timing)
-            gesv_getPerfData<FORTRAN, T>(handle,
-                                         n,
-                                         nrhs,
-                                         dA,
-                                         lda,
-                                         stA,
-                                         dIpiv,
-                                         stP,
-                                         dB,
-                                         ldb,
-                                         stB,
-                                         dX,
-                                         ldx,
-                                         stX,
-                                         dWork,
-                                         size_W,
-                                         dInfo,
-                                         bc,
-                                         hA,
-                                         hIpiv,
-                                         hB,
-                                         hNiters,
-                                         hInfo,
-                                         &gpu_time_used,
-                                         &cpu_time_used,
-                                         hot_calls,
-                                         argus.perf);
+            gesv_getPerfData<API, T>(handle,
+                                     n,
+                                     nrhs,
+                                     dA,
+                                     lda,
+                                     stA,
+                                     dIpiv,
+                                     stP,
+                                     dB,
+                                     ldb,
+                                     stB,
+                                     dX,
+                                     ldx,
+                                     stX,
+                                     dWork,
+                                     size_W,
+                                     dInfo,
+                                     bc,
+                                     hA,
+                                     hIpiv,
+                                     hB,
+                                     hNiters,
+                                     hInfo,
+                                     &gpu_time_used,
+                                     &cpu_time_used,
+                                     hot_calls,
+                                     argus.perf);
     }
 
     // validate results for rocsolver-test

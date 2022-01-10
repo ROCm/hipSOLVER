@@ -4,7 +4,7 @@
 
 #include "clientcommon.hpp"
 
-template <bool FORTRAN, typename T, typename U, typename V>
+template <testAPI_t API, typename T, typename U, typename V>
 void getrf_npvt_checkBadArgs(const hipsolverHandle_t handle,
                              const int               m,
                              const int               n,
@@ -22,36 +22,25 @@ void getrf_npvt_checkBadArgs(const hipsolverHandle_t handle,
     // handle
     EXPECT_ROCBLAS_STATUS(
         hipsolver_getrf(
-            FORTRAN, true, nullptr, m, n, dA, lda, stA, dWork, lwork, dIpiv, stP, dinfo, bc),
+            API, true, nullptr, m, n, dA, lda, stA, dWork, lwork, dIpiv, stP, dinfo, bc),
         HIPSOLVER_STATUS_NOT_INITIALIZED);
 
     // values
     // N/A
 
     // pointers
-    EXPECT_ROCBLAS_STATUS(hipsolver_getrf(FORTRAN,
-                                          true,
-                                          handle,
-                                          m,
-                                          n,
-                                          (T) nullptr,
-                                          lda,
-                                          stA,
-                                          dWork,
-                                          lwork,
-                                          dIpiv,
-                                          stP,
-                                          dinfo,
-                                          bc),
-                          HIPSOLVER_STATUS_INVALID_VALUE);
     EXPECT_ROCBLAS_STATUS(
         hipsolver_getrf(
-            FORTRAN, true, handle, m, n, dA, lda, stA, dWork, lwork, dIpiv, stP, (V) nullptr, bc),
+            API, true, handle, m, n, (T) nullptr, lda, stA, dWork, lwork, dIpiv, stP, dinfo, bc),
+        HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_getrf(
+            API, true, handle, m, n, dA, lda, stA, dWork, lwork, dIpiv, stP, (V) nullptr, bc),
         HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
 }
 
-template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+template <testAPI_t API, bool BATCHED, bool STRIDED, typename T>
 void testing_getrf_npvt_bad_arg()
 {
     // safe arguments
@@ -74,13 +63,13 @@ void testing_getrf_npvt_bad_arg()
         // CHECK_HIP_ERROR(dInfo.memcheck());
 
         // int size_W;
-        // hipsolver_getrf_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        // hipsolver_getrf_bufferSize(API, handle, m, n, dA.data(), lda, &size_W);
         // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check bad arguments
-        // getrf_npvt_checkBadArgs<FORTRAN>(
+        // getrf_npvt_checkBadArgs<API>(
         //     handle, m, n, dA.data(), lda, stA, dWork.data(), size_W, dIpiv.data(), stP, dInfo.data(), bc);
     }
     else
@@ -94,24 +83,24 @@ void testing_getrf_npvt_bad_arg()
         CHECK_HIP_ERROR(dInfo.memcheck());
 
         int size_W;
-        hipsolver_getrf_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        hipsolver_getrf_bufferSize(API, handle, m, n, dA.data(), lda, &size_W);
         device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
         // check bad arguments
-        getrf_npvt_checkBadArgs<FORTRAN>(handle,
-                                         m,
-                                         n,
-                                         dA.data(),
-                                         lda,
-                                         stA,
-                                         dWork.data(),
-                                         size_W,
-                                         dIpiv.data(),
-                                         stP,
-                                         dInfo.data(),
-                                         bc);
+        getrf_npvt_checkBadArgs<API>(handle,
+                                     m,
+                                     n,
+                                     dA.data(),
+                                     lda,
+                                     stA,
+                                     dWork.data(),
+                                     size_W,
+                                     dIpiv.data(),
+                                     stP,
+                                     dInfo.data(),
+                                     bc);
     }
 }
 
@@ -155,7 +144,7 @@ void getrf_npvt_initData(const hipsolverHandle_t handle,
     }
 }
 
-template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void getrf_npvt_getError(const hipsolverHandle_t handle,
                          const int               m,
                          const int               n,
@@ -178,7 +167,7 @@ void getrf_npvt_getError(const hipsolverHandle_t handle,
 
     // execute computations
     // GPU lapack
-    CHECK_ROCBLAS_ERROR(hipsolver_getrf(FORTRAN,
+    CHECK_ROCBLAS_ERROR(hipsolver_getrf(API,
                                         true,
                                         handle,
                                         m,
@@ -220,7 +209,7 @@ void getrf_npvt_getError(const hipsolverHandle_t handle,
     *max_err += err;
 }
 
-template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void getrf_npvt_getPerfData(const hipsolverHandle_t handle,
                             const int               m,
                             const int               n,
@@ -257,7 +246,7 @@ void getrf_npvt_getPerfData(const hipsolverHandle_t handle,
     {
         getrf_npvt_initData<false, true, T>(handle, m, n, dA, lda, stA, dInfo, bc, hA, hInfo);
 
-        CHECK_ROCBLAS_ERROR(hipsolver_getrf(FORTRAN,
+        CHECK_ROCBLAS_ERROR(hipsolver_getrf(API,
                                             true,
                                             handle,
                                             m,
@@ -283,7 +272,7 @@ void getrf_npvt_getPerfData(const hipsolverHandle_t handle,
         getrf_npvt_initData<false, true, T>(handle, m, n, dA, lda, stA, dInfo, bc, hA, hInfo);
 
         start = get_time_us_sync(stream);
-        hipsolver_getrf(FORTRAN,
+        hipsolver_getrf(API,
                         true,
                         handle,
                         m,
@@ -302,7 +291,7 @@ void getrf_npvt_getPerfData(const hipsolverHandle_t handle,
     *gpu_time_used /= hot_calls;
 }
 
-template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+template <testAPI_t API, bool BATCHED, bool STRIDED, typename T>
 void testing_getrf_npvt(Arguments& argus)
 {
     // get arguments
@@ -334,7 +323,7 @@ void testing_getrf_npvt(Arguments& argus)
     {
         if(BATCHED)
         {
-            // EXPECT_ROCBLAS_STATUS(hipsolver_getrf(FORTRAN,
+            // EXPECT_ROCBLAS_STATUS(hipsolver_getrf(API,
             //                                       true,
             //                                       handle,
             //                                       m,
@@ -352,7 +341,7 @@ void testing_getrf_npvt(Arguments& argus)
         }
         else
         {
-            EXPECT_ROCBLAS_STATUS(hipsolver_getrf(FORTRAN,
+            EXPECT_ROCBLAS_STATUS(hipsolver_getrf(API,
                                                   true,
                                                   handle,
                                                   m,
@@ -390,14 +379,14 @@ void testing_getrf_npvt(Arguments& argus)
         // CHECK_HIP_ERROR(dInfo.memcheck());
 
         // int size_W;
-        // hipsolver_getrf_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        // hipsolver_getrf_bufferSize(API, handle, m, n, dA.data(), lda, &size_W);
         // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check computations
         // if(argus.unit_check || argus.norm_check)
-        //     getrf_npvt_getError<FORTRAN, T>(handle,
+        //     getrf_npvt_getError<API, T>(handle,
         //                                     m,
         //                                     n,
         //                                     dA,
@@ -416,7 +405,7 @@ void testing_getrf_npvt(Arguments& argus)
 
         // // collect performance data
         // if(argus.timing)
-        //     getrf_npvt_getPerfData<FORTRAN, T>(handle,
+        //     getrf_npvt_getPerfData<API, T>(handle,
         //                                        m,
         //                                        n,
         //                                        dA,
@@ -450,49 +439,49 @@ void testing_getrf_npvt(Arguments& argus)
         CHECK_HIP_ERROR(dInfo.memcheck());
 
         int size_W;
-        hipsolver_getrf_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        hipsolver_getrf_bufferSize(API, handle, m, n, dA.data(), lda, &size_W);
         device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
         // check computations
         if(argus.unit_check || argus.norm_check)
-            getrf_npvt_getError<FORTRAN, T>(handle,
-                                            m,
-                                            n,
-                                            dA,
-                                            lda,
-                                            stA,
-                                            dWork,
-                                            size_W,
-                                            dInfo,
-                                            bc,
-                                            hA,
-                                            hARes,
-                                            hIpiv,
-                                            hInfo,
-                                            hInfoRes,
-                                            &max_error);
+            getrf_npvt_getError<API, T>(handle,
+                                        m,
+                                        n,
+                                        dA,
+                                        lda,
+                                        stA,
+                                        dWork,
+                                        size_W,
+                                        dInfo,
+                                        bc,
+                                        hA,
+                                        hARes,
+                                        hIpiv,
+                                        hInfo,
+                                        hInfoRes,
+                                        &max_error);
 
         // collect performance data
         if(argus.timing)
-            getrf_npvt_getPerfData<FORTRAN, T>(handle,
-                                               m,
-                                               n,
-                                               dA,
-                                               lda,
-                                               stA,
-                                               dWork,
-                                               size_W,
-                                               dInfo,
-                                               bc,
-                                               hA,
-                                               hIpiv,
-                                               hInfo,
-                                               &gpu_time_used,
-                                               &cpu_time_used,
-                                               hot_calls,
-                                               argus.perf);
+            getrf_npvt_getPerfData<API, T>(handle,
+                                           m,
+                                           n,
+                                           dA,
+                                           lda,
+                                           stA,
+                                           dWork,
+                                           size_W,
+                                           dInfo,
+                                           bc,
+                                           hA,
+                                           hIpiv,
+                                           hInfo,
+                                           &gpu_time_used,
+                                           &cpu_time_used,
+                                           hot_calls,
+                                           argus.perf);
     }
 
     // validate results for rocsolver-test

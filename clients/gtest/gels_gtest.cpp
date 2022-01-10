@@ -76,7 +76,7 @@ Arguments gels_setup_arguments(gels_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class GELS_BASE : public ::TestWithParam<gels_tuple>
 {
 protected:
@@ -90,18 +90,22 @@ protected:
         Arguments arg = gels_setup_arguments(GetParam());
 
         if(arg.peek<rocblas_int>("n") == -1 && arg.peek<rocblas_int>("nrhs") == -1)
-            testing_gels_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
+            testing_gels_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_gels<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_gels<API, BATCHED, STRIDED, T>(arg);
     }
 };
 
-class GELS : public GELS_BASE<false>
+class GELS : public GELS_BASE<API_NORMAL>
 {
 };
 
-class GELS_FORTRAN : public GELS_BASE<true>
+class GELS_FORTRAN : public GELS_BASE<API_FORTRAN>
+{
+};
+
+class GELS_COMPAT : public GELS_BASE<API_COMPAT>
 {
 };
 
@@ -147,6 +151,26 @@ TEST_P(GELS_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
+TEST_P(GELS_COMPAT, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(GELS_COMPAT, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(GELS_COMPAT, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(GELS_COMPAT, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          GELS,
 //                          Combine(ValuesIn(large_matrix_sizeA_range),
@@ -163,4 +187,13 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GELS_FORTRAN,
+                         Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GELS_COMPAT,
+//                          Combine(ValuesIn(large_matrix_sizeA_range),
+//                                  ValuesIn(large_matrix_sizeB_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         GELS_COMPAT,
                          Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
