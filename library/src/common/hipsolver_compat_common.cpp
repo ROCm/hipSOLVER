@@ -3,9 +3,9 @@
  * ************************************************************************ */
 
 /*! \file
- *  \brief hipsolver_compat_common.cpp provides implementation of the compatibility APIs 
- *  that are equivalent to both, cuSOLVER and rocSOLVER. These simply call hipSOLVER's
- *  regular APIs.   
+ *  \brief hipsolver_compat_common.cpp provides implementations of the compatibility APIs
+ *  that are equivalent for both cuSOLVER and rocSOLVER. These simply call hipSOLVER's
+ *  regular APIs.
  */
 
 #include "hipsolver.h"

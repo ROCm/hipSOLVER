@@ -333,7 +333,7 @@ inline rocblas_status hipsolverManageWorkspace(rocblas_handle handle, size_t new
         return rocblas_status_success;
 }
 
-/******************** AUXLIARY ********************/
+/******************** AUXILIARY ********************/
 hipsolverStatus_t hipsolverCreate(hipsolverHandle_t* handle)
 try
 {

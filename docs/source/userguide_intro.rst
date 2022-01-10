@@ -16,29 +16,27 @@ Library overview
 
 hipSOLVER is an open-source marshalling library for `LAPACK routines <https://www.netlib.org/lapack/explore-html/modules.html>`_ on the GPU.
 It sits between a backend library and the user application, marshalling inputs to and outputs from the backend library so that the user
-aplication remains unchanged when using different backends. Currently, two
-backend libraries are supported by hipSOLVER: NVIDIA's `cuSOLVER library <https://developer.nvidia.com/cusolver>`_ and AMD's open-source
-`rocSOLVER library <https://github.com/ROCmSoftwarePlatform/rocSOLVER>`_.
+aplication remains unchanged when using different backends. Currently, two backend libraries are supported by hipSOLVER: NVIDIA's `cuSOLVER
+library <https://developer.nvidia.com/cusolver>`_ and AMD's open-source `rocSOLVER library <https://github.com/ROCmSoftwarePlatform/rocSOLVER>`_.
 
-Technically, the :ref:`regular hipSOLVER API <library_api>` is a thin wrapper layer around the different backends. As such, it is not
-expected to introduce a significant overhead; however, its main purpose is portability, so when performance is critical, directly
-using the library backend corresponding to the given architecture is recommended. 
+The :ref:`regular hipSOLVER API <library_api>` is a thin wrapper layer around the different backends. As such, it is not expected to introduce
+significant overhead. However, its main purpose is portability, so when performance is critical, directly using the library backend corresponding
+to the given architecture is recommended.
 
-Another purpose of hipSOLVER is to facilitate translating cuSOLVER
-applications to the `AMD's open source ROCm platform <https://rocmdocs.amd.com/en/latest/index.html>`_ ecosystem; to that end, hipSOLVER also
-includes a :ref:`compatibility API <library_compat>` with method signatures that match exactly those of cuSOLVER. For more details see the 
-section :ref:`usage_label`,  
+Another purpose of hipSOLVER is to facilitate the translation of cuSOLVER applications to
+`AMD's open source ROCm platform <https://rocmdocs.amd.com/en/latest/index.html>`_ ecosystem. To that end, hipSOLVER also includes a
+:ref:`compatibility API <library_compat>` with method signatures that match exactly those of cuSOLVER. For more details see the
+section :ref:`usage_label`.
 
 
 Currently implemented functionality
 ====================================
 
-The hipSOLVER library remains in active development. New features are being
-continuously added, with new functionality documented at each `release of the ROCm platform <https://rocmdocs.amd.com/en/latest/Current_Release_Notes/Current-Release-Notes.html>`_.
+The hipSOLVER library remains in active development. New features are being continuously added, with new functionality documented at each
+`release of the ROCm platform <https://rocmdocs.amd.com/en/latest/Current_Release_Notes/Current-Release-Notes.html>`_.
 
-The following tables summarize the wrapper functions that are implemented in the regular API for the 
-different supported precisions in hipSOLVER's latest release. Most of these functions have their corresponding version on the
-compatibility API when applicable. 
+The following tables summarize the wrapper functions that are implemented in the regular API for the different supported precisions in
+hipSOLVER's latest release. Most of these functions have a corresponding version in the compatibility API, where applicable.
 
 LAPACK auxiliary functions
 ----------------------------

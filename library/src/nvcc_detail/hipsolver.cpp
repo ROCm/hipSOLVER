@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 /*! \file
@@ -183,7 +183,7 @@ hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
     }
 }
 
-/******************** AUXLIARY ********************/
+/******************** AUXILIARY ********************/
 hipsolverStatus_t hipsolverCreate(hipsolverHandle_t* handle)
 try
 {
