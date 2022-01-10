@@ -1,8 +1,13 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
+/*! \file
+ *  \brief Implementation of the hipSOLVER regular APIs on the rocSOLVER side.
+ */
+
 #include "hipsolver.h"
+#include "error_macros.hpp"
 #include "exceptions.hpp"
 #include "internal/rocblas_device_malloc.hpp"
 #include "rocblas.h"
@@ -313,28 +318,11 @@ hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
     }
 }
 
-#define CHECK_HIPSOLVER_ERROR(STATUS)           \
-    do                                          \
-    {                                           \
-        hipsolverStatus_t _status = (STATUS);   \
-        if(_status != HIPSOLVER_STATUS_SUCCESS) \
-            return _status;                     \
-    } while(0)
-
-#define CHECK_ROCBLAS_ERROR(STATUS)             \
-    do                                          \
-    {                                           \
-        rocblas_status _status = (STATUS);      \
-        if(_status != rocblas_status_success)   \
-            return rocblas2hip_status(_status); \
-    } while(0)
-
-inline rocblas_status hipsolverManageWorkspace(rocblas_handle handle, int lwork)
+inline rocblas_status hipsolverManageWorkspace(rocblas_handle handle, size_t new_size)
 {
-    if(lwork < 0)
+    if(new_size < 0)
         return rocblas_status_memory_error;
 
-    size_t new_size     = lwork;
     size_t current_size = 0;
     if(rocblas_is_user_managing_device_memory(handle))
         rocblas_get_device_memory_size(handle, &current_size);
@@ -345,7 +333,7 @@ inline rocblas_status hipsolverManageWorkspace(rocblas_handle handle, int lwork)
         return rocblas_status_success;
 }
 
-/******************** AUXLIARY ********************/
+/******************** AUXILIARY ********************/
 hipsolverStatus_t hipsolverCreate(hipsolverHandle_t* handle)
 try
 {
@@ -550,7 +538,7 @@ hipsolverStatus_t hipsolverSorgbr(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -580,7 +568,7 @@ hipsolverStatus_t hipsolverDorgbr(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -610,7 +598,7 @@ hipsolverStatus_t hipsolverCungbr(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -646,7 +634,7 @@ hipsolverStatus_t hipsolverZungbr(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -806,7 +794,7 @@ hipsolverStatus_t hipsolverSorgqr(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -834,7 +822,7 @@ hipsolverStatus_t hipsolverDorgqr(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -862,7 +850,7 @@ hipsolverStatus_t hipsolverCungqr(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -896,7 +884,7 @@ hipsolverStatus_t hipsolverZungqr(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -1062,7 +1050,7 @@ hipsolverStatus_t hipsolverSorgtr(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -1090,7 +1078,7 @@ hipsolverStatus_t hipsolverDorgtr(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -1118,7 +1106,7 @@ hipsolverStatus_t hipsolverCungtr(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -1150,7 +1138,7 @@ hipsolverStatus_t hipsolverZungtr(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -1376,7 +1364,7 @@ hipsolverStatus_t hipsolverSormqr(hipsolverHandle_t    handle,
                                   int*                 devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -1418,7 +1406,7 @@ hipsolverStatus_t hipsolverDormqr(hipsolverHandle_t    handle,
                                   int*                 devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -1460,7 +1448,7 @@ hipsolverStatus_t hipsolverCunmqr(hipsolverHandle_t    handle,
                                   int*                 devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -1502,7 +1490,7 @@ hipsolverStatus_t hipsolverZunmqr(hipsolverHandle_t    handle,
                                   int*                 devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -1733,7 +1721,7 @@ hipsolverStatus_t hipsolverSormtr(hipsolverHandle_t    handle,
                                   int*                 devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -1775,7 +1763,7 @@ hipsolverStatus_t hipsolverDormtr(hipsolverHandle_t    handle,
                                   int*                 devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -1817,7 +1805,7 @@ hipsolverStatus_t hipsolverCunmtr(hipsolverHandle_t    handle,
                                   int*                 devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -1859,7 +1847,7 @@ hipsolverStatus_t hipsolverZunmtr(hipsolverHandle_t    handle,
                                   int*                 devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2008,7 +1996,7 @@ hipsolverStatus_t hipsolverSgebrd(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2038,7 +2026,7 @@ hipsolverStatus_t hipsolverDgebrd(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2068,7 +2056,7 @@ hipsolverStatus_t hipsolverCgebrd(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2105,7 +2093,7 @@ hipsolverStatus_t hipsolverZgebrd(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2313,7 +2301,7 @@ hipsolverStatus_t hipsolverSSgels(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2356,7 +2344,7 @@ hipsolverStatus_t hipsolverDDgels(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2399,7 +2387,7 @@ hipsolverStatus_t hipsolverCCgels(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2442,7 +2430,7 @@ hipsolverStatus_t hipsolverZZgels(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2593,7 +2581,7 @@ hipsolverStatus_t hipsolverSgeqrf(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2620,7 +2608,7 @@ hipsolverStatus_t hipsolverDgeqrf(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2647,7 +2635,7 @@ hipsolverStatus_t hipsolverCgeqrf(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2675,7 +2663,7 @@ hipsolverStatus_t hipsolverZgeqrf(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2696,7 +2684,7 @@ catch(...)
     return exception2hip_status();
 }
 
-/******************** GESVD ********************/
+/******************** GESV ********************/
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSSgesv_bufferSize(hipsolverHandle_t handle,
                                                               int               n,
                                                               int               nrhs,
@@ -2889,7 +2877,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSSgesv(hipsolverHandle_t handle,
                                                    int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2922,7 +2910,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDDgesv(hipsolverHandle_t handle,
                                                    int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2955,7 +2943,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCCgesv(hipsolverHandle_t handle,
                                                    int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -2997,7 +2985,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZZgesv(hipsolverHandle_t handle,
                                                    int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -3044,9 +3032,9 @@ try
                                                                    m,
                                                                    nullptr,
                                                                    nullptr,
-                                                                   m,
+                                                                   max(m, 1),
                                                                    nullptr,
-                                                                   n,
+                                                                   max(n, 1),
                                                                    nullptr,
                                                                    rocblas_outofplace,
                                                                    nullptr));
@@ -3085,9 +3073,9 @@ try
                                                                    m,
                                                                    nullptr,
                                                                    nullptr,
-                                                                   m,
+                                                                   max(m, 1),
                                                                    nullptr,
-                                                                   n,
+                                                                   max(n, 1),
                                                                    nullptr,
                                                                    rocblas_outofplace,
                                                                    nullptr));
@@ -3126,9 +3114,9 @@ try
                                                                    m,
                                                                    nullptr,
                                                                    nullptr,
-                                                                   m,
+                                                                   max(m, 1),
                                                                    nullptr,
-                                                                   n,
+                                                                   max(n, 1),
                                                                    nullptr,
                                                                    rocblas_outofplace,
                                                                    nullptr));
@@ -3167,9 +3155,9 @@ try
                                                                    m,
                                                                    nullptr,
                                                                    nullptr,
-                                                                   m,
+                                                                   max(m, 1),
                                                                    nullptr,
-                                                                   n,
+                                                                   max(n, 1),
                                                                    nullptr,
                                                                    rocblas_outofplace,
                                                                    nullptr));
@@ -3206,7 +3194,7 @@ hipsolverStatus_t hipsolverSgesvd(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -3254,7 +3242,7 @@ hipsolverStatus_t hipsolverDgesvd(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -3302,7 +3290,7 @@ hipsolverStatus_t hipsolverCgesvd(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -3350,7 +3338,7 @@ hipsolverStatus_t hipsolverZgesvd(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -3508,7 +3496,7 @@ hipsolverStatus_t hipsolverSgetrf(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -3540,7 +3528,7 @@ hipsolverStatus_t hipsolverDgetrf(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -3572,7 +3560,7 @@ hipsolverStatus_t hipsolverCgetrf(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -3604,7 +3592,7 @@ hipsolverStatus_t hipsolverZgetrf(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -3812,7 +3800,7 @@ hipsolverStatus_t hipsolverSgetrs(hipsolverHandle_t    handle,
                                   int*                 devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -3843,7 +3831,7 @@ hipsolverStatus_t hipsolverDgetrs(hipsolverHandle_t    handle,
                                   int*                 devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -3874,7 +3862,7 @@ hipsolverStatus_t hipsolverCgetrs(hipsolverHandle_t    handle,
                                   int*                 devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -3912,7 +3900,7 @@ hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t    handle,
                                   int*                 devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4067,7 +4055,7 @@ hipsolverStatus_t hipsolverSpotrf(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4094,7 +4082,7 @@ hipsolverStatus_t hipsolverDpotrf(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4121,7 +4109,7 @@ hipsolverStatus_t hipsolverCpotrf(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4152,7 +4140,7 @@ hipsolverStatus_t hipsolverZpotrf(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4317,7 +4305,7 @@ hipsolverStatus_t hipsolverSpotrfBatched(hipsolverHandle_t   handle,
                                          int                 batch_count)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4345,7 +4333,7 @@ hipsolverStatus_t hipsolverDpotrfBatched(hipsolverHandle_t   handle,
                                          int                 batch_count)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4373,7 +4361,7 @@ hipsolverStatus_t hipsolverCpotrfBatched(hipsolverHandle_t   handle,
                                          int                 batch_count)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4406,7 +4394,7 @@ hipsolverStatus_t hipsolverZpotrfBatched(hipsolverHandle_t   handle,
                                          int                 batch_count)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4559,7 +4547,7 @@ hipsolverStatus_t hipsolverSpotri(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4586,7 +4574,7 @@ hipsolverStatus_t hipsolverDpotri(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4613,7 +4601,7 @@ hipsolverStatus_t hipsolverCpotri(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4644,7 +4632,7 @@ hipsolverStatus_t hipsolverZpotri(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4819,7 +4807,7 @@ hipsolverStatus_t hipsolverSpotrs(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4849,7 +4837,7 @@ hipsolverStatus_t hipsolverDpotrs(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4879,7 +4867,7 @@ hipsolverStatus_t hipsolverCpotrs(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -4915,7 +4903,7 @@ hipsolverStatus_t hipsolverZpotrs(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -5125,7 +5113,7 @@ hipsolverStatus_t hipsolverSpotrsBatched(hipsolverHandle_t   handle,
                                          int                 batch_count)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -5156,7 +5144,7 @@ hipsolverStatus_t hipsolverDpotrsBatched(hipsolverHandle_t   handle,
                                          int                 batch_count)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -5187,7 +5175,7 @@ hipsolverStatus_t hipsolverCpotrsBatched(hipsolverHandle_t   handle,
                                          int                 batch_count)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -5225,7 +5213,7 @@ hipsolverStatus_t hipsolverZpotrsBatched(hipsolverHandle_t   handle,
                                          int                 batch_count)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -5438,7 +5426,7 @@ hipsolverStatus_t hipsolverSsyevd(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
     {
         float* E = work;
         work     = E + n;
@@ -5495,7 +5483,7 @@ hipsolverStatus_t hipsolverDsyevd(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
     {
         double* E = work;
         work      = E + n;
@@ -5552,7 +5540,7 @@ hipsolverStatus_t hipsolverCheevd(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
     {
         float* E = (float*)work;
         work     = (hipFloatComplex*)(E + n);
@@ -5609,7 +5597,7 @@ hipsolverStatus_t hipsolverZheevd(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
     {
         double* E = (double*)work;
         work      = (hipDoubleComplex*)(E + n);
@@ -5870,7 +5858,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd(hipsolverHandle_t   handle,
                                                    int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
     {
         float* E = work;
         work     = E + n;
@@ -5936,7 +5924,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd(hipsolverHandle_t   handle,
                                                    int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
     {
         double* E = work;
         work      = E + n;
@@ -6002,7 +5990,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd(hipsolverHandle_t   handle,
                                                    int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
     {
         float* E = (float*)work;
         work     = (hipFloatComplex*)(E + n);
@@ -6068,7 +6056,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd(hipsolverHandle_t   handle,
                                                    int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
     {
         double* E = (double*)work;
         work      = (hipDoubleComplex*)(E + n);
@@ -6297,7 +6285,7 @@ hipsolverStatus_t hipsolverSsytrd(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -6327,7 +6315,7 @@ hipsolverStatus_t hipsolverDsytrd(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -6357,7 +6345,7 @@ hipsolverStatus_t hipsolverChetrd(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -6393,7 +6381,7 @@ hipsolverStatus_t hipsolverZhetrd(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -6540,7 +6528,7 @@ hipsolverStatus_t hipsolverSsytrf(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -6568,7 +6556,7 @@ hipsolverStatus_t hipsolverDsytrf(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -6596,7 +6584,7 @@ hipsolverStatus_t hipsolverCsytrf(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
@@ -6629,7 +6617,7 @@ hipsolverStatus_t hipsolverZsytrf(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    if(work != nullptr)
+    if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {

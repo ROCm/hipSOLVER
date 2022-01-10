@@ -82,7 +82,7 @@ Arguments getrs_setup_arguments(getrs_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class GETRS_BASE : public ::TestWithParam<getrs_tuple>
 {
 protected:
@@ -96,18 +96,22 @@ protected:
         Arguments arg = getrs_setup_arguments(GetParam());
 
         if(arg.peek<rocblas_int>("n") == -1 && arg.peek<rocblas_int>("nrhs") == -1)
-            testing_getrs_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
+            testing_getrs_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_getrs<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_getrs<API, BATCHED, STRIDED, T>(arg);
     }
 };
 
-class GETRS : public GETRS_BASE<false>
+class GETRS : public GETRS_BASE<API_NORMAL>
 {
 };
 
-class GETRS_FORTRAN : public GETRS_BASE<true>
+class GETRS_FORTRAN : public GETRS_BASE<API_FORTRAN>
+{
+};
+
+class GETRS_COMPAT : public GETRS_BASE<API_COMPAT>
 {
 };
 
@@ -153,6 +157,26 @@ TEST_P(GETRS_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
+TEST_P(GETRS_COMPAT, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(GETRS_COMPAT, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(GETRS_COMPAT, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(GETRS_COMPAT, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          GETRS,
 //                          Combine(ValuesIn(large_matrix_sizeA_range),
@@ -169,4 +193,13 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GETRS_FORTRAN,
+                         Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GETRS_COMPAT,
+//                          Combine(ValuesIn(large_matrix_sizeA_range),
+//                                  ValuesIn(large_matrix_sizeB_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         GETRS_COMPAT,
                          Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));

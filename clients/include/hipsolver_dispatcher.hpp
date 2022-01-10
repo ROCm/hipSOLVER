@@ -49,17 +49,17 @@ class hipsolver_dispatcher
         // Map for functions that support all precisions
         static const func_map map = {
             {"gebrd", testing_gebrd<false, false, false, T>},
-            {"gels", testing_gels<false, false, false, T>},
+            {"gels", testing_gels<API_NORMAL, false, false, T>},
             {"geqrf", testing_geqrf<false, false, false, T>},
-            {"gesv", testing_gesv<false, false, false, T>},
-            {"gesvd", testing_gesvd<false, false, false, T>},
-            {"getrf", testing_getrf<false, false, false, T>},
-            {"getrs", testing_getrs<false, false, false, T>},
-            {"potrf", testing_potrf<false, false, false, T>},
-            {"potrf_batched", testing_potrf<false, true, false, T>},
+            {"gesv", testing_gesv<API_NORMAL, false, false, T>},
+            {"gesvd", testing_gesvd<API_NORMAL, false, false, T>},
+            {"getrf", testing_getrf<API_NORMAL, false, false, T>},
+            {"getrs", testing_getrs<API_NORMAL, false, false, T>},
+            {"potrf", testing_potrf<API_NORMAL, false, false, T>},
+            {"potrf_batched", testing_potrf<API_NORMAL, true, false, T>},
             {"potri", testing_potri<false, false, false, T>},
-            {"potrs", testing_potrs<false, false, false, T>},
-            {"potrs_batched", testing_potrs<false, true, false, T>},
+            {"potrs", testing_potrs<API_NORMAL, false, false, T>},
+            {"potrs_batched", testing_potrs<API_NORMAL, true, false, T>},
             {"sytrf", testing_sytrf<false, false, false, T>},
         };
 
