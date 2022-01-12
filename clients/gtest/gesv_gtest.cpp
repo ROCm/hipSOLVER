@@ -170,6 +170,7 @@ TEST_P(GESV_COMPAT, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
 TEST_P(GESV_INPLACE, __float)
 {
     run_tests<false, false, float>();
@@ -189,6 +190,7 @@ TEST_P(GESV_INPLACE, __double_complex)
 {
     run_tests<false, false, rocblas_double_complex>();
 }
+#endif
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          GESV,
