@@ -2755,6 +2755,296 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t               API,
 }
 /********************************************************/
 
+/******************** GESVD ********************/
+inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
+                                                     hipsolverHandle_t     handle,
+                                                     hipsolverEigMode_t    jobz,
+                                                     int                   econ,
+                                                     int                   m,
+                                                     int                   n,
+                                                     float*                A,
+                                                     int                   lda,
+                                                     float*                S,
+                                                     float*                U,
+                                                     int                   ldu,
+                                                     float*                V,
+                                                     int                   ldv,
+                                                     int*                  lwork,
+                                                     hipsolverGesvdjInfo_t params)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnSgesvdj_bufferSize(
+            handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, lwork, params);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
+                                                     hipsolverHandle_t     handle,
+                                                     hipsolverEigMode_t    jobz,
+                                                     int                   econ,
+                                                     int                   m,
+                                                     int                   n,
+                                                     double*               A,
+                                                     int                   lda,
+                                                     double*               S,
+                                                     double*               U,
+                                                     int                   ldu,
+                                                     double*               V,
+                                                     int                   ldv,
+                                                     int*                  lwork,
+                                                     hipsolverGesvdjInfo_t params)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnDgesvdj_bufferSize(
+            handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, lwork, params);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
+                                                     hipsolverHandle_t     handle,
+                                                     hipsolverEigMode_t    jobz,
+                                                     int                   econ,
+                                                     int                   m,
+                                                     int                   n,
+                                                     hipsolverComplex*     A,
+                                                     int                   lda,
+                                                     float*                S,
+                                                     hipsolverComplex*     U,
+                                                     int                   ldu,
+                                                     hipsolverComplex*     V,
+                                                     int                   ldv,
+                                                     int*                  lwork,
+                                                     hipsolverGesvdjInfo_t params)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnCgesvdj_bufferSize(handle,
+                                             jobz,
+                                             econ,
+                                             m,
+                                             n,
+                                             (hipFloatComplex*)A,
+                                             lda,
+                                             S,
+                                             (hipFloatComplex*)U,
+                                             ldu,
+                                             (hipFloatComplex*)V,
+                                             ldv,
+                                             lwork,
+                                             params);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t               API,
+                                                     hipsolverHandle_t       handle,
+                                                     hipsolverEigMode_t      jobz,
+                                                     int                     econ,
+                                                     int                     m,
+                                                     int                     n,
+                                                     hipsolverDoubleComplex* A,
+                                                     int                     lda,
+                                                     double*                 S,
+                                                     hipsolverDoubleComplex* U,
+                                                     int                     ldu,
+                                                     hipsolverDoubleComplex* V,
+                                                     int                     ldv,
+                                                     int*                    lwork,
+                                                     hipsolverGesvdjInfo_t   params)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnZgesvdj_bufferSize(handle,
+                                             jobz,
+                                             econ,
+                                             m,
+                                             n,
+                                             (hipDoubleComplex*)A,
+                                             lda,
+                                             S,
+                                             (hipDoubleComplex*)U,
+                                             ldu,
+                                             (hipDoubleComplex*)V,
+                                             ldv,
+                                             lwork,
+                                             params);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t             API,
+                                          hipsolverHandle_t     handle,
+                                          hipsolverEigMode_t    jobz,
+                                          int                   econ,
+                                          int                   m,
+                                          int                   n,
+                                          float*                A,
+                                          int                   lda,
+                                          int                   stA,
+                                          float*                S,
+                                          int                   stS,
+                                          float*                U,
+                                          int                   ldu,
+                                          int                   stU,
+                                          float*                V,
+                                          int                   ldv,
+                                          int                   stV,
+                                          float*                work,
+                                          int                   lwork,
+                                          int*                  info,
+                                          hipsolverGesvdjInfo_t params,
+                                          int                   bc)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnSgesvdj(
+            handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t             API,
+                                          hipsolverHandle_t     handle,
+                                          hipsolverEigMode_t    jobz,
+                                          int                   econ,
+                                          int                   m,
+                                          int                   n,
+                                          double*               A,
+                                          int                   lda,
+                                          int                   stA,
+                                          double*               S,
+                                          int                   stS,
+                                          double*               U,
+                                          int                   ldu,
+                                          int                   stU,
+                                          double*               V,
+                                          int                   ldv,
+                                          int                   stV,
+                                          double*               work,
+                                          int                   lwork,
+                                          int*                  info,
+                                          hipsolverGesvdjInfo_t params,
+                                          int                   bc)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnDgesvdj(
+            handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t             API,
+                                          hipsolverHandle_t     handle,
+                                          hipsolverEigMode_t    jobz,
+                                          int                   econ,
+                                          int                   m,
+                                          int                   n,
+                                          hipsolverComplex*     A,
+                                          int                   lda,
+                                          int                   stA,
+                                          float*                S,
+                                          int                   stS,
+                                          hipsolverComplex*     U,
+                                          int                   ldu,
+                                          int                   stU,
+                                          hipsolverComplex*     V,
+                                          int                   ldv,
+                                          int                   stV,
+                                          hipsolverComplex*     work,
+                                          int                   lwork,
+                                          int*                  info,
+                                          hipsolverGesvdjInfo_t params,
+                                          int                   bc)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnCgesvdj(handle,
+                                  jobz,
+                                  econ,
+                                  m,
+                                  n,
+                                  (hipFloatComplex*)A,
+                                  lda,
+                                  S,
+                                  (hipFloatComplex*)U,
+                                  ldu,
+                                  (hipFloatComplex*)V,
+                                  ldv,
+                                  (hipFloatComplex*)work,
+                                  lwork,
+                                  info,
+                                  params);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t               API,
+                                          hipsolverHandle_t       handle,
+                                          hipsolverEigMode_t      jobz,
+                                          int                     econ,
+                                          int                     m,
+                                          int                     n,
+                                          hipsolverDoubleComplex* A,
+                                          int                     lda,
+                                          int                     stA,
+                                          double*                 S,
+                                          int                     stS,
+                                          hipsolverDoubleComplex* U,
+                                          int                     ldu,
+                                          int                     stU,
+                                          hipsolverDoubleComplex* V,
+                                          int                     ldv,
+                                          int                     stV,
+                                          hipsolverDoubleComplex* work,
+                                          int                     lwork,
+                                          int*                    info,
+                                          hipsolverGesvdjInfo_t   params,
+                                          int                     bc)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnZgesvdj(handle,
+                                  jobz,
+                                  econ,
+                                  m,
+                                  n,
+                                  (hipDoubleComplex*)A,
+                                  lda,
+                                  S,
+                                  (hipDoubleComplex*)U,
+                                  ldu,
+                                  (hipDoubleComplex*)V,
+                                  ldv,
+                                  (hipDoubleComplex*)work,
+                                  lwork,
+                                  info,
+                                  params);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+/********************************************************/
+
 /******************** GETRF ********************/
 // normal and strided_batched
 inline hipsolverStatus_t hipsolver_getrf_bufferSize(
