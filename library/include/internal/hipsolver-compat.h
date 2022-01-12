@@ -18,6 +18,8 @@
 
 typedef void* hipsolverDnHandle_t;
 
+typedef void* hipsolverGesvdjInfo_t;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -31,6 +33,28 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSetStream(hipsolverDnHandle_t hand
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnGetStream(hipsolverDnHandle_t handle,
                                                         hipStream_t*        streamId);
+
+// params
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnCreateGesvdjInfo(hipsolverGesvdjInfo_t* info);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDestroyGesvdjInfo(hipsolverGesvdjInfo_t info);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXgesvdjSetMaxSweeps(hipsolverGesvdjInfo_t info,
+                                                                  int                   max_sweeps);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXgesvdjSetSortEig(hipsolverGesvdjInfo_t info,
+                                                                int                   sort_eig);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXgesvdjSetTolerance(hipsolverGesvdjInfo_t info,
+                                                                  double                tolerance);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXgesvdjGetResidual(hipsolverDnHandle_t   handle,
+                                                                 hipsolverGesvdjInfo_t info,
+                                                                 double*               residual);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXgesvdjGetSweeps(hipsolverDnHandle_t   handle,
+                                                               hipsolverGesvdjInfo_t info,
+                                                               int* executed_sweeps);
 
 // orgbr/ungbr
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSorgbr_bufferSize(hipsolverDnHandle_t handle,
@@ -929,6 +953,135 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnZgesvd(hipsolverDnHandle_t handle,
                                                      int                 lwork,
                                                      double*             rwork,
                                                      int*                devInfo);
+
+// gesvdj
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSgesvdj_bufferSize(hipsolverDnHandle_t   handle,
+                                                                 hipsolverEigMode_t    jobz,
+                                                                 int                   econ,
+                                                                 int                   m,
+                                                                 int                   n,
+                                                                 float*                A,
+                                                                 int                   lda,
+                                                                 float*                S,
+                                                                 float*                U,
+                                                                 int                   ldu,
+                                                                 float*                V,
+                                                                 int                   ldv,
+                                                                 int*                  lwork,
+                                                                 hipsolverGesvdjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDgesvdj_bufferSize(hipsolverDnHandle_t   handle,
+                                                                 hipsolverEigMode_t    jobz,
+                                                                 int                   econ,
+                                                                 int                   m,
+                                                                 int                   n,
+                                                                 double*               A,
+                                                                 int                   lda,
+                                                                 double*               S,
+                                                                 double*               U,
+                                                                 int                   ldu,
+                                                                 double*               V,
+                                                                 int                   ldv,
+                                                                 int*                  lwork,
+                                                                 hipsolverGesvdjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnCgesvdj_bufferSize(hipsolverDnHandle_t   handle,
+                                                                 hipsolverEigMode_t    jobz,
+                                                                 int                   econ,
+                                                                 int                   m,
+                                                                 int                   n,
+                                                                 hipFloatComplex*      A,
+                                                                 int                   lda,
+                                                                 float*                S,
+                                                                 hipFloatComplex*      U,
+                                                                 int                   ldu,
+                                                                 hipFloatComplex*      V,
+                                                                 int                   ldv,
+                                                                 int*                  lwork,
+                                                                 hipsolverGesvdjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnZgesvdj_bufferSize(hipsolverDnHandle_t   handle,
+                                                                 hipsolverEigMode_t    jobz,
+                                                                 int                   econ,
+                                                                 int                   m,
+                                                                 int                   n,
+                                                                 hipDoubleComplex*     A,
+                                                                 int                   lda,
+                                                                 double*               S,
+                                                                 hipDoubleComplex*     U,
+                                                                 int                   ldu,
+                                                                 hipDoubleComplex*     V,
+                                                                 int                   ldv,
+                                                                 int*                  lwork,
+                                                                 hipsolverGesvdjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSgesvdj(hipsolverDnHandle_t   handle,
+                                                      hipsolverEigMode_t    jobz,
+                                                      int                   econ,
+                                                      int                   m,
+                                                      int                   n,
+                                                      float*                A,
+                                                      int                   lda,
+                                                      float*                S,
+                                                      float*                U,
+                                                      int                   ldu,
+                                                      float*                V,
+                                                      int                   ldv,
+                                                      float*                work,
+                                                      int                   lwork,
+                                                      int*                  devInfo,
+                                                      hipsolverGesvdjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDgesvdj(hipsolverDnHandle_t   handle,
+                                                      hipsolverEigMode_t    jobz,
+                                                      int                   econ,
+                                                      int                   m,
+                                                      int                   n,
+                                                      double*               A,
+                                                      int                   lda,
+                                                      double*               S,
+                                                      double*               U,
+                                                      int                   ldu,
+                                                      double*               V,
+                                                      int                   ldv,
+                                                      double*               work,
+                                                      int                   lwork,
+                                                      int*                  devInfo,
+                                                      hipsolverGesvdjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnCgesvdj(hipsolverDnHandle_t   handle,
+                                                      hipsolverEigMode_t    jobz,
+                                                      int                   econ,
+                                                      int                   m,
+                                                      int                   n,
+                                                      hipFloatComplex*      A,
+                                                      int                   lda,
+                                                      float*                S,
+                                                      hipFloatComplex*      U,
+                                                      int                   ldu,
+                                                      hipFloatComplex*      V,
+                                                      int                   ldv,
+                                                      hipFloatComplex*      work,
+                                                      int                   lwork,
+                                                      int*                  devInfo,
+                                                      hipsolverGesvdjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnZgesvdj(hipsolverDnHandle_t   handle,
+                                                      hipsolverEigMode_t    jobz,
+                                                      int                   econ,
+                                                      int                   m,
+                                                      int                   n,
+                                                      hipDoubleComplex*     A,
+                                                      int                   lda,
+                                                      double*               S,
+                                                      hipDoubleComplex*     U,
+                                                      int                   ldu,
+                                                      hipDoubleComplex*     V,
+                                                      int                   ldv,
+                                                      hipDoubleComplex*     work,
+                                                      int                   lwork,
+                                                      int*                  devInfo,
+                                                      hipsolverGesvdjInfo_t params);
 
 // getrf
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSgetrf_bufferSize(
