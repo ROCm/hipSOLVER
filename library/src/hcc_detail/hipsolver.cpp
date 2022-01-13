@@ -3174,6 +3174,10 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    // space for E array (aka rwork)
+    if(min(m, n) > 0)
+        sz += sizeof(float) * min(m, n);
+
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
     if(sz > INT_MAX)
@@ -3214,6 +3218,10 @@ try
                                                                    rocblas_outofplace,
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
+
+    // space for E array (aka rwork)
+    if(min(m, n) > 0)
+        sz += sizeof(double) * min(m, n);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -3256,6 +3264,10 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    // space for E array (aka rwork)
+    if(min(m, n) > 0)
+        sz += sizeof(float) * min(m, n);
+
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
     if(sz > INT_MAX)
@@ -3297,6 +3309,10 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    // space for E array (aka rwork)
+    if(min(m, n) > 0)
+        sz += sizeof(double) * min(m, n);
+
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
     if(sz > INT_MAX)
@@ -3329,29 +3345,61 @@ hipsolverStatus_t hipsolverSgesvd(hipsolverHandle_t handle,
 try
 {
     if(work && lwork)
+    {
+        if(!rwork && min(m, n) > 1)
+        {
+            rwork = work;
+            work  = rwork + min(m, n);
+        }
+
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
+
+        return rocblas2hip_status(rocsolver_sgesvd((rocblas_handle)handle,
+                                                   char2rocblas_svect(jobu),
+                                                   char2rocblas_svect(jobv),
+                                                   m,
+                                                   n,
+                                                   A,
+                                                   lda,
+                                                   S,
+                                                   U,
+                                                   ldu,
+                                                   V,
+                                                   ldv,
+                                                   rwork,
+                                                   rocblas_outofplace,
+                                                   devInfo));
+    }
     else
     {
         CHECK_HIPSOLVER_ERROR(
             hipsolverSgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
-    }
 
-    return rocblas2hip_status(rocsolver_sgesvd((rocblas_handle)handle,
-                                               char2rocblas_svect(jobu),
-                                               char2rocblas_svect(jobv),
-                                               m,
-                                               n,
-                                               A,
-                                               lda,
-                                               S,
-                                               U,
-                                               ldu,
-                                               V,
-                                               ldv,
-                                               rwork,
-                                               rocblas_outofplace,
-                                               devInfo));
+        rocblas_device_malloc mem((rocblas_handle)handle, sizeof(float) * min(m, n));
+        if(!rwork && min(m, n) > 1)
+        {
+            if(!mem)
+                return HIPSOLVER_STATUS_ALLOC_FAILED;
+            rwork = (float*)mem[0];
+        }
+
+        return rocblas2hip_status(rocsolver_sgesvd((rocblas_handle)handle,
+                                                   char2rocblas_svect(jobu),
+                                                   char2rocblas_svect(jobv),
+                                                   m,
+                                                   n,
+                                                   A,
+                                                   lda,
+                                                   S,
+                                                   U,
+                                                   ldu,
+                                                   V,
+                                                   ldv,
+                                                   rwork,
+                                                   rocblas_outofplace,
+                                                   devInfo));
+    }
 }
 catch(...)
 {
@@ -3377,29 +3425,61 @@ hipsolverStatus_t hipsolverDgesvd(hipsolverHandle_t handle,
 try
 {
     if(work && lwork)
+    {
+        if(!rwork && min(m, n) > 1)
+        {
+            rwork = work;
+            work  = rwork + min(m, n);
+        }
+
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
+
+        return rocblas2hip_status(rocsolver_dgesvd((rocblas_handle)handle,
+                                                   char2rocblas_svect(jobu),
+                                                   char2rocblas_svect(jobv),
+                                                   m,
+                                                   n,
+                                                   A,
+                                                   lda,
+                                                   S,
+                                                   U,
+                                                   ldu,
+                                                   V,
+                                                   ldv,
+                                                   rwork,
+                                                   rocblas_outofplace,
+                                                   devInfo));
+    }
     else
     {
         CHECK_HIPSOLVER_ERROR(
             hipsolverDgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
-    }
 
-    return rocblas2hip_status(rocsolver_dgesvd((rocblas_handle)handle,
-                                               char2rocblas_svect(jobu),
-                                               char2rocblas_svect(jobv),
-                                               m,
-                                               n,
-                                               A,
-                                               lda,
-                                               S,
-                                               U,
-                                               ldu,
-                                               V,
-                                               ldv,
-                                               rwork,
-                                               rocblas_outofplace,
-                                               devInfo));
+        rocblas_device_malloc mem((rocblas_handle)handle, sizeof(double) * min(m, n));
+        if(!rwork && min(m, n) > 1)
+        {
+            if(!mem)
+                return HIPSOLVER_STATUS_ALLOC_FAILED;
+            rwork = (double*)mem[0];
+        }
+
+        return rocblas2hip_status(rocsolver_dgesvd((rocblas_handle)handle,
+                                                   char2rocblas_svect(jobu),
+                                                   char2rocblas_svect(jobv),
+                                                   m,
+                                                   n,
+                                                   A,
+                                                   lda,
+                                                   S,
+                                                   U,
+                                                   ldu,
+                                                   V,
+                                                   ldv,
+                                                   rwork,
+                                                   rocblas_outofplace,
+                                                   devInfo));
+    }
 }
 catch(...)
 {
@@ -3425,29 +3505,61 @@ hipsolverStatus_t hipsolverCgesvd(hipsolverHandle_t handle,
 try
 {
     if(work && lwork)
+    {
+        if(!rwork && min(m, n) > 1)
+        {
+            rwork = (float*)work;
+            work  = (hipFloatComplex*)(rwork + min(m, n));
+        }
+
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
+
+        return rocblas2hip_status(rocsolver_cgesvd((rocblas_handle)handle,
+                                                   char2rocblas_svect(jobu),
+                                                   char2rocblas_svect(jobv),
+                                                   m,
+                                                   n,
+                                                   (rocblas_float_complex*)A,
+                                                   lda,
+                                                   S,
+                                                   (rocblas_float_complex*)U,
+                                                   ldu,
+                                                   (rocblas_float_complex*)V,
+                                                   ldv,
+                                                   rwork,
+                                                   rocblas_outofplace,
+                                                   devInfo));
+    }
     else
     {
         CHECK_HIPSOLVER_ERROR(
             hipsolverCgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
-    }
 
-    return rocblas2hip_status(rocsolver_cgesvd((rocblas_handle)handle,
-                                               char2rocblas_svect(jobu),
-                                               char2rocblas_svect(jobv),
-                                               m,
-                                               n,
-                                               (rocblas_float_complex*)A,
-                                               lda,
-                                               S,
-                                               (rocblas_float_complex*)U,
-                                               ldu,
-                                               (rocblas_float_complex*)V,
-                                               ldv,
-                                               rwork,
-                                               rocblas_outofplace,
-                                               devInfo));
+        rocblas_device_malloc mem((rocblas_handle)handle, sizeof(float) * min(m, n));
+        if(!rwork && min(m, n) > 1)
+        {
+            if(!mem)
+                return HIPSOLVER_STATUS_ALLOC_FAILED;
+            rwork = (float*)mem[0];
+        }
+
+        return rocblas2hip_status(rocsolver_cgesvd((rocblas_handle)handle,
+                                                   char2rocblas_svect(jobu),
+                                                   char2rocblas_svect(jobv),
+                                                   m,
+                                                   n,
+                                                   (rocblas_float_complex*)A,
+                                                   lda,
+                                                   S,
+                                                   (rocblas_float_complex*)U,
+                                                   ldu,
+                                                   (rocblas_float_complex*)V,
+                                                   ldv,
+                                                   rwork,
+                                                   rocblas_outofplace,
+                                                   devInfo));
+    }
 }
 catch(...)
 {
@@ -3473,29 +3585,61 @@ hipsolverStatus_t hipsolverZgesvd(hipsolverHandle_t handle,
 try
 {
     if(work && lwork)
+    {
+        if(!rwork && min(m, n) > 1)
+        {
+            rwork = (double*)work;
+            work  = (hipDoubleComplex*)(rwork + min(m, n));
+        }
+
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
+
+        return rocblas2hip_status(rocsolver_zgesvd((rocblas_handle)handle,
+                                                   char2rocblas_svect(jobu),
+                                                   char2rocblas_svect(jobv),
+                                                   m,
+                                                   n,
+                                                   (rocblas_double_complex*)A,
+                                                   lda,
+                                                   S,
+                                                   (rocblas_double_complex*)U,
+                                                   ldu,
+                                                   (rocblas_double_complex*)V,
+                                                   ldv,
+                                                   rwork,
+                                                   rocblas_outofplace,
+                                                   devInfo));
+    }
     else
     {
         CHECK_HIPSOLVER_ERROR(
             hipsolverZgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
-    }
 
-    return rocblas2hip_status(rocsolver_zgesvd((rocblas_handle)handle,
-                                               char2rocblas_svect(jobu),
-                                               char2rocblas_svect(jobv),
-                                               m,
-                                               n,
-                                               (rocblas_double_complex*)A,
-                                               lda,
-                                               S,
-                                               (rocblas_double_complex*)U,
-                                               ldu,
-                                               (rocblas_double_complex*)V,
-                                               ldv,
-                                               rwork,
-                                               rocblas_outofplace,
-                                               devInfo));
+        rocblas_device_malloc mem((rocblas_handle)handle, sizeof(double) * min(m, n));
+        if(!rwork && min(m, n) > 1)
+        {
+            if(!mem)
+                return HIPSOLVER_STATUS_ALLOC_FAILED;
+            rwork = (double*)mem[0];
+        }
+
+        return rocblas2hip_status(rocsolver_zgesvd((rocblas_handle)handle,
+                                                   char2rocblas_svect(jobu),
+                                                   char2rocblas_svect(jobv),
+                                                   m,
+                                                   n,
+                                                   (rocblas_double_complex*)A,
+                                                   lda,
+                                                   S,
+                                                   (rocblas_double_complex*)U,
+                                                   ldu,
+                                                   (rocblas_double_complex*)V,
+                                                   ldv,
+                                                   rwork,
+                                                   rocblas_outofplace,
+                                                   devInfo));
+    }
 }
 catch(...)
 {
@@ -5401,7 +5545,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(float) * n;
+    if(n > 0)
+        sz += sizeof(float) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5445,7 +5590,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(double) * n;
+    if(n > 0)
+        sz += sizeof(double) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5489,7 +5635,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(float) * n;
+    if(n > 0)
+        sz += sizeof(float) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5533,7 +5680,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(double) * n;
+    if(n > 0)
+        sz += sizeof(double) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5563,7 +5711,8 @@ try
     if(work && lwork)
     {
         float* E = work;
-        work     = E + n;
+        if(n > 0)
+            work = E + n;
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -5581,8 +5730,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(
             hipsolverSsyevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(float) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(float) * n);
         if(!mem)
@@ -5620,7 +5768,8 @@ try
     if(work && lwork)
     {
         double* E = work;
-        work      = E + n;
+        if(n > 0)
+            work = E + n;
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -5638,8 +5787,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(
             hipsolverDsyevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(double) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(double) * n);
         if(!mem)
@@ -5677,7 +5825,8 @@ try
     if(work && lwork)
     {
         float* E = (float*)work;
-        work     = (hipFloatComplex*)(E + n);
+        if(n > 0)
+            work = (hipFloatComplex*)(E + n);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -5695,8 +5844,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(
             hipsolverCheevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(float) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(float) * n);
         if(!mem)
@@ -5734,7 +5882,8 @@ try
     if(work && lwork)
     {
         double* E = (double*)work;
-        work      = (hipDoubleComplex*)(E + n);
+        if(n > 0)
+            work = (hipDoubleComplex*)(E + n);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -5752,8 +5901,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(
             hipsolverZheevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(double) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(double) * n);
         if(!mem)
@@ -5812,7 +5960,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(float) * n;
+    if(n > 0)
+        sz += sizeof(float) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5862,7 +6011,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(double) * n;
+    if(n > 0)
+        sz += sizeof(double) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5912,7 +6062,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(float) * n;
+    if(n > 0)
+        sz += sizeof(float) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5962,7 +6113,8 @@ try
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array
-    sz += sizeof(double) * n;
+    if(n > 0)
+        sz += sizeof(double) * n;
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
         return status;
@@ -5995,7 +6147,8 @@ try
     if(work && lwork)
     {
         float* E = work;
-        work     = E + n;
+        if(n > 0)
+            work = E + n;
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -6016,8 +6169,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(hipsolverSsygvd_bufferSize(
             (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(float) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(float) * n);
         if(!mem)
@@ -6061,7 +6213,8 @@ try
     if(work && lwork)
     {
         double* E = work;
-        work      = E + n;
+        if(n > 0)
+            work = E + n;
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -6082,8 +6235,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(hipsolverDsygvd_bufferSize(
             (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(double) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(double) * n);
         if(!mem)
@@ -6127,7 +6279,8 @@ try
     if(work && lwork)
     {
         float* E = (float*)work;
-        work     = (hipFloatComplex*)(E + n);
+        if(n > 0)
+            work = (hipFloatComplex*)(E + n);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -6148,8 +6301,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(hipsolverChegvd_bufferSize(
             (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(float) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(float) * n);
         if(!mem)
@@ -6193,7 +6345,8 @@ try
     if(work && lwork)
     {
         double* E = (double*)work;
-        work      = (hipDoubleComplex*)(E + n);
+        if(n > 0)
+            work = (hipDoubleComplex*)(E + n);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
 
@@ -6214,8 +6367,7 @@ try
     {
         CHECK_HIPSOLVER_ERROR(hipsolverZhegvd_bufferSize(
             (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
-        CHECK_ROCBLAS_ERROR(
-            hipsolverManageWorkspace((rocblas_handle)handle, lwork + sizeof(double) * n));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
         rocblas_device_malloc mem((rocblas_handle)handle, sizeof(double) * n);
         if(!mem)

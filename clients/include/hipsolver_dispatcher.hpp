@@ -51,7 +51,7 @@ class hipsolver_dispatcher
             {"gels", testing_gels<API_NORMAL, false, false, false, T>},
             {"geqrf", testing_geqrf<false, false, false, T>},
             {"gesv", testing_gesv<API_NORMAL, false, false, false, T>},
-            {"gesvd", testing_gesvd<API_NORMAL, false, false, T>},
+            {"gesvd", testing_gesvd<API_NORMAL, false, false, false, T>},
             {"getrf", testing_getrf<API_NORMAL, false, false, false, T>},
             {"getrs", testing_getrs<API_NORMAL, false, false, T>},
             {"potrf", testing_potrf<API_NORMAL, false, false, T>},
