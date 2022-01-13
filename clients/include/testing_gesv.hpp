@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -30,6 +30,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
 #if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // handle
     EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
+                                         false,
                                          nullptr,
                                          n,
                                          nrhs,
@@ -56,6 +57,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
 
     // pointers
     EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
+                                         false,
                                          handle,
                                          n,
                                          nrhs,
@@ -77,6 +79,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
     EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
+                                         false,
                                          handle,
                                          n,
                                          nrhs,
@@ -98,6 +101,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
     EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
+                                         false,
                                          handle,
                                          n,
                                          nrhs,
@@ -119,6 +123,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
     EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
+                                         false,
                                          handle,
                                          n,
                                          nrhs,
@@ -140,6 +145,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
                                          bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
     EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
+                                         false,
                                          handle,
                                          n,
                                          nrhs,
@@ -213,24 +219,24 @@ void testing_gesv_bad_arg()
 
         // // check bad arguments
         // gesv_checkBadArgs<API>(handle,
-        //                            n,
-        //                            nrhs,
-        //                            dA.data(),
-        //                            lda,
-        //                            stA,
-        //                            dIpiv.data(),
-        //                            stP,
-        //                            dB.data(),
-        //                            ldb,
-        //                            stB,
-        //                            dX.data(),
-        //                            ldx,
-        //                            stX,
-        //                            dWork.data(),
-        //                            size_W,
-        //                            hNiters.data(),
-        //                            dInfo.data(),
-        //                            bc);
+        //                        n,
+        //                        nrhs,
+        //                        dA.data(),
+        //                        lda,
+        //                        stA,
+        //                        dIpiv.data(),
+        //                        stP,
+        //                        dB.data(),
+        //                        ldb,
+        //                        stB,
+        //                        dX.data(),
+        //                        ldx,
+        //                        stX,
+        //                        dWork.data(),
+        //                        size_W,
+        //                        hNiters.data(),
+        //                        dInfo.data(),
+        //                        bc);
     }
     else
     {
@@ -334,7 +340,13 @@ void gesv_initData(const hipsolverHandle_t handle,
     }
 }
 
-template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API,
+          bool      INPLACE,
+          typename T,
+          typename Td,
+          typename Ud,
+          typename Th,
+          typename Uh>
 void gesv_getError(const hipsolverHandle_t handle,
                    const int               n,
                    const int               nrhs,
@@ -369,6 +381,7 @@ void gesv_getError(const hipsolverHandle_t handle,
     // execute computations
     // GPU lapack
     CHECK_ROCBLAS_ERROR(hipsolver_gesv(API,
+                                       INPLACE,
                                        handle,
                                        n,
                                        nrhs,
@@ -388,7 +401,10 @@ void gesv_getError(const hipsolverHandle_t handle,
                                        hNiters.data(),
                                        dInfo.data(),
                                        bc));
-    CHECK_HIP_ERROR(hBRes.transfer_from(dX));
+    if(!INPLACE)
+        CHECK_HIP_ERROR(hBRes.transfer_from(dX));
+    else
+        CHECK_HIP_ERROR(hBRes.transfer_from(dB));
     CHECK_HIP_ERROR(hInfoRes.transfer_from(dInfo));
 
     // CPU lapack
@@ -407,7 +423,7 @@ void gesv_getError(const hipsolverHandle_t handle,
     {
         if(hInfoRes[b][0] == 0)
         {
-            err      = norm_error('I', n, nrhs, ldb, hB[b], hBRes[b], ldx);
+            err      = norm_error('I', n, nrhs, ldb, hB[b], hBRes[b], (!INPLACE ? ldx : ldb));
             *max_err = err > *max_err ? err : *max_err;
         }
     }
@@ -420,7 +436,13 @@ void gesv_getError(const hipsolverHandle_t handle,
     *max_err += err;
 }
 
-template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API,
+          bool      INPLACE,
+          typename T,
+          typename Td,
+          typename Ud,
+          typename Th,
+          typename Uh>
 void gesv_getPerfData(const hipsolverHandle_t handle,
                       const int               n,
                       const int               nrhs,
@@ -473,6 +495,7 @@ void gesv_getPerfData(const hipsolverHandle_t handle,
             handle, n, nrhs, dA, lda, stA, dIpiv, stP, dB, ldb, stB, bc, hA, hIpiv, hB);
 
         CHECK_ROCBLAS_ERROR(hipsolver_gesv(API,
+                                           INPLACE,
                                            handle,
                                            n,
                                            nrhs,
@@ -506,6 +529,7 @@ void gesv_getPerfData(const hipsolverHandle_t handle,
 
         start = get_time_us_sync(stream);
         hipsolver_gesv(API,
+                       INPLACE,
                        handle,
                        n,
                        nrhs,
@@ -530,7 +554,7 @@ void gesv_getPerfData(const hipsolverHandle_t handle,
     *gpu_time_used /= hot_calls;
 }
 
-template <testAPI_t API, bool BATCHED, bool STRIDED, typename T>
+template <testAPI_t API, bool BATCHED, bool STRIDED, bool INPLACE, typename T>
 void testing_gesv(Arguments& argus)
 {
     // get arguments
@@ -560,7 +584,7 @@ void testing_gesv(Arguments& argus)
     size_t size_P    = size_t(n);
     double max_error = 0, gpu_time_used = 0, cpu_time_used = 0;
 
-    size_t size_BRes = (argus.unit_check || argus.norm_check) ? size_X : 0;
+    size_t size_BRes = (argus.unit_check || argus.norm_check) ? (!INPLACE ? size_X : size_B) : 0;
 
     // check invalid sizes
     bool invalid_size = (n < 0 || nrhs < 0 || lda < n || ldb < n || ldx < n || bc < 0);
@@ -569,6 +593,7 @@ void testing_gesv(Arguments& argus)
         if(BATCHED)
         {
             // EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
+            //                                      INPLACE,
             //                                      handle,
             //                                      n,
             //                                      nrhs,
@@ -593,6 +618,7 @@ void testing_gesv(Arguments& argus)
         else
         {
             EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
+                                                 INPLACE,
                                                  handle,
                                                  n,
                                                  nrhs,
@@ -665,62 +691,62 @@ void testing_gesv(Arguments& argus)
 
         // // check computations
         // if(argus.unit_check || argus.norm_check)
-        //     gesv_getError<API, T>(handle,
-        //                               n,
-        //                               nrhs,
-        //                               dA,
-        //                               lda,
-        //                               stA,
-        //                               dIpiv,
-        //                               stP,
-        //                               dB,
-        //                               ldb,
-        //                               stB,
-        //                               dX,
-        //                               ldx,
-        //                               stX,
-        //                               dWork,
-        //                               size_W,
-        //                               dInfo,
-        //                               bc,
-        //                               hA,
-        //                               hIpiv,
-        //                               hB,
-        //                               hBRes,
-        //                               hNiters,
-        //                               hInfo,
-        //                               hInfoRes,
-        //                               &max_error);
+        //     gesv_getError<API, INPLACE, T>(handle,
+        //                                    n,
+        //                                    nrhs,
+        //                                    dA,
+        //                                    lda,
+        //                                    stA,
+        //                                    dIpiv,
+        //                                    stP,
+        //                                    dB,
+        //                                    ldb,
+        //                                    stB,
+        //                                    dX,
+        //                                    ldx,
+        //                                    stX,
+        //                                    dWork,
+        //                                    size_W,
+        //                                    dInfo,
+        //                                    bc,
+        //                                    hA,
+        //                                    hIpiv,
+        //                                    hB,
+        //                                    hBRes,
+        //                                    hNiters,
+        //                                    hInfo,
+        //                                    hInfoRes,
+        //                                    &max_error);
 
         // // collect performance data
         // if(argus.timing)
-        //     gesv_getPerfData<API, T>(handle,
-        //                                  n,
-        //                                  nrhs,
-        //                                  dA,
-        //                                  lda,
-        //                                  stA,
-        //                                  dIpiv,
-        //                                  stP,
-        //                                  dB,
-        //                                  ldb,
-        //                                  stB,
-        //                                  dX,
-        //                                  ldx,
-        //                                  stX,
-        //                                  dWork,
-        //                                  size_W,
-        //                                  dInfo,
-        //                                  bc,
-        //                                  hA,
-        //                                  hIpiv,
-        //                                  hB,
-        //                                  hNiters,
-        //                                  hInfo,
-        //                                  &gpu_time_used,
-        //                                  &cpu_time_used,
-        //                                  hot_calls,
-        //                                  argus.perf);
+        //     gesv_getPerfData<API, INPLACE, T>(handle,
+        //                                       n,
+        //                                       nrhs,
+        //                                       dA,
+        //                                       lda,
+        //                                       stA,
+        //                                       dIpiv,
+        //                                       stP,
+        //                                       dB,
+        //                                       ldb,
+        //                                       stB,
+        //                                       dX,
+        //                                       ldx,
+        //                                       stX,
+        //                                       dWork,
+        //                                       size_W,
+        //                                       dInfo,
+        //                                       bc,
+        //                                       hA,
+        //                                       hIpiv,
+        //                                       hB,
+        //                                       hNiters,
+        //                                       hInfo,
+        //                                       &gpu_time_used,
+        //                                       &cpu_time_used,
+        //                                       hot_calls,
+        //                                       argus.perf);
     }
 
     else
@@ -767,62 +793,62 @@ void testing_gesv(Arguments& argus)
 
         // check computations
         if(argus.unit_check || argus.norm_check)
-            gesv_getError<API, T>(handle,
-                                  n,
-                                  nrhs,
-                                  dA,
-                                  lda,
-                                  stA,
-                                  dIpiv,
-                                  stP,
-                                  dB,
-                                  ldb,
-                                  stB,
-                                  dX,
-                                  ldx,
-                                  stX,
-                                  dWork,
-                                  size_W,
-                                  dInfo,
-                                  bc,
-                                  hA,
-                                  hIpiv,
-                                  hB,
-                                  hBRes,
-                                  hNiters,
-                                  hInfo,
-                                  hInfoRes,
-                                  &max_error);
+            gesv_getError<API, INPLACE, T>(handle,
+                                           n,
+                                           nrhs,
+                                           dA,
+                                           lda,
+                                           stA,
+                                           dIpiv,
+                                           stP,
+                                           dB,
+                                           ldb,
+                                           stB,
+                                           dX,
+                                           ldx,
+                                           stX,
+                                           dWork,
+                                           size_W,
+                                           dInfo,
+                                           bc,
+                                           hA,
+                                           hIpiv,
+                                           hB,
+                                           hBRes,
+                                           hNiters,
+                                           hInfo,
+                                           hInfoRes,
+                                           &max_error);
 
         // collect performance data
         if(argus.timing)
-            gesv_getPerfData<API, T>(handle,
-                                     n,
-                                     nrhs,
-                                     dA,
-                                     lda,
-                                     stA,
-                                     dIpiv,
-                                     stP,
-                                     dB,
-                                     ldb,
-                                     stB,
-                                     dX,
-                                     ldx,
-                                     stX,
-                                     dWork,
-                                     size_W,
-                                     dInfo,
-                                     bc,
-                                     hA,
-                                     hIpiv,
-                                     hB,
-                                     hNiters,
-                                     hInfo,
-                                     &gpu_time_used,
-                                     &cpu_time_used,
-                                     hot_calls,
-                                     argus.perf);
+            gesv_getPerfData<API, INPLACE, T>(handle,
+                                              n,
+                                              nrhs,
+                                              dA,
+                                              lda,
+                                              stA,
+                                              dIpiv,
+                                              stP,
+                                              dB,
+                                              ldb,
+                                              stB,
+                                              dX,
+                                              ldx,
+                                              stX,
+                                              dWork,
+                                              size_W,
+                                              dInfo,
+                                              bc,
+                                              hA,
+                                              hIpiv,
+                                              hB,
+                                              hNiters,
+                                              hInfo,
+                                              &gpu_time_used,
+                                              &cpu_time_used,
+                                              hot_calls,
+                                              argus.perf);
     }
 
     // validate results for rocsolver-test
