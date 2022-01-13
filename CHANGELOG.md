@@ -19,6 +19,8 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ### Deprecated
 ### Removed
 ### Fixed
+- Fixed potential workspace allocation failure in some functions.
+
 ### Known Issues
 ### Security
 
