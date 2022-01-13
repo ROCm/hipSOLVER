@@ -13,6 +13,9 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ### Optimized
 ### Changed
+- The rocSOLVER backend now allows hipsolverXXgels and hipsolverXXgesv to be called in-place when B == X.
+- The rocSOLVER backend now allows rwork to be passed as a null pointer to hipsolverXgesvd.
+
 ### Deprecated
 ### Removed
 ### Fixed
