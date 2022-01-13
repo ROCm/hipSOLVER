@@ -2137,18 +2137,31 @@ try
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status = rocblas2hip_status(rocsolver_sgels_outofplace((rocblas_handle)handle,
-                                                                             rocblas_operation_none,
-                                                                             m,
-                                                                             n,
-                                                                             nrhs,
-                                                                             nullptr,
-                                                                             lda,
-                                                                             nullptr,
-                                                                             ldb,
-                                                                             nullptr,
-                                                                             ldx,
-                                                                             nullptr));
+    hipsolverStatus_t status;
+    if(B == X)
+        status = rocblas2hip_status(rocsolver_sgels((rocblas_handle)handle,
+                                                    rocblas_operation_none,
+                                                    m,
+                                                    n,
+                                                    nrhs,
+                                                    nullptr,
+                                                    lda,
+                                                    nullptr,
+                                                    ldb,
+                                                    nullptr));
+    else
+        status = rocblas2hip_status(rocsolver_sgels_outofplace((rocblas_handle)handle,
+                                                               rocblas_operation_none,
+                                                               m,
+                                                               n,
+                                                               nrhs,
+                                                               nullptr,
+                                                               lda,
+                                                               nullptr,
+                                                               ldb,
+                                                               nullptr,
+                                                               ldx,
+                                                               nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     *lwork = sz;
@@ -2179,18 +2192,31 @@ try
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status = rocblas2hip_status(rocsolver_dgels_outofplace((rocblas_handle)handle,
-                                                                             rocblas_operation_none,
-                                                                             m,
-                                                                             n,
-                                                                             nrhs,
-                                                                             nullptr,
-                                                                             lda,
-                                                                             nullptr,
-                                                                             ldb,
-                                                                             nullptr,
-                                                                             ldx,
-                                                                             nullptr));
+    hipsolverStatus_t status;
+    if(B == X)
+        status = rocblas2hip_status(rocsolver_dgels((rocblas_handle)handle,
+                                                    rocblas_operation_none,
+                                                    m,
+                                                    n,
+                                                    nrhs,
+                                                    nullptr,
+                                                    lda,
+                                                    nullptr,
+                                                    ldb,
+                                                    nullptr));
+    else
+        status = rocblas2hip_status(rocsolver_dgels_outofplace((rocblas_handle)handle,
+                                                               rocblas_operation_none,
+                                                               m,
+                                                               n,
+                                                               nrhs,
+                                                               nullptr,
+                                                               lda,
+                                                               nullptr,
+                                                               ldb,
+                                                               nullptr,
+                                                               ldx,
+                                                               nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     *lwork = sz;
@@ -2221,18 +2247,31 @@ try
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status = rocblas2hip_status(rocsolver_cgels_outofplace((rocblas_handle)handle,
-                                                                             rocblas_operation_none,
-                                                                             m,
-                                                                             n,
-                                                                             nrhs,
-                                                                             nullptr,
-                                                                             lda,
-                                                                             nullptr,
-                                                                             ldb,
-                                                                             nullptr,
-                                                                             ldx,
-                                                                             nullptr));
+    hipsolverStatus_t status;
+    if(B == X)
+        status = rocblas2hip_status(rocsolver_cgels((rocblas_handle)handle,
+                                                    rocblas_operation_none,
+                                                    m,
+                                                    n,
+                                                    nrhs,
+                                                    nullptr,
+                                                    lda,
+                                                    nullptr,
+                                                    ldb,
+                                                    nullptr));
+    else
+        status = rocblas2hip_status(rocsolver_cgels_outofplace((rocblas_handle)handle,
+                                                               rocblas_operation_none,
+                                                               m,
+                                                               n,
+                                                               nrhs,
+                                                               nullptr,
+                                                               lda,
+                                                               nullptr,
+                                                               ldb,
+                                                               nullptr,
+                                                               ldx,
+                                                               nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     *lwork = sz;
@@ -2263,18 +2302,31 @@ try
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status = rocblas2hip_status(rocsolver_zgels_outofplace((rocblas_handle)handle,
-                                                                             rocblas_operation_none,
-                                                                             m,
-                                                                             n,
-                                                                             nrhs,
-                                                                             nullptr,
-                                                                             lda,
-                                                                             nullptr,
-                                                                             ldb,
-                                                                             nullptr,
-                                                                             ldx,
-                                                                             nullptr));
+    hipsolverStatus_t status;
+    if(B == X)
+        status = rocblas2hip_status(rocsolver_zgels((rocblas_handle)handle,
+                                                    rocblas_operation_none,
+                                                    m,
+                                                    n,
+                                                    nrhs,
+                                                    nullptr,
+                                                    lda,
+                                                    nullptr,
+                                                    ldb,
+                                                    nullptr));
+    else
+        status = rocblas2hip_status(rocsolver_zgels_outofplace((rocblas_handle)handle,
+                                                               rocblas_operation_none,
+                                                               m,
+                                                               n,
+                                                               nrhs,
+                                                               nullptr,
+                                                               lda,
+                                                               nullptr,
+                                                               ldb,
+                                                               nullptr,
+                                                               ldx,
+                                                               nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     *lwork = sz;
@@ -2310,18 +2362,22 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    return rocblas2hip_status(rocsolver_sgels_outofplace((rocblas_handle)handle,
-                                                         rocblas_operation_none,
-                                                         m,
-                                                         n,
-                                                         nrhs,
-                                                         A,
-                                                         lda,
-                                                         B,
-                                                         ldb,
-                                                         X,
-                                                         ldx,
-                                                         devInfo));
+    if(B == X)
+        return rocblas2hip_status(rocsolver_sgels(
+            (rocblas_handle)handle, rocblas_operation_none, m, n, nrhs, A, lda, B, ldb, devInfo));
+    else
+        return rocblas2hip_status(rocsolver_sgels_outofplace((rocblas_handle)handle,
+                                                             rocblas_operation_none,
+                                                             m,
+                                                             n,
+                                                             nrhs,
+                                                             A,
+                                                             lda,
+                                                             B,
+                                                             ldb,
+                                                             X,
+                                                             ldx,
+                                                             devInfo));
 }
 catch(...)
 {
@@ -2353,18 +2409,22 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    return rocblas2hip_status(rocsolver_dgels_outofplace((rocblas_handle)handle,
-                                                         rocblas_operation_none,
-                                                         m,
-                                                         n,
-                                                         nrhs,
-                                                         A,
-                                                         lda,
-                                                         B,
-                                                         ldb,
-                                                         X,
-                                                         ldx,
-                                                         devInfo));
+    if(B == X)
+        return rocblas2hip_status(rocsolver_dgels(
+            (rocblas_handle)handle, rocblas_operation_none, m, n, nrhs, A, lda, B, ldb, devInfo));
+    else
+        return rocblas2hip_status(rocsolver_dgels_outofplace((rocblas_handle)handle,
+                                                             rocblas_operation_none,
+                                                             m,
+                                                             n,
+                                                             nrhs,
+                                                             A,
+                                                             lda,
+                                                             B,
+                                                             ldb,
+                                                             X,
+                                                             ldx,
+                                                             devInfo));
 }
 catch(...)
 {
@@ -2396,18 +2456,30 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    return rocblas2hip_status(rocsolver_cgels_outofplace((rocblas_handle)handle,
-                                                         rocblas_operation_none,
-                                                         m,
-                                                         n,
-                                                         nrhs,
-                                                         (rocblas_float_complex*)A,
-                                                         lda,
-                                                         (rocblas_float_complex*)B,
-                                                         ldb,
-                                                         (rocblas_float_complex*)X,
-                                                         ldx,
-                                                         devInfo));
+    if(B == X)
+        return rocblas2hip_status(rocsolver_cgels((rocblas_handle)handle,
+                                                  rocblas_operation_none,
+                                                  m,
+                                                  n,
+                                                  nrhs,
+                                                  (rocblas_float_complex*)A,
+                                                  lda,
+                                                  (rocblas_float_complex*)B,
+                                                  ldb,
+                                                  devInfo));
+    else
+        return rocblas2hip_status(rocsolver_cgels_outofplace((rocblas_handle)handle,
+                                                             rocblas_operation_none,
+                                                             m,
+                                                             n,
+                                                             nrhs,
+                                                             (rocblas_float_complex*)A,
+                                                             lda,
+                                                             (rocblas_float_complex*)B,
+                                                             ldb,
+                                                             (rocblas_float_complex*)X,
+                                                             ldx,
+                                                             devInfo));
 }
 catch(...)
 {
@@ -2439,18 +2511,30 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    return rocblas2hip_status(rocsolver_zgels_outofplace((rocblas_handle)handle,
-                                                         rocblas_operation_none,
-                                                         m,
-                                                         n,
-                                                         nrhs,
-                                                         (rocblas_double_complex*)A,
-                                                         lda,
-                                                         (rocblas_double_complex*)B,
-                                                         ldb,
-                                                         (rocblas_double_complex*)X,
-                                                         ldx,
-                                                         devInfo));
+    if(B == X)
+        return rocblas2hip_status(rocsolver_zgels((rocblas_handle)handle,
+                                                  rocblas_operation_none,
+                                                  m,
+                                                  n,
+                                                  nrhs,
+                                                  (rocblas_double_complex*)A,
+                                                  lda,
+                                                  (rocblas_double_complex*)B,
+                                                  ldb,
+                                                  devInfo));
+    else
+        return rocblas2hip_status(rocsolver_zgels_outofplace((rocblas_handle)handle,
+                                                             rocblas_operation_none,
+                                                             m,
+                                                             n,
+                                                             nrhs,
+                                                             (rocblas_double_complex*)A,
+                                                             lda,
+                                                             (rocblas_double_complex*)B,
+                                                             ldb,
+                                                             (rocblas_double_complex*)X,
+                                                             ldx,
+                                                             devInfo));
 }
 catch(...)
 {
@@ -2705,17 +2789,22 @@ try
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status = rocblas2hip_status(rocsolver_sgesv_outofplace((rocblas_handle)handle,
-                                                                             n,
-                                                                             nrhs,
-                                                                             nullptr,
-                                                                             lda,
-                                                                             nullptr,
-                                                                             nullptr,
-                                                                             ldb,
-                                                                             nullptr,
-                                                                             ldx,
-                                                                             nullptr));
+    hipsolverStatus_t status;
+    if(B == X)
+        status = rocblas2hip_status(rocsolver_sgesv(
+            (rocblas_handle)handle, n, nrhs, nullptr, lda, nullptr, nullptr, ldb, nullptr));
+    else
+        status = rocblas2hip_status(rocsolver_sgesv_outofplace((rocblas_handle)handle,
+                                                               n,
+                                                               nrhs,
+                                                               nullptr,
+                                                               lda,
+                                                               nullptr,
+                                                               nullptr,
+                                                               ldb,
+                                                               nullptr,
+                                                               ldx,
+                                                               nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -2749,17 +2838,22 @@ try
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status = rocblas2hip_status(rocsolver_dgesv_outofplace((rocblas_handle)handle,
-                                                                             n,
-                                                                             nrhs,
-                                                                             nullptr,
-                                                                             lda,
-                                                                             nullptr,
-                                                                             nullptr,
-                                                                             ldb,
-                                                                             nullptr,
-                                                                             ldx,
-                                                                             nullptr));
+    hipsolverStatus_t status;
+    if(B == X)
+        status = rocblas2hip_status(rocsolver_dgesv(
+            (rocblas_handle)handle, n, nrhs, nullptr, lda, nullptr, nullptr, ldb, nullptr));
+    else
+        status = rocblas2hip_status(rocsolver_dgesv_outofplace((rocblas_handle)handle,
+                                                               n,
+                                                               nrhs,
+                                                               nullptr,
+                                                               lda,
+                                                               nullptr,
+                                                               nullptr,
+                                                               ldb,
+                                                               nullptr,
+                                                               ldx,
+                                                               nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -2793,17 +2887,22 @@ try
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status = rocblas2hip_status(rocsolver_cgesv_outofplace((rocblas_handle)handle,
-                                                                             n,
-                                                                             nrhs,
-                                                                             nullptr,
-                                                                             lda,
-                                                                             nullptr,
-                                                                             nullptr,
-                                                                             ldb,
-                                                                             nullptr,
-                                                                             ldx,
-                                                                             nullptr));
+    hipsolverStatus_t status;
+    if(B == X)
+        status = rocblas2hip_status(rocsolver_cgesv(
+            (rocblas_handle)handle, n, nrhs, nullptr, lda, nullptr, nullptr, ldb, nullptr));
+    else
+        status = rocblas2hip_status(rocsolver_cgesv_outofplace((rocblas_handle)handle,
+                                                               n,
+                                                               nrhs,
+                                                               nullptr,
+                                                               lda,
+                                                               nullptr,
+                                                               nullptr,
+                                                               ldb,
+                                                               nullptr,
+                                                               ldx,
+                                                               nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -2837,17 +2936,22 @@ try
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status = rocblas2hip_status(rocsolver_zgesv_outofplace((rocblas_handle)handle,
-                                                                             n,
-                                                                             nrhs,
-                                                                             nullptr,
-                                                                             lda,
-                                                                             nullptr,
-                                                                             nullptr,
-                                                                             ldb,
-                                                                             nullptr,
-                                                                             ldx,
-                                                                             nullptr));
+    hipsolverStatus_t status;
+    if(B == X)
+        status = rocblas2hip_status(rocsolver_zgesv(
+            (rocblas_handle)handle, n, nrhs, nullptr, lda, nullptr, nullptr, ldb, nullptr));
+    else
+        status = rocblas2hip_status(rocsolver_zgesv_outofplace((rocblas_handle)handle,
+                                                               n,
+                                                               nrhs,
+                                                               nullptr,
+                                                               lda,
+                                                               nullptr,
+                                                               nullptr,
+                                                               ldb,
+                                                               nullptr,
+                                                               ldx,
+                                                               nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -2886,8 +2990,12 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    return rocblas2hip_status(rocsolver_sgesv_outofplace(
-        (rocblas_handle)handle, n, nrhs, A, lda, devIpiv, B, ldb, X, ldx, devInfo));
+    if(B == X)
+        return rocblas2hip_status(
+            rocsolver_sgesv((rocblas_handle)handle, n, nrhs, A, lda, devIpiv, B, ldb, devInfo));
+    else
+        return rocblas2hip_status(rocsolver_sgesv_outofplace(
+            (rocblas_handle)handle, n, nrhs, A, lda, devIpiv, B, ldb, X, ldx, devInfo));
 }
 catch(...)
 {
@@ -2919,8 +3027,12 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    return rocblas2hip_status(rocsolver_dgesv_outofplace(
-        (rocblas_handle)handle, n, nrhs, A, lda, devIpiv, B, ldb, X, ldx, devInfo));
+    if(B == X)
+        return rocblas2hip_status(
+            rocsolver_dgesv((rocblas_handle)handle, n, nrhs, A, lda, devIpiv, B, ldb, devInfo));
+    else
+        return rocblas2hip_status(rocsolver_dgesv_outofplace(
+            (rocblas_handle)handle, n, nrhs, A, lda, devIpiv, B, ldb, X, ldx, devInfo));
 }
 catch(...)
 {
@@ -2952,17 +3064,28 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    return rocblas2hip_status(rocsolver_cgesv_outofplace((rocblas_handle)handle,
-                                                         n,
-                                                         nrhs,
-                                                         (rocblas_float_complex*)A,
-                                                         lda,
-                                                         devIpiv,
-                                                         (rocblas_float_complex*)B,
-                                                         ldb,
-                                                         (rocblas_float_complex*)X,
-                                                         ldx,
-                                                         devInfo));
+    if(B == X)
+        return rocblas2hip_status(rocsolver_cgesv((rocblas_handle)handle,
+                                                  n,
+                                                  nrhs,
+                                                  (rocblas_float_complex*)A,
+                                                  lda,
+                                                  devIpiv,
+                                                  (rocblas_float_complex*)B,
+                                                  ldb,
+                                                  devInfo));
+    else
+        return rocblas2hip_status(rocsolver_cgesv_outofplace((rocblas_handle)handle,
+                                                             n,
+                                                             nrhs,
+                                                             (rocblas_float_complex*)A,
+                                                             lda,
+                                                             devIpiv,
+                                                             (rocblas_float_complex*)B,
+                                                             ldb,
+                                                             (rocblas_float_complex*)X,
+                                                             ldx,
+                                                             devInfo));
 }
 catch(...)
 {
@@ -2994,17 +3117,28 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    return rocblas2hip_status(rocsolver_zgesv_outofplace((rocblas_handle)handle,
-                                                         n,
-                                                         nrhs,
-                                                         (rocblas_double_complex*)A,
-                                                         lda,
-                                                         devIpiv,
-                                                         (rocblas_double_complex*)B,
-                                                         ldb,
-                                                         (rocblas_double_complex*)X,
-                                                         ldx,
-                                                         devInfo));
+    if(B == X)
+        return rocblas2hip_status(rocsolver_zgesv((rocblas_handle)handle,
+                                                  n,
+                                                  nrhs,
+                                                  (rocblas_double_complex*)A,
+                                                  lda,
+                                                  devIpiv,
+                                                  (rocblas_double_complex*)B,
+                                                  ldb,
+                                                  devInfo));
+    else
+        return rocblas2hip_status(rocsolver_zgesv_outofplace((rocblas_handle)handle,
+                                                             n,
+                                                             nrhs,
+                                                             (rocblas_double_complex*)A,
+                                                             lda,
+                                                             devIpiv,
+                                                             (rocblas_double_complex*)B,
+                                                             ldb,
+                                                             (rocblas_double_complex*)X,
+                                                             ldx,
+                                                             devInfo));
 }
 catch(...)
 {
