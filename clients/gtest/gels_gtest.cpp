@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  *
  * ************************************************************************ */
 
@@ -76,7 +76,7 @@ Arguments gels_setup_arguments(gels_tuple tup)
     return arg;
 }
 
-template <testAPI_t API>
+template <testAPI_t API, bool INPLACE>
 class GELS_BASE : public ::TestWithParam<gels_tuple>
 {
 protected:
@@ -93,19 +93,23 @@ protected:
             testing_gels_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_gels<API, BATCHED, STRIDED, T>(arg);
+        testing_gels<API, BATCHED, STRIDED, INPLACE, T>(arg);
     }
 };
 
-class GELS : public GELS_BASE<API_NORMAL>
+class GELS : public GELS_BASE<API_NORMAL, false>
 {
 };
 
-class GELS_FORTRAN : public GELS_BASE<API_FORTRAN>
+class GELS_FORTRAN : public GELS_BASE<API_FORTRAN, false>
 {
 };
 
-class GELS_COMPAT : public GELS_BASE<API_COMPAT>
+class GELS_COMPAT : public GELS_BASE<API_COMPAT, false>
+{
+};
+
+class GELS_INPLACE : public GELS_BASE<API_NORMAL, true>
 {
 };
 
@@ -171,6 +175,26 @@ TEST_P(GELS_COMPAT, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
+TEST_P(GELS_INPLACE, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(GELS_INPLACE, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(GELS_INPLACE, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(GELS_INPLACE, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          GELS,
 //                          Combine(ValuesIn(large_matrix_sizeA_range),
@@ -196,4 +220,13 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GELS_COMPAT,
+                         Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GELS_INPLACE,
+//                          Combine(ValuesIn(large_matrix_sizeA_range),
+//                                  ValuesIn(large_matrix_sizeB_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         GELS_INPLACE,
                          Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
