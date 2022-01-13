@@ -3249,13 +3249,15 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    size_t size_E = 0;
+
     // space for E array (aka rwork)
     if(min(m, n) > 0)
-        sz += sizeof(float) * min(m, n);
+        size_E = sizeof(float) * min(m, n);
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_E);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -3301,13 +3303,15 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    size_t size_E = 0;
+
     // space for E array (aka rwork)
     if(min(m, n) > 0)
-        sz += sizeof(double) * min(m, n);
+        size_E = sizeof(double) * min(m, n);
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_E);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -3353,13 +3357,15 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    size_t size_E = 0;
+
     // space for E array (aka rwork)
     if(min(m, n) > 0)
-        sz += sizeof(float) * min(m, n);
+        size_E = sizeof(float) * min(m, n);
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_E);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -3405,13 +3411,15 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    size_t size_E = 0;
+
     // space for E array (aka rwork)
     if(min(m, n) > 0)
-        sz += sizeof(double) * min(m, n);
+        size_E = sizeof(double) * min(m, n);
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_E);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -5651,13 +5659,15 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    size_t size_E = 0;
+
     // space for E array
     if(n > 0)
-        sz += sizeof(float) * n;
+        size_E = sizeof(float) * n;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_E);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -5703,13 +5713,15 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    size_t size_E = 0;
+
     // space for E array
     if(n > 0)
-        sz += sizeof(double) * n;
+        size_E = sizeof(double) * n;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_E);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -5755,13 +5767,15 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    size_t size_E = 0;
+
     // space for E array
     if(n > 0)
-        sz += sizeof(float) * n;
+        size_E = sizeof(float) * n;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_E);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -5807,13 +5821,15 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    size_t size_E = 0;
+
     // space for E array
     if(n > 0)
-        sz += sizeof(double) * n;
+        size_E = sizeof(double) * n;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_E);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -6066,13 +6082,15 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    size_t size_E = 0;
+
     // space for E array
     if(n > 0)
-        sz += sizeof(float) * n;
+        size_E = sizeof(float) * n;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_E);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -6124,13 +6142,15 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    size_t size_E = 0;
+
     // space for E array
     if(n > 0)
-        sz += sizeof(double) * n;
+        size_E = sizeof(double) * n;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_E);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -6182,13 +6202,15 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    size_t size_E = 0;
+
     // space for E array
     if(n > 0)
-        sz += sizeof(float) * n;
+        size_E = sizeof(float) * n;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_E);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -6240,13 +6262,15 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
+    size_t size_E = 0;
+
     // space for E array
     if(n > 0)
-        sz += sizeof(double) * n;
+        size_E = sizeof(double) * n;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_E);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
