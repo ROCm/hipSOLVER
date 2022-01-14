@@ -4065,7 +4065,7 @@ try
 
         mem = std::make_unique<rocblas_device_malloc>(
             (rocblas_handle)handle, sizeof(float) * min(m, n), size_V_copy);
-        if(!mem)
+        if(!mem->operator bool())
             return HIPSOLVER_STATUS_ALLOC_FAILED;
         E      = (float*)(*mem)[0];
         V_copy = (float*)(*mem)[1];
@@ -4169,7 +4169,7 @@ try
 
         mem = std::make_unique<rocblas_device_malloc>(
             (rocblas_handle)handle, sizeof(double) * min(m, n), size_V_copy);
-        if(!mem)
+        if(!mem->operator bool())
             return HIPSOLVER_STATUS_ALLOC_FAILED;
         E      = (double*)(*mem)[0];
         V_copy = (double*)(*mem)[1];
@@ -4273,7 +4273,7 @@ try
 
         mem = std::make_unique<rocblas_device_malloc>(
             (rocblas_handle)handle, sizeof(float) * min(m, n), size_V_copy);
-        if(!mem)
+        if(!mem->operator bool())
             return HIPSOLVER_STATUS_ALLOC_FAILED;
         E      = (float*)(*mem)[0];
         V_copy = (rocblas_float_complex*)(*mem)[1];
@@ -4377,7 +4377,7 @@ try
 
         mem = std::make_unique<rocblas_device_malloc>(
             (rocblas_handle)handle, sizeof(double) * min(m, n), size_V_copy);
-        if(!mem)
+        if(!mem->operator bool())
             return HIPSOLVER_STATUS_ALLOC_FAILED;
         E      = (double*)(*mem)[0];
         V_copy = (rocblas_double_complex*)(*mem)[1];
