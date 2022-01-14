@@ -521,7 +521,7 @@ void gesvdj_getError(const hipsolverHandle_t handle,
                 {
                     T tmp = 0;
                     for(int j = 0; j < n; ++j)
-                        tmp += A[b * lda * n + i + j * lda] * std::conj(Vres[b][k + j * ldv]);
+                        tmp += A[b * lda * n + i + j * lda] * Vres[b][j + k * ldv];
                     tmp -= hSres[b][k] * Ures[b][i + k * ldu];
                     err += std::abs(tmp) * std::abs(tmp);
                 }
@@ -689,11 +689,11 @@ void testing_gesvdj(Arguments& argus)
     int                         n     = argus.get<int>("n", m);
     int                         lda   = argus.get<int>("lda", m);
     int                         ldu   = argus.get<int>("ldu", m);
-    int ldv = argus.get<int>("ldv", (jobzC == 'V' && econ == 0 ? n : min(m, n)));
-    int stA = argus.get<int>("strideA", lda * n);
-    int stS = argus.get<int>("strideS", min(m, n));
-    int stU = argus.get<int>("strideU", ldu * m);
-    int stV = argus.get<int>("strideV", ldv * n);
+    int                         ldv   = argus.get<int>("ldv", n);
+    int                         stA   = argus.get<int>("strideA", lda * n);
+    int                         stS   = argus.get<int>("strideS", min(m, n));
+    int                         stU   = argus.get<int>("strideU", ldu * m);
+    int                         stV   = argus.get<int>("strideV", ldv * n);
 
     hipsolverEigMode_t jobz      = char2hipsolver_evect(jobzC);
     int                bc        = argus.batch_count;
@@ -728,9 +728,7 @@ void testing_gesvdj(Arguments& argus)
 
     // check invalid sizes
     bool invalid_size = (n < 0 || m < 0 || lda < m || ldu < 1 || ldv < 1 || bc < 0)
-                        || (jobz != HIPSOLVER_EIG_MODE_NOVECTOR && ldu < m)
-                        || (jobz != HIPSOLVER_EIG_MODE_NOVECTOR
-                            && ((econ == 0 && ldv < n) || (econ == 1 && ldv < min(m, n))));
+                        || (jobz != HIPSOLVER_EIG_MODE_NOVECTOR && (ldu < m || ldv < n));
 
     if(invalid_size)
     {
