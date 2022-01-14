@@ -453,3 +453,27 @@ hipsolverDn<type>gesvd()
    :outline:
 .. doxygenfunction:: hipsolverDnSgesvd
 
+.. _compat_gesvdj_bufferSize:
+
+hipsolverDn<type>gesvdj_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnZgesvdj_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDnCgesvdj_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDnDgesvdj_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDnSgesvdj_bufferSize
+
+.. _compat_gesvdj:
+
+hipsolverDn<type>gesvdj()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnZgesvdj
+   :outline:
+.. doxygenfunction:: hipsolverDnCgesvdj
+   :outline:
+.. doxygenfunction:: hipsolverDnDgesvdj
+   :outline:
+.. doxygenfunction:: hipsolverDnSgesvdj
+

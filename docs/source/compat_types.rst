@@ -18,6 +18,10 @@ hipsolverDnHandle_t
 --------------------
 .. doxygentypedef:: hipsolverDnHandle_t
 
+hipsolverGesvdjInfo_t
+----------------------
+.. doxygentypedef:: hipsolverGesvdjInfo_t
+
 hipsolverStatus_t
 --------------------
 See :ref:`hipsolverStatus_t <status_t>`.

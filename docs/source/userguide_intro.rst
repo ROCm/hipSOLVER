@@ -139,4 +139,16 @@ LAPACK main functions
     :ref:`hipsolverXgesvd <gesvd>`, x, x, x, x
 
 
+Compatibility-only functions
+====================================
+
+The following functions have not been implemented in rocSOLVER, but can each be computed with an equivalent function that uses a different algorithmic approach. These
+functions are provided as part of the compatibility API only, pending their implementation in rocSOLVER.
+
+.. csv-table:: Singular value decomposition
+    :header: "Function", "single", "double", "single complex", "double complex"
+
+    :ref:`hipsolverXgesvdj_bufferSize <compat_gesvdj_bufferSize>`, x, x, x, x
+    :ref:`hipsolverXgesvdj <compat_gesvdj>`, x, x, x, x
+
 

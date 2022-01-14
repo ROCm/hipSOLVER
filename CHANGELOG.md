@@ -10,6 +10,10 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
     - hipsolverSSgels, hipsolverDDgels, hipsolverCCgels, hipsolverZZgels
 - Added library version and device information to hipsolver-test output.
 - Added compatibility API with hipsolverDn prefix.
+- Added compatibility-only functions
+  - gesvdj
+    - hipsolverDnSgesvdj_bufferSize, hipsolverDnDgesvdj_bufferSize, hipsolverDnCgesvdj_bufferSize, hipsolverDnZgesvdj_bufferSize
+    - hipsolverDnSgesvdj, hipsolverDnDgesvdj, hipsolverDnCgesvdj, hipsolverDnZgesvdj
 
 ### Optimized
 ### Changed
