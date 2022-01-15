@@ -150,5 +150,7 @@ functions are provided as part of the compatibility API only, pending their impl
 
     :ref:`hipsolverXgesvdj_bufferSize <compat_gesvdj_bufferSize>`, x, x, x, x
     :ref:`hipsolverXgesvdj <compat_gesvdj>`, x, x, x, x
+    :ref:`hipsolverXgesvdjBatched_bufferSize <compat_gesvdj_batched_bufferSize>`, x, x, x, x
+    :ref:`hipsolverXgesvdjBatched <compat_gesvdj_batched>`, x, x, x, x
 
 
