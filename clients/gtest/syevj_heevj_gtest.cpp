@@ -17,7 +17,7 @@ typedef std::tuple<vector<int>, vector<char>> syevj_heevj_tuple;
 
 // each op_range vector is a {jobz, uplo}
 
-// case when n == -1, jobz == N, and uplo = L will also execute the bad arguments test
+// case when n == 1, jobz == N, and uplo = L will also execute the bad arguments test
 // (null handle, null pointers and invalid values)
 
 const vector<vector<char>> op_range = {{'N', 'L'}, {'N', 'U'}, {'V', 'L'}, {'V', 'U'}};
@@ -67,7 +67,7 @@ protected:
     {
         Arguments arg = syevj_heevj_setup_arguments(GetParam());
 
-        if(arg.peek<rocblas_int>("n") == -1 && arg.peek<char>("jobz") == 'N'
+        if(arg.peek<rocblas_int>("n") == 1 && arg.peek<char>("jobz") == 'N'
            && arg.peek<char>("uplo") == 'L')
             testing_syevj_heevj_bad_arg<API, BATCHED, STRIDED, T>();
 
