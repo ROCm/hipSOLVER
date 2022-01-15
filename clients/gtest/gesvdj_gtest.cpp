@@ -24,7 +24,7 @@ typedef std::tuple<vector<int>, vector<int>> gesvdj_tuple;
 // if jobz = 0 then no singular vectors are computed
 // if jobz = 1 then compute singular vectors
 
-// case when m = -1, n = 1, jobz = 3, and econ = 0 will also execute the bad
+// case when m = 1, n = 1, jobz = 3, and econ = 0 will also execute the bad
 // arguments test (null handle, null pointers and invalid values)
 
 // for checkin_lapack tests
@@ -110,7 +110,7 @@ protected:
     {
         Arguments arg = gesvdj_setup_arguments(GetParam(), STRIDED);
 
-        if(arg.peek<rocblas_int>("m") == -1 && arg.peek<rocblas_int>("n") == 1
+        if(arg.peek<rocblas_int>("m") == 1 && arg.peek<rocblas_int>("n") == 1
            && arg.peek<char>("jobz") == 'N' && arg.peek<rocblas_int>("econ") == 0)
             testing_gesvdj_bad_arg<API, BATCHED, STRIDED, T>();
 
