@@ -54,6 +54,7 @@ class hipsolver_dispatcher
             {"gesv", testing_gesv<API_NORMAL, false, false, false, T>},
             {"gesvd", testing_gesvd<API_NORMAL, false, false, false, T>},
             {"gesvdj", testing_gesvdj<API_COMPAT, false, false, T>},
+            {"gesvdj_batched", testing_gesvdj<API_COMPAT, false, true, T>},
             {"getrf", testing_getrf<API_NORMAL, false, false, false, T>},
             {"getrs", testing_getrs<API_NORMAL, false, false, T>},
             {"potrf", testing_potrf<API_NORMAL, false, false, T>},

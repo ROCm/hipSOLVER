@@ -2757,6 +2757,7 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t               API,
 
 /******************** GESVD ********************/
 inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
+                                                     bool                  STRIDED,
                                                      hipsolverHandle_t     handle,
                                                      hipsolverEigMode_t    jobz,
                                                      int                   econ,
@@ -2770,19 +2771,24 @@ inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
                                                      float*                V,
                                                      int                   ldv,
                                                      int*                  lwork,
-                                                     hipsolverGesvdjInfo_t params)
+                                                     hipsolverGesvdjInfo_t params,
+                                                     int                   bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnSgesvdj_bufferSize(
             handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, lwork, params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnSgesvdjBatched_bufferSize(
+            handle, jobz, m, n, A, lda, S, U, ldu, V, ldv, lwork, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
+                                                     bool                  STRIDED,
                                                      hipsolverHandle_t     handle,
                                                      hipsolverEigMode_t    jobz,
                                                      int                   econ,
@@ -2796,19 +2802,24 @@ inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
                                                      double*               V,
                                                      int                   ldv,
                                                      int*                  lwork,
-                                                     hipsolverGesvdjInfo_t params)
+                                                     hipsolverGesvdjInfo_t params,
+                                                     int                   bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnDgesvdj_bufferSize(
             handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, lwork, params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnDgesvdjBatched_bufferSize(
+            handle, jobz, m, n, A, lda, S, U, ldu, V, ldv, lwork, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
+                                                     bool                  STRIDED,
                                                      hipsolverHandle_t     handle,
                                                      hipsolverEigMode_t    jobz,
                                                      int                   econ,
@@ -2822,11 +2833,12 @@ inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
                                                      hipsolverComplex*     V,
                                                      int                   ldv,
                                                      int*                  lwork,
-                                                     hipsolverGesvdjInfo_t params)
+                                                     hipsolverGesvdjInfo_t params,
+                                                     int                   bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnCgesvdj_bufferSize(handle,
                                              jobz,
                                              econ,
@@ -2841,12 +2853,28 @@ inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
                                              ldv,
                                              lwork,
                                              params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnCgesvdjBatched_bufferSize(handle,
+                                                    jobz,
+                                                    m,
+                                                    n,
+                                                    (hipFloatComplex*)A,
+                                                    lda,
+                                                    S,
+                                                    (hipFloatComplex*)U,
+                                                    ldu,
+                                                    (hipFloatComplex*)V,
+                                                    ldv,
+                                                    lwork,
+                                                    params,
+                                                    bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t               API,
+                                                     bool                    STRIDED,
                                                      hipsolverHandle_t       handle,
                                                      hipsolverEigMode_t      jobz,
                                                      int                     econ,
@@ -2860,11 +2888,12 @@ inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t               API
                                                      hipsolverDoubleComplex* V,
                                                      int                     ldv,
                                                      int*                    lwork,
-                                                     hipsolverGesvdjInfo_t   params)
+                                                     hipsolverGesvdjInfo_t   params,
+                                                     int                     bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnZgesvdj_bufferSize(handle,
                                              jobz,
                                              econ,
@@ -2879,12 +2908,28 @@ inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t               API
                                              ldv,
                                              lwork,
                                              params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnZgesvdjBatched_bufferSize(handle,
+                                                    jobz,
+                                                    m,
+                                                    n,
+                                                    (hipDoubleComplex*)A,
+                                                    lda,
+                                                    S,
+                                                    (hipDoubleComplex*)U,
+                                                    ldu,
+                                                    (hipDoubleComplex*)V,
+                                                    ldv,
+                                                    lwork,
+                                                    params,
+                                                    bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t             API,
+                                          bool                  STRIDED,
                                           hipsolverHandle_t     handle,
                                           hipsolverEigMode_t    jobz,
                                           int                   econ,
@@ -2907,17 +2952,21 @@ inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t             API,
                                           hipsolverGesvdjInfo_t params,
                                           int                   bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnSgesvdj(
             handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnSgesvdjBatched(
+            handle, jobz, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t             API,
+                                          bool                  STRIDED,
                                           hipsolverHandle_t     handle,
                                           hipsolverEigMode_t    jobz,
                                           int                   econ,
@@ -2940,17 +2989,21 @@ inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t             API,
                                           hipsolverGesvdjInfo_t params,
                                           int                   bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnDgesvdj(
             handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnDgesvdjBatched(
+            handle, jobz, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t             API,
+                                          bool                  STRIDED,
                                           hipsolverHandle_t     handle,
                                           hipsolverEigMode_t    jobz,
                                           int                   econ,
@@ -2973,9 +3026,9 @@ inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t             API,
                                           hipsolverGesvdjInfo_t params,
                                           int                   bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnCgesvdj(handle,
                                   jobz,
                                   econ,
@@ -2992,12 +3045,30 @@ inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t             API,
                                   lwork,
                                   info,
                                   params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnCgesvdjBatched(handle,
+                                         jobz,
+                                         m,
+                                         n,
+                                         (hipFloatComplex*)A,
+                                         lda,
+                                         S,
+                                         (hipFloatComplex*)U,
+                                         ldu,
+                                         (hipFloatComplex*)V,
+                                         ldv,
+                                         (hipFloatComplex*)work,
+                                         lwork,
+                                         info,
+                                         params,
+                                         bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t               API,
+                                          bool                    STRIDED,
                                           hipsolverHandle_t       handle,
                                           hipsolverEigMode_t      jobz,
                                           int                     econ,
@@ -3020,9 +3091,9 @@ inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t               API,
                                           hipsolverGesvdjInfo_t   params,
                                           int                     bc)
 {
-    switch(API)
+    switch(api2marshal(API, STRIDED))
     {
-    case API_COMPAT:
+    case COMPAT_NORMAL:
         return hipsolverDnZgesvdj(handle,
                                   jobz,
                                   econ,
@@ -3039,6 +3110,23 @@ inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t               API,
                                   lwork,
                                   info,
                                   params);
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnZgesvdjBatched(handle,
+                                         jobz,
+                                         m,
+                                         n,
+                                         (hipDoubleComplex*)A,
+                                         lda,
+                                         S,
+                                         (hipDoubleComplex*)U,
+                                         ldu,
+                                         (hipDoubleComplex*)V,
+                                         ldv,
+                                         (hipDoubleComplex*)work,
+                                         lwork,
+                                         info,
+                                         params,
+                                         bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
