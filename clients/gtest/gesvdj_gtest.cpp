@@ -32,8 +32,8 @@ const vector<vector<int>> size_range = {
     // normal (valid) samples
     {1, 1, 0},
     {20, 20, 0},
-    {40, 30, 0},
-    {60, 30, 0}};
+    {30, 30, 0},
+    {32, 30, 0}};
 
 const vector<vector<int>> opt_range = {
     // normal (valid) samples
