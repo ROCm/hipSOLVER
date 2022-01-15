@@ -29,9 +29,6 @@ typedef std::tuple<vector<int>, vector<int>> gesvdj_tuple;
 
 // for checkin_lapack tests
 const vector<vector<int>> size_range = {
-    // invalid
-    {-1, 1, 0},
-    {1, -1, 0},
     // normal (valid) samples
     {1, 1, 0},
     {20, 20, 0},
@@ -39,10 +36,6 @@ const vector<vector<int>> size_range = {
     {60, 30, 0}};
 
 const vector<vector<int>> opt_range = {
-    // invalid
-    {-1, 0, 0, 1, 0},
-    {0, -1, 0, 1, 0},
-    {0, 0, -1, 1, 0},
     // normal (valid) samples
     {1, 1, 1, 0, 0},
     {0, 0, 1, 0, 0},
