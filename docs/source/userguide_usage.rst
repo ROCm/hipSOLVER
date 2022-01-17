@@ -176,3 +176,9 @@ Possible performance implications of the compatibility API
   (Users must keep in mind that even if the compatibility API does not have bufferSize helpers for the mentioned functions, these functions do require
   workspace when using rocSOLVER, and it will be automatically managed. This may imply device memory reallocations with corresponding overheads).
 
+- The functions :ref:`hipsolverDnXgesvdj <compat_gesvdj>` and :ref:`hipsolverDnXgesvdjBatched <compat_gesvdj_batched>` must apply a transpose
+  operation to `V` in order to match the output of cuSOLVER, requiring an additional function call and extra workspace.
+
+  (If `jobz` is set to `HIPSOLVER_EIG_MODE_VECTOR`, `hipsolverDnXgesvdj` and `hipsolverDnXgesvdjBatched` will be slower and require more workspace
+  than `hipsolverXgesvd`).
+
