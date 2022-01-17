@@ -111,7 +111,7 @@ protected:
         Arguments arg = gesvdj_setup_arguments(GetParam(), STRIDED);
 
         if(arg.peek<rocblas_int>("m") == 1 && arg.peek<rocblas_int>("n") == 1
-           && arg.peek<char>("jobz") == 'N' && arg.peek<rocblas_int>("econ") == 0)
+           && arg.peek<char>("jobz") == 'N' && (STRIDED || arg.peek<rocblas_int>("econ") == 0))
             testing_gesvdj_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = (BATCHED || STRIDED ? 3 : 1);
