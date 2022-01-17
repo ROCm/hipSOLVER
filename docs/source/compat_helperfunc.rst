@@ -67,21 +67,31 @@ hipsolverDnDestroySyevjInfo()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnDestroySyevjInfo
 
+.. _compat_syevj_set_max_sweeps:
+
 hipsolverDnXsyevjSetMaxSweeps()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXsyevjSetMaxSweeps
+
+.. _compat_syevj_set_sort_eig:
 
 hipsolverDnXsyevjSetSortEig()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXsyevjSetSortEig
 
+.. _compat_syevj_set_tolerance:
+
 hipsolverDnXsyevjSetTolerance()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXsyevjSetTolerance
 
+.. _compat_syevj_get_residual:
+
 hipsolverDnXsyevjGetResidual()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXsyevjGetResidual
+
+.. _compat_syevj_get_sweeps:
 
 hipsolverDnXsyevjGetSweeps()
 ---------------------------------

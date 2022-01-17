@@ -396,6 +396,10 @@ hipsolverStatus_t hipsolverDnCreateSyevjInfo(hipsolverSyevjInfo_t* info)
 
     return HIPSOLVER_STATUS_SUCCESS;
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDnDestroySyevjInfo(hipsolverSyevjInfo_t info)
 {
@@ -406,20 +410,36 @@ hipsolverStatus_t hipsolverDnDestroySyevjInfo(hipsolverSyevjInfo_t info)
 
     return HIPSOLVER_STATUS_SUCCESS;
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDnXsyevjSetMaxSweeps(hipsolverSyevjInfo_t info, int max_sweeps)
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDnXsyevjSetSortEig(hipsolverSyevjInfo_t info, int sort_eig)
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDnXsyevjSetTolerance(hipsolverSyevjInfo_t info, double tolerance)
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDnXsyevjGetResidual(hipsolverDnHandle_t  handle,
@@ -428,12 +448,20 @@ hipsolverStatus_t hipsolverDnXsyevjGetResidual(hipsolverDnHandle_t  handle,
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDnXsyevjGetSweeps(hipsolverDnHandle_t  handle,
                                              hipsolverSyevjInfo_t info,
                                              int*                 executed_sweeps)
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 /******************** ORGBR/UNGBR ********************/
@@ -5726,11 +5754,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n > 0)
-        size_E = sizeof(float) * n;
+    size_t size_E = n > 0 ? sizeof(float) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -5781,11 +5806,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n > 0)
-        size_E = sizeof(double) * n;
+    size_t size_E = n > 0 ? sizeof(double) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -5836,11 +5858,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n > 0)
-        size_E = sizeof(float) * n;
+    size_t size_E = n > 0 ? sizeof(float) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -5891,11 +5910,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n > 0)
-        size_E = sizeof(double) * n;
+    size_t size_E = n > 0 ? sizeof(double) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -6157,11 +6173,8 @@ try
                                                               batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n * batch_count > 0)
-        size_E = sizeof(float) * n * batch_count;
+    size_t size_E = n * batch_count > 0 ? sizeof(float) * n * batch_count : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -6218,11 +6231,8 @@ try
                                                               batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n * batch_count > 0)
-        size_E = sizeof(double) * n * batch_count;
+    size_t size_E = n * batch_count > 0 ? sizeof(double) * n * batch_count : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -6279,11 +6289,8 @@ try
                                                               batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n * batch_count > 0)
-        size_E = sizeof(float) * n * batch_count;
+    size_t size_E = n * batch_count > 0 ? sizeof(float) * n * batch_count : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -6340,11 +6347,8 @@ try
                                                               batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n * batch_count > 0)
-        size_E = sizeof(double) * n * batch_count;
+    size_t size_E = n * batch_count > 0 ? sizeof(double) * n * batch_count : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
