@@ -142,8 +142,16 @@ LAPACK main functions
 Compatibility-only functions
 ====================================
 
-The following functions have not been implemented in rocSOLVER, but can each be computed with an equivalent function that uses a different algorithmic approach. These
-functions are provided as part of the compatibility API only, pending their implementation in rocSOLVER.
+The following tables summarize the wrapper functions that have not been implemented in rocSOLVER, but can be computed with an equivalent function
+that uses a different algorithmic approach. These functions are provided as part of the compatibility API only, pending their implementation
+in rocSOLVER.
+
+Iterative Jacobi functions
+----------------------------
+
+rocSOLVER has yet to implement the following Jacobi functions, therefore hipSOLVER will instead call functions that use classic, non-iterative
+approaches (e.g. the QR algorithm). Note that parameters specific to the Jacobi algorithm will be ignored by the rocSOLVER backend, such as the
+error tolerance and number of iterations. All results are computed to machine precision.
 
 .. csv-table:: Singular value decomposition
     :header: "Function", "single", "double", "single complex", "double complex"

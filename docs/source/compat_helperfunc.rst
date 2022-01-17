@@ -67,21 +67,31 @@ hipsolverDnDestroyGesvdjInfo()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnDestroyGesvdjInfo
 
+.. _compat_gesvdj_set_max_sweeps:
+
 hipsolverDnXgesvdjSetMaxSweeps()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXgesvdjSetMaxSweeps
+
+.. _compat_gesvdj_set_sort_eig:
 
 hipsolverDnXgesvdjSetSortEig()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXgesvdjSetSortEig
 
+.. _compat_gesvdj_set_tolerance:
+
 hipsolverDnXgesvdjSetTolerance()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXgesvdjSetTolerance
 
+.. _compat_gesvdj_get_residual:
+
 hipsolverDnXgesvdjGetResidual()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXgesvdjGetResidual
+
+.. _compat_gesvdj_get_sweeps:
 
 hipsolverDnXgesvdjGetSweeps()
 ---------------------------------

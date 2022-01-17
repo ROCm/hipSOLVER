@@ -403,6 +403,7 @@ catch(...)
 
 /******************** AUXILIARY (PARAMS) ********************/
 hipsolverStatus_t hipsolverDnCreateGesvdjInfo(hipsolverGesvdjInfo_t* info)
+try
 {
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
@@ -412,8 +413,13 @@ hipsolverStatus_t hipsolverDnCreateGesvdjInfo(hipsolverGesvdjInfo_t* info)
 
     return HIPSOLVER_STATUS_SUCCESS;
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDnDestroyGesvdjInfo(hipsolverGesvdjInfo_t info)
+try
 {
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
@@ -422,34 +428,63 @@ hipsolverStatus_t hipsolverDnDestroyGesvdjInfo(hipsolverGesvdjInfo_t info)
 
     return HIPSOLVER_STATUS_SUCCESS;
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDnXgesvdjSetMaxSweeps(hipsolverGesvdjInfo_t info, int max_sweeps)
+try
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDnXgesvdjSetSortEig(hipsolverGesvdjInfo_t info, int sort_eig)
+try
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
 }
+catch(...)
+{
+    return exception2hip_status();
+}
 
 hipsolverStatus_t hipsolverDnXgesvdjSetTolerance(hipsolverGesvdjInfo_t info, double tolerance)
+try
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDnXgesvdjGetResidual(hipsolverDnHandle_t   handle,
                                                 hipsolverGesvdjInfo_t info,
                                                 double*               residual)
+try
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDnXgesvdjGetSweeps(hipsolverDnHandle_t   handle,
                                               hipsolverGesvdjInfo_t info,
                                               int*                  executed_sweeps)
+try
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
+}
+catch(...)
+{
+    return exception2hip_status();
 }
 
 /******************** ORGBR/UNGBR ********************/
@@ -3760,15 +3795,12 @@ try
                                               nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0, size_V_copy = 0;
-
     // space for E array
-    if(min(m, n) > 0)
-        size_E = sizeof(float) * min(m, n);
+    size_t size_E = min(m, n) > 0 ? sizeof(float) * min(m, n) : 0;
 
     // space for V_copy array
-    if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-        size_V_copy = sizeof(float) * (econ ? min(m, n) : n) * n;
+    bool   use_V_copy  = min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR;
+    size_t size_V_copy = use_V_copy ? sizeof(float) * (econ ? min(m, n) : n) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3833,15 +3865,12 @@ try
                                               nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0, size_V_copy = 0;
-
     // space for E array
-    if(min(m, n) > 0)
-        size_E = sizeof(double) * min(m, n);
+    size_t size_E = min(m, n) > 0 ? sizeof(double) * min(m, n) : 0;
 
     // space for V_copy array
-    if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-        size_V_copy = sizeof(double) * (econ ? min(m, n) : n) * n;
+    bool   use_V_copy  = min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR;
+    size_t size_V_copy = use_V_copy ? sizeof(double) * (econ ? min(m, n) : n) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3906,15 +3935,13 @@ try
                                               nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0, size_V_copy = 0;
-
     // space for E array
-    if(min(m, n) > 0)
-        size_E = sizeof(float) * min(m, n);
+    size_t size_E = min(m, n) > 0 ? sizeof(float) * min(m, n) : 0;
 
     // space for V_copy array
-    if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-        size_V_copy = sizeof(rocblas_float_complex) * (econ ? min(m, n) : n) * n;
+    bool   use_V_copy = min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR;
+    size_t size_V_copy
+        = use_V_copy ? sizeof(rocblas_float_complex) * (econ ? min(m, n) : n) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3979,15 +4006,13 @@ try
                                               nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0, size_V_copy = 0;
-
     // space for E array
-    if(min(m, n) > 0)
-        size_E = sizeof(double) * min(m, n);
+    size_t size_E = min(m, n) > 0 ? sizeof(double) * min(m, n) : 0;
 
     // space for V_copy array
-    if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-        size_V_copy = sizeof(rocblas_double_complex) * (econ ? min(m, n) : n) * n;
+    bool   use_V_copy = min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR;
+    size_t size_V_copy
+        = use_V_copy ? sizeof(rocblas_double_complex) * (econ ? min(m, n) : n) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4473,15 +4498,12 @@ try
                                                               batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0, size_V_copy = 0;
-
     // space for E array
-    if(min(m, n) > 0)
-        size_E = sizeof(float) * min(m, n) * batch_count;
+    size_t size_E = min(m, n) > 0 ? sizeof(float) * min(m, n) * batch_count : 0;
 
     // space for V_copy array
-    if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-        size_V_copy = sizeof(float) * n * n * batch_count;
+    bool   use_V_copy  = min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR;
+    size_t size_V_copy = use_V_copy ? sizeof(float) * n * n * batch_count : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4550,15 +4572,12 @@ try
                                                               batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0, size_V_copy = 0;
-
     // space for E array
-    if(min(m, n) > 0)
-        size_E = sizeof(double) * min(m, n) * batch_count;
+    size_t size_E = min(m, n) > 0 ? sizeof(double) * min(m, n) * batch_count : 0;
 
     // space for V_copy array
-    if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-        size_V_copy = sizeof(double) * n * n * batch_count;
+    bool   use_V_copy  = min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR;
+    size_t size_V_copy = use_V_copy ? sizeof(double) * n * n * batch_count : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4627,15 +4646,12 @@ try
                                                               batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0, size_V_copy = 0;
-
     // space for E array
-    if(min(m, n) > 0)
-        size_E = sizeof(float) * min(m, n) * batch_count;
+    size_t size_E = min(m, n) > 0 ? sizeof(float) * min(m, n) * batch_count : 0;
 
     // space for V_copy array
-    if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-        size_V_copy = sizeof(rocblas_float_complex) * n * n * batch_count;
+    bool   use_V_copy  = min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR;
+    size_t size_V_copy = use_V_copy ? sizeof(rocblas_float_complex) * n * n * batch_count : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4704,15 +4720,12 @@ try
                                                               batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0, size_V_copy = 0;
-
     // space for E array
-    if(min(m, n) > 0)
-        size_E = sizeof(double) * min(m, n) * batch_count;
+    size_t size_E = min(m, n) > 0 ? sizeof(double) * min(m, n) * batch_count : 0;
 
     // space for V_copy array
-    if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-        size_V_copy = sizeof(rocblas_double_complex) * n * n * batch_count;
+    bool   use_V_copy  = min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR;
+    size_t size_V_copy = use_V_copy ? sizeof(rocblas_double_complex) * n * n * batch_count : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
