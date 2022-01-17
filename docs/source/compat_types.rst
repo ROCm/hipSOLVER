@@ -16,7 +16,7 @@ hipSOLVER compatibility API types
 
 hipsolverDnHandle_t
 --------------------
-.. doxygentypedef:: hipsolverDnHandle_t
+Alternative to :ref:`hipsolverHandle_t <handle_t>`.
 
 hipsolverStatus_t
 --------------------
