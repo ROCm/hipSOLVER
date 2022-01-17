@@ -387,6 +387,7 @@ catch(...)
 
 /******************** AUXILIARY (PARAMS) ********************/
 hipsolverStatus_t hipsolverDnCreateSyevjInfo(hipsolverSyevjInfo_t* info)
+try
 {
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
@@ -402,6 +403,7 @@ catch(...)
 }
 
 hipsolverStatus_t hipsolverDnDestroySyevjInfo(hipsolverSyevjInfo_t info)
+try
 {
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
@@ -416,6 +418,7 @@ catch(...)
 }
 
 hipsolverStatus_t hipsolverDnXsyevjSetMaxSweeps(hipsolverSyevjInfo_t info, int max_sweeps)
+try
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
 }
@@ -425,6 +428,7 @@ catch(...)
 }
 
 hipsolverStatus_t hipsolverDnXsyevjSetSortEig(hipsolverSyevjInfo_t info, int sort_eig)
+try
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
 }
@@ -434,6 +438,7 @@ catch(...)
 }
 
 hipsolverStatus_t hipsolverDnXsyevjSetTolerance(hipsolverSyevjInfo_t info, double tolerance)
+try
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
 }
@@ -445,6 +450,7 @@ catch(...)
 hipsolverStatus_t hipsolverDnXsyevjGetResidual(hipsolverDnHandle_t  handle,
                                                hipsolverSyevjInfo_t info,
                                                double*              residual)
+try
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
 }
@@ -456,6 +462,7 @@ catch(...)
 hipsolverStatus_t hipsolverDnXsyevjGetSweeps(hipsolverDnHandle_t  handle,
                                              hipsolverSyevjInfo_t info,
                                              int*                 executed_sweeps)
+try
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
 }
