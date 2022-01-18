@@ -3640,7 +3640,7 @@ hipsolverStatus_t hipsolverSgesvd(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
+    rocblas_device_malloc mem((rocblas_handle)handle);
 
     if(work && lwork)
     {
@@ -3660,11 +3660,10 @@ try
 
         if(!rwork && min(m, n) > 1)
         {
-            mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle,
-                                                          sizeof(float) * min(m, n));
-            if(!mem->operator bool())
+            mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * min(m, n));
+            if(!mem)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
-            rwork = (float*)(*mem)[0];
+            rwork = (float*)mem[0];
         }
     }
 
@@ -3707,7 +3706,7 @@ hipsolverStatus_t hipsolverDgesvd(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
+    rocblas_device_malloc mem((rocblas_handle)handle);
 
     if(work && lwork)
     {
@@ -3727,11 +3726,10 @@ try
 
         if(!rwork && min(m, n) > 1)
         {
-            mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle,
-                                                          sizeof(double) * min(m, n));
-            if(!mem->operator bool())
+            mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * min(m, n));
+            if(!mem)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
-            rwork = (double*)(*mem)[0];
+            rwork = (double*)mem[0];
         }
     }
 
@@ -3774,7 +3772,7 @@ hipsolverStatus_t hipsolverCgesvd(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
+    rocblas_device_malloc mem((rocblas_handle)handle);
 
     if(work && lwork)
     {
@@ -3794,11 +3792,10 @@ try
 
         if(!rwork && min(m, n) > 1)
         {
-            mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle,
-                                                          sizeof(float) * min(m, n));
-            if(!mem->operator bool())
+            mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * min(m, n));
+            if(!mem)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
-            rwork = (float*)(*mem)[0];
+            rwork = (float*)mem[0];
         }
     }
 
@@ -3841,7 +3838,7 @@ hipsolverStatus_t hipsolverZgesvd(hipsolverHandle_t handle,
                                   int*              devInfo)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
+    rocblas_device_malloc mem((rocblas_handle)handle);
 
     if(work && lwork)
     {
@@ -3861,11 +3858,10 @@ try
 
         if(!rwork && min(m, n) > 1)
         {
-            mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle,
-                                                          sizeof(double) * min(m, n));
-            if(!mem->operator bool())
+            mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * min(m, n));
+            if(!mem)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
-            rwork = (double*)(*mem)[0];
+            rwork = (double*)mem[0];
         }
     }
 
@@ -4194,9 +4190,9 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    std::unique_ptr<rocblas_device_malloc> mem;
-    float*                                 E;
-    float*                                 V_copy;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    float*                E;
+    float*                V_copy;
 
     const float one         = 1.0f;
     const float zero        = 0.0f;
@@ -4229,12 +4225,11 @@ try
             (rocblas_handle)handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, &lwork, params));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>(
-            (rocblas_handle)handle, sizeof(float) * min(m, n), size_V_copy);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * min(m, n), size_V_copy);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E      = (float*)(*mem)[0];
-        V_copy = (float*)(*mem)[1];
+        E      = (float*)mem[0];
+        V_copy = (float*)mem[1];
     }
 
     // perform computation
@@ -4298,9 +4293,9 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    std::unique_ptr<rocblas_device_malloc> mem;
-    double*                                E;
-    double*                                V_copy;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    double*               E;
+    double*               V_copy;
 
     const double one         = 1.0;
     const double zero        = 0.0;
@@ -4333,12 +4328,12 @@ try
             (rocblas_handle)handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, &lwork, params));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>(
+        mem = rocblas_device_malloc(
             (rocblas_handle)handle, sizeof(double) * min(m, n), size_V_copy);
-        if(!mem->operator bool())
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E      = (double*)(*mem)[0];
-        V_copy = (double*)(*mem)[1];
+        E      = (double*)mem[0];
+        V_copy = (double*)mem[1];
     }
 
     // perform computation
@@ -4402,9 +4397,9 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    std::unique_ptr<rocblas_device_malloc> mem;
-    float*                                 E;
-    rocblas_float_complex*                 V_copy;
+    rocblas_device_malloc  mem((rocblas_handle)handle);
+    float*                 E;
+    rocblas_float_complex* V_copy;
 
     const rocblas_float_complex one         = {1.0f, 0.0f};
     const rocblas_float_complex zero        = {0.0f, 0.0f};
@@ -4437,12 +4432,11 @@ try
             (rocblas_handle)handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, &lwork, params));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>(
-            (rocblas_handle)handle, sizeof(float) * min(m, n), size_V_copy);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * min(m, n), size_V_copy);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E      = (float*)(*mem)[0];
-        V_copy = (rocblas_float_complex*)(*mem)[1];
+        E      = (float*)mem[0];
+        V_copy = (rocblas_float_complex*)mem[1];
     }
 
     // perform computation
@@ -4506,9 +4500,9 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    std::unique_ptr<rocblas_device_malloc> mem;
-    double*                                E;
-    rocblas_double_complex*                V_copy;
+    rocblas_device_malloc   mem((rocblas_handle)handle);
+    double*                 E;
+    rocblas_double_complex* V_copy;
 
     const rocblas_double_complex one         = {1.0, 0.0};
     const rocblas_double_complex zero        = {0.0, 0.0};
@@ -4541,12 +4535,12 @@ try
             (rocblas_handle)handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, &lwork, params));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>(
+        mem = rocblas_device_malloc(
             (rocblas_handle)handle, sizeof(double) * min(m, n), size_V_copy);
-        if(!mem->operator bool())
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E      = (double*)(*mem)[0];
-        V_copy = (rocblas_double_complex*)(*mem)[1];
+        E      = (double*)mem[0];
+        V_copy = (rocblas_double_complex*)mem[1];
     }
 
     // perform computation
@@ -4907,9 +4901,9 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    std::unique_ptr<rocblas_device_malloc> mem;
-    float*                                 E;
-    float*                                 V_copy;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    float*                E;
+    float*                V_copy;
 
     const float one         = 1.0f;
     const float zero        = 0.0f;
@@ -4954,12 +4948,12 @@ try
                                                                    batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>(
+        mem = rocblas_device_malloc(
             (rocblas_handle)handle, sizeof(float) * min(m, n) * batch_count, size_V_copy);
-        if(!mem->operator bool())
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E      = (float*)(*mem)[0];
-        V_copy = (float*)(*mem)[1];
+        E      = (float*)mem[0];
+        V_copy = (float*)mem[1];
     }
 
     // perform computation
@@ -5033,9 +5027,9 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    std::unique_ptr<rocblas_device_malloc> mem;
-    double*                                E;
-    double*                                V_copy;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    double*               E;
+    double*               V_copy;
 
     const double one         = 1.0;
     const double zero        = 0.0;
@@ -5080,12 +5074,12 @@ try
                                                                    batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>(
+        mem = rocblas_device_malloc(
             (rocblas_handle)handle, sizeof(double) * min(m, n) * batch_count, size_V_copy);
-        if(!mem->operator bool())
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E      = (double*)(*mem)[0];
-        V_copy = (double*)(*mem)[1];
+        E      = (double*)mem[0];
+        V_copy = (double*)mem[1];
     }
 
     // perform computation
@@ -5159,9 +5153,9 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    std::unique_ptr<rocblas_device_malloc> mem;
-    float*                                 E;
-    rocblas_float_complex*                 V_copy;
+    rocblas_device_malloc  mem((rocblas_handle)handle);
+    float*                 E;
+    rocblas_float_complex* V_copy;
 
     const rocblas_float_complex one         = {1.0f, 0.0f};
     const rocblas_float_complex zero        = {0.0f, 0.0f};
@@ -5206,12 +5200,12 @@ try
                                                                    batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>(
+        mem = rocblas_device_malloc(
             (rocblas_handle)handle, sizeof(float) * min(m, n) * batch_count, size_V_copy);
-        if(!mem->operator bool())
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E      = (float*)(*mem)[0];
-        V_copy = (rocblas_float_complex*)(*mem)[1];
+        E      = (float*)mem[0];
+        V_copy = (rocblas_float_complex*)mem[1];
     }
 
     // perform computation
@@ -5286,9 +5280,9 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    std::unique_ptr<rocblas_device_malloc> mem;
-    double*                                E;
-    rocblas_double_complex*                V_copy;
+    rocblas_device_malloc   mem((rocblas_handle)handle);
+    double*                 E;
+    rocblas_double_complex* V_copy;
 
     const rocblas_double_complex one         = {1.0, 0.0};
     const rocblas_double_complex zero        = {0.0, 0.0};
@@ -5333,12 +5327,12 @@ try
                                                                    batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>(
+        mem = rocblas_device_malloc(
             (rocblas_handle)handle, sizeof(double) * min(m, n) * batch_count, size_V_copy);
-        if(!mem->operator bool())
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E      = (double*)(*mem)[0];
-        V_copy = (rocblas_double_complex*)(*mem)[1];
+        E      = (double*)mem[0];
+        V_copy = (rocblas_double_complex*)mem[1];
     }
 
     // perform computation
@@ -7546,8 +7540,8 @@ hipsolverStatus_t hipsolverSsyevd(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    float*                                 E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    float*                E;
 
     if(work && lwork)
     {
@@ -7563,10 +7557,10 @@ try
             hipsolverSsyevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle, sizeof(float) * n);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * n);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (float*)(*mem)[0];
+        E = (float*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_ssyevd((rocblas_handle)handle,
@@ -7596,8 +7590,8 @@ hipsolverStatus_t hipsolverDsyevd(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    double*                                E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    double*               E;
 
     if(work && lwork)
     {
@@ -7613,10 +7607,10 @@ try
             hipsolverDsyevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle, sizeof(double) * n);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * n);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (double*)(*mem)[0];
+        E = (double*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_dsyevd((rocblas_handle)handle,
@@ -7646,8 +7640,8 @@ hipsolverStatus_t hipsolverCheevd(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    float*                                 E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    float*                E;
 
     if(work && lwork)
     {
@@ -7663,10 +7657,10 @@ try
             hipsolverCheevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle, sizeof(float) * n);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * n);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (float*)(*mem)[0];
+        E = (float*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_cheevd((rocblas_handle)handle,
@@ -7696,8 +7690,8 @@ hipsolverStatus_t hipsolverZheevd(hipsolverHandle_t   handle,
                                   int*                devInfo)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    double*                                E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    double*               E;
 
     if(work && lwork)
     {
@@ -7713,10 +7707,10 @@ try
             hipsolverZheevd_bufferSize((rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle, sizeof(double) * n);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * n);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (double*)(*mem)[0];
+        E = (double*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_zheevd((rocblas_handle)handle,
@@ -7956,8 +7950,8 @@ hipsolverStatus_t hipsolverDnSsyevj(hipsolverDnHandle_t  handle,
                                     hipsolverSyevjInfo_t params)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    float*                                 E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    float*                E;
 
     if(work && lwork)
     {
@@ -7973,10 +7967,10 @@ try
             (rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork, params));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle, sizeof(float) * n);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * n);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (float*)(*mem)[0];
+        E = (float*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_ssyevd((rocblas_handle)handle,
@@ -8007,8 +8001,8 @@ hipsolverStatus_t hipsolverDnDsyevj(hipsolverDnHandle_t  handle,
                                     hipsolverSyevjInfo_t params)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    double*                                E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    double*               E;
 
     if(work && lwork)
     {
@@ -8024,10 +8018,10 @@ try
             (rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork, params));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle, sizeof(double) * n);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * n);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (double*)(*mem)[0];
+        E = (double*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_dsyevd((rocblas_handle)handle,
@@ -8058,8 +8052,8 @@ hipsolverStatus_t hipsolverDnCheevj(hipsolverDnHandle_t  handle,
                                     hipsolverSyevjInfo_t params)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    float*                                 E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    float*                E;
 
     if(work && lwork)
     {
@@ -8075,10 +8069,10 @@ try
             (rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork, params));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle, sizeof(float) * n);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * n);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (float*)(*mem)[0];
+        E = (float*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_cheevd((rocblas_handle)handle,
@@ -8109,8 +8103,8 @@ hipsolverStatus_t hipsolverDnZheevj(hipsolverDnHandle_t  handle,
                                     hipsolverSyevjInfo_t params)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    double*                                E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    double*               E;
 
     if(work && lwork)
     {
@@ -8126,10 +8120,10 @@ try
             (rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork, params));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle, sizeof(double) * n);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * n);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (double*)(*mem)[0];
+        E = (double*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_zheevd((rocblas_handle)handle,
@@ -8394,8 +8388,8 @@ hipsolverStatus_t hipsolverDnSsyevjBatched(hipsolverDnHandle_t  handle,
                                            int                  batch_count)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    float*                                 E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    float*                E;
 
     if(work && lwork)
     {
@@ -8411,11 +8405,10 @@ try
             (rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork, params, batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle,
-                                                      sizeof(float) * n * batch_count);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * n * batch_count);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (float*)(*mem)[0];
+        E = (float*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_ssyevd_strided_batched((rocblas_handle)handle,
@@ -8451,8 +8444,8 @@ hipsolverStatus_t hipsolverDnDsyevjBatched(hipsolverDnHandle_t  handle,
                                            int                  batch_count)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    double*                                E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    double*               E;
 
     if(work && lwork)
     {
@@ -8468,11 +8461,10 @@ try
             (rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork, params, batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle,
-                                                      sizeof(double) * n * batch_count);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * n * batch_count);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (double*)(*mem)[0];
+        E = (double*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_dsyevd_strided_batched((rocblas_handle)handle,
@@ -8508,8 +8500,8 @@ hipsolverStatus_t hipsolverDnCheevjBatched(hipsolverDnHandle_t  handle,
                                            int                  batch_count)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    float*                                 E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    float*                E;
 
     if(work && lwork)
     {
@@ -8525,11 +8517,10 @@ try
             (rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork, params, batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle,
-                                                      sizeof(float) * n * batch_count);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * n * batch_count);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (float*)(*mem)[0];
+        E = (float*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_cheevd_strided_batched((rocblas_handle)handle,
@@ -8565,8 +8556,8 @@ hipsolverStatus_t hipsolverDnZheevjBatched(hipsolverDnHandle_t  handle,
                                            int                  batch_count)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    double*                                E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    double*               E;
 
     if(work && lwork)
     {
@@ -8582,11 +8573,10 @@ try
             (rocblas_handle)handle, jobz, uplo, n, A, lda, D, &lwork, params, batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = std::make_unique<rocblas_device_malloc>((rocblas_handle)handle,
-                                                      sizeof(double) * n * batch_count);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * n * batch_count);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (double*)(*mem)[0];
+        E = (double*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_zheevd_strided_batched((rocblas_handle)handle,
@@ -8864,8 +8854,8 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd(hipsolverHandle_t   handle,
                                                    int*                devInfo)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    float*                                 E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    float*                E;
 
     if(work && lwork)
     {
@@ -8881,10 +8871,10 @@ try
             (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = make_unique<rocblas_device_malloc>((rocblas_handle)handle, sizeof(float) * n);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * n);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (float*)(*mem)[0];
+        E = (float*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_ssygvd((rocblas_handle)handle,
@@ -8920,8 +8910,8 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd(hipsolverHandle_t   handle,
                                                    int*                devInfo)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    double*                                E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    double*               E;
 
     if(work && lwork)
     {
@@ -8937,10 +8927,10 @@ try
             (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = make_unique<rocblas_device_malloc>((rocblas_handle)handle, sizeof(double) * n);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * n);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (double*)(*mem)[0];
+        E = (double*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_dsygvd((rocblas_handle)handle,
@@ -8976,8 +8966,8 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd(hipsolverHandle_t   handle,
                                                    int*                devInfo)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    float*                                 E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    float*                E;
 
     if(work && lwork)
     {
@@ -8993,10 +8983,10 @@ try
             (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = make_unique<rocblas_device_malloc>((rocblas_handle)handle, sizeof(float) * n);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * n);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (float*)(*mem)[0];
+        E = (float*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_chegvd((rocblas_handle)handle,
@@ -9032,8 +9022,8 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd(hipsolverHandle_t   handle,
                                                    int*                devInfo)
 try
 {
-    std::unique_ptr<rocblas_device_malloc> mem;
-    double*                                E;
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    double*               E;
 
     if(work && lwork)
     {
@@ -9049,10 +9039,10 @@ try
             (rocblas_handle)handle, itype, jobz, uplo, n, A, lda, B, ldb, D, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        mem = make_unique<rocblas_device_malloc>((rocblas_handle)handle, sizeof(double) * n);
-        if(!mem->operator bool())
+        mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * n);
+        if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        E = (double*)(*mem)[0];
+        E = (double*)mem[0];
     }
 
     return rocblas2hip_status(rocsolver_zhegvd((rocblas_handle)handle,
