@@ -19,7 +19,8 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ### Deprecated
 ### Removed
 ### Fixed
-- Fixed potential workspace allocation failure in some functions.
+- bufferSize functions will now return HIPSOLVER_STATUS_NOT_INITIALIZED instead of HIPSOLVER_STATUS_INVALID_VALUE when both handle and lwork are null.
+- Fixed rare memory allocation failure in syevd/heevd and sygvd/hegvd when using rocblas_device_malloc to allocate multiple workspace arrays.
 
 ### Known Issues
 ### Security
