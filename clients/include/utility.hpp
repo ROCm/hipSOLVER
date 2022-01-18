@@ -143,6 +143,39 @@ public:
 
 /* ============================================================================================
  */
+/*! \brief  local syevj params which is automatically created and destroyed  */
+class hipsolver_local_syevj_info
+{
+    hipsolverSyevjInfo_t m_info;
+
+public:
+    hipsolver_local_syevj_info()
+    {
+        hipsolverDnCreateSyevjInfo(&m_info);
+    }
+    ~hipsolver_local_syevj_info()
+    {
+        hipsolverDnDestroySyevjInfo(m_info);
+    }
+
+    hipsolver_local_syevj_info(const hipsolver_local_syevj_info&) = delete;
+    hipsolver_local_syevj_info(hipsolver_local_syevj_info&&)      = delete;
+    hipsolver_local_syevj_info& operator=(const hipsolver_local_syevj_info&) = delete;
+    hipsolver_local_syevj_info& operator=(hipsolver_local_syevj_info&&) = delete;
+
+    // Allow hipsolver_local_syevj_info to be used anywhere hipsolverSyevjInfo_t is expected
+    operator hipsolverSyevjInfo_t&()
+    {
+        return m_info;
+    }
+    operator const hipsolverSyevjInfo_t&() const
+    {
+        return m_info;
+    }
+};
+
+/* ============================================================================================
+ */
 
 // Return true if value is NaN
 template <typename T>

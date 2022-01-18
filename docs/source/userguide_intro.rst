@@ -153,6 +153,18 @@ rocSOLVER has yet to implement the following Jacobi functions, therefore hipSOLV
 approaches (e.g. the QR algorithm). Note that parameters specific to the Jacobi algorithm will be ignored by the rocSOLVER backend, such as the
 error tolerance and number of iterations. All results are computed to machine precision.
 
+.. csv-table:: Symmetric eigensolvers
+    :header: "Function", "single", "double", "single complex", "double complex"
+
+    :ref:`hipsolverDnXsyevj_bufferSize <compat_syevj_bufferSize>`, x, x, ,
+    :ref:`hipsolverDnXsyevj <compat_syevj>`, x, x, ,
+    :ref:`hipsolverDnXsyevjBatched_bufferSize <compat_syevj_batched_bufferSize>`, x, x, ,
+    :ref:`hipsolverDnXsyevjBatched <compat_syevj_batched>`, x, x, ,
+    :ref:`hipsolverDnXheevj_bufferSize <compat_heevj_bufferSize>`, , , x, x
+    :ref:`hipsolverDnXheevj <compat_heevj>`, , , x, x
+    :ref:`hipsolverDnXheevjBatched_bufferSize <compat_heevj_batched_bufferSize>`, , , x, x
+    :ref:`hipsolverDnXheevjBatched <compat_heevj_batched>`, , , x, x
+
 .. csv-table:: Singular value decomposition
     :header: "Function", "single", "double", "single complex", "double complex"
 
@@ -160,5 +172,4 @@ error tolerance and number of iterations. All results are computed to machine pr
     :ref:`hipsolverDnXgesvdj <compat_gesvdj>`, x, x, x, x
     :ref:`hipsolverDnXgesvdjBatched_bufferSize <compat_gesvdj_batched_bufferSize>`, x, x, x, x
     :ref:`hipsolverDnXgesvdjBatched <compat_gesvdj_batched>`, x, x, x, x
-
 

@@ -13,6 +13,8 @@ hipSOLVER regular API types
    :local:
    :backlinks: top
 
+.. _handle_t:
+
 hipsolverHandle_t
 --------------------
 .. doxygentypedef:: hipsolverHandle_t

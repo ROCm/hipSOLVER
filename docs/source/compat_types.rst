@@ -22,6 +22,10 @@ hipsolverGesvdjInfo_t
 ----------------------
 .. doxygentypedef:: hipsolverGesvdjInfo_t
 
+hipsolverSyevjInfo_t
+--------------------
+.. doxygentypedef:: hipsolverSyevjInfo_t
+
 hipsolverStatus_t
 --------------------
 See :ref:`hipsolverStatus_t <status_t>`.
