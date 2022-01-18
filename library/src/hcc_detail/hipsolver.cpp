@@ -3412,11 +3412,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array (aka rwork)
-    if(min(m, n) > 0)
-        size_E = sizeof(float) * min(m, n);
+    size_t size_E = min(m, n) > 0 ? sizeof(float) * min(m, n) : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3466,11 +3463,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array (aka rwork)
-    if(min(m, n) > 0)
-        size_E = sizeof(double) * min(m, n);
+    size_t size_E = min(m, n) > 0 ? sizeof(double) * min(m, n) : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3520,11 +3514,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array (aka rwork)
-    if(min(m, n) > 0)
-        size_E = sizeof(float) * min(m, n);
+    size_t size_E = min(m, n) > 0 ? sizeof(float) * min(m, n) : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -3574,11 +3565,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array (aka rwork)
-    if(min(m, n) > 0)
-        size_E = sizeof(double) * min(m, n);
+    size_t size_E = min(m, n) > 0 ? sizeof(double) * min(m, n) : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -7318,11 +7306,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n > 0)
-        size_E = sizeof(float) * n;
+    size_t size_E = n > 0 ? sizeof(float) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -7372,11 +7357,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n > 0)
-        size_E = sizeof(double) * n;
+    size_t size_E = n > 0 ? sizeof(double) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -7426,11 +7408,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n > 0)
-        size_E = sizeof(float) * n;
+    size_t size_E = n > 0 ? sizeof(float) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -7480,11 +7459,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n > 0)
-        size_E = sizeof(double) * n;
+    size_t size_E = n > 0 ? sizeof(double) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -8611,11 +8587,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n > 0)
-        size_E = sizeof(float) * n;
+    size_t size_E = n > 0 ? sizeof(float) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -8671,11 +8644,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n > 0)
-        size_E = sizeof(double) * n;
+    size_t size_E = n > 0 ? sizeof(double) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -8731,11 +8701,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n > 0)
-        size_E = sizeof(float) * n;
+    size_t size_E = n > 0 ? sizeof(float) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -8791,11 +8758,8 @@ try
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
-    size_t size_E = 0;
-
     // space for E array
-    if(n > 0)
-        size_E = sizeof(double) * n;
+    size_t size_E = n > 0 ? sizeof(double) * n : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
