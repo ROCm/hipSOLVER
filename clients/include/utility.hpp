@@ -110,6 +110,39 @@ public:
 
 /* ============================================================================================
  */
+/*! \brief  local gesvdj params which is automatically created and destroyed  */
+class hipsolver_local_gesvdj_info
+{
+    hipsolverGesvdjInfo_t m_info;
+
+public:
+    hipsolver_local_gesvdj_info()
+    {
+        hipsolverDnCreateGesvdjInfo(&m_info);
+    }
+    ~hipsolver_local_gesvdj_info()
+    {
+        hipsolverDnDestroyGesvdjInfo(m_info);
+    }
+
+    hipsolver_local_gesvdj_info(const hipsolver_local_gesvdj_info&) = delete;
+    hipsolver_local_gesvdj_info(hipsolver_local_gesvdj_info&&)      = delete;
+    hipsolver_local_gesvdj_info& operator=(const hipsolver_local_gesvdj_info&) = delete;
+    hipsolver_local_gesvdj_info& operator=(hipsolver_local_gesvdj_info&&) = delete;
+
+    // Allow hipsolver_local_gesvdj_info to be used anywhere hipsolverGesvdjInfo_t is expected
+    operator hipsolverGesvdjInfo_t&()
+    {
+        return m_info;
+    }
+    operator const hipsolverGesvdjInfo_t&() const
+    {
+        return m_info;
+    }
+};
+
+/* ============================================================================================
+ */
 /*! \brief  local syevj params which is automatically created and destroyed  */
 class hipsolver_local_syevj_info
 {

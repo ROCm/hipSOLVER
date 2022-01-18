@@ -1303,8 +1303,8 @@ void testing_gesvd(Arguments& argus)
             std::cerr << "============================================\n";
             if(BATCHED)
             {
-                rocsolver_bench_output("left_svect",
-                                       "right_svect",
+                rocsolver_bench_output("jobu",
+                                       "jobv",
                                        "m",
                                        "n",
                                        "lda",
@@ -1319,8 +1319,8 @@ void testing_gesvd(Arguments& argus)
             }
             else if(STRIDED)
             {
-                rocsolver_bench_output("left_svect",
-                                       "right_svect",
+                rocsolver_bench_output("jobu",
+                                       "jobv",
                                        "m",
                                        "n",
                                        "lda",
@@ -1337,7 +1337,7 @@ void testing_gesvd(Arguments& argus)
             }
             else
             {
-                rocsolver_bench_output("left_svect", "right_svect", "m", "n", "lda", "ldu", "ldv");
+                rocsolver_bench_output("jobu", "jobv", "m", "n", "lda", "ldu", "ldv");
                 rocsolver_bench_output(leftv, rightv, m, n, lda, ldu, ldv);
             }
             std::cerr << "\n============================================\n";
