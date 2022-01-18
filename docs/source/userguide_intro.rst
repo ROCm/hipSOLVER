@@ -139,4 +139,29 @@ LAPACK main functions
     :ref:`hipsolverXgesvd <gesvd>`, x, x, x, x
 
 
+Compatibility-only functions
+====================================
+
+The following tables summarize the wrapper functions that have not been implemented in rocSOLVER, but can be computed with an equivalent function
+that uses a different algorithmic approach. These functions are provided as part of the compatibility API only, pending their implementation
+in rocSOLVER.
+
+Iterative Jacobi functions
+----------------------------
+
+rocSOLVER has yet to implement the following Jacobi functions, therefore hipSOLVER will instead call functions that use classic, non-iterative
+approaches (e.g. the QR algorithm). Note that parameters specific to the Jacobi algorithm will be ignored by the rocSOLVER backend, such as the
+error tolerance and number of iterations. All results are computed to machine precision.
+
+.. csv-table:: Symmetric eigensolvers
+    :header: "Function", "single", "double", "single complex", "double complex"
+
+    :ref:`hipsolverDnXsyevj_bufferSize <compat_syevj_bufferSize>`, x, x, ,
+    :ref:`hipsolverDnXsyevj <compat_syevj>`, x, x, ,
+    :ref:`hipsolverDnXsyevjBatched_bufferSize <compat_syevj_batched_bufferSize>`, x, x, ,
+    :ref:`hipsolverDnXsyevjBatched <compat_syevj_batched>`, x, x, ,
+    :ref:`hipsolverDnXheevj_bufferSize <compat_heevj_bufferSize>`, , , x, x
+    :ref:`hipsolverDnXheevj <compat_heevj>`, , , x, x
+    :ref:`hipsolverDnXheevjBatched_bufferSize <compat_heevj_batched_bufferSize>`, , , x, x
+    :ref:`hipsolverDnXheevjBatched <compat_heevj_batched>`, , , x, x
 

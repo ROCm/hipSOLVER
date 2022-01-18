@@ -20,6 +20,8 @@
  ********************************************************************************/
 typedef hipsolverHandle_t hipsolverDnHandle_t;
 
+typedef void* hipsolverSyevjInfo_t;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -41,6 +43,28 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSetStream(hipsolverHandle_t handle
  ********************************************************************************/
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnGetStream(hipsolverHandle_t handle,
                                                         hipStream_t*      streamId);
+
+// params
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnCreateSyevjInfo(hipsolverSyevjInfo_t* info);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDestroySyevjInfo(hipsolverSyevjInfo_t info);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjSetMaxSweeps(hipsolverSyevjInfo_t info,
+                                                                 int                  max_sweeps);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjSetSortEig(hipsolverSyevjInfo_t info,
+                                                               int                  sort_eig);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjSetTolerance(hipsolverSyevjInfo_t info,
+                                                                 double               tolerance);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjGetResidual(hipsolverDnHandle_t  handle,
+                                                                hipsolverSyevjInfo_t info,
+                                                                double*              residual);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjGetSweeps(hipsolverDnHandle_t  handle,
+                                                              hipsolverSyevjInfo_t info,
+                                                              int*                 executed_sweeps);
 
 // orgbr/ungbr
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSorgbr_bufferSize(hipsolverHandle_t   handle,
@@ -1347,6 +1371,192 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnZheevd(hipsolverHandle_t   handle,
                                                      hipDoubleComplex*   work,
                                                      int                 lwork,
                                                      int*                devInfo);
+
+// syevj/heevj
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSsyevj_bufferSize(hipsolverDnHandle_t  handle,
+                                                                hipsolverEigMode_t   jobz,
+                                                                hipsolverFillMode_t  uplo,
+                                                                int                  n,
+                                                                float*               A,
+                                                                int                  lda,
+                                                                float*               D,
+                                                                int*                 lwork,
+                                                                hipsolverSyevjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDsyevj_bufferSize(hipsolverDnHandle_t  handle,
+                                                                hipsolverEigMode_t   jobz,
+                                                                hipsolverFillMode_t  uplo,
+                                                                int                  n,
+                                                                double*              A,
+                                                                int                  lda,
+                                                                double*              D,
+                                                                int*                 lwork,
+                                                                hipsolverSyevjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnCheevj_bufferSize(hipsolverDnHandle_t  handle,
+                                                                hipsolverEigMode_t   jobz,
+                                                                hipsolverFillMode_t  uplo,
+                                                                int                  n,
+                                                                hipFloatComplex*     A,
+                                                                int                  lda,
+                                                                float*               D,
+                                                                int*                 lwork,
+                                                                hipsolverSyevjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnZheevj_bufferSize(hipsolverDnHandle_t  handle,
+                                                                hipsolverEigMode_t   jobz,
+                                                                hipsolverFillMode_t  uplo,
+                                                                int                  n,
+                                                                hipDoubleComplex*    A,
+                                                                int                  lda,
+                                                                double*              D,
+                                                                int*                 lwork,
+                                                                hipsolverSyevjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSsyevj(hipsolverDnHandle_t  handle,
+                                                     hipsolverEigMode_t   jobz,
+                                                     hipsolverFillMode_t  uplo,
+                                                     int                  n,
+                                                     float*               A,
+                                                     int                  lda,
+                                                     float*               D,
+                                                     float*               work,
+                                                     int                  lwork,
+                                                     int*                 devInfo,
+                                                     hipsolverSyevjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDsyevj(hipsolverDnHandle_t  handle,
+                                                     hipsolverEigMode_t   jobz,
+                                                     hipsolverFillMode_t  uplo,
+                                                     int                  n,
+                                                     double*              A,
+                                                     int                  lda,
+                                                     double*              D,
+                                                     double*              work,
+                                                     int                  lwork,
+                                                     int*                 devInfo,
+                                                     hipsolverSyevjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnCheevj(hipsolverDnHandle_t  handle,
+                                                     hipsolverEigMode_t   jobz,
+                                                     hipsolverFillMode_t  uplo,
+                                                     int                  n,
+                                                     hipFloatComplex*     A,
+                                                     int                  lda,
+                                                     float*               D,
+                                                     hipFloatComplex*     work,
+                                                     int                  lwork,
+                                                     int*                 devInfo,
+                                                     hipsolverSyevjInfo_t params);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnZheevj(hipsolverDnHandle_t  handle,
+                                                     hipsolverEigMode_t   jobz,
+                                                     hipsolverFillMode_t  uplo,
+                                                     int                  n,
+                                                     hipDoubleComplex*    A,
+                                                     int                  lda,
+                                                     double*              D,
+                                                     hipDoubleComplex*    work,
+                                                     int                  lwork,
+                                                     int*                 devInfo,
+                                                     hipsolverSyevjInfo_t params);
+
+// syevj_batched/heevj_batched
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSsyevjBatched_bufferSize(hipsolverDnHandle_t  handle,
+                                                                       hipsolverEigMode_t   jobz,
+                                                                       hipsolverFillMode_t  uplo,
+                                                                       int                  n,
+                                                                       float*               A,
+                                                                       int                  lda,
+                                                                       float*               D,
+                                                                       int*                 lwork,
+                                                                       hipsolverSyevjInfo_t params,
+                                                                       int batch_count);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDsyevjBatched_bufferSize(hipsolverDnHandle_t  handle,
+                                                                       hipsolverEigMode_t   jobz,
+                                                                       hipsolverFillMode_t  uplo,
+                                                                       int                  n,
+                                                                       double*              A,
+                                                                       int                  lda,
+                                                                       double*              D,
+                                                                       int*                 lwork,
+                                                                       hipsolverSyevjInfo_t params,
+                                                                       int batch_count);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnCheevjBatched_bufferSize(hipsolverDnHandle_t  handle,
+                                                                       hipsolverEigMode_t   jobz,
+                                                                       hipsolverFillMode_t  uplo,
+                                                                       int                  n,
+                                                                       hipFloatComplex*     A,
+                                                                       int                  lda,
+                                                                       float*               D,
+                                                                       int*                 lwork,
+                                                                       hipsolverSyevjInfo_t params,
+                                                                       int batch_count);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnZheevjBatched_bufferSize(hipsolverDnHandle_t  handle,
+                                                                       hipsolverEigMode_t   jobz,
+                                                                       hipsolverFillMode_t  uplo,
+                                                                       int                  n,
+                                                                       hipDoubleComplex*    A,
+                                                                       int                  lda,
+                                                                       double*              D,
+                                                                       int*                 lwork,
+                                                                       hipsolverSyevjInfo_t params,
+                                                                       int batch_count);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSsyevjBatched(hipsolverDnHandle_t  handle,
+                                                            hipsolverEigMode_t   jobz,
+                                                            hipsolverFillMode_t  uplo,
+                                                            int                  n,
+                                                            float*               A,
+                                                            int                  lda,
+                                                            float*               D,
+                                                            float*               work,
+                                                            int                  lwork,
+                                                            int*                 devInfo,
+                                                            hipsolverSyevjInfo_t params,
+                                                            int                  batch_count);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDsyevjBatched(hipsolverDnHandle_t  handle,
+                                                            hipsolverEigMode_t   jobz,
+                                                            hipsolverFillMode_t  uplo,
+                                                            int                  n,
+                                                            double*              A,
+                                                            int                  lda,
+                                                            double*              D,
+                                                            double*              work,
+                                                            int                  lwork,
+                                                            int*                 devInfo,
+                                                            hipsolverSyevjInfo_t params,
+                                                            int                  batch_count);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnCheevjBatched(hipsolverDnHandle_t  handle,
+                                                            hipsolverEigMode_t   jobz,
+                                                            hipsolverFillMode_t  uplo,
+                                                            int                  n,
+                                                            hipFloatComplex*     A,
+                                                            int                  lda,
+                                                            float*               D,
+                                                            hipFloatComplex*     work,
+                                                            int                  lwork,
+                                                            int*                 devInfo,
+                                                            hipsolverSyevjInfo_t params,
+                                                            int                  batch_count);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnZheevjBatched(hipsolverDnHandle_t  handle,
+                                                            hipsolverEigMode_t   jobz,
+                                                            hipsolverFillMode_t  uplo,
+                                                            int                  n,
+                                                            hipDoubleComplex*    A,
+                                                            int                  lda,
+                                                            double*              D,
+                                                            hipDoubleComplex*    work,
+                                                            int                  lwork,
+                                                            int*                 devInfo,
+                                                            hipsolverSyevjInfo_t params,
+                                                            int                  batch_count);
 
 // sygvd/hegvd
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSsygvd_bufferSize(hipsolverHandle_t   handle,
