@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright 2016-2021 Advanced Micro Devices, Inc.
+# Copyright 2016-2022 Advanced Micro Devices, Inc.
 # ########################################################################
 
 # Linking lapack library requires fortran flags
@@ -24,6 +24,7 @@ set(hipsolver_test_source
   potri_gtest.cpp
   potrs_gtest.cpp
   syevd_heevd_gtest.cpp
+  syevj_heevj_gtest.cpp
   sygvd_hegvd_gtest.cpp
   sytrd_hetrd_gtest.cpp
   sytrf_gtest.cpp
