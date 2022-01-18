@@ -517,3 +517,51 @@ hipsolverDn<type>gesvd()
    :outline:
 .. doxygenfunction:: hipsolverDnSgesvd
 
+.. _compat_gesvdj_bufferSize:
+
+hipsolverDn<type>gesvdj_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnZgesvdj_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDnCgesvdj_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDnDgesvdj_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDnSgesvdj_bufferSize
+
+.. _compat_gesvdj_batched_bufferSize:
+
+hipsolverDn<type>gesvdjBatched_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnZgesvdjBatched_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDnCgesvdjBatched_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDnDgesvdjBatched_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDnSgesvdjBatched_bufferSize
+
+.. _compat_gesvdj:
+
+hipsolverDn<type>gesvdj()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnZgesvdj
+   :outline:
+.. doxygenfunction:: hipsolverDnCgesvdj
+   :outline:
+.. doxygenfunction:: hipsolverDnDgesvdj
+   :outline:
+.. doxygenfunction:: hipsolverDnSgesvdj
+
+.. _compat_gesvdj_batched:
+
+hipsolverDn<type>gesvdjBatched()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnZgesvdjBatched
+   :outline:
+.. doxygenfunction:: hipsolverDnCgesvdjBatched
+   :outline:
+.. doxygenfunction:: hipsolverDnDgesvdjBatched
+   :outline:
+.. doxygenfunction:: hipsolverDnSgesvdjBatched
+

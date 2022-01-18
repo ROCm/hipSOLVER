@@ -79,6 +79,11 @@ Unsupported methods
 The following methods are provided as part of the compatibility API, but are not currently implemented in rocSOLVER and will
 return `HIPSOLVER_STATUS_NOT_SUPPORTED` if called with the rocSOLVER backend.
 
+  * :ref:`hipsolverDnXgesvdjSetMaxSweeps <compat_gesvdj_set_max_sweeps>`,
+  * :ref:`hipsolverDnXgesvdjSetSortEig <compat_gesvdj_set_sort_eig>`,
+  * :ref:`hipsolverDnXgesvdjSetTolerance <compat_gesvdj_set_tolerance>`,
+  * :ref:`hipsolverDnXgesvdjGetResidual <compat_gesvdj_get_residual>`, and
+  * :ref:`hipsolverDnXgesvdjGetSweeps <compat_gesvdj_get_sweeps>`.
   * :ref:`hipsolverDnXsyevjSetMaxSweeps <compat_syevj_set_max_sweeps>`,
   * :ref:`hipsolverDnXsyevjSetSortEig <compat_syevj_set_sort_eig>`,
   * :ref:`hipsolverDnXsyevjSetTolerance <compat_syevj_set_tolerance>`,
@@ -178,4 +183,10 @@ Possible performance implications of the compatibility API
 
   (Users must keep in mind that even if the compatibility API does not have bufferSize helpers for the mentioned functions, these functions do require
   workspace when using rocSOLVER, and it will be automatically managed. This may imply device memory reallocations with corresponding overheads).
+
+- The functions :ref:`hipsolverDnXgesvdj <compat_gesvdj>` and :ref:`hipsolverDnXgesvdjBatched <compat_gesvdj_batched>` must apply a transpose
+  operation to `V` in order to match the output of cuSOLVER, requiring an additional function call and extra workspace.
+
+  (If `jobz` is set to `HIPSOLVER_EIG_MODE_VECTOR`, `hipsolverDnXgesvdj` and `hipsolverDnXgesvdjBatched` will be slower and require more workspace
+  than `hipsolverXgesvd`).
 

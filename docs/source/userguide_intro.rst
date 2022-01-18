@@ -165,3 +165,11 @@ error tolerance and number of iterations. All results are computed to machine pr
     :ref:`hipsolverDnXheevjBatched_bufferSize <compat_heevj_batched_bufferSize>`, , , x, x
     :ref:`hipsolverDnXheevjBatched <compat_heevj_batched>`, , , x, x
 
+.. csv-table:: Singular value decomposition
+    :header: "Function", "single", "double", "single complex", "double complex"
+
+    :ref:`hipsolverDnXgesvdj_bufferSize <compat_gesvdj_bufferSize>`, x, x, x, x
+    :ref:`hipsolverDnXgesvdj <compat_gesvdj>`, x, x, x, x
+    :ref:`hipsolverDnXgesvdjBatched_bufferSize <compat_gesvdj_batched_bufferSize>`, x, x, x, x
+    :ref:`hipsolverDnXgesvdjBatched <compat_gesvdj_batched>`, x, x, x, x
+
