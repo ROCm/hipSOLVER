@@ -16,19 +16,29 @@
 #include "hipsolver-functions.h"
 #include "hipsolver-types.h"
 
-#define hipsolverDnHandle_t hipsolverHandle_t
+/*! \brief Provided for convenience when porting code from cuSOLVER.
+ ********************************************************************************/
+typedef hipsolverHandle_t hipsolverDnHandle_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+/*! \brief An alias for #hipsolverCreate.
+ ********************************************************************************/
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnCreate(hipsolverHandle_t* handle);
 
+/*! \brief An alias for #hipsolverDestroy.
+ ********************************************************************************/
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDestroy(hipsolverHandle_t handle);
 
+/*! \brief An alias for #hipsolverSetStream.
+ ********************************************************************************/
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSetStream(hipsolverHandle_t handle,
                                                         hipStream_t       streamId);
 
+/*! \brief An alias for #hipsolverGetStream.
+ ********************************************************************************/
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnGetStream(hipsolverHandle_t handle,
                                                         hipStream_t*      streamId);
 
