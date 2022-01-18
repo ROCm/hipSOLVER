@@ -33,7 +33,7 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ### Removed
 ### Fixed
 - bufferSize functions will now return HIPSOLVER_STATUS_NOT_INITIALIZED instead of HIPSOLVER_STATUS_INVALID_VALUE when both handle and lwork are null.
-- Fixed rare memory allocation failure in syevd/heevd and sygvd/hegvd caused by allocating workspace arrays outside of rocSOLVER.
+- Fixed rare memory allocation failure in syevd/heevd and sygvd/hegvd caused by improper workspace array allocation outside of rocSOLVER.
 
 ### Known Issues
 ### Security
