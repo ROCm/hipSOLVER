@@ -1,6 +1,6 @@
 
 #############################
-hipSOLVER User guide
+hipSOLVER User Guide
 #############################
 
 .. toctree::
