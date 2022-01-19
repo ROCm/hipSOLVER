@@ -4,6 +4,17 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ## (Unreleased) hipSOLVER
 ### Added
+### Optimized
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Known Issues
+### Security
+
+
+## (Unreleased) hipSOLVER 1.3.0
+### Added
 - Added functions
   - gels
     - hipsolverSSgels_bufferSize, hipsolverDDgels_bufferSize, hipsolverCCgels_bufferSize, hipsolverZZgels_bufferSize
