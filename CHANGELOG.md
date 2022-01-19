@@ -27,22 +27,16 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
     - hipsolverDnSsygvj_bufferSize, hipsolverDnDsygvj_bufferSize, hipsolverDnChegvj_bufferSize, hipsolverDnZhegvj_bufferSize
     - hipsolverDnSsygvj, hipsolverDnDsygvj, hipsolverDnChegvj, hipsolverDnZhegvj
 
-### Optimized
 ### Changed
 - The rocSOLVER backend now allows hipsolverXXgels and hipsolverXXgesv to be called in-place when B == X.
 - The rocSOLVER backend now allows rwork to be passed as a null pointer to hipsolverXgesvd.
 
-### Deprecated
-### Removed
 ### Fixed
 - bufferSize functions will now return HIPSOLVER_STATUS_NOT_INITIALIZED instead of HIPSOLVER_STATUS_INVALID_VALUE when both handle and lwork are null.
 - Fixed rare memory allocation failure in syevd/heevd and sygvd/hegvd caused by improper workspace array allocation outside of rocSOLVER.
 
-### Known Issues
-### Security
 
-
-## (Unreleased) hipSOLVER 1.2.0
+## hipSOLVER 1.2.0 for ROCm 5.0.0
 ### Added
 - Added functions
   - sytrf
