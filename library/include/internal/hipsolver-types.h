@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 /*! \file
@@ -61,5 +61,12 @@ typedef enum
     HIPSOLVER_EIG_TYPE_2 = 212,
     HIPSOLVER_EIG_TYPE_3 = 213,
 } hipsolverEigType_t;
+
+typedef enum
+{
+    HIPSOLVER_EIG_RANGE_ALL = 221,
+    HIPSOLVER_EIG_RANGE_V   = 222,
+    HIPSOLVER_EIG_RANGE_I   = 223,
+} hipsolverEigRange_t;
 
 #endif // HIPSOLVER_TYPES_H

@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 /*! \file
@@ -1515,6 +1515,135 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZheevd(hipsolverHandle_t   handle,
                                                    int                 lwork,
                                                    int*                devInfo);
 
+// syevdx/heevdx
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsyevdx_bufferSize(hipsolverHandle_t   handle,
+                                                               hipsolverEigMode_t  jobz,
+                                                               hipsolverEigRange_t range,
+                                                               hipsolverFillMode_t uplo,
+                                                               int                 n,
+                                                               float*              A,
+                                                               int                 lda,
+                                                               float               vl,
+                                                               float               vu,
+                                                               int                 il,
+                                                               int                 iu,
+                                                               int*                nev,
+                                                               float*              W,
+                                                               int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsyevdx_bufferSize(hipsolverHandle_t   handle,
+                                                               hipsolverEigMode_t  jobz,
+                                                               hipsolverEigRange_t range,
+                                                               hipsolverFillMode_t uplo,
+                                                               int                 n,
+                                                               double*             A,
+                                                               int                 lda,
+                                                               double              vl,
+                                                               double              vu,
+                                                               int                 il,
+                                                               int                 iu,
+                                                               int*                nev,
+                                                               double*             W,
+                                                               int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCheevdx_bufferSize(hipsolverHandle_t   handle,
+                                                               hipsolverEigMode_t  jobz,
+                                                               hipsolverEigRange_t range,
+                                                               hipsolverFillMode_t uplo,
+                                                               int                 n,
+                                                               hipFloatComplex*    A,
+                                                               int                 lda,
+                                                               float               vl,
+                                                               float               vu,
+                                                               int                 il,
+                                                               int                 iu,
+                                                               int*                nev,
+                                                               float*              W,
+                                                               int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZheevdx_bufferSize(hipsolverHandle_t   handle,
+                                                               hipsolverEigMode_t  jobz,
+                                                               hipsolverEigRange_t range,
+                                                               hipsolverFillMode_t uplo,
+                                                               int                 n,
+                                                               hipDoubleComplex*   A,
+                                                               int                 lda,
+                                                               double              vl,
+                                                               double              vu,
+                                                               int                 il,
+                                                               int                 iu,
+                                                               int*                nev,
+                                                               double*             W,
+                                                               int*                lwork);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsyevdx(hipsolverHandle_t   handle,
+                                                    hipsolverEigMode_t  jobz,
+                                                    hipsolverEigRange_t range,
+                                                    hipsolverFillMode_t uplo,
+                                                    int                 n,
+                                                    float*              A,
+                                                    int                 lda,
+                                                    float               vl,
+                                                    float               vu,
+                                                    int                 il,
+                                                    int                 iu,
+                                                    int*                nev,
+                                                    float*              W,
+                                                    float*              work,
+                                                    int                 lwork,
+                                                    int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsyevdx(hipsolverHandle_t   handle,
+                                                    hipsolverEigMode_t  jobz,
+                                                    hipsolverEigRange_t range,
+                                                    hipsolverFillMode_t uplo,
+                                                    int                 n,
+                                                    double*             A,
+                                                    int                 lda,
+                                                    double              vl,
+                                                    double              vu,
+                                                    int                 il,
+                                                    int                 iu,
+                                                    int*                nev,
+                                                    double*             W,
+                                                    double*             work,
+                                                    int                 lwork,
+                                                    int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCheevdx(hipsolverHandle_t   handle,
+                                                    hipsolverEigMode_t  jobz,
+                                                    hipsolverEigRange_t range,
+                                                    hipsolverFillMode_t uplo,
+                                                    int                 n,
+                                                    hipFloatComplex*    A,
+                                                    int                 lda,
+                                                    float               vl,
+                                                    float               vu,
+                                                    int                 il,
+                                                    int                 iu,
+                                                    int*                nev,
+                                                    float*              W,
+                                                    hipFloatComplex*    work,
+                                                    int                 lwork,
+                                                    int*                devInfo);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZheevdx(hipsolverHandle_t   handle,
+                                                    hipsolverEigMode_t  jobz,
+                                                    hipsolverEigRange_t range,
+                                                    hipsolverFillMode_t uplo,
+                                                    int                 n,
+                                                    hipDoubleComplex*   A,
+                                                    int                 lda,
+                                                    double              vl,
+                                                    double              vu,
+                                                    int                 il,
+                                                    int                 iu,
+                                                    int*                nev,
+                                                    double*             W,
+                                                    hipDoubleComplex*   work,
+                                                    int                 lwork,
+                                                    int*                devInfo);
+
 // sygvd/hegvd
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd_bufferSize(hipsolverHandle_t   handle,
                                                               hipsolverEigType_t  itype,
@@ -1525,7 +1654,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               float*              B,
                                                               int                 ldb,
-                                                              float*              D,
+                                                              float*              W,
                                                               int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd_bufferSize(hipsolverHandle_t   handle,
@@ -1537,7 +1666,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               double*             B,
                                                               int                 ldb,
-                                                              double*             D,
+                                                              double*             W,
                                                               int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd_bufferSize(hipsolverHandle_t   handle,
@@ -1549,7 +1678,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               hipFloatComplex*    B,
                                                               int                 ldb,
-                                                              float*              D,
+                                                              float*              W,
                                                               int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSize(hipsolverHandle_t   handle,
@@ -1561,7 +1690,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               hipDoubleComplex*   B,
                                                               int                 ldb,
-                                                              double*             D,
+                                                              double*             W,
                                                               int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd(hipsolverHandle_t   handle,
@@ -1573,7 +1702,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    float*              B,
                                                    int                 ldb,
-                                                   float*              D,
+                                                   float*              W,
                                                    float*              work,
                                                    int                 lwork,
                                                    int*                devInfo);
@@ -1587,7 +1716,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    double*             B,
                                                    int                 ldb,
-                                                   double*             D,
+                                                   double*             W,
                                                    double*             work,
                                                    int                 lwork,
                                                    int*                devInfo);
@@ -1601,7 +1730,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    hipFloatComplex*    B,
                                                    int                 ldb,
-                                                   float*              D,
+                                                   float*              W,
                                                    hipFloatComplex*    work,
                                                    int                 lwork,
                                                    int*                devInfo);
@@ -1615,7 +1744,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    hipDoubleComplex*   B,
                                                    int                 ldb,
-                                                   double*             D,
+                                                   double*             W,
                                                    hipDoubleComplex*   work,
                                                    int                 lwork,
                                                    int*                devInfo);

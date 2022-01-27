@@ -153,6 +153,36 @@ hipsolverEigType_t cuda2hip_eform(cusolverEigType_t eig)
     }
 }
 
+cusolverEigRange_t hip2cuda_erange(hipsolverEigRange_t eig)
+{
+    switch(eig)
+    {
+    case HIPSOLVER_EIG_RANGE_ALL:
+        return CUSOLVER_EIG_RANGE_ALL;
+    case HIPSOLVER_EIG_RANGE_V:
+        return CUSOLVER_EIG_RANGE_V;
+    case HIPSOLVER_EIG_RANGE_I:
+        return CUSOLVER_EIG_RANGE_I;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+hipsolverEigRange_t cuda2hip_erange(cusolverEigRange_t eig)
+{
+    switch(eig)
+    {
+    case CUSOLVER_EIG_RANGE_ALL:
+        return HIPSOLVER_EIG_RANGE_ALL;
+    case CUSOLVER_EIG_RANGE_V:
+        return HIPSOLVER_EIG_RANGE_V;
+    case CUSOLVER_EIG_RANGE_I:
+        return HIPSOLVER_EIG_RANGE_I;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
 hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
 {
     switch(cuStatus)
@@ -4219,7 +4249,7 @@ hipsolverStatus_t hipsolverSsyevd_bufferSize(hipsolverHandle_t   handle,
                                              int                 n,
                                              float*              A,
                                              int                 lda,
-                                             float*              D,
+                                             float*              W,
                                              int*                lwork)
 try
 {
@@ -4229,7 +4259,7 @@ try
                                                        n,
                                                        A,
                                                        lda,
-                                                       D,
+                                                       W,
                                                        lwork));
 }
 catch(...)
@@ -4243,7 +4273,7 @@ hipsolverStatus_t hipsolverDsyevd_bufferSize(hipsolverHandle_t   handle,
                                              int                 n,
                                              double*             A,
                                              int                 lda,
-                                             double*             D,
+                                             double*             W,
                                              int*                lwork)
 try
 {
@@ -4253,7 +4283,7 @@ try
                                                        n,
                                                        A,
                                                        lda,
-                                                       D,
+                                                       W,
                                                        lwork));
 }
 catch(...)
@@ -4267,7 +4297,7 @@ hipsolverStatus_t hipsolverCheevd_bufferSize(hipsolverHandle_t   handle,
                                              int                 n,
                                              hipFloatComplex*    A,
                                              int                 lda,
-                                             float*              D,
+                                             float*              W,
                                              int*                lwork)
 try
 {
@@ -4277,7 +4307,7 @@ try
                                                        n,
                                                        (cuComplex*)A,
                                                        lda,
-                                                       D,
+                                                       W,
                                                        lwork));
 }
 catch(...)
@@ -4291,7 +4321,7 @@ hipsolverStatus_t hipsolverZheevd_bufferSize(hipsolverHandle_t   handle,
                                              int                 n,
                                              hipDoubleComplex*   A,
                                              int                 lda,
-                                             double*             D,
+                                             double*             W,
                                              int*                lwork)
 try
 {
@@ -4301,7 +4331,7 @@ try
                                                        n,
                                                        (cuDoubleComplex*)A,
                                                        lda,
-                                                       D,
+                                                       W,
                                                        lwork));
 }
 catch(...)
@@ -4315,7 +4345,7 @@ hipsolverStatus_t hipsolverSsyevd(hipsolverHandle_t   handle,
                                   int                 n,
                                   float*              A,
                                   int                 lda,
-                                  float*              D,
+                                  float*              W,
                                   float*              work,
                                   int                 lwork,
                                   int*                devInfo)
@@ -4327,7 +4357,7 @@ try
                                             n,
                                             A,
                                             lda,
-                                            D,
+                                            W,
                                             work,
                                             lwork,
                                             devInfo));
@@ -4343,7 +4373,7 @@ hipsolverStatus_t hipsolverDsyevd(hipsolverHandle_t   handle,
                                   int                 n,
                                   double*             A,
                                   int                 lda,
-                                  double*             D,
+                                  double*             W,
                                   double*             work,
                                   int                 lwork,
                                   int*                devInfo)
@@ -4355,7 +4385,7 @@ try
                                             n,
                                             A,
                                             lda,
-                                            D,
+                                            W,
                                             work,
                                             lwork,
                                             devInfo));
@@ -4371,7 +4401,7 @@ hipsolverStatus_t hipsolverCheevd(hipsolverHandle_t   handle,
                                   int                 n,
                                   hipFloatComplex*    A,
                                   int                 lda,
-                                  float*              D,
+                                  float*              W,
                                   hipFloatComplex*    work,
                                   int                 lwork,
                                   int*                devInfo)
@@ -4383,7 +4413,7 @@ try
                                             n,
                                             (cuComplex*)A,
                                             lda,
-                                            D,
+                                            W,
                                             (cuComplex*)work,
                                             lwork,
                                             devInfo));
@@ -4399,7 +4429,7 @@ hipsolverStatus_t hipsolverZheevd(hipsolverHandle_t   handle,
                                   int                 n,
                                   hipDoubleComplex*   A,
                                   int                 lda,
-                                  double*             D,
+                                  double*             W,
                                   hipDoubleComplex*   work,
                                   int                 lwork,
                                   int*                devInfo)
@@ -4411,10 +4441,315 @@ try
                                             n,
                                             (cuDoubleComplex*)A,
                                             lda,
-                                            D,
+                                            W,
                                             (cuDoubleComplex*)work,
                                             lwork,
                                             devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+/******************** SYEVDX/HEEVDX ********************/
+hipsolverStatus_t hipsolverSsyevdx_bufferSize(hipsolverHandle_t   handle,
+                                              hipsolverEigMode_t  jobz,
+                                              hipsolverEigRange_t range,
+                                              hipsolverFillMode_t uplo,
+                                              int                 n,
+                                              float*              A,
+                                              int                 lda,
+                                              float               vl,
+                                              float               vu,
+                                              int                 il,
+                                              int                 iu,
+                                              int*                nev,
+                                              float*              W,
+                                              int*                lwork)
+try
+{
+    return cuda2hip_status(cusolverDnSsyevdx_bufferSize((cusolverDnHandle_t)handle,
+                                                        hip2cuda_evect(jobz),
+                                                        hip2cuda_erange(range),
+                                                        hip2cuda_fill(uplo),
+                                                        n,
+                                                        A,
+                                                        lda,
+                                                        vl,
+                                                        vu,
+                                                        il,
+                                                        iu,
+                                                        nev,
+                                                        W,
+                                                        lwork));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDsyevdx_bufferSize(hipsolverHandle_t   handle,
+                                              hipsolverEigMode_t  jobz,
+                                              hipsolverEigRange_t range,
+                                              hipsolverFillMode_t uplo,
+                                              int                 n,
+                                              double*             A,
+                                              int                 lda,
+                                              double              vl,
+                                              double              vu,
+                                              int                 il,
+                                              int                 iu,
+                                              int*                nev,
+                                              double*             W,
+                                              int*                lwork)
+try
+{
+    return cuda2hip_status(cusolverDnDsyevdx_bufferSize((cusolverDnHandle_t)handle,
+                                                        hip2cuda_evect(jobz),
+                                                        hip2cuda_erange(range),
+                                                        hip2cuda_fill(uplo),
+                                                        n,
+                                                        A,
+                                                        lda,
+                                                        vl,
+                                                        vu,
+                                                        il,
+                                                        iu,
+                                                        nev,
+                                                        W,
+                                                        lwork));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverCheevdx_bufferSize(hipsolverHandle_t   handle,
+                                              hipsolverEigMode_t  jobz,
+                                              hipsolverEigRange_t range,
+                                              hipsolverFillMode_t uplo,
+                                              int                 n,
+                                              hipFloatComplex*    A,
+                                              int                 lda,
+                                              float               vl,
+                                              float               vu,
+                                              int                 il,
+                                              int                 iu,
+                                              int*                nev,
+                                              float*              W,
+                                              int*                lwork)
+try
+{
+    return cuda2hip_status(cusolverDnCheevdx_bufferSize((cusolverDnHandle_t)handle,
+                                                        hip2cuda_evect(jobz),
+                                                        hip2cuda_erange(range),
+                                                        hip2cuda_fill(uplo),
+                                                        n,
+                                                        (cuComplex*)A,
+                                                        lda,
+                                                        vl,
+                                                        vu,
+                                                        il,
+                                                        iu,
+                                                        nev,
+                                                        W,
+                                                        lwork));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverZheevdx_bufferSize(hipsolverHandle_t   handle,
+                                              hipsolverEigMode_t  jobz,
+                                              hipsolverEigRange_t range,
+                                              hipsolverFillMode_t uplo,
+                                              int                 n,
+                                              hipDoubleComplex*   A,
+                                              int                 lda,
+                                              double              vl,
+                                              double              vu,
+                                              int                 il,
+                                              int                 iu,
+                                              int*                nev,
+                                              double*             W,
+                                              int*                lwork)
+try
+{
+    return cuda2hip_status(cusolverDnZheevdx_bufferSize((cusolverDnHandle_t)handle,
+                                                        hip2cuda_evect(jobz),
+                                                        hip2cuda_erange(range),
+                                                        hip2cuda_fill(uplo),
+                                                        n,
+                                                        (cuDoubleComplex*)A,
+                                                        lda,
+                                                        vl,
+                                                        vu,
+                                                        il,
+                                                        iu,
+                                                        nev,
+                                                        W,
+                                                        lwork));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverSsyevdx(hipsolverHandle_t   handle,
+                                   hipsolverEigMode_t  jobz,
+                                   hipsolverEigRange_t range,
+                                   hipsolverFillMode_t uplo,
+                                   int                 n,
+                                   float*              A,
+                                   int                 lda,
+                                   float               vl,
+                                   float               vu,
+                                   int                 il,
+                                   int                 iu,
+                                   int*                nev,
+                                   float*              W,
+                                   float*              work,
+                                   int                 lwork,
+                                   int*                devInfo)
+try
+{
+    return cuda2hip_status(cusolverDnSsyevdx((cusolverDnHandle_t)handle,
+                                             hip2cuda_evect(jobz),
+                                             hip2cuda_erange(range),
+                                             hip2cuda_fill(uplo),
+                                             n,
+                                             A,
+                                             lda,
+                                             vl,
+                                             vu,
+                                             il,
+                                             iu,
+                                             nev,
+                                             W,
+                                             work,
+                                             lwork,
+                                             devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDsyevdx(hipsolverHandle_t   handle,
+                                   hipsolverEigMode_t  jobz,
+                                   hipsolverEigRange_t range,
+                                   hipsolverFillMode_t uplo,
+                                   int                 n,
+                                   double*             A,
+                                   int                 lda,
+                                   double              vl,
+                                   double              vu,
+                                   int                 il,
+                                   int                 iu,
+                                   int*                nev,
+                                   double*             W,
+                                   double*             work,
+                                   int                 lwork,
+                                   int*                devInfo)
+try
+{
+    return cuda2hip_status(cusolverDnDsyevdx((cusolverDnHandle_t)handle,
+                                             hip2cuda_evect(jobz),
+                                             hip2cuda_erange(range),
+                                             hip2cuda_fill(uplo),
+                                             n,
+                                             A,
+                                             lda,
+                                             vl,
+                                             vu,
+                                             il,
+                                             iu,
+                                             nev,
+                                             W,
+                                             work,
+                                             lwork,
+                                             devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverCheevdx(hipsolverHandle_t   handle,
+                                   hipsolverEigMode_t  jobz,
+                                   hipsolverEigRange_t range,
+                                   hipsolverFillMode_t uplo,
+                                   int                 n,
+                                   hipFloatComplex*    A,
+                                   int                 lda,
+                                   float               vl,
+                                   float               vu,
+                                   int                 il,
+                                   int                 iu,
+                                   int*                nev,
+                                   float*              W,
+                                   hipFloatComplex*    work,
+                                   int                 lwork,
+                                   int*                devInfo)
+try
+{
+    return cuda2hip_status(cusolverDnCheevdx((cusolverDnHandle_t)handle,
+                                             hip2cuda_evect(jobz),
+                                             hip2cuda_erange(range),
+                                             hip2cuda_fill(uplo),
+                                             n,
+                                             (cuComplex*)A,
+                                             lda,
+                                             vl,
+                                             vu,
+                                             il,
+                                             iu,
+                                             nev,
+                                             W,
+                                             (cuComplex*)work,
+                                             lwork,
+                                             devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverZheevdx(hipsolverHandle_t   handle,
+                                   hipsolverEigMode_t  jobz,
+                                   hipsolverEigRange_t range,
+                                   hipsolverFillMode_t uplo,
+                                   int                 n,
+                                   hipDoubleComplex*   A,
+                                   int                 lda,
+                                   double              vl,
+                                   double              vu,
+                                   int                 il,
+                                   int                 iu,
+                                   int*                nev,
+                                   double*             W,
+                                   hipDoubleComplex*   work,
+                                   int                 lwork,
+                                   int*                devInfo)
+try
+{
+    return cuda2hip_status(cusolverDnZheevdx((cusolverDnHandle_t)handle,
+                                             hip2cuda_evect(jobz),
+                                             hip2cuda_erange(range),
+                                             hip2cuda_fill(uplo),
+                                             n,
+                                             (cuDoubleComplex*)A,
+                                             lda,
+                                             vl,
+                                             vu,
+                                             il,
+                                             iu,
+                                             nev,
+                                             W,
+                                             (cuDoubleComplex*)work,
+                                             lwork,
+                                             devInfo));
 }
 catch(...)
 {
@@ -4428,7 +4763,7 @@ hipsolverStatus_t hipsolverDnSsyevj_bufferSize(hipsolverDnHandle_t  handle,
                                                int                  n,
                                                float*               A,
                                                int                  lda,
-                                               float*               D,
+                                               float*               W,
                                                int*                 lwork,
                                                hipsolverSyevjInfo_t params)
 try
@@ -4439,7 +4774,7 @@ try
                                                        n,
                                                        A,
                                                        lda,
-                                                       D,
+                                                       W,
                                                        lwork,
                                                        (syevjInfo_t)params));
 }
@@ -4454,7 +4789,7 @@ hipsolverStatus_t hipsolverDnDsyevj_bufferSize(hipsolverDnHandle_t  handle,
                                                int                  n,
                                                double*              A,
                                                int                  lda,
-                                               double*              D,
+                                               double*              W,
                                                int*                 lwork,
                                                hipsolverSyevjInfo_t params)
 try
@@ -4465,7 +4800,7 @@ try
                                                        n,
                                                        A,
                                                        lda,
-                                                       D,
+                                                       W,
                                                        lwork,
                                                        (syevjInfo_t)params));
 }
@@ -4480,7 +4815,7 @@ hipsolverStatus_t hipsolverDnCheevj_bufferSize(hipsolverDnHandle_t  handle,
                                                int                  n,
                                                hipFloatComplex*     A,
                                                int                  lda,
-                                               float*               D,
+                                               float*               W,
                                                int*                 lwork,
                                                hipsolverSyevjInfo_t params)
 try
@@ -4491,7 +4826,7 @@ try
                                                        n,
                                                        (cuComplex*)A,
                                                        lda,
-                                                       D,
+                                                       W,
                                                        lwork,
                                                        (syevjInfo_t)params));
 }
@@ -4506,7 +4841,7 @@ hipsolverStatus_t hipsolverDnZheevj_bufferSize(hipsolverDnHandle_t  handle,
                                                int                  n,
                                                hipDoubleComplex*    A,
                                                int                  lda,
-                                               double*              D,
+                                               double*              W,
                                                int*                 lwork,
                                                hipsolverSyevjInfo_t params)
 try
@@ -4517,7 +4852,7 @@ try
                                                        n,
                                                        (cuDoubleComplex*)A,
                                                        lda,
-                                                       D,
+                                                       W,
                                                        lwork,
                                                        (syevjInfo_t)params));
 }
@@ -4532,7 +4867,7 @@ hipsolverStatus_t hipsolverDnSsyevj(hipsolverDnHandle_t  handle,
                                     int                  n,
                                     float*               A,
                                     int                  lda,
-                                    float*               D,
+                                    float*               W,
                                     float*               work,
                                     int                  lwork,
                                     int*                 devInfo,
@@ -4545,7 +4880,7 @@ try
                                             n,
                                             A,
                                             lda,
-                                            D,
+                                            W,
                                             work,
                                             lwork,
                                             devInfo,
@@ -4562,7 +4897,7 @@ hipsolverStatus_t hipsolverDnDsyevj(hipsolverDnHandle_t  handle,
                                     int                  n,
                                     double*              A,
                                     int                  lda,
-                                    double*              D,
+                                    double*              W,
                                     double*              work,
                                     int                  lwork,
                                     int*                 devInfo,
@@ -4575,7 +4910,7 @@ try
                                             n,
                                             A,
                                             lda,
-                                            D,
+                                            W,
                                             work,
                                             lwork,
                                             devInfo,
@@ -4592,7 +4927,7 @@ hipsolverStatus_t hipsolverDnCheevj(hipsolverDnHandle_t  handle,
                                     int                  n,
                                     hipFloatComplex*     A,
                                     int                  lda,
-                                    float*               D,
+                                    float*               W,
                                     hipFloatComplex*     work,
                                     int                  lwork,
                                     int*                 devInfo,
@@ -4605,7 +4940,7 @@ try
                                             n,
                                             (cuComplex*)A,
                                             lda,
-                                            D,
+                                            W,
                                             (cuComplex*)work,
                                             lwork,
                                             devInfo,
@@ -4622,7 +4957,7 @@ hipsolverStatus_t hipsolverDnZheevj(hipsolverDnHandle_t  handle,
                                     int                  n,
                                     hipDoubleComplex*    A,
                                     int                  lda,
-                                    double*              D,
+                                    double*              W,
                                     hipDoubleComplex*    work,
                                     int                  lwork,
                                     int*                 devInfo,
@@ -4635,7 +4970,7 @@ try
                                             n,
                                             (cuDoubleComplex*)A,
                                             lda,
-                                            D,
+                                            W,
                                             (cuDoubleComplex*)work,
                                             lwork,
                                             devInfo,
@@ -4653,7 +4988,7 @@ hipsolverStatus_t hipsolverDnSsyevjBatched_bufferSize(hipsolverDnHandle_t  handl
                                                       int                  n,
                                                       float*               A,
                                                       int                  lda,
-                                                      float*               D,
+                                                      float*               W,
                                                       int*                 lwork,
                                                       hipsolverSyevjInfo_t params,
                                                       int                  batch_count)
@@ -4665,7 +5000,7 @@ try
                                                               n,
                                                               A,
                                                               lda,
-                                                              D,
+                                                              W,
                                                               lwork,
                                                               (syevjInfo_t)params,
                                                               batch_count));
@@ -4681,7 +5016,7 @@ hipsolverStatus_t hipsolverDnDsyevjBatched_bufferSize(hipsolverDnHandle_t  handl
                                                       int                  n,
                                                       double*              A,
                                                       int                  lda,
-                                                      double*              D,
+                                                      double*              W,
                                                       int*                 lwork,
                                                       hipsolverSyevjInfo_t params,
                                                       int                  batch_count)
@@ -4693,7 +5028,7 @@ try
                                                               n,
                                                               A,
                                                               lda,
-                                                              D,
+                                                              W,
                                                               lwork,
                                                               (syevjInfo_t)params,
                                                               batch_count));
@@ -4709,7 +5044,7 @@ hipsolverStatus_t hipsolverDnCheevjBatched_bufferSize(hipsolverDnHandle_t  handl
                                                       int                  n,
                                                       hipFloatComplex*     A,
                                                       int                  lda,
-                                                      float*               D,
+                                                      float*               W,
                                                       int*                 lwork,
                                                       hipsolverSyevjInfo_t params,
                                                       int                  batch_count)
@@ -4721,7 +5056,7 @@ try
                                                               n,
                                                               (cuComplex*)A,
                                                               lda,
-                                                              D,
+                                                              W,
                                                               lwork,
                                                               (syevjInfo_t)params,
                                                               batch_count));
@@ -4737,7 +5072,7 @@ hipsolverStatus_t hipsolverDnZheevjBatched_bufferSize(hipsolverDnHandle_t  handl
                                                       int                  n,
                                                       hipDoubleComplex*    A,
                                                       int                  lda,
-                                                      double*              D,
+                                                      double*              W,
                                                       int*                 lwork,
                                                       hipsolverSyevjInfo_t params,
                                                       int                  batch_count)
@@ -4749,7 +5084,7 @@ try
                                                               n,
                                                               (cuDoubleComplex*)A,
                                                               lda,
-                                                              D,
+                                                              W,
                                                               lwork,
                                                               (syevjInfo_t)params,
                                                               batch_count));
@@ -4765,7 +5100,7 @@ hipsolverStatus_t hipsolverDnSsyevjBatched(hipsolverDnHandle_t  handle,
                                            int                  n,
                                            float*               A,
                                            int                  lda,
-                                           float*               D,
+                                           float*               W,
                                            float*               work,
                                            int                  lwork,
                                            int*                 devInfo,
@@ -4779,7 +5114,7 @@ try
                                                    n,
                                                    A,
                                                    lda,
-                                                   D,
+                                                   W,
                                                    work,
                                                    lwork,
                                                    devInfo,
@@ -4797,7 +5132,7 @@ hipsolverStatus_t hipsolverDnDsyevjBatched(hipsolverDnHandle_t  handle,
                                            int                  n,
                                            double*              A,
                                            int                  lda,
-                                           double*              D,
+                                           double*              W,
                                            double*              work,
                                            int                  lwork,
                                            int*                 devInfo,
@@ -4811,7 +5146,7 @@ try
                                                    n,
                                                    A,
                                                    lda,
-                                                   D,
+                                                   W,
                                                    work,
                                                    lwork,
                                                    devInfo,
@@ -4829,7 +5164,7 @@ hipsolverStatus_t hipsolverDnCheevjBatched(hipsolverDnHandle_t  handle,
                                            int                  n,
                                            hipFloatComplex*     A,
                                            int                  lda,
-                                           float*               D,
+                                           float*               W,
                                            hipFloatComplex*     work,
                                            int                  lwork,
                                            int*                 devInfo,
@@ -4843,7 +5178,7 @@ try
                                                    n,
                                                    (cuComplex*)A,
                                                    lda,
-                                                   D,
+                                                   W,
                                                    (cuComplex*)work,
                                                    lwork,
                                                    devInfo,
@@ -4861,7 +5196,7 @@ hipsolverStatus_t hipsolverDnZheevjBatched(hipsolverDnHandle_t  handle,
                                            int                  n,
                                            hipDoubleComplex*    A,
                                            int                  lda,
-                                           double*              D,
+                                           double*              W,
                                            hipDoubleComplex*    work,
                                            int                  lwork,
                                            int*                 devInfo,
@@ -4875,7 +5210,7 @@ try
                                                    n,
                                                    (cuDoubleComplex*)A,
                                                    lda,
-                                                   D,
+                                                   W,
                                                    (cuDoubleComplex*)work,
                                                    lwork,
                                                    devInfo,
@@ -4897,7 +5232,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               float*              B,
                                                               int                 ldb,
-                                                              float*              D,
+                                                              float*              W,
                                                               int*                lwork)
 try
 {
@@ -4910,7 +5245,7 @@ try
                                                        lda,
                                                        B,
                                                        ldb,
-                                                       D,
+                                                       W,
                                                        lwork));
 }
 catch(...)
@@ -4927,7 +5262,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               double*             B,
                                                               int                 ldb,
-                                                              double*             D,
+                                                              double*             W,
                                                               int*                lwork)
 try
 {
@@ -4940,7 +5275,7 @@ try
                                                        lda,
                                                        B,
                                                        ldb,
-                                                       D,
+                                                       W,
                                                        lwork));
 }
 catch(...)
@@ -4957,7 +5292,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               hipFloatComplex*    B,
                                                               int                 ldb,
-                                                              float*              D,
+                                                              float*              W,
                                                               int*                lwork)
 try
 {
@@ -4970,7 +5305,7 @@ try
                                                        lda,
                                                        (cuComplex*)B,
                                                        ldb,
-                                                       D,
+                                                       W,
                                                        lwork));
 }
 catch(...)
@@ -4987,7 +5322,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               hipDoubleComplex*   B,
                                                               int                 ldb,
-                                                              double*             D,
+                                                              double*             W,
                                                               int*                lwork)
 try
 {
@@ -5000,7 +5335,7 @@ try
                                                        lda,
                                                        (cuDoubleComplex*)B,
                                                        ldb,
-                                                       D,
+                                                       W,
                                                        lwork));
 }
 catch(...)
@@ -5017,7 +5352,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    float*              B,
                                                    int                 ldb,
-                                                   float*              D,
+                                                   float*              W,
                                                    float*              work,
                                                    int                 lwork,
                                                    int*                devInfo)
@@ -5032,7 +5367,7 @@ try
                                             lda,
                                             B,
                                             ldb,
-                                            D,
+                                            W,
                                             work,
                                             lwork,
                                             devInfo));
@@ -5051,7 +5386,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    double*             B,
                                                    int                 ldb,
-                                                   double*             D,
+                                                   double*             W,
                                                    double*             work,
                                                    int                 lwork,
                                                    int*                devInfo)
@@ -5066,7 +5401,7 @@ try
                                             lda,
                                             B,
                                             ldb,
-                                            D,
+                                            W,
                                             work,
                                             lwork,
                                             devInfo));
@@ -5085,7 +5420,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    hipFloatComplex*    B,
                                                    int                 ldb,
-                                                   float*              D,
+                                                   float*              W,
                                                    hipFloatComplex*    work,
                                                    int                 lwork,
                                                    int*                devInfo)
@@ -5100,7 +5435,7 @@ try
                                             lda,
                                             (cuComplex*)B,
                                             ldb,
-                                            D,
+                                            W,
                                             (cuComplex*)work,
                                             lwork,
                                             devInfo));
@@ -5119,7 +5454,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    hipDoubleComplex*   B,
                                                    int                 ldb,
-                                                   double*             D,
+                                                   double*             W,
                                                    hipDoubleComplex*   work,
                                                    int                 lwork,
                                                    int*                devInfo)
@@ -5134,7 +5469,7 @@ try
                                             lda,
                                             (cuDoubleComplex*)B,
                                             ldb,
-                                            D,
+                                            W,
                                             (cuDoubleComplex*)work,
                                             lwork,
                                             devInfo));
@@ -5154,7 +5489,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSsygvj_bufferSize(hipsolverHandle_
                                                                 int                  lda,
                                                                 float*               B,
                                                                 int                  ldb,
-                                                                float*               D,
+                                                                float*               W,
                                                                 int*                 lwork,
                                                                 hipsolverSyevjInfo_t params)
 try
@@ -5168,7 +5503,7 @@ try
                                                        lda,
                                                        B,
                                                        ldb,
-                                                       D,
+                                                       W,
                                                        lwork,
                                                        (syevjInfo_t)params));
 }
@@ -5186,7 +5521,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDsygvj_bufferSize(hipsolverHandle_
                                                                 int                  lda,
                                                                 double*              B,
                                                                 int                  ldb,
-                                                                double*              D,
+                                                                double*              W,
                                                                 int*                 lwork,
                                                                 hipsolverSyevjInfo_t params)
 try
@@ -5200,7 +5535,7 @@ try
                                                        lda,
                                                        B,
                                                        ldb,
-                                                       D,
+                                                       W,
                                                        lwork,
                                                        (syevjInfo_t)params));
 }
@@ -5218,7 +5553,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnChegvj_bufferSize(hipsolverHandle_
                                                                 int                  lda,
                                                                 hipFloatComplex*     B,
                                                                 int                  ldb,
-                                                                float*               D,
+                                                                float*               W,
                                                                 int*                 lwork,
                                                                 hipsolverSyevjInfo_t params)
 try
@@ -5232,7 +5567,7 @@ try
                                                        lda,
                                                        (cuComplex*)B,
                                                        ldb,
-                                                       D,
+                                                       W,
                                                        lwork,
                                                        (syevjInfo_t)params));
 }
@@ -5250,7 +5585,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnZhegvj_bufferSize(hipsolverHandle_
                                                                 int                  lda,
                                                                 hipDoubleComplex*    B,
                                                                 int                  ldb,
-                                                                double*              D,
+                                                                double*              W,
                                                                 int*                 lwork,
                                                                 hipsolverSyevjInfo_t params)
 try
@@ -5264,7 +5599,7 @@ try
                                                        lda,
                                                        (cuDoubleComplex*)B,
                                                        ldb,
-                                                       D,
+                                                       W,
                                                        lwork,
                                                        (syevjInfo_t)params));
 }
@@ -5282,7 +5617,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSsygvj(hipsolverHandle_t    handle
                                                      int                  lda,
                                                      float*               B,
                                                      int                  ldb,
-                                                     float*               D,
+                                                     float*               W,
                                                      float*               work,
                                                      int                  lwork,
                                                      int*                 devInfo,
@@ -5298,7 +5633,7 @@ try
                                             lda,
                                             B,
                                             ldb,
-                                            D,
+                                            W,
                                             work,
                                             lwork,
                                             devInfo,
@@ -5318,7 +5653,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDsygvj(hipsolverHandle_t    handle
                                                      int                  lda,
                                                      double*              B,
                                                      int                  ldb,
-                                                     double*              D,
+                                                     double*              W,
                                                      double*              work,
                                                      int                  lwork,
                                                      int*                 devInfo,
@@ -5334,7 +5669,7 @@ try
                                             lda,
                                             B,
                                             ldb,
-                                            D,
+                                            W,
                                             work,
                                             lwork,
                                             devInfo,
@@ -5354,7 +5689,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnChegvj(hipsolverHandle_t    handle
                                                      int                  lda,
                                                      hipFloatComplex*     B,
                                                      int                  ldb,
-                                                     float*               D,
+                                                     float*               W,
                                                      hipFloatComplex*     work,
                                                      int                  lwork,
                                                      int*                 devInfo,
@@ -5370,7 +5705,7 @@ try
                                             lda,
                                             (cuComplex*)B,
                                             ldb,
-                                            D,
+                                            W,
                                             (cuComplex*)work,
                                             lwork,
                                             devInfo,
@@ -5390,7 +5725,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnZhegvj(hipsolverHandle_t    handle
                                                      int                  lda,
                                                      hipDoubleComplex*    B,
                                                      int                  ldb,
-                                                     double*              D,
+                                                     double*              W,
                                                      hipDoubleComplex*    work,
                                                      int                  lwork,
                                                      int*                 devInfo,
@@ -5406,7 +5741,7 @@ try
                                             lda,
                                             (cuDoubleComplex*)B,
                                             ldb,
-                                            D,
+                                            W,
                                             (cuDoubleComplex*)work,
                                             lwork,
                                             devInfo,
