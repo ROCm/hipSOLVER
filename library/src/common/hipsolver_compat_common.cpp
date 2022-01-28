@@ -1553,10 +1553,10 @@ hipsolverStatus_t hipsolverDnSsyevd_bufferSize(hipsolverHandle_t   handle,
                                                int                 n,
                                                float*              A,
                                                int                 lda,
-                                               float*              D,
+                                               float*              W,
                                                int*                lwork)
 {
-    return hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork);
+    return hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnDsyevd_bufferSize(hipsolverHandle_t   handle,
@@ -1565,10 +1565,10 @@ hipsolverStatus_t hipsolverDnDsyevd_bufferSize(hipsolverHandle_t   handle,
                                                int                 n,
                                                double*             A,
                                                int                 lda,
-                                               double*             D,
+                                               double*             W,
                                                int*                lwork)
 {
-    return hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork);
+    return hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnCheevd_bufferSize(hipsolverHandle_t   handle,
@@ -1577,10 +1577,10 @@ hipsolverStatus_t hipsolverDnCheevd_bufferSize(hipsolverHandle_t   handle,
                                                int                 n,
                                                hipFloatComplex*    A,
                                                int                 lda,
-                                               float*              D,
+                                               float*              W,
                                                int*                lwork)
 {
-    return hipsolverCheevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork);
+    return hipsolverCheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnZheevd_bufferSize(hipsolverHandle_t   handle,
@@ -1589,10 +1589,10 @@ hipsolverStatus_t hipsolverDnZheevd_bufferSize(hipsolverHandle_t   handle,
                                                int                 n,
                                                hipDoubleComplex*   A,
                                                int                 lda,
-                                               double*             D,
+                                               double*             W,
                                                int*                lwork)
 {
-    return hipsolverZheevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork);
+    return hipsolverZheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnSsyevd(hipsolverHandle_t   handle,
@@ -1601,12 +1601,12 @@ hipsolverStatus_t hipsolverDnSsyevd(hipsolverHandle_t   handle,
                                     int                 n,
                                     float*              A,
                                     int                 lda,
-                                    float*              D,
+                                    float*              W,
                                     float*              work,
                                     int                 lwork,
                                     int*                devInfo)
 {
-    return hipsolverSsyevd(handle, jobz, uplo, n, A, lda, D, work, lwork, devInfo);
+    return hipsolverSsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnDsyevd(hipsolverHandle_t   handle,
@@ -1615,12 +1615,12 @@ hipsolverStatus_t hipsolverDnDsyevd(hipsolverHandle_t   handle,
                                     int                 n,
                                     double*             A,
                                     int                 lda,
-                                    double*             D,
+                                    double*             W,
                                     double*             work,
                                     int                 lwork,
                                     int*                devInfo)
 {
-    return hipsolverDsyevd(handle, jobz, uplo, n, A, lda, D, work, lwork, devInfo);
+    return hipsolverDsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnCheevd(hipsolverHandle_t   handle,
@@ -1629,12 +1629,12 @@ hipsolverStatus_t hipsolverDnCheevd(hipsolverHandle_t   handle,
                                     int                 n,
                                     hipFloatComplex*    A,
                                     int                 lda,
-                                    float*              D,
+                                    float*              W,
                                     hipFloatComplex*    work,
                                     int                 lwork,
                                     int*                devInfo)
 {
-    return hipsolverCheevd(handle, jobz, uplo, n, A, lda, D, work, lwork, devInfo);
+    return hipsolverCheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnZheevd(hipsolverHandle_t   handle,
@@ -1643,12 +1643,173 @@ hipsolverStatus_t hipsolverDnZheevd(hipsolverHandle_t   handle,
                                     int                 n,
                                     hipDoubleComplex*   A,
                                     int                 lda,
-                                    double*             D,
+                                    double*             W,
                                     hipDoubleComplex*   work,
                                     int                 lwork,
                                     int*                devInfo)
 {
-    return hipsolverZheevd(handle, jobz, uplo, n, A, lda, D, work, lwork, devInfo);
+    return hipsolverZheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, devInfo);
+}
+
+// syevdx/heevdx
+hipsolverStatus_t hipsolverDnSsyevdx_bufferSize(hipsolverHandle_t   handle,
+                                                hipsolverEigMode_t  jobz,
+                                                hipsolverEigRange_t range,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                float*              A,
+                                                int                 lda,
+                                                float               vl,
+                                                float               vu,
+                                                int                 il,
+                                                int                 iu,
+                                                int*                nev,
+                                                float*              W,
+                                                int*                lwork)
+{
+    return hipsolverSsyevdx_bufferSize(
+        handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, lwork);
+}
+
+hipsolverStatus_t hipsolverDnDsyevdx_bufferSize(hipsolverHandle_t   handle,
+                                                hipsolverEigMode_t  jobz,
+                                                hipsolverEigRange_t range,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                double*             A,
+                                                int                 lda,
+                                                double              vl,
+                                                double              vu,
+                                                int                 il,
+                                                int                 iu,
+                                                int*                nev,
+                                                double*             W,
+                                                int*                lwork)
+{
+    return hipsolverDsyevdx_bufferSize(
+        handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, lwork);
+}
+
+hipsolverStatus_t hipsolverDnCheevdx_bufferSize(hipsolverHandle_t   handle,
+                                                hipsolverEigMode_t  jobz,
+                                                hipsolverEigRange_t range,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                hipFloatComplex*    A,
+                                                int                 lda,
+                                                float               vl,
+                                                float               vu,
+                                                int                 il,
+                                                int                 iu,
+                                                int*                nev,
+                                                float*              W,
+                                                int*                lwork)
+{
+    return hipsolverCheevdx_bufferSize(
+        handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, lwork);
+}
+
+hipsolverStatus_t hipsolverDnZheevdx_bufferSize(hipsolverHandle_t   handle,
+                                                hipsolverEigMode_t  jobz,
+                                                hipsolverEigRange_t range,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                hipDoubleComplex*   A,
+                                                int                 lda,
+                                                double              vl,
+                                                double              vu,
+                                                int                 il,
+                                                int                 iu,
+                                                int*                nev,
+                                                double*             W,
+                                                int*                lwork)
+{
+    return hipsolverZheevdx_bufferSize(
+        handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, lwork);
+}
+
+hipsolverStatus_t hipsolverDnSsyevdx(hipsolverHandle_t   handle,
+                                     hipsolverEigMode_t  jobz,
+                                     hipsolverEigRange_t range,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     float*              A,
+                                     int                 lda,
+                                     float               vl,
+                                     float               vu,
+                                     int                 il,
+                                     int                 iu,
+                                     int*                nev,
+                                     float*              W,
+                                     float*              work,
+                                     int                 lwork,
+                                     int*                devInfo)
+{
+    return hipsolverSsyevdx(
+        handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, work, lwork, devInfo);
+}
+
+hipsolverStatus_t hipsolverDnDsyevdx(hipsolverHandle_t   handle,
+                                     hipsolverEigMode_t  jobz,
+                                     hipsolverEigRange_t range,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     double*             A,
+                                     int                 lda,
+                                     double              vl,
+                                     double              vu,
+                                     int                 il,
+                                     int                 iu,
+                                     int*                nev,
+                                     double*             W,
+                                     double*             work,
+                                     int                 lwork,
+                                     int*                devInfo)
+{
+    return hipsolverDsyevdx(
+        handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, work, lwork, devInfo);
+}
+
+hipsolverStatus_t hipsolverDnCheevdx(hipsolverHandle_t   handle,
+                                     hipsolverEigMode_t  jobz,
+                                     hipsolverEigRange_t range,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     hipFloatComplex*    A,
+                                     int                 lda,
+                                     float               vl,
+                                     float               vu,
+                                     int                 il,
+                                     int                 iu,
+                                     int*                nev,
+                                     float*              W,
+                                     hipFloatComplex*    work,
+                                     int                 lwork,
+                                     int*                devInfo)
+{
+    return hipsolverCheevdx(
+        handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, work, lwork, devInfo);
+}
+
+hipsolverStatus_t hipsolverDnZheevdx(hipsolverHandle_t   handle,
+                                     hipsolverEigMode_t  jobz,
+                                     hipsolverEigRange_t range,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     hipDoubleComplex*   A,
+                                     int                 lda,
+                                     double              vl,
+                                     double              vu,
+                                     int                 il,
+                                     int                 iu,
+                                     int*                nev,
+                                     double*             W,
+                                     hipDoubleComplex*   work,
+                                     int                 lwork,
+                                     int*                devInfo)
+{
+    return hipsolverZheevdx(
+        handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, work, lwork, devInfo);
 }
 
 // sygvd/hegvd
@@ -1661,10 +1822,10 @@ hipsolverStatus_t hipsolverDnSsygvd_bufferSize(hipsolverHandle_t   handle,
                                                int                 lda,
                                                float*              B,
                                                int                 ldb,
-                                               float*              D,
+                                               float*              W,
                                                int*                lwork)
 {
-    return hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
+    return hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnDsygvd_bufferSize(hipsolverHandle_t   handle,
@@ -1676,10 +1837,10 @@ hipsolverStatus_t hipsolverDnDsygvd_bufferSize(hipsolverHandle_t   handle,
                                                int                 lda,
                                                double*             B,
                                                int                 ldb,
-                                               double*             D,
+                                               double*             W,
                                                int*                lwork)
 {
-    return hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
+    return hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnChegvd_bufferSize(hipsolverHandle_t   handle,
@@ -1691,10 +1852,10 @@ hipsolverStatus_t hipsolverDnChegvd_bufferSize(hipsolverHandle_t   handle,
                                                int                 lda,
                                                hipFloatComplex*    B,
                                                int                 ldb,
-                                               float*              D,
+                                               float*              W,
                                                int*                lwork)
 {
-    return hipsolverChegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
+    return hipsolverChegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnZhegvd_bufferSize(hipsolverHandle_t   handle,
@@ -1706,10 +1867,10 @@ hipsolverStatus_t hipsolverDnZhegvd_bufferSize(hipsolverHandle_t   handle,
                                                int                 lda,
                                                hipDoubleComplex*   B,
                                                int                 ldb,
-                                               double*             D,
+                                               double*             W,
                                                int*                lwork)
 {
-    return hipsolverZhegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
+    return hipsolverZhegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnSsygvd(hipsolverHandle_t   handle,
@@ -1721,12 +1882,12 @@ hipsolverStatus_t hipsolverDnSsygvd(hipsolverHandle_t   handle,
                                     int                 lda,
                                     float*              B,
                                     int                 ldb,
-                                    float*              D,
+                                    float*              W,
                                     float*              work,
                                     int                 lwork,
                                     int*                devInfo)
 {
-    return hipsolverSsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, devInfo);
+    return hipsolverSsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnDsygvd(hipsolverHandle_t   handle,
@@ -1738,12 +1899,12 @@ hipsolverStatus_t hipsolverDnDsygvd(hipsolverHandle_t   handle,
                                     int                 lda,
                                     double*             B,
                                     int                 ldb,
-                                    double*             D,
+                                    double*             W,
                                     double*             work,
                                     int                 lwork,
                                     int*                devInfo)
 {
-    return hipsolverDsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, devInfo);
+    return hipsolverDsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnChegvd(hipsolverHandle_t   handle,
@@ -1755,12 +1916,12 @@ hipsolverStatus_t hipsolverDnChegvd(hipsolverHandle_t   handle,
                                     int                 lda,
                                     hipFloatComplex*    B,
                                     int                 ldb,
-                                    float*              D,
+                                    float*              W,
                                     hipFloatComplex*    work,
                                     int                 lwork,
                                     int*                devInfo)
 {
-    return hipsolverChegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, devInfo);
+    return hipsolverChegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnZhegvd(hipsolverHandle_t   handle,
@@ -1772,12 +1933,12 @@ hipsolverStatus_t hipsolverDnZhegvd(hipsolverHandle_t   handle,
                                     int                 lda,
                                     hipDoubleComplex*   B,
                                     int                 ldb,
-                                    double*             D,
+                                    double*             W,
                                     hipDoubleComplex*   work,
                                     int                 lwork,
                                     int*                devInfo)
 {
-    return hipsolverZhegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, devInfo);
+    return hipsolverZhegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, devInfo);
 }
 
 // sytrd/hetrd
