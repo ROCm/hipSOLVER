@@ -125,10 +125,14 @@ LAPACK main functions
 
     :ref:`hipsolverXsyevd_bufferSize <syevd_bufferSize>`, x, x, ,
     :ref:`hipsolverXsyevd <syevd>`, x, x, ,
+    :ref:`hipsolverXsyevdx_bufferSize <syevdx_bufferSize>`, x, x, ,
+    :ref:`hipsolverXsyevdx <syevdx>`, x, x, ,
     :ref:`hipsolverXsygvd_bufferSize <sygvd_bufferSize>`, x, x, ,
     :ref:`hipsolverXsygvd <sygvd>`, x, x, ,
     :ref:`hipsolverXheevd_bufferSize <heevd_bufferSize>`, , , x, x
     :ref:`hipsolverXheevd <heevd>`, , , x, x
+    :ref:`hipsolverXheevdx_bufferSize <heevdx_bufferSize>`, , , x, x
+    :ref:`hipsolverXheevdx <heevdx>`, , , x, x
     :ref:`hipsolverXhegvd_bufferSize <hegvd_bufferSize>`, , , x, x
     :ref:`hipsolverXhegvd <hegvd>`, , , x, x
 
