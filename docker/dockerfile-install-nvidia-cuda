@@ -1,5 +1,0 @@
-# Parameters related to building hipSOLVER
-ARG base_image
-
-FROM ${base_image}
-LABEL maintainer="hipsolver-maintainer@amd.com"

@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright 2016-2021 Advanced Micro Devices, Inc.
+# Copyright 2016-2022 Advanced Micro Devices, Inc.
 # ########################################################################
 
 # Linking lapack library requires fortran flags
@@ -16,14 +16,18 @@ set(hipsolver_test_source
   getrs_gtest.cpp
   getrf_gtest.cpp
   gebrd_gtest.cpp
+  gels_gtest.cpp
   geqrf_gtest.cpp
   gesv_gtest.cpp
   gesvd_gtest.cpp
+  gesvdj_gtest.cpp
   potrf_gtest.cpp
   potri_gtest.cpp
   potrs_gtest.cpp
   syevd_heevd_gtest.cpp
+  syevj_heevj_gtest.cpp
   sygvd_hegvd_gtest.cpp
+  sygvj_hegvj_gtest.cpp
   sytrd_hetrd_gtest.cpp
   sytrf_gtest.cpp
   orgbr_ungbr_gtest.cpp
@@ -68,6 +72,10 @@ target_link_libraries( hipsolver-test PRIVATE cblas lapack blas GTest::GTest Thr
 if( UNIX )
   target_link_libraries( hipsolver-test PRIVATE hipsolver_fortran_client )
 endif( )
+
+target_link_libraries(hipsolver-test PRIVATE
+  $<BUILD_INTERFACE:hipsolver-common>
+)
 
 # need mf16c flag for float->half convertion
 target_compile_options( hipsolver-test PRIVATE -mf16c )

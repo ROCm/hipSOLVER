@@ -1,12 +1,12 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
 
 #include "clientcommon.hpp"
 
-template <bool FORTRAN, typename T, typename TT, typename W, typename U>
+template <testAPI_t API, typename T, typename TT, typename W, typename U>
 void gesvd_checkBadArgs(const hipsolverHandle_t handle,
                         const char              left_svect,
                         const char              right_svect,
@@ -31,7 +31,8 @@ void gesvd_checkBadArgs(const hipsolverHandle_t handle,
                         const int               bc)
 {
     // handle
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
+                                          false,
                                           nullptr,
                                           left_svect,
                                           right_svect,
@@ -57,7 +58,8 @@ void gesvd_checkBadArgs(const hipsolverHandle_t handle,
                           HIPSOLVER_STATUS_NOT_INITIALIZED);
 
     // values
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
+                                          false,
                                           handle,
                                           '\0',
                                           right_svect,
@@ -81,7 +83,8 @@ void gesvd_checkBadArgs(const hipsolverHandle_t handle,
                                           dinfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
+                                          false,
                                           handle,
                                           left_svect,
                                           '\0',
@@ -105,7 +108,8 @@ void gesvd_checkBadArgs(const hipsolverHandle_t handle,
                                           dinfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
+                                          false,
                                           handle,
                                           'O',
                                           'O',
@@ -132,7 +136,8 @@ void gesvd_checkBadArgs(const hipsolverHandle_t handle,
 
 #if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // pointers
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
+                                          false,
                                           handle,
                                           left_svect,
                                           right_svect,
@@ -156,7 +161,8 @@ void gesvd_checkBadArgs(const hipsolverHandle_t handle,
                                           dinfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
+                                          false,
                                           handle,
                                           left_svect,
                                           right_svect,
@@ -180,7 +186,8 @@ void gesvd_checkBadArgs(const hipsolverHandle_t handle,
                                           dinfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
+                                          false,
                                           handle,
                                           left_svect,
                                           right_svect,
@@ -204,7 +211,8 @@ void gesvd_checkBadArgs(const hipsolverHandle_t handle,
                                           dinfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
+                                          false,
                                           handle,
                                           left_svect,
                                           right_svect,
@@ -228,31 +236,8 @@ void gesvd_checkBadArgs(const hipsolverHandle_t handle,
                                           dinfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
-                                          handle,
-                                          left_svect,
-                                          right_svect,
-                                          m,
-                                          n,
-                                          dA,
-                                          lda,
-                                          stA,
-                                          dS,
-                                          stS,
-                                          dU,
-                                          ldu,
-                                          stU,
-                                          dV,
-                                          ldv,
-                                          stV,
-                                          dWork,
-                                          lwork,
-                                          (TT) nullptr,
-                                          stE,
-                                          dinfo,
-                                          bc),
-                          HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
+                                          false,
                                           handle,
                                           left_svect,
                                           right_svect,
@@ -279,7 +264,7 @@ void gesvd_checkBadArgs(const hipsolverHandle_t handle,
 #endif
 }
 
-template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+template <testAPI_t API, bool BATCHED, bool STRIDED, typename T>
 void testing_gesvd_bad_arg()
 {
     using S = decltype(std::real(T{}));
@@ -317,15 +302,15 @@ void testing_gesvd_bad_arg()
         // CHECK_HIP_ERROR(dinfo.memcheck());
 
         // int size_W;
-        // hipsolver_gesvd_bufferSize(FORTRAN, handle, left_svect, right_svect, m, n, dA.data(), lda, &size_W);
+        // hipsolver_gesvd_bufferSize(API, handle, left_svect, right_svect, m, n, dA.data(), lda, &size_W);
         // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check bad arguments
-        // gesvd_checkBadArgs<FORTRAN>(handle, left_svect, right_svect, m, n, dA.data(), lda, stA,
-        //                             dS.data(), stS, dU.data(), ldu, stU, dV.data(), ldv, stV,
-        //                             dWork.data(), size_W, dE.data(), stE, dinfo.data(), bc);
+        // gesvd_checkBadArgs<API>(handle, left_svect, right_svect, m, n, dA.data(), lda, stA,
+        //                         dS.data(), stS, dU.data(), ldu, stU, dV.data(), ldv, stV,
+        //                         dWork.data(), size_W, dE.data(), stE, dinfo.data(), bc);
     }
     else
     {
@@ -345,34 +330,34 @@ void testing_gesvd_bad_arg()
 
         int size_W;
         hipsolver_gesvd_bufferSize(
-            FORTRAN, handle, left_svect, right_svect, m, n, dA.data(), lda, &size_W);
+            API, handle, left_svect, right_svect, m, n, dA.data(), lda, &size_W);
         device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
         // check bad arguments
-        gesvd_checkBadArgs<FORTRAN>(handle,
-                                    left_svect,
-                                    right_svect,
-                                    m,
-                                    n,
-                                    dA.data(),
-                                    lda,
-                                    stA,
-                                    dS.data(),
-                                    stS,
-                                    dU.data(),
-                                    ldu,
-                                    stU,
-                                    dV.data(),
-                                    ldv,
-                                    stV,
-                                    dWork.data(),
-                                    size_W,
-                                    dE.data(),
-                                    stE,
-                                    dinfo.data(),
-                                    bc);
+        gesvd_checkBadArgs<API>(handle,
+                                left_svect,
+                                right_svect,
+                                m,
+                                n,
+                                dA.data(),
+                                lda,
+                                stA,
+                                dS.data(),
+                                stS,
+                                dU.data(),
+                                ldu,
+                                stU,
+                                dV.data(),
+                                ldv,
+                                stV,
+                                dWork.data(),
+                                size_W,
+                                dE.data(),
+                                stE,
+                                dinfo.data(),
+                                bc);
     }
 }
 
@@ -426,7 +411,8 @@ void gesvd_initData(const hipsolverHandle_t handle,
     }
 }
 
-template <bool FORTRAN,
+template <testAPI_t API,
+          bool      NRWK,
           typename T,
           typename Wd,
           typename Td,
@@ -494,7 +480,8 @@ void gesvd_getError(const hipsolverHandle_t handle,
     // execute computations:
     // complementary execution to compute all singular vectors if needed (always in-place to ensure
     // we don't combine results computed by gemm_batched with results computed by gemm_strided_batched)
-    CHECK_ROCBLAS_ERROR(hipsolver_gesvd(FORTRAN,
+    CHECK_ROCBLAS_ERROR(hipsolver_gesvd(API,
+                                        NRWK,
                                         handle,
                                         left_svectT,
                                         right_svectT,
@@ -544,7 +531,8 @@ void gesvd_getError(const hipsolverHandle_t handle,
                        hinfo[b]);
 
     // GPU lapack
-    CHECK_ROCBLAS_ERROR(hipsolver_gesvd(FORTRAN,
+    CHECK_ROCBLAS_ERROR(hipsolver_gesvd(API,
+                                        NRWK,
                                         handle,
                                         left_svect,
                                         right_svect,
@@ -643,7 +631,8 @@ void gesvd_getError(const hipsolverHandle_t handle,
     }
 }
 
-template <bool FORTRAN,
+template <testAPI_t API,
+          bool      NRWK,
           typename T,
           typename Wd,
           typename Td,
@@ -724,7 +713,8 @@ void gesvd_getPerfData(const hipsolverHandle_t handle,
         gesvd_initData<false, true, T>(
             handle, left_svect, right_svect, m, n, dA, lda, bc, hA, A, 0);
 
-        CHECK_ROCBLAS_ERROR(hipsolver_gesvd(FORTRAN,
+        CHECK_ROCBLAS_ERROR(hipsolver_gesvd(API,
+                                            NRWK,
                                             handle,
                                             left_svect,
                                             right_svect,
@@ -760,7 +750,8 @@ void gesvd_getPerfData(const hipsolverHandle_t handle,
             handle, left_svect, right_svect, m, n, dA, lda, bc, hA, A, 0);
 
         start = get_time_us_sync(stream);
-        hipsolver_gesvd(FORTRAN,
+        hipsolver_gesvd(API,
+                        NRWK,
                         handle,
                         left_svect,
                         right_svect,
@@ -788,7 +779,7 @@ void gesvd_getPerfData(const hipsolverHandle_t handle,
     *gpu_time_used /= hot_calls;
 }
 
-template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+template <testAPI_t API, bool BATCHED, bool STRIDED, bool NRWK, typename T>
 void testing_gesvd(Arguments& argus)
 {
     using S = decltype(std::real(T{}));
@@ -816,7 +807,8 @@ void testing_gesvd(Arguments& argus)
     {
         if(BATCHED)
         {
-            // EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+            // EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
+            //                                       NRWK,
             //                                       handle,
             //                                       leftv,
             //                                       rightv,
@@ -843,7 +835,8 @@ void testing_gesvd(Arguments& argus)
         }
         else
         {
-            EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+            EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
+                                                  NRWK,
                                                   handle,
                                                   leftv,
                                                   rightv,
@@ -981,7 +974,8 @@ void testing_gesvd(Arguments& argus)
     {
         if(BATCHED)
         {
-            // EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+            // EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
+            //                                       NRWK,
             //                                       handle,
             //                                       leftv,
             //                                       rightv,
@@ -1008,7 +1002,8 @@ void testing_gesvd(Arguments& argus)
         }
         else
         {
-            EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(FORTRAN,
+            EXPECT_ROCBLAS_STATUS(hipsolver_gesvd(API,
+                                                  NRWK,
                                                   handle,
                                                   leftv,
                                                   rightv,
@@ -1083,8 +1078,8 @@ void testing_gesvd(Arguments& argus)
         //     CHECK_HIP_ERROR(dA.memcheck());
 
         // int w1, w2;
-        // hipsolver_gesvd_bufferSize(FORTRAN, handle, leftv, rightv, m, n, dA.data(), lda, &w1);
-        // hipsolver_gesvd_bufferSize(FORTRAN, handle, leftvT, rightvT, mT, nT, dA.data(), lda, &w2);
+        // hipsolver_gesvd_bufferSize(API, handle, leftv, rightv, m, n, dA.data(), lda, &w1);
+        // hipsolver_gesvd_bufferSize(API, handle, leftvT, rightvT, mT, nT, dA.data(), lda, &w2);
         // int size_W = max(w1, w2);
         // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
@@ -1093,90 +1088,90 @@ void testing_gesvd(Arguments& argus)
         // // check computations
         // if(argus.unit_check || argus.norm_check)
         // {
-        //     gesvd_getError<FORTRAN, T>(handle,
-        //                                leftv,
-        //                                rightv,
-        //                                m,
-        //                                n,
-        //                                dA,
-        //                                lda,
-        //                                stA,
-        //                                dS,
-        //                                stS,
-        //                                dU,
-        //                                ldu,
-        //                                stU,
-        //                                dV,
-        //                                ldv,
-        //                                stV,
-        //                                dWork,
-        //                                size_W,
-        //                                dE,
-        //                                stE,
-        //                                dinfo,
-        //                                bc,
-        //                                leftvT,
-        //                                rightvT,
-        //                                mT,
-        //                                nT,
-        //                                dUT,
-        //                                lduT,
-        //                                stUT,
-        //                                dVT,
-        //                                ldvT,
-        //                                stVT,
-        //                                hA,
-        //                                hS,
-        //                                hSres,
-        //                                hU,
-        //                                Ures,
-        //                                ldures,
-        //                                hV,
-        //                                Vres,
-        //                                ldvres,
-        //                                hE,
-        //                                hEres,
-        //                                hinfo,
-        //                                hinfoRes,
-        //                                &max_error,
-        //                                &max_errorv);
+        //     gesvd_getError<API, NRWK, T>(handle,
+        //                                  leftv,
+        //                                  rightv,
+        //                                  m,
+        //                                  n,
+        //                                  dA,
+        //                                  lda,
+        //                                  stA,
+        //                                  dS,
+        //                                  stS,
+        //                                  dU,
+        //                                  ldu,
+        //                                  stU,
+        //                                  dV,
+        //                                  ldv,
+        //                                  stV,
+        //                                  dWork,
+        //                                  size_W,
+        //                                  dE,
+        //                                  stE,
+        //                                  dinfo,
+        //                                  bc,
+        //                                  leftvT,
+        //                                  rightvT,
+        //                                  mT,
+        //                                  nT,
+        //                                  dUT,
+        //                                  lduT,
+        //                                  stUT,
+        //                                  dVT,
+        //                                  ldvT,
+        //                                  stVT,
+        //                                  hA,
+        //                                  hS,
+        //                                  hSres,
+        //                                  hU,
+        //                                  Ures,
+        //                                  ldures,
+        //                                  hV,
+        //                                  Vres,
+        //                                  ldvres,
+        //                                  hE,
+        //                                  hEres,
+        //                                  hinfo,
+        //                                  hinfoRes,
+        //                                  &max_error,
+        //                                  &max_errorv);
         // }
 
         // // collect performance data
         // if(argus.timing)
         // {
-        //     gesvd_getPerfData<FORTRAN, T>(handle,
-        //                                   leftv,
-        //                                   rightv,
-        //                                   m,
-        //                                   n,
-        //                                   dA,
-        //                                   lda,
-        //                                   stA,
-        //                                   dS,
-        //                                   stS,
-        //                                   dU,
-        //                                   ldu,
-        //                                   stU,
-        //                                   dV,
-        //                                   ldv,
-        //                                   stV,
-        //                                   dWork,
-        //                                   size_W,
-        //                                   dE,
-        //                                   stE,
-        //                                   dinfo,
-        //                                   bc,
-        //                                   hA,
-        //                                   hS,
-        //                                   hU,
-        //                                   hV,
-        //                                   hE,
-        //                                   hinfo,
-        //                                   &gpu_time_used,
-        //                                   &cpu_time_used,
-        //                                   hot_calls,
-        //                                   argus.perf);
+        //     gesvd_getPerfData<API, NRWK, T>(handle,
+        //                                     leftv,
+        //                                     rightv,
+        //                                     m,
+        //                                     n,
+        //                                     dA,
+        //                                     lda,
+        //                                     stA,
+        //                                     dS,
+        //                                     stS,
+        //                                     dU,
+        //                                     ldu,
+        //                                     stU,
+        //                                     dV,
+        //                                     ldv,
+        //                                     stV,
+        //                                     dWork,
+        //                                     size_W,
+        //                                     dE,
+        //                                     stE,
+        //                                     dinfo,
+        //                                     bc,
+        //                                     hA,
+        //                                     hS,
+        //                                     hU,
+        //                                     hV,
+        //                                     hE,
+        //                                     hinfo,
+        //                                     &gpu_time_used,
+        //                                     &cpu_time_used,
+        //                                     hot_calls,
+        //                                     argus.perf);
         // }
     }
 
@@ -1189,8 +1184,8 @@ void testing_gesvd(Arguments& argus)
             CHECK_HIP_ERROR(dA.memcheck());
 
         int w1, w2;
-        hipsolver_gesvd_bufferSize(FORTRAN, handle, leftv, rightv, m, n, dA.data(), lda, &w1);
-        hipsolver_gesvd_bufferSize(FORTRAN, handle, leftvT, rightvT, mT, nT, dA.data(), lda, &w2);
+        hipsolver_gesvd_bufferSize(API, handle, leftv, rightv, m, n, dA.data(), lda, &w1);
+        hipsolver_gesvd_bufferSize(API, handle, leftvT, rightvT, mT, nT, dA.data(), lda, &w2);
         int                            size_W = max(w1, w2);
         device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
@@ -1199,90 +1194,90 @@ void testing_gesvd(Arguments& argus)
         // check computations
         if(argus.unit_check || argus.norm_check)
         {
-            gesvd_getError<FORTRAN, T>(handle,
-                                       leftv,
-                                       rightv,
-                                       m,
-                                       n,
-                                       dA,
-                                       lda,
-                                       stA,
-                                       dS,
-                                       stS,
-                                       dU,
-                                       ldu,
-                                       stU,
-                                       dV,
-                                       ldv,
-                                       stV,
-                                       dWork,
-                                       size_W,
-                                       dE,
-                                       stE,
-                                       dinfo,
-                                       bc,
-                                       leftvT,
-                                       rightvT,
-                                       mT,
-                                       nT,
-                                       dUT,
-                                       lduT,
-                                       stUT,
-                                       dVT,
-                                       ldvT,
-                                       stVT,
-                                       hA,
-                                       hS,
-                                       hSres,
-                                       hU,
-                                       Ures,
-                                       ldures,
-                                       hV,
-                                       Vres,
-                                       ldvres,
-                                       hE,
-                                       hEres,
-                                       hinfo,
-                                       hinfoRes,
-                                       &max_error,
-                                       &max_errorv);
+            gesvd_getError<API, NRWK, T>(handle,
+                                         leftv,
+                                         rightv,
+                                         m,
+                                         n,
+                                         dA,
+                                         lda,
+                                         stA,
+                                         dS,
+                                         stS,
+                                         dU,
+                                         ldu,
+                                         stU,
+                                         dV,
+                                         ldv,
+                                         stV,
+                                         dWork,
+                                         size_W,
+                                         dE,
+                                         stE,
+                                         dinfo,
+                                         bc,
+                                         leftvT,
+                                         rightvT,
+                                         mT,
+                                         nT,
+                                         dUT,
+                                         lduT,
+                                         stUT,
+                                         dVT,
+                                         ldvT,
+                                         stVT,
+                                         hA,
+                                         hS,
+                                         hSres,
+                                         hU,
+                                         Ures,
+                                         ldures,
+                                         hV,
+                                         Vres,
+                                         ldvres,
+                                         hE,
+                                         hEres,
+                                         hinfo,
+                                         hinfoRes,
+                                         &max_error,
+                                         &max_errorv);
         }
 
         // collect performance data
         if(argus.timing)
         {
-            gesvd_getPerfData<FORTRAN, T>(handle,
-                                          leftv,
-                                          rightv,
-                                          m,
-                                          n,
-                                          dA,
-                                          lda,
-                                          stA,
-                                          dS,
-                                          stS,
-                                          dU,
-                                          ldu,
-                                          stU,
-                                          dV,
-                                          ldv,
-                                          stV,
-                                          dWork,
-                                          size_W,
-                                          dE,
-                                          stE,
-                                          dinfo,
-                                          bc,
-                                          hA,
-                                          hS,
-                                          hU,
-                                          hV,
-                                          hE,
-                                          hinfo,
-                                          &gpu_time_used,
-                                          &cpu_time_used,
-                                          hot_calls,
-                                          argus.perf);
+            gesvd_getPerfData<API, NRWK, T>(handle,
+                                            leftv,
+                                            rightv,
+                                            m,
+                                            n,
+                                            dA,
+                                            lda,
+                                            stA,
+                                            dS,
+                                            stS,
+                                            dU,
+                                            ldu,
+                                            stU,
+                                            dV,
+                                            ldv,
+                                            stV,
+                                            dWork,
+                                            size_W,
+                                            dE,
+                                            stE,
+                                            dinfo,
+                                            bc,
+                                            hA,
+                                            hS,
+                                            hU,
+                                            hV,
+                                            hE,
+                                            hinfo,
+                                            &gpu_time_used,
+                                            &cpu_time_used,
+                                            hot_calls,
+                                            argus.perf);
         }
     }
 
@@ -1308,8 +1303,8 @@ void testing_gesvd(Arguments& argus)
             std::cerr << "============================================\n";
             if(BATCHED)
             {
-                rocsolver_bench_output("left_svect",
-                                       "right_svect",
+                rocsolver_bench_output("jobu",
+                                       "jobv",
                                        "m",
                                        "n",
                                        "lda",
@@ -1324,8 +1319,8 @@ void testing_gesvd(Arguments& argus)
             }
             else if(STRIDED)
             {
-                rocsolver_bench_output("left_svect",
-                                       "right_svect",
+                rocsolver_bench_output("jobu",
+                                       "jobv",
                                        "m",
                                        "n",
                                        "lda",
@@ -1342,7 +1337,7 @@ void testing_gesvd(Arguments& argus)
             }
             else
             {
-                rocsolver_bench_output("left_svect", "right_svect", "m", "n", "lda", "ldu", "ldv");
+                rocsolver_bench_output("jobu", "jobv", "m", "n", "lda", "ldu", "ldv");
                 rocsolver_bench_output(leftv, rightv, m, n, lda, ldu, ldv);
             }
             std::cerr << "\n============================================\n";

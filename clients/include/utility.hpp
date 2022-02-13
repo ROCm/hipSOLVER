@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -110,6 +110,72 @@ public:
 
 /* ============================================================================================
  */
+/*! \brief  local gesvdj params which is automatically created and destroyed  */
+class hipsolver_local_gesvdj_info
+{
+    hipsolverGesvdjInfo_t m_info;
+
+public:
+    hipsolver_local_gesvdj_info()
+    {
+        hipsolverDnCreateGesvdjInfo(&m_info);
+    }
+    ~hipsolver_local_gesvdj_info()
+    {
+        hipsolverDnDestroyGesvdjInfo(m_info);
+    }
+
+    hipsolver_local_gesvdj_info(const hipsolver_local_gesvdj_info&) = delete;
+    hipsolver_local_gesvdj_info(hipsolver_local_gesvdj_info&&)      = delete;
+    hipsolver_local_gesvdj_info& operator=(const hipsolver_local_gesvdj_info&) = delete;
+    hipsolver_local_gesvdj_info& operator=(hipsolver_local_gesvdj_info&&) = delete;
+
+    // Allow hipsolver_local_gesvdj_info to be used anywhere hipsolverGesvdjInfo_t is expected
+    operator hipsolverGesvdjInfo_t&()
+    {
+        return m_info;
+    }
+    operator const hipsolverGesvdjInfo_t&() const
+    {
+        return m_info;
+    }
+};
+
+/* ============================================================================================
+ */
+/*! \brief  local syevj params which is automatically created and destroyed  */
+class hipsolver_local_syevj_info
+{
+    hipsolverSyevjInfo_t m_info;
+
+public:
+    hipsolver_local_syevj_info()
+    {
+        hipsolverDnCreateSyevjInfo(&m_info);
+    }
+    ~hipsolver_local_syevj_info()
+    {
+        hipsolverDnDestroySyevjInfo(m_info);
+    }
+
+    hipsolver_local_syevj_info(const hipsolver_local_syevj_info&) = delete;
+    hipsolver_local_syevj_info(hipsolver_local_syevj_info&&)      = delete;
+    hipsolver_local_syevj_info& operator=(const hipsolver_local_syevj_info&) = delete;
+    hipsolver_local_syevj_info& operator=(hipsolver_local_syevj_info&&) = delete;
+
+    // Allow hipsolver_local_syevj_info to be used anywhere hipsolverSyevjInfo_t is expected
+    operator hipsolverSyevjInfo_t&()
+    {
+        return m_info;
+    }
+    operator const hipsolverSyevjInfo_t&() const
+    {
+        return m_info;
+    }
+};
+
+/* ============================================================================================
+ */
 
 // Return true if value is NaN
 template <typename T>
@@ -136,8 +202,6 @@ inline bool hipsolver_isnan(hipsolverDoubleComplex arg)
 
 /* =============================================================================================== */
 /* Complex / real helpers.                                                                         */
-template <typename T>
-static constexpr bool is_complex = false;
 
 /* Workaround for clang bug:
    https://bugs.llvm.org/show_bug.cgi?id=35863
@@ -148,6 +212,10 @@ static constexpr bool is_complex = false;
 #define HIPSOLVER_CLANG_STATIC
 #endif
 
+template <typename T>
+static constexpr bool is_complex = false;
+
+// cppcheck-suppress syntaxError
 template <>
 HIPSOLVER_CLANG_STATIC constexpr bool is_complex<hipsolverComplex> = true;
 
@@ -205,31 +273,31 @@ class hipsolver_nan_rng
 public:
     // Random integer
     template <typename T, typename std::enable_if<std::is_integral<T>{}, int>::type = 0>
-    explicit operator T()
+    explicit operator T() const
     {
         return std::uniform_int_distribution<T>{}(hipsolver_rng);
     }
 
     // Random NaN float
-    explicit operator float()
+    explicit operator float() const
     {
         return random_nan_data<float, uint32_t, 23, 8>();
     }
 
     // Random NaN double
-    explicit operator double()
+    explicit operator double() const
     {
         return random_nan_data<double, uint64_t, 52, 11>();
     }
 
     // Random NaN Complex
-    explicit operator hipsolverComplex()
+    explicit operator hipsolverComplex() const
     {
         return {float(*this), float(*this)};
     }
 
     // Random NaN Double Complex
-    explicit operator hipsolverDoubleComplex()
+    explicit operator hipsolverDoubleComplex() const
     {
         return {double(*this), double(*this)};
     }
@@ -252,7 +320,6 @@ template <>
 inline hipsolverComplex random_generator<hipsolverComplex>()
 {
     return hipsolverComplex(rand() % 10 + 1, rand() % 10 + 1);
-    return {float(rand() % 10 + 1), float(rand() % 10 + 1)};
 }
 
 // for hipsolverDoubleComplex, generate 2 doubles
@@ -261,7 +328,6 @@ template <>
 inline hipsolverDoubleComplex random_generator<hipsolverDoubleComplex>()
 {
     return hipsolverDoubleComplex(rand() % 10 + 1, rand() % 10 + 1);
-    return {double(rand() % 10 + 1), double(rand() % 10 + 1)};
 }
 
 /*! \brief  generate a random number in range [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10] */

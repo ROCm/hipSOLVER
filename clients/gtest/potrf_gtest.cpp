@@ -62,7 +62,7 @@ Arguments potrf_setup_arguments(potrf_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class POTRF_BASE : public ::TestWithParam<potrf_tuple>
 {
 protected:
@@ -76,22 +76,27 @@ protected:
         Arguments arg = potrf_setup_arguments(GetParam());
 
         if(arg.peek<char>("uplo") == 'L' && arg.peek<int>("n") == -1)
-            testing_potrf_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
+            testing_potrf_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = (BATCHED || STRIDED ? 3 : 1);
-        testing_potrf<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_potrf<API, BATCHED, STRIDED, T>(arg);
     }
 };
 
-class POTRF : public POTRF_BASE<false>
+class POTRF : public POTRF_BASE<API_NORMAL>
 {
 };
 
-class POTRF_FORTRAN : public POTRF_BASE<true>
+class POTRF_FORTRAN : public POTRF_BASE<API_FORTRAN>
+{
+};
+
+class POTRF_COMPAT : public POTRF_BASE<API_COMPAT>
 {
 };
 
 // non-batch tests
+
 TEST_P(POTRF, __float)
 {
     run_tests<false, false, float>();
@@ -132,7 +137,28 @@ TEST_P(POTRF_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
+TEST_P(POTRF_COMPAT, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(POTRF_COMPAT, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(POTRF_COMPAT, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(POTRF_COMPAT, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
 // batched tests
+
 TEST_P(POTRF, batched__float)
 {
     run_tests<true, false, float>();
@@ -173,6 +199,26 @@ TEST_P(POTRF_FORTRAN, batched__double_complex)
     run_tests<true, false, rocblas_double_complex>();
 }
 
+TEST_P(POTRF_COMPAT, batched__float)
+{
+    run_tests<true, false, float>();
+}
+
+TEST_P(POTRF_COMPAT, batched__double)
+{
+    run_tests<true, false, double>();
+}
+
+TEST_P(POTRF_COMPAT, batched__float_complex)
+{
+    run_tests<true, false, rocblas_float_complex>();
+}
+
+TEST_P(POTRF_COMPAT, batched__double_complex)
+{
+    run_tests<true, false, rocblas_double_complex>();
+}
+
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          POTRF,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
@@ -187,4 +233,12 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          POTRF_FORTRAN,
+                         Combine(ValuesIn(matrix_size_range), ValuesIn(uplo_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          POTRF_COMPAT,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         POTRF_COMPAT,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(uplo_range)));
