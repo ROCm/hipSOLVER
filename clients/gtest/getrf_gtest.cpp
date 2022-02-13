@@ -1,10 +1,9 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  *
  * ************************************************************************ */
 
 #include "testing_getrf.hpp"
-#include "testing_getrf_npvt.hpp"
 
 using ::testing::Combine;
 using ::testing::TestWithParam;
@@ -74,7 +73,7 @@ Arguments getrf_setup_arguments(getrf_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN, bool NPVT>
+template <testAPI_t API, bool NPVT>
 class GETRF_BASE : public ::TestWithParam<getrf_tuple>
 {
 protected:
@@ -88,38 +87,31 @@ protected:
         Arguments arg = getrf_setup_arguments(GetParam());
 
         if(arg.peek<rocblas_int>("m") == -1 && arg.peek<rocblas_int>("n") == -1)
-        {
-            if(!NPVT)
-                testing_getrf_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
-            else
-                testing_getrf_npvt_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
-        }
+            testing_getrf_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        if(!NPVT)
-            testing_getrf<FORTRAN, BATCHED, STRIDED, T>(arg);
-        else
-            testing_getrf_npvt<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_getrf<API, BATCHED, STRIDED, NPVT, T>(arg);
     }
 };
 
-class GETRF : public GETRF_BASE<false, false>
+class GETRF : public GETRF_BASE<API_NORMAL, false>
 {
 };
 
-class GETRF_FORTRAN : public GETRF_BASE<true, false>
+class GETRF_FORTRAN : public GETRF_BASE<API_FORTRAN, false>
 {
 };
 
-class GETRF_NPVT : public GETRF_BASE<false, true>
+class GETRF_COMPAT : public GETRF_BASE<API_COMPAT, false>
 {
 };
 
-class GETRF_NPVT_FORTRAN : public GETRF_BASE<true, true>
+class GETRF_NPVT : public GETRF_BASE<API_NORMAL, true>
 {
 };
 
 // non-batch tests
+
 TEST_P(GETRF, __float)
 {
     run_tests<false, false, float>();
@@ -159,6 +151,27 @@ TEST_P(GETRF_FORTRAN, __double_complex)
 {
     run_tests<false, false, hipsolverDoubleComplex>();
 }
+
+TEST_P(GETRF_COMPAT, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(GETRF_COMPAT, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(GETRF_COMPAT, __float_complex)
+{
+    run_tests<false, false, hipsolverComplex>();
+}
+
+TEST_P(GETRF_COMPAT, __double_complex)
+{
+    run_tests<false, false, hipsolverDoubleComplex>();
+}
+
 TEST_P(GETRF_NPVT, __float)
 {
     run_tests<false, false, float>();
@@ -175,26 +188,6 @@ TEST_P(GETRF_NPVT, __float_complex)
 }
 
 TEST_P(GETRF_NPVT, __double_complex)
-{
-    run_tests<false, false, hipsolverDoubleComplex>();
-}
-
-TEST_P(GETRF_NPVT_FORTRAN, __float)
-{
-    run_tests<false, false, float>();
-}
-
-TEST_P(GETRF_NPVT_FORTRAN, __double)
-{
-    run_tests<false, false, double>();
-}
-
-TEST_P(GETRF_NPVT_FORTRAN, __float_complex)
-{
-    run_tests<false, false, hipsolverComplex>();
-}
-
-TEST_P(GETRF_NPVT_FORTRAN, __double_complex)
 {
     run_tests<false, false, hipsolverDoubleComplex>();
 }
@@ -216,17 +209,17 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(n_size_range)));
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GETRF_COMPAT,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(large_n_size_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         GETRF_COMPAT,
+                         Combine(ValuesIn(matrix_size_range), ValuesIn(n_size_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          GETRF_NPVT,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(large_n_size_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GETRF_NPVT,
-                         Combine(ValuesIn(matrix_size_range), ValuesIn(n_size_range)));
-
-// INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          GETRF_NPVT_FORTRAN,
-//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(large_n_size_range)));
-
-INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         GETRF_NPVT_FORTRAN,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(n_size_range)));

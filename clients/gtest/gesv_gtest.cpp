@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  *
  * ************************************************************************ */
 
@@ -71,7 +71,7 @@ Arguments gesv_setup_arguments(gesv_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API, bool INPLACE>
 class GESV_BASE : public ::TestWithParam<gesv_tuple>
 {
 protected:
@@ -85,18 +85,26 @@ protected:
         Arguments arg = gesv_setup_arguments(GetParam());
 
         if(arg.peek<rocblas_int>("n") == -1 && arg.peek<rocblas_int>("nrhs") == -1)
-            testing_gesv_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
+            testing_gesv_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_gesv<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_gesv<API, BATCHED, STRIDED, INPLACE, T>(arg);
     }
 };
 
-class GESV : public GESV_BASE<false>
+class GESV : public GESV_BASE<API_NORMAL, false>
 {
 };
 
-class GESV_FORTRAN : public GESV_BASE<true>
+class GESV_FORTRAN : public GESV_BASE<API_FORTRAN, false>
+{
+};
+
+class GESV_COMPAT : public GESV_BASE<API_COMPAT, false>
+{
+};
+
+class GESV_INPLACE : public GESV_BASE<API_NORMAL, true>
 {
 };
 
@@ -142,6 +150,48 @@ TEST_P(GESV_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
+TEST_P(GESV_COMPAT, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(GESV_COMPAT, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(GESV_COMPAT, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(GESV_COMPAT, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
+TEST_P(GESV_INPLACE, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(GESV_INPLACE, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(GESV_INPLACE, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(GESV_INPLACE, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+#endif
+
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          GESV,
 //                          Combine(ValuesIn(large_matrix_sizeA_range),
@@ -159,3 +209,23 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GESV_FORTRAN,
                          Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GESV_COMPAT,
+//                          Combine(ValuesIn(large_matrix_sizeA_range),
+//                                  ValuesIn(large_matrix_sizeB_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         GESV_COMPAT,
+                         Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
+
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GESV_INPLACE,
+//                          Combine(ValuesIn(large_matrix_sizeA_range),
+//                                  ValuesIn(large_matrix_sizeB_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         GESV_INPLACE,
+                         Combine(ValuesIn(matrix_sizeA_range), ValuesIn(matrix_sizeB_range)));
+#endif

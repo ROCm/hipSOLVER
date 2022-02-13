@@ -21,7 +21,7 @@ Once installed, hipSOLVER can be used just like any other library with a C API. 
 For more information on building and installing hipSOLVER, see the [hipSOLVER install guide](https://hipsolver.readthedocs.io/en/latest/userguide_install.html)
 
 ## Using the hipSOLVER Interface
-The hipSOLVER interface is compatible with rocSOLVER and cuBLAS-v11 APIs. Porting a CUDA application that originally calls the cuSOLVER API to an application calling the hipSOLVER API should be fairly straightforward (with some caveats; see [differences with the cuSOLVER API](https://hipsolver.readthedocs.io/en/latest/userguide_intro.html#differences-with-the-cusolver-api)). For example, the hipSOLVER SGEQRF interface is
+The hipSOLVER interface is compatible with the rocSOLVER and cuSOLVER-v11 APIs. Porting a CUDA application that originally calls the cuSOLVER API to an application calling the hipSOLVER API should be fairly straightforward (see [porting a cuSOLVER application to hipSOLVER](https://hipsolver.readthedocs.io/en/latest/userguide_intro.html#porting-a-cusolver-application-to-hipsolver)). For example, the hipSOLVER SGEQRF interface is
 
 ```c
 hipsolverStatus_t

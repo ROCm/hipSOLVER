@@ -622,7 +622,7 @@ void testing_ormtr_unmtr(Arguments& argus)
                                             argus.perf);
 
     // validate results for rocsolver-test
-    // using n * machine_precision as tolerance
+    // using s * machine_precision as tolerance
     int s = left ? m : n;
     if(argus.unit_check)
         ROCSOLVER_TEST_CHECK(T, max_error, s);

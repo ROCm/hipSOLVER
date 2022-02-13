@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2021 Advanced Micro Devices, Inc.
+ * Copyright 2021-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -9,11 +9,12 @@
 #include <string>
 
 #include "testing_gebrd.hpp"
+#include "testing_gels.hpp"
 #include "testing_geqrf.hpp"
 #include "testing_gesv.hpp"
 #include "testing_gesvd.hpp"
+#include "testing_gesvdj.hpp"
 #include "testing_getrf.hpp"
-#include "testing_getrf_npvt.hpp"
 #include "testing_getrs.hpp"
 #include "testing_orgbr_ungbr.hpp"
 #include "testing_orgqr_ungqr.hpp"
@@ -24,7 +25,9 @@
 #include "testing_potri.hpp"
 #include "testing_potrs.hpp"
 #include "testing_syevd_heevd.hpp"
+#include "testing_syevj_heevj.hpp"
 #include "testing_sygvd_hegvd.hpp"
+#include "testing_sygvj_hegvj.hpp"
 #include "testing_sytrd_hetrd.hpp"
 #include "testing_sytrf.hpp"
 
@@ -48,16 +51,19 @@ class hipsolver_dispatcher
         // Map for functions that support all precisions
         static const func_map map = {
             {"gebrd", testing_gebrd<false, false, false, T>},
+            {"gels", testing_gels<API_NORMAL, false, false, false, T>},
             {"geqrf", testing_geqrf<false, false, false, T>},
-            {"gesv", testing_gesv<false, false, false, T>},
-            {"gesvd", testing_gesvd<false, false, false, T>},
-            {"getrf", testing_getrf<false, false, false, T>},
-            {"getrs", testing_getrs<false, false, false, T>},
-            {"potrf", testing_potrf<false, false, false, T>},
-            {"potrf_batched", testing_potrf<false, true, false, T>},
+            {"gesv", testing_gesv<API_NORMAL, false, false, false, T>},
+            {"gesvd", testing_gesvd<API_NORMAL, false, false, false, T>},
+            {"gesvdj", testing_gesvdj<API_COMPAT, false, false, T>},
+            {"gesvdj_batched", testing_gesvdj<API_COMPAT, false, true, T>},
+            {"getrf", testing_getrf<API_NORMAL, false, false, false, T>},
+            {"getrs", testing_getrs<API_NORMAL, false, false, T>},
+            {"potrf", testing_potrf<API_NORMAL, false, false, T>},
+            {"potrf_batched", testing_potrf<API_NORMAL, true, false, T>},
             {"potri", testing_potri<false, false, false, T>},
-            {"potrs", testing_potrs<false, false, false, T>},
-            {"potrs_batched", testing_potrs<false, true, false, T>},
+            {"potrs", testing_potrs<API_NORMAL, false, false, T>},
+            {"potrs_batched", testing_potrs<API_NORMAL, true, false, T>},
             {"sytrf", testing_sytrf<false, false, false, T>},
         };
 
@@ -83,6 +89,9 @@ class hipsolver_dispatcher
             {"ormqr", testing_ormqr_unmqr<false, T>},
             {"ormtr", testing_ormtr_unmtr<false, T>},
             {"syevd", testing_syevd_heevd<false, false, false, T>},
+            {"syevj", testing_syevj_heevj<API_COMPAT, false, false, T>},
+            {"syevj_batched", testing_syevj_heevj<API_COMPAT, false, true, T>},
+            {"sygvj", testing_sygvj_hegvj<API_COMPAT, false, false, T>},
             {"sygvd", testing_sygvd_hegvd<false, false, false, T>},
             {"sytrd", testing_sytrd_hetrd<false, false, false, T>},
         };
@@ -109,6 +118,9 @@ class hipsolver_dispatcher
             {"unmqr", testing_ormqr_unmqr<false, T>},
             {"unmtr", testing_ormtr_unmtr<false, T>},
             {"heevd", testing_syevd_heevd<false, false, false, T>},
+            {"heevj", testing_syevj_heevj<API_COMPAT, false, false, T>},
+            {"heevj_batched", testing_syevj_heevj<API_COMPAT, false, true, T>},
+            {"hegvj", testing_sygvj_hegvj<API_COMPAT, false, false, T>},
             {"hegvd", testing_sygvd_hegvd<false, false, false, T>},
             {"hetrd", testing_sytrd_hetrd<false, false, false, T>},
         };

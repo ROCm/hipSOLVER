@@ -377,6 +377,51 @@ void zgebrd_(int*                    m,
              int*                    size_w,
              int*                    info);
 
+void sgels_(char*  trans,
+            int*   m,
+            int*   n,
+            int*   nrhs,
+            float* A,
+            int*   lda,
+            float* B,
+            int*   ldb,
+            float* work,
+            int*   lwork,
+            int*   info);
+void dgels_(char*   trans,
+            int*    m,
+            int*    n,
+            int*    nrhs,
+            double* A,
+            int*    lda,
+            double* B,
+            int*    ldb,
+            double* work,
+            int*    lwork,
+            int*    info);
+void cgels_(char*             trans,
+            int*              m,
+            int*              n,
+            int*              nrhs,
+            hipsolverComplex* A,
+            int*              lda,
+            hipsolverComplex* B,
+            int*              ldb,
+            hipsolverComplex* work,
+            int*              lwork,
+            int*              info);
+void zgels_(char*                   trans,
+            int*                    m,
+            int*                    n,
+            int*                    nrhs,
+            hipsolverDoubleComplex* A,
+            int*                    lda,
+            hipsolverDoubleComplex* B,
+            int*                    ldb,
+            hipsolverDoubleComplex* work,
+            int*                    lwork,
+            int*                    info);
+
 void sgeqrf_(int* m, int* n, float* A, int* lda, float* ipiv, float* work, int* lwork, int* info);
 void dgeqrf_(
     int* m, int* n, double* A, int* lda, double* ipiv, double* work, int* lwork, int* info);
@@ -1465,6 +1510,75 @@ void cblas_gebrd<hipsolverDoubleComplex, double>(int                     m,
 {
     int info;
     zgebrd_(&m, &n, A, &lda, D, E, tauq, taup, work, &size_w, &info);
+}
+
+// gels
+template <>
+void cblas_gels<float>(hipsolverOperation_t transR,
+                       int                  m,
+                       int                  n,
+                       int                  nrhs,
+                       float*               A,
+                       int                  lda,
+                       float*               B,
+                       int                  ldb,
+                       float*               work,
+                       int                  lwork,
+                       int*                 info)
+{
+    char trans = hipsolver2char_operation(transR);
+    sgels_(&trans, &m, &n, &nrhs, A, &lda, B, &ldb, work, &lwork, info);
+}
+
+template <>
+void cblas_gels<double>(hipsolverOperation_t transR,
+                        int                  m,
+                        int                  n,
+                        int                  nrhs,
+                        double*              A,
+                        int                  lda,
+                        double*              B,
+                        int                  ldb,
+                        double*              work,
+                        int                  lwork,
+                        int*                 info)
+{
+    char trans = hipsolver2char_operation(transR);
+    dgels_(&trans, &m, &n, &nrhs, A, &lda, B, &ldb, work, &lwork, info);
+}
+
+template <>
+void cblas_gels<hipsolverComplex>(hipsolverOperation_t transR,
+                                  int                  m,
+                                  int                  n,
+                                  int                  nrhs,
+                                  hipsolverComplex*    A,
+                                  int                  lda,
+                                  hipsolverComplex*    B,
+                                  int                  ldb,
+                                  hipsolverComplex*    work,
+                                  int                  lwork,
+                                  int*                 info)
+{
+    char trans = hipsolver2char_operation(transR);
+    cgels_(&trans, &m, &n, &nrhs, A, &lda, B, &ldb, work, &lwork, info);
+}
+
+template <>
+void cblas_gels<hipsolverDoubleComplex>(hipsolverOperation_t    transR,
+                                        int                     m,
+                                        int                     n,
+                                        int                     nrhs,
+                                        hipsolverDoubleComplex* A,
+                                        int                     lda,
+                                        hipsolverDoubleComplex* B,
+                                        int                     ldb,
+                                        hipsolverDoubleComplex* work,
+                                        int                     lwork,
+                                        int*                    info)
+{
+    char trans = hipsolver2char_operation(transR);
+    zgels_(&trans, &m, &n, &nrhs, A, &lda, B, &ldb, work, &lwork, info);
 }
 
 // geqrf

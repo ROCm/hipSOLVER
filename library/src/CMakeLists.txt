@@ -22,9 +22,17 @@ endfunction( )
 prepend_path( ".." hipsolver_headers_public relative_hipsolver_headers_public )
 
 if( NOT USE_CUDA )
-  set( hipsolver_source "${CMAKE_CURRENT_SOURCE_DIR}/hcc_detail/hipsolver.cpp" )
+  set( hipsolver_source
+    "${CMAKE_CURRENT_SOURCE_DIR}/hcc_detail/hipsolver.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/hcc_detail/hipsolver_compat.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
+  )
 else( )
-  set( hipsolver_source "${CMAKE_CURRENT_SOURCE_DIR}/nvcc_detail/hipsolver.cpp" )
+  set( hipsolver_source
+    "${CMAKE_CURRENT_SOURCE_DIR}/nvcc_detail/hipsolver.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/nvcc_detail/hipsolver_compat.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
+  )
 endif( )
 
 set (hipsolver_f90_source
@@ -36,15 +44,15 @@ if( UNIX )
   add_library(hipsolver_fortran ${hipsolver_f90_source})
 endif( )
 
-if(BUILD_ADDRESS_SANITIZER)
-  add_link_options(-fuse-ld=lld)
-endif()
-
 add_library( hipsolver
   ${hipsolver_source}
   ${relative_hipsolver_headers_public}
 )
 add_library( roc::hipsolver ALIAS hipsolver )
+
+target_link_libraries(hipsolver PRIVATE
+  $<BUILD_INTERFACE:hipsolver-common> # https://gitlab.kitware.com/cmake/cmake/-/issues/15415
+)
 
 add_armor_flags( hipsolver "${ARMOR_LEVEL}" )
 
@@ -110,7 +118,9 @@ endif( )
 # Internal header includes
 target_include_directories( hipsolver
   PUBLIC  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/library/include>
+          $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/library/include/internal>
           $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>
+          $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/internal>
           $<INSTALL_INTERFACE:include>
   PRIVATE
           ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -125,7 +135,7 @@ set_target_properties( hipsolver PROPERTIES DEBUG_POSTFIX "-d" )
 # Package that helps me set visibility for function names exported from shared library
 include( GenerateExportHeader )
 set_target_properties( hipsolver PROPERTIES CXX_VISIBILITY_PRESET "hidden" VISIBILITY_INLINES_HIDDEN ON )
-generate_export_header( hipsolver EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/include/hipsolver-export.h )
+generate_export_header( hipsolver EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/include/internal/hipsolver-export.h )
 
 # Following Boost conventions of prefixing 'lib' on static built libraries, across all platforms
 if( NOT BUILD_SHARED_LIBS )

@@ -1,6 +1,6 @@
 
 #############################
-hipSOLVER User guide
+hipSOLVER User Guide
 #############################
 
 .. toctree::
@@ -8,4 +8,5 @@ hipSOLVER User guide
 
    userguide_intro
    userguide_install
+   userguide_usage
 
