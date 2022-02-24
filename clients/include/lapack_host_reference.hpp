@@ -50,6 +50,32 @@ void cblas_symv_hemv(hipsolverFillMode_t uplo,
                      T*                  y,
                      int                 incy);
 
+template <typename T>
+void cblas_trmm(hipsolverSideMode_t  side,
+                hipsolverFillMode_t  uplo,
+                hipsolverOperation_t transA,
+                char                 diag,
+                int                  m,
+                int                  n,
+                T                    alpha,
+                T*                   A,
+                int                  lda,
+                T*                   B,
+                int                  ldb);
+
+template <typename T>
+void cblas_trsm(hipsolverSideMode_t  side,
+                hipsolverFillMode_t  uplo,
+                hipsolverOperation_t transA,
+                char                 diag,
+                int                  m,
+                int                  n,
+                T                    alpha,
+                T*                   A,
+                int                  lda,
+                T*                   B,
+                int                  ldb);
+
 // LAPACK
 
 template <typename T>
@@ -226,6 +252,32 @@ void cblas_sygvd_hegvd(hipsolverEigType_t  itype,
                        int                 lrwork,
                        int*                iwork,
                        int                 liwork,
+                       int*                info);
+
+template <typename T, typename S>
+void cblas_sygvx_hegvx(hipsolverEigType_t  itype,
+                       hipsolverEigMode_t  evect,
+                       hipsolverEigRange_t erange,
+                       hipsolverFillMode_t uplo,
+                       int                 n,
+                       T*                  A,
+                       int                 lda,
+                       T*                  B,
+                       int                 ldb,
+                       S                   vl,
+                       S                   vu,
+                       int                 il,
+                       int                 iu,
+                       S                   abstol,
+                       int*                nev,
+                       S*                  W,
+                       T*                  Z,
+                       int                 ldz,
+                       T*                  work,
+                       int                 lwork,
+                       S*                  rwork,
+                       int*                iwork,
+                       int*                ifail,
                        int*                info);
 
 template <typename T, typename S>
