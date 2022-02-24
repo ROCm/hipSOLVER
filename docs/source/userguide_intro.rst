@@ -127,10 +127,14 @@ LAPACK main functions
     :ref:`hipsolverXsyevd <syevd>`, x, x, ,
     :ref:`hipsolverXsygvd_bufferSize <sygvd_bufferSize>`, x, x, ,
     :ref:`hipsolverXsygvd <sygvd>`, x, x, ,
+    :ref:`hipsolverXsygvdx_bufferSize <sygvdx_bufferSize>`, x, x, ,
+    :ref:`hipsolverXsygvdx <sygvdx>`, x, x, ,
     :ref:`hipsolverXheevd_bufferSize <heevd_bufferSize>`, , , x, x
     :ref:`hipsolverXheevd <heevd>`, , , x, x
     :ref:`hipsolverXhegvd_bufferSize <hegvd_bufferSize>`, , , x, x
     :ref:`hipsolverXhegvd <hegvd>`, , , x, x
+    :ref:`hipsolverXhegvdx_bufferSize <hegvdx_bufferSize>`, , , x, x
+    :ref:`hipsolverXhegvdx <hegvdx>`, , , x, x
 
 .. csv-table:: Singular value decomposition
     :header: "Function", "single", "double", "single complex", "double complex"
