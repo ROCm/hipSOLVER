@@ -183,7 +183,7 @@ if( UNIX )
 endif( )
 
 if(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY)
-  install(
+  rocm_install(
     DIRECTORY
        "${PROJECT_BINARY_DIR}/hipsolver"
         DESTINATION "." )
