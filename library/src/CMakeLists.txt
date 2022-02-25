@@ -120,7 +120,7 @@ target_include_directories( hipsolver
   PUBLIC  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/library/include>
           $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/library/include/internal>
           $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>
-          $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/internal>
+          $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/hipsolver/internal>
           $<INSTALL_INTERFACE:include>
   PRIVATE
           ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -135,7 +135,14 @@ set_target_properties( hipsolver PROPERTIES DEBUG_POSTFIX "-d" )
 # Package that helps me set visibility for function names exported from shared library
 include( GenerateExportHeader )
 set_target_properties( hipsolver PROPERTIES CXX_VISIBILITY_PRESET "hidden" VISIBILITY_INLINES_HIDDEN ON )
-generate_export_header( hipsolver EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/include/internal/hipsolver-export.h )
+generate_export_header( hipsolver EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/include/hipsolver/internal/hipsolver-export.h )
+
+if (BUILD_FILE_REORG_BACKWARD_COMPATIBILITY)
+  include(${PROJECT_SOURCE_DIR}/cmake/hipsolver-backward-compat.cmake)
+  package_gen_bkwdcomp_hdrfile("${PROJECT_BINARY_DIR}/include/hipsolver/internal/hipsolver-export.h")
+  message (STATUS "Completed package_gen_bkwdcomp_hdrfile() Configuration for Generated Files")
+endif( )
+
 
 # Following Boost conventions of prefixing 'lib' on static built libraries, across all platforms
 if( NOT BUILD_SHARED_LIBS )
@@ -148,22 +155,39 @@ endif( )
 rocm_install_targets(
   TARGETS hipsolver
   INCLUDE
-    ${CMAKE_SOURCE_DIR}/library/include
     ${CMAKE_BINARY_DIR}/include
-  PREFIX hipsolver
 )
+
+install(
+       DIRECTORY "${CMAKE_SOURCE_DIR}/library/include/hipsolver/" "${CMAKE_BINARY_DIR}/include/hipsolver/"
+  DESTINATION include/hipsolver
+  FILES_MATCHING
+  PATTERN "*.h"
+  PATTERN "*.hpp"
+  PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
+)
+
+if(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY)
+install(
+    DIRECTORY
+       "${PROJECT_BINARY_DIR}/include/"
+        DESTINATION "include/"
+  FILES_MATCHING
+  PATTERN "*.h"
+  PATTERN "*.hpp"
+  PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ )
+
+endif()
 
 if ( NOT USE_CUDA )
   rocm_export_targets(
     TARGETS roc::hipsolver
-    PREFIX hipsolver
     DEPENDS PACKAGE hip
     NAMESPACE roc::
   )
 else( )
   rocm_export_targets(
     TARGETS roc::hipsolver
-    PREFIX hipsolver
     DEPENDS PACKAGE HIP
     NAMESPACE roc::
   )
@@ -172,7 +196,14 @@ endif( )
 if( UNIX )
   # Force installation of .f90 module files
   install(FILES "hipsolver_module.f90"
-          DESTINATION "hipsolver/include")
+          DESTINATION "include/hipsolver")
 endif( )
 
-rocm_install_symlink_subdir( hipsolver )
+if(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY)
+  install(
+    DIRECTORY
+       "${PROJECT_BINARY_DIR}/hipsolver"
+        DESTINATION "." )
+  message( STATUS "Backward Compatible Sym Link Created for include directories" )
+endif()
+ 

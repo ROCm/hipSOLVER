@@ -31,6 +31,7 @@ function display_help()
   echo "    [--codecoverage] Build with code coverage profiling enabled, excluding release mode."
   echo "    [--address-sanitizer] Build with address sanitizer enabled. Uses hipcc to compile"
   echo "    [--cmake-arg] Forward the given argument to CMake when configuring the build"
+  echo "    [--freorg-bkwdcomp] Build with backward compatibility for Package file/folder reorg enabled"
 }
 
 
@@ -310,6 +311,7 @@ build_static=false
 build_release_debug=false
 build_codecoverage=false
 build_address_sanitizer=false
+build_freorg_bkwdcomp=false
 declare -a cmake_common_options
 declare -a cmake_client_options
 
@@ -320,7 +322,7 @@ declare -a cmake_client_options
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,address-sanitizer,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,address-sanitizer,freorg-bkwdcomp,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -379,6 +381,9 @@ while true; do
     --address-sanitizer)
         build_address_sanitizer=true
         compiler=hipcc
+        shift ;;
+    --freorg-bkwdcomp)
+        build_freorg_bkwdcomp=true
         shift ;;
     -p|--cmakepp)
         cmake_prefix_path=${2}
@@ -543,6 +548,10 @@ pushd .
   if [[ "${build_address_sanitizer}" == true ]]; then
     cmake_common_options+=("-DBUILD_ADDRESS_SANITIZER=ON")
   fi
+
+if [[ "${build_freorg_bkwdcomp}" == true ]]; then
+  cmake_common_options="${cmake_common_options} -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=ON"
+fi
 
   # Build library
   if [[ "${build_relocatable}" == true ]]; then
