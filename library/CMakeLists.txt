@@ -34,7 +34,8 @@ else()
 endif()
 
 # configure a header file to pass the CMake version settings to the source, and package the header files in the output archive
-configure_file( "${CMAKE_CURRENT_SOURCE_DIR}/include/internal/hipsolver-version.h.in" "${PROJECT_BINARY_DIR}/include/hipsolver/internal/hipsolver-version.h" )
+configure_file( "${CMAKE_CURRENT_SOURCE_DIR}/include/internal/hipsolver-version.h.in"
+	"${PROJECT_BINARY_DIR}/include/hipsolver/internal/hipsolver-version.h" )
 
 set( hipsolver_headers_public
   include/hipsolver.h
