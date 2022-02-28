@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright 2016-2021 Advanced Micro Devices, Inc.
+# Copyright 2016-2022 Advanced Micro Devices, Inc.
 # ########################################################################
 
 # ########################################################################
@@ -71,12 +71,6 @@ if( WIN32 )
   endif( )
 endif( )
 
-# External header includes included as system files
-target_include_directories( hipsolver
-  SYSTEM PRIVATE
-    $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
-)
-
 # Build hipsolver from source on AMD platform
 if( NOT USE_CUDA )
   if( NOT TARGET rocblas )
@@ -111,6 +105,7 @@ else( )
   # External header includes included as system files
   target_include_directories( hipsolver
     SYSTEM PRIVATE
+      $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
       $<BUILD_INTERFACE:${CUDA_INCLUDE_DIRS}>
   )
 endif( )
