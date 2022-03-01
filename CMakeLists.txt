@@ -34,7 +34,7 @@ endif( )
 # This finds the rocm-cmake project, and installs it if not found
 # rocm-cmake contains common cmake code for rocm projects to help setup and install
 set( PROJECT_EXTERN_DIR ${CMAKE_CURRENT_BINARY_DIR}/extern )
-find_package( ROCM CONFIG QUIET PATHS /opt/rocm )
+find_package( ROCM 0.7.3 CONFIG QUIET PATHS /opt/rocm )
 if( NOT ROCM_FOUND )
   set( rocm_cmake_tag "master" CACHE STRING "rocm-cmake tag to download" )
   file( DOWNLOAD https://github.com/RadeonOpenCompute/rocm-cmake/archive/${rocm_cmake_tag}.zip
@@ -43,7 +43,7 @@ if( NOT ROCM_FOUND )
   execute_process( COMMAND ${CMAKE_COMMAND} -E tar xzf ${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag}.zip
     WORKING_DIRECTORY ${PROJECT_EXTERN_DIR} )
 
-  find_package( ROCM REQUIRED CONFIG PATHS ${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag} )
+  find_package( ROCM 0.7.3 REQUIRED CONFIG PATHS ${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag} )
 endif( )
 
 include( ROCMSetupVersion )
@@ -121,7 +121,7 @@ if(BUILD_CODE_COVERAGE)
 endif()
 
 # FOR HANDLING ENABLE/DISABLE OPTIONAL BACKWARD COMPATIBILITY for FILE/FOLDER REORG
-option(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY "Build with file/folder reorg with backward compatibility enabled" OFF)
+option(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY "Build with file/folder reorg with backward compatibility enabled" ON)
 if(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY)
   rocm_wrap_header_dir(
     ${CMAKE_SOURCE_DIR}/library/include
