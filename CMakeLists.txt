@@ -36,14 +36,32 @@ endif( )
 set( PROJECT_EXTERN_DIR ${CMAKE_CURRENT_BINARY_DIR}/extern )
 find_package( ROCM 0.7.3 CONFIG QUIET PATHS /opt/rocm )
 if( NOT ROCM_FOUND )
-  set( rocm_cmake_tag "master" CACHE STRING "rocm-cmake tag to download" )
-  file( DOWNLOAD https://github.com/RadeonOpenCompute/rocm-cmake/archive/${rocm_cmake_tag}.zip
-    ${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag}.zip )
+  set(rocm_cmake_tag "master" CACHE STRING "rocm-cmake tag to download")
+  set(rocm_cmake_url "https://github.com/RadeonOpenCompute/rocm-cmake/archive/${rocm_cmake_tag}.zip")
+  set(rocm_cmake_path "${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag}")
+  set(rocm_cmake_archive "${rocm_cmake_path}.zip")
+  file(DOWNLOAD "${rocm_cmake_url}" "${rocm_cmake_archive}" STATUS status LOG log)
 
-  execute_process( COMMAND ${CMAKE_COMMAND} -E tar xzf ${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag}.zip
-    WORKING_DIRECTORY ${PROJECT_EXTERN_DIR} )
+  list(GET status 0 status_code)
+  list(GET status 1 status_string)
 
-  find_package( ROCM 0.7.3 REQUIRED CONFIG PATHS ${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag} )
+  if(status_code EQUAL 0)
+    message(STATUS "downloading... done")
+  else()
+    message(FATAL_ERROR "error: downloading\n'${rocm_cmake_url}' failed
+    status_code: ${status_code}
+    status_string: ${status_string}
+    log: ${log}\n")
+  endif()
+
+  execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzvf "${rocm_cmake_archive}"
+    WORKING_DIRECTORY ${PROJECT_EXTERN_DIR})
+  execute_process( COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=${PROJECT_EXTERN_DIR}/rocm-cmake .
+    WORKING_DIRECTORY ${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag} )
+  execute_process( COMMAND ${CMAKE_COMMAND} --build rocm-cmake-${rocm_cmake_tag} --target install
+    WORKING_DIRECTORY ${PROJECT_EXTERN_DIR})
+
+  find_package( ROCM 0.7.3 REQUIRED CONFIG PATHS ${PROJECT_EXTERN_DIR}/rocm-cmake )
 endif( )
 
 include( ROCMSetupVersion )
