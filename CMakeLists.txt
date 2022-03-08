@@ -75,6 +75,7 @@ include( ROCMCreatePackage )
 include( ROCMInstallTargets )
 include( ROCMPackageConfigHelpers )
 include( ROCMInstallSymlinks )
+include( ROCMClients )
 
 set ( VERSION_STRING "1.4.0" )
 rocm_setup_version( VERSION ${VERSION_STRING} )
@@ -160,9 +161,57 @@ set(CMAKE_INSTALL_LIBDIR "lib" CACHE INTERNAL "Installation directory for librar
 
 # Build clients of the library
 if( BUILD_CLIENTS_SAMPLES OR BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
+  rocm_package_setup_component(clients)
+  if( BUILD_CLIENTS_TESTS )
+    rocm_package_setup_client_component(tests)
+  endif()
+  if( BUILD_CLIENTS_BENCHMARKS )
+    rocm_package_setup_client_component(benchmarks)
+  endif()
   add_subdirectory( clients )
 endif( )
 
+# Package specific CPACK vars
+if( NOT USE_CUDA )
+  rocm_package_add_dependencies(DEPENDS "rocblas >= 2.44.0" "rocsolver >= 3.18.0")
+endif( )
+
+set( CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE.md" )
+set( CPACK_RPM_PACKAGE_LICENSE "MIT" )
+
+if(WIN32)
+  set(CPACK_SOURCE_GENERATOR "ZIP")
+  set(CPACK_GENERATOR "ZIP")
+  set(CMAKE_INSTALL_PREFIX "C:/hipSDK" CACHE PATH "Install path" FORCE)
+  set(INSTALL_PREFIX "C:/hipSDK")
+  set(CPACK_SET_DESTDIR OFF)
+  set(CPACK_PACKAGE_INSTALL_DIRECTORY "C:/hipSDK")
+  set(CPACK_PACKAGING_INSTALL_PREFIX "")
+  set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY OFF)
+else()
+  if(NOT CPACK_PACKAGING_INSTALL_PREFIX)
+    set(CPACK_PACKAGING_INSTALL_PREFIX "${ROCM_PATH}")
+  endif()
+endif()
+
+set( CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION "\${CPACK_PACKAGING_INSTALL_PREFIX}" "\${CPACK_PACKAGING_INSTALL_PREFIX}/include" "\${CPACK_PACKAGING_INSTALL_PREFIX}/lib" )
+
+# Give hipsolver compiled for CUDA backend a different name
+if( NOT USE_CUDA )
+    set( package_name hipsolver )
+else( )
+    set( package_name hipsolver-alt )
+endif( )
+
+set( HIPSOLVER_CONFIG_DIR "\${CPACK_PACKAGING_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" CACHE PATH "Path placed into ldconfig file" )
+
+rocm_create_package(
+    NAME ${package_name}
+    DESCRIPTION "Radeon Open Compute LAPACK marshalling library"
+    MAINTAINER "hipSOLVER Maintainer <hipsolver-maintainer@amd.com>"
+    LDCONFIG
+    LDCONFIG_DIR ${HIPSOLVER_CONFIG_DIR}
+)
 
 # ADDITIONAL TARGETS FOR CODE COVERAGE
 if(BUILD_CODE_COVERAGE)
