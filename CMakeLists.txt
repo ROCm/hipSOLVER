@@ -176,7 +176,7 @@ if( NOT USE_CUDA )
   rocm_package_add_dependencies(DEPENDS "rocblas >= 2.44.0" "rocsolver >= 3.18.0")
 endif( )
 
-set( CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE.md" )
+set( CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.md" )
 set( CPACK_RPM_PACKAGE_LICENSE "MIT" )
 
 if(WIN32)
