@@ -4,6 +4,8 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ## (Unreleased) hipSOLVER
 ### Added
+- Packages for test and benchmark executables on all supported OSes using CPack.
+
 ### Optimized
 ### Changed
 ### Deprecated
