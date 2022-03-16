@@ -2,7 +2,7 @@
 
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
-## (Unreleased) hipSOLVER
+## hipSOLVER 1.3.0 for ROCm 5.1.0
 ### Added
 - Added functions
   - gels
