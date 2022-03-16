@@ -4,6 +4,9 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ## (Unreleased) hipSOLVER
 ### Added
+- File/Folder Reorg
+  - Added File/Folder Reorg Changes with backward compatibility support using ROCM-CMAKE wrapper functions.
+
 ### Optimized
 ### Changed
 ### Deprecated
