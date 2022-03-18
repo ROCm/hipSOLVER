@@ -36,38 +36,32 @@ endif( )
 set( PROJECT_EXTERN_DIR ${CMAKE_CURRENT_BINARY_DIR}/extern )
 find_package( ROCM 0.7.3 CONFIG QUIET PATHS /opt/rocm )
 if( NOT ROCM_FOUND )
-  set(PROJECT_EXTERN_DIR "${CMAKE_CURRENT_BINARY_DIR}/deps")
-  file( TO_NATIVE_PATH "${PROJECT_EXTERN_DIR}" PROJECT_EXTERN_DIR_NATIVE)
   set(rocm_cmake_tag "master" CACHE STRING "rocm-cmake tag to download")
-  file(
-      DOWNLOAD https://github.com/RadeonOpenCompute/rocm-cmake/archive/${rocm_cmake_tag}.tar.gz
-      ${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag}.tar.gz
-      STATUS rocm_cmake_download_status LOG rocm_cmake_download_log
-  )
-  list(GET rocm_cmake_download_status 0 rocm_cmake_download_error_code)
-  if(rocm_cmake_download_error_code)
-      message(FATAL_ERROR "Error: downloading "
-          "https://github.com/RadeonOpenCompute/rocm-cmake/archive/${rocm_cmake_tag}.zip failed "
-          "error_code: ${rocm_cmake_download_error_code} "
-          "log: ${rocm_cmake_download_log} "
-      )
+  set(rocm_cmake_url "https://github.com/RadeonOpenCompute/rocm-cmake/archive/${rocm_cmake_tag}.zip")
+  set(rocm_cmake_path "${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag}")
+  set(rocm_cmake_archive "${rocm_cmake_path}.zip")
+  file(DOWNLOAD "${rocm_cmake_url}" "${rocm_cmake_archive}" STATUS status LOG log)
+
+  list(GET status 0 status_code)
+  list(GET status 1 status_string)
+
+  if(status_code EQUAL 0)
+    message(STATUS "downloading... done")
+  else()
+    message(FATAL_ERROR "error: downloading\n'${rocm_cmake_url}' failed
+    status_code: ${status_code}
+    status_string: ${status_string}
+    log: ${log}\n")
   endif()
 
-  execute_process(
-      COMMAND ${CMAKE_COMMAND} -E tar xzvf ${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag}.tar.gz
-      WORKING_DIRECTORY ${PROJECT_EXTERN_DIR}
-  )
-  execute_process(
-      COMMAND ${CMAKE_COMMAND} -S ${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag} -B ${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag}/build
-      WORKING_DIRECTORY ${PROJECT_EXTERN_DIR}
-  )
-  execute_process(
-      COMMAND ${CMAKE_COMMAND} --install ${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag}/build --prefix ${PROJECT_EXTERN_DIR}/rocm
-      WORKING_DIRECTORY ${PROJECT_EXTERN_DIR} )
-  if(rocm_cmake_unpack_error_code)
-      message(FATAL_ERROR "Error: unpacking ${CMAKE_CURRENT_BINARY_DIR}/rocm-cmake-${rocm_cmake_tag}.zip failed")
-  endif()
-  find_package(ROCM 0.7.3 REQUIRED CONFIG PATHS ${PROJECT_EXTERN_DIR})
+  execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzvf "${rocm_cmake_archive}"
+    WORKING_DIRECTORY ${PROJECT_EXTERN_DIR})
+  execute_process( COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=${PROJECT_EXTERN_DIR}/rocm-cmake .
+    WORKING_DIRECTORY ${PROJECT_EXTERN_DIR}/rocm-cmake-${rocm_cmake_tag} )
+  execute_process( COMMAND ${CMAKE_COMMAND} --build rocm-cmake-${rocm_cmake_tag} --target install
+    WORKING_DIRECTORY ${PROJECT_EXTERN_DIR})
+
+  find_package( ROCM 0.7.3 REQUIRED CONFIG PATHS ${PROJECT_EXTERN_DIR}/rocm-cmake )
 endif( )
 
 include( ROCMSetupVersion )
@@ -76,6 +70,7 @@ include( ROCMInstallTargets )
 include( ROCMPackageConfigHelpers )
 include( ROCMInstallSymlinks )
 include( ROCMClients )
+include( ROCMHeaderWrapper )
 
 set ( VERSION_STRING "1.4.0" )
 rocm_setup_version( VERSION ${VERSION_STRING} )
@@ -88,7 +83,7 @@ endif( )
 
 # Append our library helper cmake path and the cmake path for hip (for convenience)
 # Users may override HIP path by specifying their own in CMAKE_MODULE_PATH
-list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${HIP_PATH}/cmake )
+list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ROCM_PATH}/lib/cmake/hip ${HIP_PATH}/cmake )
 
 # NOTE:  workaround until hip cmake modules fixes symlink logic in their config files; remove when fixed
 list( APPEND CMAKE_PREFIX_PATH /opt/rocm /opt/rocm/llvm /opt/rocm/hip )
@@ -142,6 +137,17 @@ option(BUILD_CODE_COVERAGE "Build hipSOLVER with code coverage enabled" OFF)
 if(BUILD_CODE_COVERAGE)
   add_compile_options(-fprofile-arcs -ftest-coverage)
   add_link_options(--coverage)
+endif()
+
+# FOR HANDLING ENABLE/DISABLE OPTIONAL BACKWARD COMPATIBILITY for FILE/FOLDER REORG
+option(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY "Build with file/folder reorg with backward compatibility enabled" ON)
+if(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY)
+  rocm_wrap_header_dir(
+    ${CMAKE_SOURCE_DIR}/library/include
+    PATTERNS "*.h"
+    GUARDS SYMLINK WRAPPER
+    WRAPPER_LOCATIONS include
+  )
 endif()
 
 if( WIN32 )
