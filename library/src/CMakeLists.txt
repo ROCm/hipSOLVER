@@ -115,7 +115,8 @@ target_include_directories( hipsolver
   PUBLIC  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/library/include>
           $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/library/include/internal>
           $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>
-          $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/internal>
+          $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/hipsolver>
+          $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/hipsolver/internal>
           $<INSTALL_INTERFACE:include>
   PRIVATE
           ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -130,7 +131,17 @@ set_target_properties( hipsolver PROPERTIES DEBUG_POSTFIX "-d" )
 # Package that helps me set visibility for function names exported from shared library
 include( GenerateExportHeader )
 set_target_properties( hipsolver PROPERTIES CXX_VISIBILITY_PRESET "hidden" VISIBILITY_INLINES_HIDDEN ON )
-generate_export_header( hipsolver EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/include/internal/hipsolver-export.h )
+generate_export_header( hipsolver EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/include/hipsolver/internal/hipsolver-export.h )
+
+execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/library/include ${PROJECT_BINARY_DIR}/include/hipsolver)
+if (BUILD_FILE_REORG_BACKWARD_COMPATIBILITY)
+  rocm_wrap_header_file(
+    internal/hipsolver-version.h internal/hipsolver-export.h
+    GUARDS SYMLINK WRAPPER
+    WRAPPER_LOCATIONS include hipsolver/include
+  )
+endif( )
+
 
 # Following Boost conventions of prefixing 'lib' on static built libraries, across all platforms
 if( NOT BUILD_SHARED_LIBS )
@@ -143,22 +154,18 @@ endif( )
 rocm_install_targets(
   TARGETS hipsolver
   INCLUDE
-    ${CMAKE_SOURCE_DIR}/library/include
     ${CMAKE_BINARY_DIR}/include
-  PREFIX hipsolver
 )
 
 if ( NOT USE_CUDA )
   rocm_export_targets(
     TARGETS roc::hipsolver
-    PREFIX hipsolver
     DEPENDS PACKAGE hip
     NAMESPACE roc::
   )
 else( )
   rocm_export_targets(
     TARGETS roc::hipsolver
-    PREFIX hipsolver
     DEPENDS PACKAGE HIP
     NAMESPACE roc::
   )
@@ -167,7 +174,31 @@ endif( )
 if( UNIX )
   # Force installation of .f90 module files
   install(FILES "hipsolver_module.f90"
-          DESTINATION "hipsolver/include")
+          DESTINATION "include/hipsolver")
 endif( )
 
-rocm_install_symlink_subdir( hipsolver )
+if(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY)
+  rocm_install(
+    DIRECTORY
+       "${PROJECT_BINARY_DIR}/hipsolver"
+        DESTINATION "." )
+
+  if ( NOT WIN32 )
+
+    #Create SymLink for Fortran Object Module for backward compatibility
+    rocm_install(
+      CODE "
+        set(PREFIX \$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX})
+	set(INPUT_FILE \${PREFIX}/include/hipsolver/hipsolver_module.f90)
+        set(SYMLINK_LOCATIONS \${PREFIX}/hipsolver/include \${PREFIX}/include)
+        foreach(LOCATION IN LISTS SYMLINK_LOCATIONS)
+          file(MAKE_DIRECTORY \${LOCATION})
+          execute_process(COMMAND ln -sfr \${INPUT_FILE} \${LOCATION})
+          message(STATUS \"Created symlink in \${LOCATION} to \${INPUT_FILE}.\")
+        endforeach()
+        "
+    )
+  endif() #NOT WIN32
+  message( STATUS "Backward Compatible Sym Link Created for include directories" )
+endif()
+
