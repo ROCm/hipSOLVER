@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright 2016-2021 Advanced Micro Devices, Inc.
+# Copyright 2016-2022 Advanced Micro Devices, Inc.
 # ########################################################################
 
 # Consider removing this in the future
@@ -37,7 +37,7 @@ endif( )
 
 if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS OR BUILD_CLIENTS_SAMPLES )
   if( UNIX )
-    add_library(hipsolver_fortran_client ${hipsolver_f90_source_clients})
+    add_library(hipsolver_fortran_client STATIC ${hipsolver_f90_source_clients})
     add_dependencies(hipsolver_fortran_client hipsolver_fortran)
     include_directories(${CMAKE_BINARY_DIR}/include/hipsolver)
     include_directories(${CMAKE_BINARY_DIR}/include/hipsolver/internal)

@@ -11,7 +11,7 @@ function display_help()
   echo "hipSOLVER build & installation helper script"
   echo "./install [-h|--help] "
   echo "    [-h|--help] Prints this help message"
-  echo "    [-i|--install] Install after build"
+  echo "    [-i|--install] Install library and clients after build"
   echo "    [-d|--dependencies] Install build dependencies"
   echo "    [-c|--clients] Build library clients too (combines with -i & -d)"
   echo "    [-g|--debug] -DCMAKE_BUILD_TYPE=Debug (default is =Release)"

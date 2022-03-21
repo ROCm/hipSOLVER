@@ -105,6 +105,8 @@ endif( )
 set_target_properties( hipsolver-test PROPERTIES DEBUG_POSTFIX "-d" CXX_EXTENSIONS NO )
 set_target_properties( hipsolver-test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging" )
 
+rocm_install(TARGETS hipsolver-test COMPONENT tests)
+
 if(WIN32)
   file(GLOB third_party_dlls
     LIST_DIRECTORIES OFF
