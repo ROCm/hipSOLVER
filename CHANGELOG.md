@@ -2,22 +2,14 @@
 
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
-## (Unreleased) hipSOLVER
+## (Unreleased) hipSOLVER 1.4.0
 ### Added
 - Package generation for test and benchmark executables on all supported OSes using CPack.
 - File/Folder Reorg
   - Added File/Folder Reorg Changes with backward compatibility support using ROCM-CMAKE wrapper functions.
 
-### Optimized
-### Changed
-### Deprecated
-### Removed
-### Fixed
-### Known Issues
-### Security
 
-
-## (Unreleased) hipSOLVER 1.3.0
+## hipSOLVER 1.3.0 for ROCm 5.1.0
 ### Added
 - Added functions
   - gels
