@@ -11,7 +11,7 @@ To download the hipSOLVER source code, clone this repository with the command:
 
     git clone https://github.com/ROCmSoftwarePlatform/hipSOLVER.git
 
-hipSOLVER requires either cuSOLVER or rocSOLVER + rocBLAS to be installed on the system. Once these are installed, the following commands will build hipSOLVER and install to `/opt/rocm/hipsolver`:
+hipSOLVER requires either cuSOLVER or rocSOLVER + rocBLAS to be installed on the system. Once these are installed, the following commands will build hipSOLVER and install to `/opt/rocm`:
 
     cd hipSOLVER
     ./install.sh -i
