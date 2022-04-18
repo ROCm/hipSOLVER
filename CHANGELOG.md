@@ -8,6 +8,9 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 - File/Folder Reorg
   - Added File/Folder Reorg Changes with backward compatibility support using ROCM-CMAKE wrapper functions.
 
+### Fixed
+- Fixed the ReadTheDocs documentation generation.
+
 
 ## hipSOLVER 1.3.0 for ROCm 5.1.0
 ### Added
