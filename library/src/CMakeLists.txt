@@ -114,9 +114,9 @@ endif( )
 target_include_directories( hipsolver
   PUBLIC  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/library/include>
           $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/library/include/internal>
-          $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>
           $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/hipsolver>
           $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/hipsolver/internal>
+          $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>
           $<INSTALL_INTERFACE:include>
   PRIVATE
           ${CMAKE_CURRENT_SOURCE_DIR}/include
