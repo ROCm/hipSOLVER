@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -83,6 +83,7 @@ void orgqr_ungqr_initData(const hipsolverHandle_t handle,
 {
     if(CPU)
     {
+        int info;
         rocblas_init<T>(hA, true);
         rocblas_init<T>(hIpiv, true);
 
@@ -99,7 +100,7 @@ void orgqr_ungqr_initData(const hipsolverHandle_t handle,
         }
 
         // compute QR factorization
-        cblas_geqrf<T>(m, n, hA[0], lda, hIpiv[0], hW.data(), size_W);
+        cblas_geqrf<T>(m, n, hA[0], lda, hIpiv[0], hW.data(), size_W, &info);
     }
 
     if(GPU)
@@ -122,9 +123,10 @@ void orgqr_ungqr_getError(const hipsolverHandle_t handle,
                           const int               lwork,
                           Ud&                     dInfo,
                           Th&                     hA,
-                          Th&                     hAr,
+                          Th&                     hARes,
                           Th&                     hIpiv,
                           Uh&                     hInfo,
+                          Uh&                     hInfoRes,
                           double*                 max_err)
 {
     size_t         size_W = size_t(n);
@@ -137,16 +139,21 @@ void orgqr_ungqr_getError(const hipsolverHandle_t handle,
     // GPU lapack
     CHECK_ROCBLAS_ERROR(hipsolver_orgqr_ungqr(
         FORTRAN, handle, m, n, k, dA.data(), lda, dIpiv.data(), dWork.data(), lwork, dInfo.data()));
-    CHECK_HIP_ERROR(hAr.transfer_from(dA));
+    CHECK_HIP_ERROR(hARes.transfer_from(dA));
+    CHECK_HIP_ERROR(hInfoRes.transfer_from(dInfo));
 
     // CPU lapack
-    cblas_orgqr_ungqr<T>(m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W);
+    cblas_orgqr_ungqr<T>(m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W, hInfo[0]);
 
     // error is ||hA - hAr|| / ||hA||
     // (THIS DOES NOT ACCOUNT FOR NUMERICAL REPRODUCIBILITY ISSUES.
     // IT MIGHT BE REVISITED IN THE FUTURE)
     // using frobenius norm
-    *max_err = norm_error('F', m, n, lda, hA[0], hAr[0]);
+    *max_err = norm_error('F', m, n, lda, hA[0], hARes[0]);
+
+    // check info
+    if(hInfo[0][0] != hInfoRes[0][0])
+        *max_err++;
 }
 
 template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
@@ -178,7 +185,7 @@ void orgqr_ungqr_getPerfData(const hipsolverHandle_t handle,
 
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
-        cblas_orgqr_ungqr<T>(m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W);
+        cblas_orgqr_ungqr<T>(m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W, hInfo[0]);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 
@@ -250,7 +257,7 @@ void testing_orgqr_ungqr(Arguments& argus)
     size_t size_P    = size_t(n);
     double max_error = 0, gpu_time_used = 0, cpu_time_used = 0;
 
-    size_t size_Ar = (argus.unit_check || argus.norm_check) ? size_A : 0;
+    size_t size_ARes = (argus.unit_check || argus.norm_check) ? size_A : 0;
 
     // check invalid sizes
     bool invalid_size = (m < 0 || n < 0 || k < 0 || lda < m || n > m || k > n);
@@ -277,9 +284,10 @@ void testing_orgqr_ungqr(Arguments& argus)
 
     // memory allocations
     host_strided_batch_vector<T>     hA(size_A, 1, size_A, 1);
-    host_strided_batch_vector<T>     hAr(size_Ar, 1, size_Ar, 1);
+    host_strided_batch_vector<T>     hARes(size_ARes, 1, size_ARes, 1);
     host_strided_batch_vector<T>     hIpiv(size_P, 1, size_P, 1);
     host_strided_batch_vector<int>   hInfo(1, 1, 1, 1);
+    host_strided_batch_vector<int>   hInfoRes(1, 1, 1, 1);
     device_strided_batch_vector<T>   dA(size_A, 1, size_A, 1);
     device_strided_batch_vector<T>   dIpiv(size_P, 1, size_P, 1);
     device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
@@ -309,9 +317,10 @@ void testing_orgqr_ungqr(Arguments& argus)
                                          size_W,
                                          dInfo,
                                          hA,
-                                         hAr,
+                                         hARes,
                                          hIpiv,
                                          hInfo,
+                                         hInfoRes,
                                          &max_error);
 
     // collect performance data

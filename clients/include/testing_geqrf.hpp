@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -179,6 +179,7 @@ void geqrf_getError(const hipsolverHandle_t handle,
                     Th&                     hARes,
                     Uh&                     hIpiv,
                     Vh&                     hInfo,
+                    Vh&                     hInfoRes,
                     double*                 max_err)
 {
     std::vector<T> hW(n);
@@ -202,10 +203,11 @@ void geqrf_getError(const hipsolverHandle_t handle,
                                         dInfo.data(),
                                         bc));
     CHECK_HIP_ERROR(hARes.transfer_from(dA));
+    CHECK_HIP_ERROR(hInfoRes.transfer_from(dInfo));
 
     // CPU lapack
     for(int b = 0; b < bc; ++b)
-        cblas_geqrf<T>(m, n, hA[b], lda, hIpiv[b], hW.data(), n);
+        cblas_geqrf<T>(m, n, hA[b], lda, hIpiv[b], hW.data(), n, hInfo[b]);
 
     // error is ||hA - hARes|| / ||hA|| (ideally ||QR - Qres Rres|| / ||QR||)
     // (THIS DOES NOT ACCOUNT FOR NUMERICAL REPRODUCIBILITY ISSUES.
@@ -218,6 +220,13 @@ void geqrf_getError(const hipsolverHandle_t handle,
         err      = norm_error('F', m, n, lda, hA[b], hARes[b]);
         *max_err = err > *max_err ? err : *max_err;
     }
+
+    // check info
+    err = 0;
+    for(int b = 0; b < bc; ++b)
+        if(hInfo[b][0] != hInfoRes[b][0])
+            err++;
+    *max_err += err;
 }
 
 template <bool FORTRAN,
@@ -257,7 +266,7 @@ void geqrf_getPerfData(const hipsolverHandle_t handle,
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
         for(int b = 0; b < bc; ++b)
-            cblas_geqrf<T>(m, n, hA[b], lda, hIpiv[b], hW.data(), n);
+            cblas_geqrf<T>(m, n, hA[b], lda, hIpiv[b], hW.data(), n, hInfo[b]);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 
@@ -389,6 +398,7 @@ void testing_geqrf(Arguments& argus)
         // host_batch_vector<T>             hARes(size_ARes, 1, bc);
         // host_strided_batch_vector<T>     hIpiv(size_P, 1, stP, bc);
         // host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
+        // host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         // device_batch_vector<T>           dA(size_A, 1, bc);
         // device_strided_batch_vector<T>   dIpiv(size_P, 1, stP, bc);
         // device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
@@ -422,6 +432,7 @@ void testing_geqrf(Arguments& argus)
         //                                hARes,
         //                                hIpiv,
         //                                hInfo,
+        //                                hInfoRes,
         //                                &max_error);
 
         // // collect performance data
@@ -454,6 +465,7 @@ void testing_geqrf(Arguments& argus)
         host_strided_batch_vector<T>     hARes(size_ARes, 1, stARes, bc);
         host_strided_batch_vector<T>     hIpiv(size_P, 1, stP, bc);
         host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
+        host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         device_strided_batch_vector<T>   dA(size_A, 1, stA, bc);
         device_strided_batch_vector<T>   dIpiv(size_P, 1, stP, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
@@ -487,6 +499,7 @@ void testing_geqrf(Arguments& argus)
                                        hARes,
                                        hIpiv,
                                        hInfo,
+                                       hInfoRes,
                                        &max_error);
 
         // collect performance data

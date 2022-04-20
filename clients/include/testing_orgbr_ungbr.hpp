@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -90,7 +90,9 @@ void orgbr_ungbr_initData(const hipsolverHandle_t   handle,
 {
     if(CPU)
     {
-        using S          = decltype(std::real(T{}));
+        using S = decltype(std::real(T{}));
+
+        int            info;
         size_t         s = max(hIpiv.n(), 2);
         std::vector<S> E(s - 1);
         std::vector<S> D(s);
@@ -114,7 +116,7 @@ void orgbr_ungbr_initData(const hipsolverHandle_t   handle,
                 }
             }
             cblas_gebrd<T>(
-                m, k, hA[0], lda, D.data(), E.data(), hIpiv[0], P.data(), hW.data(), size_W);
+                m, k, hA[0], lda, D.data(), E.data(), hIpiv[0], P.data(), hW.data(), size_W, &info);
         }
         else
         {
@@ -129,7 +131,7 @@ void orgbr_ungbr_initData(const hipsolverHandle_t   handle,
                 }
             }
             cblas_gebrd<T>(
-                k, n, hA[0], lda, D.data(), E.data(), P.data(), hIpiv[0], hW.data(), size_W);
+                k, n, hA[0], lda, D.data(), E.data(), P.data(), hIpiv[0], hW.data(), size_W, &info);
         }
     }
 
@@ -154,9 +156,10 @@ void orgbr_ungbr_getError(const hipsolverHandle_t   handle,
                           const int                 lwork,
                           Ud&                       dInfo,
                           Th&                       hA,
-                          Th&                       hAr,
+                          Th&                       hARes,
                           Th&                       hIpiv,
                           Uh&                       hInfo,
+                          Uh&                       hInfoRes,
                           double*                   max_err)
 {
     size_t         size_W = max(max(m, n), k);
@@ -180,16 +183,21 @@ void orgbr_ungbr_getError(const hipsolverHandle_t   handle,
                                               dWork.data(),
                                               lwork,
                                               dInfo.data()));
-    CHECK_HIP_ERROR(hAr.transfer_from(dA));
+    CHECK_HIP_ERROR(hARes.transfer_from(dA));
+    CHECK_HIP_ERROR(hInfoRes.transfer_from(dInfo));
 
     // CPU lapack
-    cblas_orgbr_ungbr<T>(side, m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W);
+    cblas_orgbr_ungbr<T>(side, m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W, hInfo[0]);
 
     // error is ||hA - hAr|| / ||hA||
     // (THIS DOES NOT ACCOUNT FOR NUMERICAL REPRODUCIBILITY ISSUES.
     // IT MIGHT BE REVISITED IN THE FUTURE)
     // using frobenius norm
-    *max_err = norm_error('F', m, n, lda, hA[0], hAr[0]);
+    *max_err = norm_error('F', m, n, lda, hA[0], hARes[0]);
+
+    // check info
+    if(hInfo[0][0] != hInfoRes[0][0])
+        *max_err++;
 }
 
 template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
@@ -222,7 +230,7 @@ void orgbr_ungbr_getPerfData(const hipsolverHandle_t   handle,
 
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
-        cblas_orgbr_ungbr<T>(side, m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W);
+        cblas_orgbr_ungbr<T>(side, m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W, hInfo[0]);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 
@@ -313,7 +321,7 @@ void testing_orgbr_ungbr(Arguments& argus)
 
     double max_error = 0, gpu_time_used = 0, cpu_time_used = 0;
 
-    size_t size_Ar = (argus.unit_check || argus.norm_check) ? size_A : 0;
+    size_t size_ARes = (argus.unit_check || argus.norm_check) ? size_A : 0;
 
     // check invalid sizes
     bool invalid_size = ((m < 0 || n < 0 || k < 0 || lda < m) || (row && (m > n || m < min(n, k)))
@@ -342,9 +350,10 @@ void testing_orgbr_ungbr(Arguments& argus)
 
     // memory allocations
     host_strided_batch_vector<T>     hA(size_A, 1, size_A, 1);
-    host_strided_batch_vector<T>     hAr(size_Ar, 1, size_Ar, 1);
+    host_strided_batch_vector<T>     hARes(size_ARes, 1, size_ARes, 1);
     host_strided_batch_vector<T>     hIpiv(size_P, 1, size_P, 1);
     host_strided_batch_vector<int>   hInfo(1, 1, 1, 1);
+    host_strided_batch_vector<int>   hInfoRes(1, 1, 1, 1);
     device_strided_batch_vector<T>   dA(size_A, 1, size_A, 1);
     device_strided_batch_vector<T>   dIpiv(size_P, 1, size_P, 1);
     device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
@@ -375,9 +384,10 @@ void testing_orgbr_ungbr(Arguments& argus)
                                          size_W,
                                          dInfo,
                                          hA,
-                                         hAr,
+                                         hARes,
                                          hIpiv,
                                          hInfo,
+                                         hInfoRes,
                                          &max_error);
 
     // collect performance data
