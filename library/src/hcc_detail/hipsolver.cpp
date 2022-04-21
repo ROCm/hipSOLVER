@@ -9,9 +9,9 @@
 #include "hipsolver.h"
 #include "error_macros.hpp"
 #include "exceptions.hpp"
-#include "internal/rocblas_device_malloc.hpp"
-#include "rocblas.h"
-#include "rocsolver.h"
+#include "rocblas/internal/rocblas_device_malloc.hpp"
+#include "rocblas/rocblas.h"
+#include "rocsolver/rocsolver.h"
 #include <algorithm>
 #include <climits>
 #include <functional>
