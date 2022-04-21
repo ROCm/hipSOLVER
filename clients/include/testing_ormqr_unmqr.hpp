@@ -146,6 +146,22 @@ void ormqr_unmqr_checkBadArgs(const hipsolverHandle_t    handle,
                                                 lwork,
                                                 dInfo),
                           HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormqr_unmqr(FORTRAN,
+                                                handle,
+                                                side,
+                                                trans,
+                                                m,
+                                                n,
+                                                k,
+                                                dA,
+                                                lda,
+                                                dIpiv,
+                                                dC,
+                                                ldc,
+                                                dWork,
+                                                lwork,
+                                                (U) nullptr),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
 }
 

@@ -37,6 +37,9 @@ void orgtr_ungtr_checkBadArgs(const hipsolverHandle_t   handle,
     EXPECT_ROCBLAS_STATUS(
         hipsolver_orgtr_ungtr(FORTRAN, handle, uplo, n, dA, lda, (T) nullptr, dWork, lwork, dInfo),
         HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_orgtr_ungtr(FORTRAN, handle, uplo, n, dA, lda, dIpiv, dWork, lwork, (U) nullptr),
+        HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
 }
 

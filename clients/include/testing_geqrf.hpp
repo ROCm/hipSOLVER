@@ -38,6 +38,10 @@ void geqrf_checkBadArgs(const hipsolverHandle_t handle,
         hipsolver_geqrf(
             FORTRAN, handle, m, n, dA, lda, stA, (U) nullptr, stP, dWork, lwork, dInfo, bc),
         HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_geqrf(
+            FORTRAN, handle, m, n, dA, lda, stA, dIpiv, stP, dWork, lwork, (V) nullptr, bc),
+        HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
 }
 

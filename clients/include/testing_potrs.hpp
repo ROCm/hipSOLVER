@@ -80,6 +80,10 @@ void potrs_checkBadArgs(const hipsolverHandle_t   handle,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_potrs(
+            API, handle, uplo, n, nrhs, dA, lda, stA, dB, ldb, stB, dWork, lwork, (U) nullptr, bc),
+        HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
 }
 

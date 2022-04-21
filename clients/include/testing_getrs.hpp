@@ -120,6 +120,24 @@ void getrs_checkBadArgs(const hipsolverHandle_t    handle,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrs(API,
+                                          handle,
+                                          trans,
+                                          m,
+                                          nrhs,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dIpiv,
+                                          stP,
+                                          dB,
+                                          ldb,
+                                          stB,
+                                          dWork,
+                                          lwork,
+                                          (U) nullptr,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
 }
 

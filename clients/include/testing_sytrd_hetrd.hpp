@@ -138,6 +138,24 @@ void sytrd_hetrd_checkBadArgs(const hipsolverHandle_t   handle,
                                                 dInfo,
                                                 bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_sytrd_hetrd(FORTRAN,
+                                                handle,
+                                                uplo,
+                                                n,
+                                                dA,
+                                                lda,
+                                                stA,
+                                                dD,
+                                                stD,
+                                                dE,
+                                                stE,
+                                                dTau,
+                                                stP,
+                                                dWork,
+                                                lwork,
+                                                (V) nullptr,
+                                                bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
 }
 

@@ -153,6 +153,26 @@ void gebrd_checkBadArgs(const hipsolverHandle_t handle,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(FORTRAN,
+                                          handle,
+                                          m,
+                                          n,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dD,
+                                          stD,
+                                          dE,
+                                          stE,
+                                          dTauq,
+                                          stQ,
+                                          dTaup,
+                                          stP,
+                                          dWork,
+                                          lwork,
+                                          (V) nullptr,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
 }
 
