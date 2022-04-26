@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -174,6 +174,22 @@ void ormtr_unmtr_checkBadArgs(const hipsolverHandle_t    handle,
                                                 lwork,
                                                 dInfo),
                           HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+                                                handle,
+                                                side,
+                                                uplo,
+                                                trans,
+                                                m,
+                                                n,
+                                                dA,
+                                                lda,
+                                                dIpiv,
+                                                dC,
+                                                ldc,
+                                                dWork,
+                                                lwork,
+                                                (U) nullptr),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
 }
 
@@ -307,8 +323,9 @@ void ormtr_unmtr_getError(const hipsolverHandle_t    handle,
                           Th&                        hA,
                           Th&                        hIpiv,
                           Th&                        hC,
-                          Th&                        hCr,
+                          Th&                        hCRes,
                           Uh&                        hInfo,
+                          Uh&                        hInfoRes,
                           double*                    max_err)
 {
     size_t         size_W = (side == HIPSOLVER_SIDE_LEFT ? m : n) * 32;
@@ -335,17 +352,22 @@ void ormtr_unmtr_getError(const hipsolverHandle_t    handle,
                                               dWork.data(),
                                               lwork,
                                               dInfo.data()));
-    CHECK_HIP_ERROR(hCr.transfer_from(dC));
+    CHECK_HIP_ERROR(hCRes.transfer_from(dC));
+    CHECK_HIP_ERROR(hInfoRes.transfer_from(dInfo));
 
     // CPU lapack
     cblas_ormtr_unmtr<T>(
-        side, uplo, trans, m, n, hA[0], lda, hIpiv[0], hC[0], ldc, hW.data(), size_W);
+        side, uplo, trans, m, n, hA[0], lda, hIpiv[0], hC[0], ldc, hW.data(), size_W, hInfo[0]);
 
     // error is ||hC - hCr|| / ||hC||
     // (THIS DOES NOT ACCOUNT FOR NUMERICAL REPRODUCIBILITY ISSUES.
     // IT MIGHT BE REVISITED IN THE FUTURE)
     // using frobenius norm
-    *max_err = norm_error('F', m, n, ldc, hC[0], hCr[0]);
+    *max_err = norm_error('F', m, n, ldc, hC[0], hCRes[0]);
+
+    // check info
+    if(hInfo[0][0] != hInfoRes[0][0])
+        *max_err++;
 }
 
 template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
@@ -383,7 +405,7 @@ void ormtr_unmtr_getPerfData(const hipsolverHandle_t    handle,
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
         cblas_ormtr_unmtr<T>(
-            side, uplo, trans, m, n, hA[0], lda, hIpiv[0], hC[0], ldc, hW.data(), size_W);
+            side, uplo, trans, m, n, hA[0], lda, hIpiv[0], hC[0], ldc, hW.data(), size_W, hInfo[0]);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 
@@ -508,7 +530,7 @@ void testing_ormtr_unmtr(Arguments& argus)
     size_t size_A    = size_t(lda) * nq;
     double max_error = 0, gpu_time_used = 0, cpu_time_used = 0;
 
-    size_t size_Cr = (argus.unit_check || argus.norm_check) ? size_C : 0;
+    size_t size_CRes = (argus.unit_check || argus.norm_check) ? size_C : 0;
 
     // check invalid sizes
     bool invalid_size = (m < 0 || n < 0 || ldc < m || lda < nq);
@@ -539,10 +561,11 @@ void testing_ormtr_unmtr(Arguments& argus)
 
     // memory allocations
     host_strided_batch_vector<T>     hC(size_C, 1, size_C, 1);
-    host_strided_batch_vector<T>     hCr(size_Cr, 1, size_Cr, 1);
+    host_strided_batch_vector<T>     hCRes(size_CRes, 1, size_CRes, 1);
     host_strided_batch_vector<T>     hIpiv(size_P, 1, size_P, 1);
     host_strided_batch_vector<T>     hA(size_A, 1, size_A, 1);
     host_strided_batch_vector<int>   hInfo(1, 1, 1, 1);
+    host_strided_batch_vector<int>   hInfoRes(1, 1, 1, 1);
     device_strided_batch_vector<T>   dC(size_C, 1, size_C, 1);
     device_strided_batch_vector<T>   dIpiv(size_P, 1, size_P, 1);
     device_strided_batch_vector<T>   dA(size_A, 1, size_A, 1);
@@ -592,8 +615,9 @@ void testing_ormtr_unmtr(Arguments& argus)
                                          hA,
                                          hIpiv,
                                          hC,
-                                         hCr,
+                                         hCRes,
                                          hInfo,
+                                         hInfoRes,
                                          &max_error);
 
     // collect performance data

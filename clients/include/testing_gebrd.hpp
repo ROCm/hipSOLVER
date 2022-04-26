@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -151,6 +151,26 @@ void gebrd_checkBadArgs(const hipsolverHandle_t handle,
                                           dWork,
                                           lwork,
                                           dInfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(FORTRAN,
+                                          handle,
+                                          m,
+                                          n,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dD,
+                                          stD,
+                                          dE,
+                                          stE,
+                                          dTauq,
+                                          stQ,
+                                          dTaup,
+                                          stP,
+                                          dWork,
+                                          lwork,
+                                          (V) nullptr,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
@@ -351,6 +371,7 @@ void gebrd_getError(const hipsolverHandle_t handle,
                     Uh&                     hTauq,
                     Uh&                     hTaup,
                     Vh&                     hInfo,
+                    Vh&                     hInfoRes,
                     double*                 max_err)
 {
     constexpr bool COMPLEX              = is_complex<T>;
@@ -408,6 +429,7 @@ void gebrd_getError(const hipsolverHandle_t handle,
         CHECK_HIP_ERROR(hARes.transfer_from(dA));
         CHECK_HIP_ERROR(hTauq.transfer_from(dTauq));
         CHECK_HIP_ERROR(hTaup.transfer_from(dTaup));
+        CHECK_HIP_ERROR(hInfoRes.transfer_from(dInfo));
     }
     else
     {
@@ -415,8 +437,17 @@ void gebrd_getError(const hipsolverHandle_t handle,
         for(int b = 0; b < bc; ++b)
         {
             memcpy(hARes[b], hA[b], lda * n * sizeof(T));
-            cblas_gebrd<T>(
-                m, n, hARes[b], lda, hD[b], hE[b], hTauq[b], hTaup[b], hW.data(), max(m, n));
+            cblas_gebrd<T>(m,
+                           n,
+                           hARes[b],
+                           lda,
+                           hD[b],
+                           hE[b],
+                           hTauq[b],
+                           hTaup[b],
+                           hW.data(),
+                           max(m, n),
+                           hInfoRes[b]);
         }
     }
 
@@ -530,6 +561,13 @@ void gebrd_getError(const hipsolverHandle_t handle,
         err      = norm_error('F', m, n, lda, hA[b], hARes[b]);
         *max_err = err > *max_err ? err : *max_err;
     }
+
+    // check info
+    err = 0;
+    for(int b = 0; b < bc; ++b)
+        if(hInfoRes[b][0] != 0)
+            err++;
+    *max_err += err;
 }
 
 template <bool FORTRAN,
@@ -600,7 +638,7 @@ void gebrd_getPerfData(const hipsolverHandle_t handle,
         *cpu_time_used = get_time_us_no_sync();
         for(int b = 0; b < bc; ++b)
             cblas_gebrd<T>(
-                m, n, hA[b], lda, hD[b], hE[b], hTauq[b], hTaup[b], hW.data(), max(m, n));
+                m, n, hA[b], lda, hD[b], hE[b], hTauq[b], hTaup[b], hW.data(), max(m, n), hInfo[b]);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 
@@ -824,6 +862,7 @@ void testing_gebrd(Arguments& argus)
         // host_strided_batch_vector<T>     hTaup(size_P, 1, stP, bc);
         // host_strided_batch_vector<T>     hTauq(size_Q, 1, stQ, bc);
         // host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
+        // host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         // device_batch_vector<T>           dA(size_A, 1, bc);
         // device_strided_batch_vector<S>   dD(size_D, 1, stD, bc);
         // device_strided_batch_vector<S>   dE(size_E, 1, stE, bc);
@@ -875,6 +914,7 @@ void testing_gebrd(Arguments& argus)
         //                                hTauq,
         //                                hTaup,
         //                                hInfo,
+        //                                hInfoRes,
         //                                &max_error);
 
         // // collect performance data
@@ -919,6 +959,7 @@ void testing_gebrd(Arguments& argus)
         host_strided_batch_vector<T>     hTaup(size_P, 1, stP, bc);
         host_strided_batch_vector<T>     hTauq(size_Q, 1, stQ, bc);
         host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
+        host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         device_strided_batch_vector<T>   dA(size_A, 1, stA, bc);
         device_strided_batch_vector<S>   dD(size_D, 1, stD, bc);
         device_strided_batch_vector<S>   dE(size_E, 1, stE, bc);
@@ -970,6 +1011,7 @@ void testing_gebrd(Arguments& argus)
                                        hTauq,
                                        hTaup,
                                        hInfo,
+                                       hInfoRes,
                                        &max_error);
 
         // collect performance data
