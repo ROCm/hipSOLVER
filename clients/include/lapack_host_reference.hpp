@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************/
 
 #pragma once
@@ -60,15 +60,23 @@ void cblas_larf(
     hipsolverSideMode_t side, int m, int n, T* x, int incx, T* alpha, T* A, int lda, T* work);
 
 template <typename T>
-void cblas_orgbr_ungbr(
-    hipsolverSideMode_t side, int m, int n, int k, T* A, int lda, T* Ipiv, T* work, int size_w);
+void cblas_orgbr_ungbr(hipsolverSideMode_t side,
+                       int                 m,
+                       int                 n,
+                       int                 k,
+                       T*                  A,
+                       int                 lda,
+                       T*                  Ipiv,
+                       T*                  work,
+                       int                 size_w,
+                       int*                info);
 
 template <typename T>
-void cblas_orgqr_ungqr(int m, int n, int k, T* A, int lda, T* Ipiv, T* work, int sizeW);
+void cblas_orgqr_ungqr(int m, int n, int k, T* A, int lda, T* Ipiv, T* work, int sizeW, int* info);
 
 template <typename T>
 void cblas_orgtr_ungtr(
-    hipsolverFillMode_t uplo, int n, T* A, int lda, T* Ipiv, T* work, int size_w);
+    hipsolverFillMode_t uplo, int n, T* A, int lda, T* Ipiv, T* work, int size_w, int* info);
 
 template <typename T>
 void cblas_ormqr_unmqr(hipsolverSideMode_t  side,
@@ -82,7 +90,8 @@ void cblas_ormqr_unmqr(hipsolverSideMode_t  side,
                        T*                   C,
                        int                  ldc,
                        T*                   work,
-                       int                  sizeW);
+                       int                  sizeW,
+                       int*                 info);
 
 template <typename T>
 void cblas_ormtr_unmtr(hipsolverSideMode_t  side,
@@ -96,10 +105,12 @@ void cblas_ormtr_unmtr(hipsolverSideMode_t  side,
                        T*                   C,
                        int                  ldc,
                        T*                   work,
-                       int                  sizeW);
+                       int                  sizeW,
+                       int*                 info);
 
 template <typename T, typename S>
-void cblas_gebrd(int m, int n, T* A, int lda, S* D, S* E, T* tauq, T* taup, T* work, int size_w);
+void cblas_gebrd(
+    int m, int n, T* A, int lda, S* D, S* E, T* tauq, T* taup, T* work, int size_w, int* info);
 
 template <typename T>
 void cblas_gels(hipsolverOperation_t transR,
@@ -115,7 +126,7 @@ void cblas_gels(hipsolverOperation_t transR,
                 int*                 info);
 
 template <typename T>
-void cblas_geqrf(int m, int n, T* A, int lda, T* ipiv, T* work, int sizeW);
+void cblas_geqrf(int m, int n, T* A, int lda, T* ipiv, T* work, int sizeW, int* info);
 
 template <typename T>
 void cblas_gesv(int n, int nrhs, T* A, int lda, int* ipiv, T* B, int ldb, int* info);
@@ -141,8 +152,15 @@ template <typename T>
 void cblas_getrf(int m, int n, T* A, int lda, int* ipiv, int* info);
 
 template <typename T>
-void cblas_getrs(
-    hipsolverOperation_t trans, int n, int nrhs, T* A, int lda, int* ipiv, T* B, int ldb);
+void cblas_getrs(hipsolverOperation_t trans,
+                 int                  n,
+                 int                  nrhs,
+                 T*                   A,
+                 int                  lda,
+                 int*                 ipiv,
+                 T*                   B,
+                 int                  ldb,
+                 int*                 info);
 
 template <typename T>
 void cblas_potrf(hipsolverFillMode_t uplo, int n, T* A, int lda, int* info);
@@ -151,7 +169,8 @@ template <typename T>
 void cblas_potri(hipsolverFillMode_t uplo, int n, T* A, int lda, int* info);
 
 template <typename T>
-void cblas_potrs(hipsolverFillMode_t uplo, int n, int nrhs, T* A, int lda, T* B, int ldb);
+void cblas_potrs(
+    hipsolverFillMode_t uplo, int n, int nrhs, T* A, int lda, T* B, int ldb, int* info);
 
 template <typename T, typename S>
 void cblas_syevd_heevd(hipsolverEigMode_t  evect,

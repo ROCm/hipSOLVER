@@ -6,6 +6,9 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ### Added
 ### Optimized
 ### Changed
+- The rocSOLVER backend will now set `info` to zero if rocSOLVER does not reference `info`. (Applies to orgbr/ungbr, orgqr/ungqr,
+  orgtr/ungtr, ormqr/unmqr, ormtr/unmtr, gebrd, geqrf, getrs, potrs, and sytrd/hetrd).
+
 ### Deprecated
 ### Removed
 ### Fixed

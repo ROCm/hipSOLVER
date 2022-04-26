@@ -349,6 +349,23 @@ inline rocblas_status hipsolverManageWorkspace(rocblas_handle handle, size_t new
         return rocblas_status_success;
 }
 
+inline rocblas_status
+    hipsolverZeroInfo(rocblas_handle handle, rocblas_int* devInfo, rocblas_int batch_count)
+{
+    if(!handle)
+        return rocblas_status_invalid_handle;
+    if(!devInfo)
+        return rocblas_status_invalid_pointer;
+
+    hipStream_t stream;
+    rocblas_get_stream(handle, &stream);
+
+    if(hipMemsetAsync(devInfo, 0, sizeof(rocblas_int) * batch_count, stream) == hipSuccess)
+        return rocblas_status_success;
+    else
+        return rocblas_status_internal_error;
+}
+
 /******************** AUXILIARY ********************/
 hipsolverStatus_t hipsolverCreate(hipsolverHandle_t* handle)
 try
@@ -742,6 +759,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(rocsolver_sorgbr(
         (rocblas_handle)handle, hip2rocblas_side2storev(side), m, n, k, A, lda, tau));
 }
@@ -772,6 +791,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(rocsolver_dorgbr(
         (rocblas_handle)handle, hip2rocblas_side2storev(side), m, n, k, A, lda, tau));
 }
@@ -801,6 +822,8 @@ try
             hipsolverCungbr_bufferSize((rocblas_handle)handle, side, m, n, k, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_cungbr((rocblas_handle)handle,
                                                hip2rocblas_side2storev(side),
@@ -837,6 +860,8 @@ try
             hipsolverZungbr_bufferSize((rocblas_handle)handle, side, m, n, k, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_zungbr((rocblas_handle)handle,
                                                hip2rocblas_side2storev(side),
@@ -1006,6 +1031,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(rocsolver_sorgqr((rocblas_handle)handle, m, n, k, A, lda, tau));
 }
 catch(...)
@@ -1034,6 +1061,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(rocsolver_dorgqr((rocblas_handle)handle, m, n, k, A, lda, tau));
 }
 catch(...)
@@ -1061,6 +1090,8 @@ try
             hipsolverCungqr_bufferSize((rocblas_handle)handle, m, n, k, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_cungqr((rocblas_handle)handle,
                                                m,
@@ -1095,6 +1126,8 @@ try
             hipsolverZungqr_bufferSize((rocblas_handle)handle, m, n, k, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_zungqr((rocblas_handle)handle,
                                                m,
@@ -1270,6 +1303,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(
         rocsolver_sorgtr((rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, tau));
 }
@@ -1298,6 +1333,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(
         rocsolver_dorgtr((rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, tau));
 }
@@ -1325,6 +1362,8 @@ try
             hipsolverCungtr_bufferSize((rocblas_handle)handle, uplo, n, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_cungtr((rocblas_handle)handle,
                                                hip2rocblas_fill(uplo),
@@ -1357,6 +1396,8 @@ try
             hipsolverZungtr_bufferSize((rocblas_handle)handle, uplo, n, A, lda, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_zungtr((rocblas_handle)handle,
                                                hip2rocblas_fill(uplo),
@@ -1592,6 +1633,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(rocsolver_sormqr((rocblas_handle)handle,
                                                hip2rocblas_side(side),
                                                hip2rocblas_operation(trans),
@@ -1633,6 +1676,8 @@ try
             (rocblas_handle)handle, side, trans, m, n, k, A, lda, tau, C, ldc, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_dormqr((rocblas_handle)handle,
                                                hip2rocblas_side(side),
@@ -1676,6 +1721,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(rocsolver_cunmqr((rocblas_handle)handle,
                                                hip2rocblas_side(side),
                                                hip2rocblas_operation(trans),
@@ -1717,6 +1764,8 @@ try
             (rocblas_handle)handle, side, trans, m, n, k, A, lda, tau, C, ldc, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_zunmqr((rocblas_handle)handle,
                                                hip2rocblas_side(side),
@@ -1957,6 +2006,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(rocsolver_sormtr((rocblas_handle)handle,
                                                hip2rocblas_side(side),
                                                hip2rocblas_fill(uplo),
@@ -1998,6 +2049,8 @@ try
             (rocblas_handle)handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_dormtr((rocblas_handle)handle,
                                                hip2rocblas_side(side),
@@ -2041,6 +2094,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(rocsolver_cunmtr((rocblas_handle)handle,
                                                hip2rocblas_side(side),
                                                hip2rocblas_fill(uplo),
@@ -2082,6 +2137,8 @@ try
             (rocblas_handle)handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_zunmtr((rocblas_handle)handle,
                                                hip2rocblas_side(side),
@@ -2239,6 +2296,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(
         rocsolver_sgebrd((rocblas_handle)handle, m, n, A, lda, D, E, tauq, taup));
 }
@@ -2269,6 +2328,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(
         rocsolver_dgebrd((rocblas_handle)handle, m, n, A, lda, D, E, tauq, taup));
 }
@@ -2298,6 +2359,8 @@ try
         CHECK_HIPSOLVER_ERROR(hipsolverCgebrd_bufferSize((rocblas_handle)handle, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_cgebrd((rocblas_handle)handle,
                                                m,
@@ -2335,6 +2398,8 @@ try
         CHECK_HIPSOLVER_ERROR(hipsolverZgebrd_bufferSize((rocblas_handle)handle, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_zgebrd((rocblas_handle)handle,
                                                m,
@@ -2913,6 +2978,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(rocsolver_sgeqrf((rocblas_handle)handle, m, n, A, lda, tau));
 }
 catch(...)
@@ -2939,6 +3006,8 @@ try
             hipsolverDgeqrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_dgeqrf((rocblas_handle)handle, m, n, A, lda, tau));
 }
@@ -2967,6 +3036,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(rocsolver_cgeqrf(
         (rocblas_handle)handle, m, n, (rocblas_float_complex*)A, lda, (rocblas_float_complex*)tau));
 }
@@ -2994,6 +3065,8 @@ try
             hipsolverZgeqrf_bufferSize((rocblas_handle)handle, m, n, A, lda, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_zgeqrf((rocblas_handle)handle,
                                                m,
@@ -5806,6 +5879,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(rocsolver_sgetrs(
         (rocblas_handle)handle, hip2rocblas_operation(trans), n, nrhs, A, lda, devIpiv, B, ldb));
 }
@@ -5837,6 +5912,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(rocsolver_dgetrs(
         (rocblas_handle)handle, hip2rocblas_operation(trans), n, nrhs, A, lda, devIpiv, B, ldb));
 }
@@ -5867,6 +5944,8 @@ try
             (rocblas_handle)handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_cgetrs((rocblas_handle)handle,
                                                hip2rocblas_operation(trans),
@@ -5905,6 +5984,8 @@ try
             (rocblas_handle)handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_zgetrs((rocblas_handle)handle,
                                                hip2rocblas_operation(trans),
@@ -6845,6 +6926,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(
         rocsolver_spotrs((rocblas_handle)handle, hip2rocblas_fill(uplo), n, nrhs, A, lda, B, ldb));
 }
@@ -6875,6 +6958,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(
         rocsolver_dpotrs((rocblas_handle)handle, hip2rocblas_fill(uplo), n, nrhs, A, lda, B, ldb));
 }
@@ -6904,6 +6989,8 @@ try
             (rocblas_handle)handle, uplo, n, nrhs, A, lda, B, ldb, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_cpotrs((rocblas_handle)handle,
                                                hip2rocblas_fill(uplo),
@@ -6940,6 +7027,8 @@ try
             (rocblas_handle)handle, uplo, n, nrhs, A, lda, B, ldb, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_zpotrs((rocblas_handle)handle,
                                                hip2rocblas_fill(uplo),
@@ -7159,6 +7248,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, batch_count));
+
     return rocblas2hip_status(rocsolver_spotrs_batched(
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nrhs, A, lda, B, ldb, batch_count));
 }
@@ -7190,6 +7281,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, batch_count));
+
     return rocblas2hip_status(rocsolver_dpotrs_batched(
         (rocblas_handle)handle, hip2rocblas_fill(uplo), n, nrhs, A, lda, B, ldb, batch_count));
 }
@@ -7220,6 +7313,8 @@ try
             (rocblas_handle)handle, uplo, n, nrhs, A, lda, B, ldb, &lwork, batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, batch_count));
 
     return rocblas2hip_status(rocsolver_cpotrs_batched((rocblas_handle)handle,
                                                        hip2rocblas_fill(uplo),
@@ -7258,6 +7353,8 @@ try
             (rocblas_handle)handle, uplo, n, nrhs, A, lda, B, ldb, &lwork, batch_count));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, batch_count));
 
     return rocblas2hip_status(rocsolver_zpotrs_batched((rocblas_handle)handle,
                                                        hip2rocblas_fill(uplo),
@@ -9662,6 +9759,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(
         rocsolver_ssytrd((rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, D, E, tau));
 }
@@ -9692,6 +9791,8 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
+
     return rocblas2hip_status(
         rocsolver_dsytrd((rocblas_handle)handle, hip2rocblas_fill(uplo), n, A, lda, D, E, tau));
 }
@@ -9721,6 +9822,8 @@ try
             hipsolverChetrd_bufferSize((rocblas_handle)handle, uplo, n, A, lda, D, E, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_chetrd((rocblas_handle)handle,
                                                hip2rocblas_fill(uplo),
@@ -9757,6 +9860,8 @@ try
             hipsolverZhetrd_bufferSize((rocblas_handle)handle, uplo, n, A, lda, D, E, tau, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
+
+    CHECK_ROCBLAS_ERROR(hipsolverZeroInfo((rocblas_handle)handle, devInfo, 1));
 
     return rocblas2hip_status(rocsolver_zhetrd((rocblas_handle)handle,
                                                hip2rocblas_fill(uplo),

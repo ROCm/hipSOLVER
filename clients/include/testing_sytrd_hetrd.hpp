@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -136,6 +136,24 @@ void sytrd_hetrd_checkBadArgs(const hipsolverHandle_t   handle,
                                                 dWork,
                                                 lwork,
                                                 dInfo,
+                                                bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_sytrd_hetrd(FORTRAN,
+                                                handle,
+                                                uplo,
+                                                n,
+                                                dA,
+                                                lda,
+                                                stA,
+                                                dD,
+                                                stD,
+                                                dE,
+                                                stE,
+                                                dTau,
+                                                stP,
+                                                dWork,
+                                                lwork,
+                                                (V) nullptr,
                                                 bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
@@ -343,6 +361,7 @@ void sytrd_hetrd_getError(const hipsolverHandle_t   handle,
                           Sh&                       hE,
                           Uh&                       hTau,
                           Vh&                       hInfo,
+                          Vh&                       hInfoRes,
                           double*                   max_err)
 {
     using S                = decltype(std::real(T{}));
@@ -374,6 +393,7 @@ void sytrd_hetrd_getError(const hipsolverHandle_t   handle,
                                               bc));
     CHECK_HIP_ERROR(hARes.transfer_from(dA));
     CHECK_HIP_ERROR(hTau.transfer_from(dTau));
+    CHECK_HIP_ERROR(hInfoRes.transfer_from(dInfo));
 
     // Reconstruct matrix A from the factorization for implicit testing
     // A = H(n-1)...H(2)H(1)*T*H(1)'H(2)'...H(n-1)' if upper
@@ -471,6 +491,13 @@ void sytrd_hetrd_getError(const hipsolverHandle_t   handle,
                        ? norm_error_lowerTr('F', n, n, lda, hA[b], hARes[b])
                        : norm_error_upperTr('F', n, n, lda, hA[b], hARes[b]);
     }
+
+    // check info
+    err = 0;
+    for(int b = 0; b < bc; ++b)
+        if(hInfoRes[b][0] != 0)
+            err++;
+    *max_err += err;
 }
 
 template <bool FORTRAN,
@@ -723,6 +750,7 @@ void testing_sytrd_hetrd(Arguments& argus)
     host_strided_batch_vector<S>   hE(size_E, 1, stE, bc);
     host_strided_batch_vector<T>   hTau(size_tau, 1, stP, bc);
     host_strided_batch_vector<int> hInfo(1, 1, 1, bc);
+    host_strided_batch_vector<int> hInfoRes(1, 1, 1, bc);
     // device
     device_strided_batch_vector<S>   dD(size_D, 1, stD, bc);
     device_strided_batch_vector<S>   dE(size_E, 1, stE, bc);
@@ -776,6 +804,7 @@ void testing_sytrd_hetrd(Arguments& argus)
         //                                      hE,
         //                                      hTau,
         //                                      hInfo,
+        //                                      hInfoRes,
         //                                      &max_error);
 
         // // collect performance data
@@ -847,6 +876,7 @@ void testing_sytrd_hetrd(Arguments& argus)
                                              hE,
                                              hTau,
                                              hInfo,
+                                             hInfoRes,
                                              &max_error);
 
         // collect performance data
