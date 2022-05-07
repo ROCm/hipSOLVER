@@ -139,6 +139,7 @@ if (BUILD_FILE_REORG_BACKWARD_COMPATIBILITY)
     internal/hipsolver-version.h internal/hipsolver-export.h
     GUARDS SYMLINK WRAPPER
     WRAPPER_LOCATIONS include hipsolver/include
+    ORIGINAL_FILES ${PROJECT_BINARY_DIR}/include/hipsolver/internal/hipsolver-version.h
   )
 endif( )
 
