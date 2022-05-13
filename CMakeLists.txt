@@ -2,8 +2,7 @@
 # Copyright 2016-2022 Advanced Micro Devices, Inc.
 # ########################################################################
 
-# The ROCm platform requires Ubuntu 16.04 or Fedora 24, which has cmake 3.5
-cmake_minimum_required( VERSION 3.5 )
+cmake_minimum_required( VERSION 3.7 )
 
 # We use C++14 features, this will add compile option: -std=c++14
 set( CMAKE_CXX_STANDARD 14 )
@@ -174,9 +173,11 @@ if( BUILD_CLIENTS_SAMPLES OR BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
   endif()
   set(GFORTRAN_RPM "libgfortran4")
   set(GFORTRAN_DEB "libgfortran4")
-  if(CLIENTS_OS STREQUAL "centos" AND CLIENTS_OS_VERSION EQUAL 8)
-    set(GFORTRAN_RPM "libgfortran")
-  elseif(CLIENTS_OS STREQUAL "ubuntu" AND CLIENTS_OS_VERSION STREQUAL "20.04")
+  if(CLIENTS_OS STREQUAL "centos" OR CLIENTS_OS STREQUAL "rhel")
+    if(CLIENTS_OS_VERSION VERSION_GREATER_EQUAL "8")
+      set(GFORTRAN_RPM "libgfortran")
+    endif()
+  elseif(CLIENTS_OS STREQUAL "ubuntu" AND CLIENTS_OS_VERSION VERSION_GREATER_EQUAL "20.04")
     set(GFORTRAN_DEB "libgfortran5")
   endif()
   rocm_package_setup_component(clients)
