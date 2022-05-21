@@ -214,7 +214,7 @@ install_packages( )
 #     yum -y update brings *all* installed packages up to date
 #     without seeking user approval
 #     elevate_if_not_root yum -y update
-      if [[ "${VERSION_ID}" == "8" ]]; then
+      if (( "${VERSION_ID%%.*}" >= "8" )); then
         install_yum_packages "${library_dependencies_centos8[@]}"
         if [[ "${build_clients}" == true ]]; then
           install_yum_packages "${client_dependencies_centos8[@]}"
@@ -458,7 +458,9 @@ cmake_executable=cmake
 
 case "${ID}" in
   centos|rhel)
-  cmake_executable=cmake3
+  if (( "${VERSION_ID%%.*}" < "8" )); then
+    cmake_executable=cmake3
+  fi
   ;;
 esac
 
