@@ -27,10 +27,7 @@ const vector<vector<char>> op_range
 const vector<vector<int>> size_range = {
     // invalid
     {-1, 1, 0, 10, 1, 1},
-    {10, 5, 0, 10, 1, 1},
     {10, 10, 0, 10, 1, 1},
-    // valid only when erange=A
-    {10, 10, 10, 0, 10, 1},
     // normal (valid) samples
     {1, 1, 0, 10, 1, 1},
     {12, 12, -20, 20, 10, 12},

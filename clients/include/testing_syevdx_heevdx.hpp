@@ -720,7 +720,7 @@ void testing_syevdx_heevdx(Arguments& argus)
     int                    n       = argus.get<int>("n");
     int                    lda     = argus.get<int>("lda", n);
     int                    stA     = argus.get<int>("strideA", lda * n);
-    int                    stW     = argus.get<int>("strideD", n);
+    int                    stW     = argus.get<int>("strideW", n);
 
     S   vl = S(argus.get<double>("vl", 0));
     S   vu = S(argus.get<double>("vu", erangeC == 'V' ? 1 : 0));
