@@ -2,7 +2,7 @@
 
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
-## (Unreleased) hipSOLVER 1.4.0
+## hipSOLVER 1.4.0 for ROCm 5.2.0
 ### Added
 - Package generation for test and benchmark executables on all supported OSes using CPack.
 - File/Folder Reorg
