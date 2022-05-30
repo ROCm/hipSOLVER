@@ -55,7 +55,6 @@ end module hipsolver_enums
 
 module hipsolver
     use iso_c_binding
-    use hipsolver_enums
 
     !---------!
     !   Aux   !
