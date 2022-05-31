@@ -18,6 +18,7 @@ function display_help()
   echo "    [-k|--relwithdebinfo] -DCMAKE_BUILD_TYPE=RelWithDebInfo."
   echo "    [-r]--relocatable] Create a package to support relocatable ROCm"
   echo "    [--cuda|--use-cuda] Build library for cuda backend"
+  echo "    [--cudapath] Set specific path to custom built cuda"
   echo "    [--[no-]hip-clang] Whether to build library with hip-clang"
   echo "    [--compiler] Specify host compiler"
   echo "    [-p|--cmakepp] Addition to CMAKE_PREFIX_PATH"
@@ -305,6 +306,7 @@ build_hip_clang=true
 build_release=true
 build_relocatable=false
 cmake_prefix_path=/opt/rocm
+cuda_path=/usr/local/cuda
 rocm_path=/opt/rocm
 compiler=g++
 build_static=false
@@ -322,7 +324,7 @@ declare -a cmake_client_options
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,address-sanitizer,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,address-sanitizer,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -375,6 +377,10 @@ while true; do
     --cuda|--use-cuda)
         build_cuda=true
         shift ;;
+    --cudapath)
+        cuda_path=${2}
+        export CUDA_BIN_PATH=${cuda_path}
+        shift 2 ;;
     --static)
         build_static=true
         shift ;;
@@ -560,7 +566,7 @@ fi
   # Build library
   if [[ "${build_relocatable}" == true ]]; then
     CXX=${compiler} ${cmake_executable} ${cmake_common_options[@]} ${cmake_client_options[@]} -DCPACK_SET_DESTDIR=OFF -DCMAKE_INSTALL_PREFIX="${rocm_path}" \
-    -DCMAKE_PREFIX_PATH="${rocm_path};${rocm_path}/hcc;${rocm_path}/hip;$(pwd)/../deps/deps-install;/usr/local/cuda;${cmake_prefix_path}" \
+    -DCMAKE_PREFIX_PATH="${rocm_path};${rocm_path}/hcc;${rocm_path}/hip;$(pwd)/../deps/deps-install;${cuda_path};${cmake_prefix_path}" \
     -DCMAKE_SHARED_LINKER_FLAGS="${rocm_rpath}" \
     -DCMAKE_EXE_LINKER_FLAGS=" -Wl,--enable-new-dtags -Wl,--rpath,${rocm_path}/lib:${rocm_path}/lib64" \
     -DROCM_DISABLE_LDCONFIG=ON \
