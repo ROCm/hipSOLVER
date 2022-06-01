@@ -4949,6 +4949,8 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx_bufferSize(testAPI_t           
     case COMPAT_NORMAL:
         return hipsolverDnSsyevdx_bufferSize(
             handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
@@ -4973,6 +4975,8 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx_bufferSize(testAPI_t           
     case COMPAT_NORMAL:
         return hipsolverDnDsyevdx_bufferSize(
             handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
@@ -4997,6 +5001,8 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx_bufferSize(testAPI_t           
     case COMPAT_NORMAL:
         return hipsolverDnCheevdx_bufferSize(
             handle, jobz, range, uplo, n, (hipFloatComplex*)A, lda, vl, vu, il, iu, nev, W, lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
@@ -5021,6 +5027,8 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx_bufferSize(testAPI_t           
     case COMPAT_NORMAL:
         return hipsolverDnZheevdx_bufferSize(
             handle, jobz, range, uplo, n, (hipDoubleComplex*)A, lda, vl, vu, il, iu, nev, W, lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
@@ -5050,6 +5058,8 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx(testAPI_t           API,
     case COMPAT_NORMAL:
         return hipsolverDnSsyevdx(
             handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, work, lwork, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
@@ -5079,6 +5089,8 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx(testAPI_t           API,
     case COMPAT_NORMAL:
         return hipsolverDnDsyevdx(
             handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, work, lwork, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
@@ -5122,6 +5134,8 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx(testAPI_t           API,
                                   (hipFloatComplex*)work,
                                   lwork,
                                   info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
@@ -5165,6 +5179,8 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx(testAPI_t               API,
                                   (hipDoubleComplex*)work,
                                   lwork,
                                   info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 /********************************************************/

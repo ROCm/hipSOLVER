@@ -180,6 +180,8 @@ error tolerance and number of iterations. All results are computed to machine pr
 Partial eigensolver functions
 ------------------------------
 
+Partial eigensolvers have been implemented in rocSOLVER, but at present they do not use a divide-and-conquer approach.
+
 .. csv-table:: Symmetric eigensolvers
     :header: "Function", "single", "double", "single complex", "double complex"
 
