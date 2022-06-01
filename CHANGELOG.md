@@ -4,10 +4,10 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ## (Unreleased) hipSOLVER
 ### Added
-- Added functions
+- Added compatibility-only functions
   - syevdx/heevdx
-    - hipsolverSsyevdx_bufferSize, hipsolverDsyevdx_bufferSize, hipsolverCheevdx_bufferSize, hipsolverZheevdx_bufferSize
-    - hipsolverSsyevdx, hipsolverDsyevdx, hipsolverCheevdx, hipsolverZheevdx
+    - hipsolverDnSsyevdx_bufferSize, hipsolverDnDsyevdx_bufferSize, hipsolverDnCheevdx_bufferSize, hipsolverDnZheevdx_bufferSize
+    - hipsolverDnSsyevdx, hipsolverDnDsyevdx, hipsolverDnCheevdx, hipsolverDnZheevdx
 
 ### Optimized
 ### Changed

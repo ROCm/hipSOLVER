@@ -55,9 +55,3 @@ hipsolverEigType_t
 --------------------
 .. doxygenenum:: hipsolverEigType_t
 
-.. _eigrange_t:
-
-hipsolverEigRange_t
---------------------
-.. doxygenenum:: hipsolverEigRange_t
-

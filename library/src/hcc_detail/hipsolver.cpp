@@ -7871,20 +7871,20 @@ catch(...)
 }
 
 /******************** SYEVDX/HEEVDX ********************/
-hipsolverStatus_t hipsolverSsyevdx_bufferSize(hipsolverHandle_t   handle,
-                                              hipsolverEigMode_t  jobz,
-                                              hipsolverEigRange_t range,
-                                              hipsolverFillMode_t uplo,
-                                              int                 n,
-                                              float*              A,
-                                              int                 lda,
-                                              float               vl,
-                                              float               vu,
-                                              int                 il,
-                                              int                 iu,
-                                              int*                m,
-                                              float*              W,
-                                              int*                lwork)
+hipsolverStatus_t hipsolverDnSsyevdx_bufferSize(hipsolverHandle_t   handle,
+                                                hipsolverEigMode_t  jobz,
+                                                hipsolverEigRange_t range,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                float*              A,
+                                                int                 lda,
+                                                float               vl,
+                                                float               vu,
+                                                int                 il,
+                                                int                 iu,
+                                                int*                m,
+                                                float*              W,
+                                                int*                lwork)
 try
 {
     if(!handle)
@@ -7927,20 +7927,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDsyevdx_bufferSize(hipsolverHandle_t   handle,
-                                              hipsolverEigMode_t  jobz,
-                                              hipsolverEigRange_t range,
-                                              hipsolverFillMode_t uplo,
-                                              int                 n,
-                                              double*             A,
-                                              int                 lda,
-                                              double              vl,
-                                              double              vu,
-                                              int                 il,
-                                              int                 iu,
-                                              int*                nev,
-                                              double*             W,
-                                              int*                lwork)
+hipsolverStatus_t hipsolverDnDsyevdx_bufferSize(hipsolverHandle_t   handle,
+                                                hipsolverEigMode_t  jobz,
+                                                hipsolverEigRange_t range,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                double*             A,
+                                                int                 lda,
+                                                double              vl,
+                                                double              vu,
+                                                int                 il,
+                                                int                 iu,
+                                                int*                nev,
+                                                double*             W,
+                                                int*                lwork)
 try
 {
     if(!handle)
@@ -7983,20 +7983,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCheevdx_bufferSize(hipsolverHandle_t   handle,
-                                              hipsolverEigMode_t  jobz,
-                                              hipsolverEigRange_t range,
-                                              hipsolverFillMode_t uplo,
-                                              int                 n,
-                                              hipFloatComplex*    A,
-                                              int                 lda,
-                                              float               vl,
-                                              float               vu,
-                                              int                 il,
-                                              int                 iu,
-                                              int*                nev,
-                                              float*              W,
-                                              int*                lwork)
+hipsolverStatus_t hipsolverDnCheevdx_bufferSize(hipsolverHandle_t   handle,
+                                                hipsolverEigMode_t  jobz,
+                                                hipsolverEigRange_t range,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                hipFloatComplex*    A,
+                                                int                 lda,
+                                                float               vl,
+                                                float               vu,
+                                                int                 il,
+                                                int                 iu,
+                                                int*                nev,
+                                                float*              W,
+                                                int*                lwork)
 try
 {
     if(!handle)
@@ -8039,20 +8039,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZheevdx_bufferSize(hipsolverHandle_t   handle,
-                                              hipsolverEigMode_t  jobz,
-                                              hipsolverEigRange_t range,
-                                              hipsolverFillMode_t uplo,
-                                              int                 n,
-                                              hipDoubleComplex*   A,
-                                              int                 lda,
-                                              double              vl,
-                                              double              vu,
-                                              int                 il,
-                                              int                 iu,
-                                              int*                nev,
-                                              double*             W,
-                                              int*                lwork)
+hipsolverStatus_t hipsolverDnZheevdx_bufferSize(hipsolverHandle_t   handle,
+                                                hipsolverEigMode_t  jobz,
+                                                hipsolverEigRange_t range,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                hipDoubleComplex*   A,
+                                                int                 lda,
+                                                double              vl,
+                                                double              vu,
+                                                int                 il,
+                                                int                 iu,
+                                                int*                nev,
+                                                double*             W,
+                                                int*                lwork)
 try
 {
     if(!handle)
@@ -8095,29 +8095,29 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverSsyevdx(hipsolverHandle_t   handle,
-                                   hipsolverEigMode_t  jobz,
-                                   hipsolverEigRange_t range,
-                                   hipsolverFillMode_t uplo,
-                                   int                 n,
-                                   float*              A,
-                                   int                 lda,
-                                   float               vl,
-                                   float               vu,
-                                   int                 il,
-                                   int                 iu,
-                                   int*                nev,
-                                   float*              W,
-                                   float*              work,
-                                   int                 lwork,
-                                   int*                devInfo)
+hipsolverStatus_t hipsolverDnSsyevdx(hipsolverHandle_t   handle,
+                                     hipsolverEigMode_t  jobz,
+                                     hipsolverEigRange_t range,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     float*              A,
+                                     int                 lda,
+                                     float               vl,
+                                     float               vu,
+                                     int                 il,
+                                     int                 iu,
+                                     int*                nev,
+                                     float*              W,
+                                     float*              work,
+                                     int                 lwork,
+                                     int*                devInfo)
 try
 {
     if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        CHECK_HIPSOLVER_ERROR(hipsolverSsyevdx_bufferSize(
+        CHECK_HIPSOLVER_ERROR(hipsolverDnSsyevdx_bufferSize(
             (rocblas_handle)handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
@@ -8143,29 +8143,29 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDsyevdx(hipsolverHandle_t   handle,
-                                   hipsolverEigMode_t  jobz,
-                                   hipsolverEigRange_t range,
-                                   hipsolverFillMode_t uplo,
-                                   int                 n,
-                                   double*             A,
-                                   int                 lda,
-                                   double              vl,
-                                   double              vu,
-                                   int                 il,
-                                   int                 iu,
-                                   int*                nev,
-                                   double*             W,
-                                   double*             work,
-                                   int                 lwork,
-                                   int*                devInfo)
+hipsolverStatus_t hipsolverDnDsyevdx(hipsolverHandle_t   handle,
+                                     hipsolverEigMode_t  jobz,
+                                     hipsolverEigRange_t range,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     double*             A,
+                                     int                 lda,
+                                     double              vl,
+                                     double              vu,
+                                     int                 il,
+                                     int                 iu,
+                                     int*                nev,
+                                     double*             W,
+                                     double*             work,
+                                     int                 lwork,
+                                     int*                devInfo)
 try
 {
     if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        CHECK_HIPSOLVER_ERROR(hipsolverDsyevdx_bufferSize(
+        CHECK_HIPSOLVER_ERROR(hipsolverDnDsyevdx_bufferSize(
             (rocblas_handle)handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
@@ -8191,29 +8191,29 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCheevdx(hipsolverHandle_t   handle,
-                                   hipsolverEigMode_t  jobz,
-                                   hipsolverEigRange_t range,
-                                   hipsolverFillMode_t uplo,
-                                   int                 n,
-                                   hipFloatComplex*    A,
-                                   int                 lda,
-                                   float               vl,
-                                   float               vu,
-                                   int                 il,
-                                   int                 iu,
-                                   int*                nev,
-                                   float*              W,
-                                   hipFloatComplex*    work,
-                                   int                 lwork,
-                                   int*                devInfo)
+hipsolverStatus_t hipsolverDnCheevdx(hipsolverHandle_t   handle,
+                                     hipsolverEigMode_t  jobz,
+                                     hipsolverEigRange_t range,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     hipFloatComplex*    A,
+                                     int                 lda,
+                                     float               vl,
+                                     float               vu,
+                                     int                 il,
+                                     int                 iu,
+                                     int*                nev,
+                                     float*              W,
+                                     hipFloatComplex*    work,
+                                     int                 lwork,
+                                     int*                devInfo)
 try
 {
     if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        CHECK_HIPSOLVER_ERROR(hipsolverCheevdx_bufferSize(
+        CHECK_HIPSOLVER_ERROR(hipsolverDnCheevdx_bufferSize(
             (rocblas_handle)handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
@@ -8239,29 +8239,29 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZheevdx(hipsolverHandle_t   handle,
-                                   hipsolverEigMode_t  jobz,
-                                   hipsolverEigRange_t range,
-                                   hipsolverFillMode_t uplo,
-                                   int                 n,
-                                   hipDoubleComplex*   A,
-                                   int                 lda,
-                                   double              vl,
-                                   double              vu,
-                                   int                 il,
-                                   int                 iu,
-                                   int*                nev,
-                                   double*             W,
-                                   hipDoubleComplex*   work,
-                                   int                 lwork,
-                                   int*                devInfo)
+hipsolverStatus_t hipsolverDnZheevdx(hipsolverHandle_t   handle,
+                                     hipsolverEigMode_t  jobz,
+                                     hipsolverEigRange_t range,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     hipDoubleComplex*   A,
+                                     int                 lda,
+                                     double              vl,
+                                     double              vu,
+                                     int                 il,
+                                     int                 iu,
+                                     int*                nev,
+                                     double*             W,
+                                     hipDoubleComplex*   work,
+                                     int                 lwork,
+                                     int*                devInfo)
 try
 {
     if(work && lwork)
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     else
     {
-        CHECK_HIPSOLVER_ERROR(hipsolverZheevdx_bufferSize(
+        CHECK_HIPSOLVER_ERROR(hipsolverDnZheevdx_bufferSize(
             (rocblas_handle)handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }

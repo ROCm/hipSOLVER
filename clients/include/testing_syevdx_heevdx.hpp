@@ -6,7 +6,7 @@
 
 #include "clientcommon.hpp"
 
-template <bool FORTRAN, typename T, typename S, typename SS, typename U>
+template <testAPI_t API, typename T, typename S, typename SS, typename U>
 void syevdx_heevdx_checkBadArgs(const hipsolverHandle_t   handle,
                                 const hipsolverEigMode_t  evect,
                                 const hipsolverEigRange_t erange,
@@ -29,7 +29,7 @@ void syevdx_heevdx_checkBadArgs(const hipsolverHandle_t   handle,
 {
 #if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // handle
-    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(API,
                                                   nullptr,
                                                   evect,
                                                   erange,
@@ -52,7 +52,7 @@ void syevdx_heevdx_checkBadArgs(const hipsolverHandle_t   handle,
                           HIPSOLVER_STATUS_NOT_INITIALIZED);
 
     // values
-    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(API,
                                                   handle,
                                                   hipsolverEigMode_t(-1),
                                                   erange,
@@ -73,7 +73,7 @@ void syevdx_heevdx_checkBadArgs(const hipsolverHandle_t   handle,
                                                   dinfo,
                                                   bc),
                           HIPSOLVER_STATUS_INVALID_ENUM);
-    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(API,
                                                   handle,
                                                   evect,
                                                   hipsolverEigRange_t(-1),
@@ -94,7 +94,7 @@ void syevdx_heevdx_checkBadArgs(const hipsolverHandle_t   handle,
                                                   dinfo,
                                                   bc),
                           HIPSOLVER_STATUS_INVALID_ENUM);
-    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(API,
                                                   handle,
                                                   evect,
                                                   erange,
@@ -117,7 +117,7 @@ void syevdx_heevdx_checkBadArgs(const hipsolverHandle_t   handle,
                           HIPSOLVER_STATUS_INVALID_ENUM);
 
     // pointers
-    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(API,
                                                   handle,
                                                   evect,
                                                   erange,
@@ -138,7 +138,7 @@ void syevdx_heevdx_checkBadArgs(const hipsolverHandle_t   handle,
                                                   dinfo,
                                                   bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(API,
                                                   handle,
                                                   evect,
                                                   erange,
@@ -159,7 +159,7 @@ void syevdx_heevdx_checkBadArgs(const hipsolverHandle_t   handle,
                                                   dinfo,
                                                   bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(API,
                                                   handle,
                                                   evect,
                                                   erange,
@@ -180,7 +180,7 @@ void syevdx_heevdx_checkBadArgs(const hipsolverHandle_t   handle,
                                                   dinfo,
                                                   bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(API,
                                                   handle,
                                                   evect,
                                                   erange,
@@ -204,7 +204,7 @@ void syevdx_heevdx_checkBadArgs(const hipsolverHandle_t   handle,
 #endif
 }
 
-template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+template <testAPI_t API, bool BATCHED, bool STRIDED, typename T>
 void testing_syevdx_heevdx_bad_arg()
 {
     using S = decltype(std::real(T{}));
@@ -237,7 +237,7 @@ void testing_syevdx_heevdx_bad_arg()
         // CHECK_HIP_ERROR(dinfo.memcheck());
 
         // int size_W;
-        // hipsolver_syevdx_heevdx_bufferSize(FORTRAN,
+        // hipsolver_syevdx_heevdx_bufferSize(API,
         //                                    handle,
         //                                    evect,
         //                                    erange,
@@ -257,7 +257,7 @@ void testing_syevdx_heevdx_bad_arg()
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check bad arguments
-        // syevdx_heevdx_checkBadArgs<FORTRAN>(handle,
+        // syevdx_heevdx_checkBadArgs<API>(handle,
         //                                     evect,
         //                                     erange,
         //                                     uplo,
@@ -289,7 +289,7 @@ void testing_syevdx_heevdx_bad_arg()
         CHECK_HIP_ERROR(dinfo.memcheck());
 
         int size_W;
-        hipsolver_syevdx_heevdx_bufferSize(FORTRAN,
+        hipsolver_syevdx_heevdx_bufferSize(API,
                                            handle,
                                            evect,
                                            erange,
@@ -309,25 +309,25 @@ void testing_syevdx_heevdx_bad_arg()
             CHECK_HIP_ERROR(dWork.memcheck());
 
         // check bad arguments
-        syevdx_heevdx_checkBadArgs<FORTRAN>(handle,
-                                            evect,
-                                            erange,
-                                            uplo,
-                                            n,
-                                            dA.data(),
-                                            lda,
-                                            stA,
-                                            vl,
-                                            vu,
-                                            il,
-                                            iu,
-                                            hNev.data(),
-                                            dW.data(),
-                                            stW,
-                                            dWork.data(),
-                                            size_W,
-                                            dinfo.data(),
-                                            bc);
+        syevdx_heevdx_checkBadArgs<API>(handle,
+                                        evect,
+                                        erange,
+                                        uplo,
+                                        n,
+                                        dA.data(),
+                                        lda,
+                                        stA,
+                                        vl,
+                                        vu,
+                                        il,
+                                        iu,
+                                        hNev.data(),
+                                        dW.data(),
+                                        stW,
+                                        dWork.data(),
+                                        size_W,
+                                        dinfo.data(),
+                                        bc);
     }
 }
 
@@ -389,7 +389,7 @@ void syevdx_heevdx_initData(const hipsolverHandle_t  handle,
     }
 }
 
-template <bool FORTRAN,
+template <testAPI_t API,
           typename T,
           typename S,
           typename Sd,
@@ -446,7 +446,7 @@ void syevdx_heevdx_getError(const hipsolverHandle_t   handle,
 
     // execute computations
     // GPU lapack
-    CHECK_ROCBLAS_ERROR(hipsolver_syevdx_heevdx(FORTRAN,
+    CHECK_ROCBLAS_ERROR(hipsolver_syevdx_heevdx(API,
                                                 handle,
                                                 evect,
                                                 erange,
@@ -560,7 +560,7 @@ void syevdx_heevdx_getError(const hipsolverHandle_t   handle,
     }
 }
 
-template <bool FORTRAN,
+template <testAPI_t API,
           typename T,
           typename S,
           typename Sd,
@@ -650,7 +650,7 @@ void syevdx_heevdx_getPerfData(const hipsolverHandle_t   handle,
     {
         syevdx_heevdx_initData<false, true, T>(handle, evect, n, dA, lda, bc, hA, A, 0);
 
-        CHECK_ROCBLAS_ERROR(hipsolver_syevdx_heevdx(FORTRAN,
+        CHECK_ROCBLAS_ERROR(hipsolver_syevdx_heevdx(API,
                                                     handle,
                                                     evect,
                                                     erange,
@@ -682,7 +682,7 @@ void syevdx_heevdx_getPerfData(const hipsolverHandle_t   handle,
         syevdx_heevdx_initData<false, true, T>(handle, evect, n, dA, lda, bc, hA, A, 0);
 
         start = get_time_us_sync(stream);
-        hipsolver_syevdx_heevdx(FORTRAN,
+        hipsolver_syevdx_heevdx(API,
                                 handle,
                                 evect,
                                 erange,
@@ -707,7 +707,7 @@ void syevdx_heevdx_getPerfData(const hipsolverHandle_t   handle,
     *gpu_time_used /= hot_calls;
 }
 
-template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+template <testAPI_t API, bool BATCHED, bool STRIDED, typename T>
 void testing_syevdx_heevdx(Arguments& argus)
 {
     using S = decltype(std::real(T{}));
@@ -749,7 +749,7 @@ void testing_syevdx_heevdx(Arguments& argus)
     {
         if(BATCHED)
         {
-            // EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(FORTRAN,
+            // EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(API,
             //                                               handle,
             //                                               evect,
             //                                               erange,
@@ -773,7 +773,7 @@ void testing_syevdx_heevdx(Arguments& argus)
         }
         else
         {
-            EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(FORTRAN,
+            EXPECT_ROCBLAS_STATUS(hipsolver_syevdx_heevdx(API,
                                                           handle,
                                                           evect,
                                                           erange,
@@ -827,7 +827,7 @@ void testing_syevdx_heevdx(Arguments& argus)
         //     CHECK_HIP_ERROR(dA.memcheck());
 
         // int size_W;
-        // hipsolver_syevdx_heevdx_bufferSize(FORTRAN,
+        // hipsolver_syevdx_heevdx_bufferSize(API,
         //                                    handle,
         //                                    evect,
         //                                    erange,
@@ -849,7 +849,7 @@ void testing_syevdx_heevdx(Arguments& argus)
         // // check computations
         // if(argus.unit_check || argus.norm_check)
         // {
-        //     syevdx_heevdx_getError<FORTRAN, T>(handle,
+        //     syevdx_heevdx_getError<API, T>(handle,
         //                                        evect,
         //                                        erange,
         //                                        uplo,
@@ -881,7 +881,7 @@ void testing_syevdx_heevdx(Arguments& argus)
         // // collect performance data
         // if(argus.timing)
         // {
-        //     syevdx_heevdx_getPerfData<FORTRAN, T>(handle,
+        //     syevdx_heevdx_getPerfData<API, T>(handle,
         //                                           evect,
         //                                           erange,
         //                                           uplo,
@@ -921,7 +921,7 @@ void testing_syevdx_heevdx(Arguments& argus)
             CHECK_HIP_ERROR(dA.memcheck());
 
         int size_W;
-        hipsolver_syevdx_heevdx_bufferSize(FORTRAN,
+        hipsolver_syevdx_heevdx_bufferSize(API,
                                            handle,
                                            evect,
                                            erange,
@@ -943,65 +943,65 @@ void testing_syevdx_heevdx(Arguments& argus)
         // check computations
         if(argus.unit_check || argus.norm_check)
         {
-            syevdx_heevdx_getError<FORTRAN, T>(handle,
-                                               evect,
-                                               erange,
-                                               uplo,
-                                               n,
-                                               dA,
-                                               lda,
-                                               stA,
-                                               vl,
-                                               vu,
-                                               il,
-                                               iu,
-                                               hNevRes,
-                                               dW,
-                                               stW,
-                                               dWork,
-                                               size_W,
-                                               dinfo,
-                                               bc,
-                                               hA,
-                                               hARes,
-                                               hNev,
-                                               hW,
-                                               hWres,
-                                               hinfo,
-                                               hinfoRes,
-                                               &max_error);
+            syevdx_heevdx_getError<API, T>(handle,
+                                           evect,
+                                           erange,
+                                           uplo,
+                                           n,
+                                           dA,
+                                           lda,
+                                           stA,
+                                           vl,
+                                           vu,
+                                           il,
+                                           iu,
+                                           hNevRes,
+                                           dW,
+                                           stW,
+                                           dWork,
+                                           size_W,
+                                           dinfo,
+                                           bc,
+                                           hA,
+                                           hARes,
+                                           hNev,
+                                           hW,
+                                           hWres,
+                                           hinfo,
+                                           hinfoRes,
+                                           &max_error);
         }
 
         // collect performance data
         if(argus.timing)
         {
-            syevdx_heevdx_getPerfData<FORTRAN, T>(handle,
-                                                  evect,
-                                                  erange,
-                                                  uplo,
-                                                  n,
-                                                  dA,
-                                                  lda,
-                                                  stA,
-                                                  vl,
-                                                  vu,
-                                                  il,
-                                                  iu,
-                                                  hNevRes,
-                                                  dW,
-                                                  stW,
-                                                  dWork,
-                                                  size_W,
-                                                  dinfo,
-                                                  bc,
-                                                  hA,
-                                                  hNev,
-                                                  hW,
-                                                  hinfo,
-                                                  &gpu_time_used,
-                                                  &cpu_time_used,
-                                                  hot_calls,
-                                                  argus.perf);
+            syevdx_heevdx_getPerfData<API, T>(handle,
+                                              evect,
+                                              erange,
+                                              uplo,
+                                              n,
+                                              dA,
+                                              lda,
+                                              stA,
+                                              vl,
+                                              vu,
+                                              il,
+                                              iu,
+                                              hNevRes,
+                                              dW,
+                                              stW,
+                                              dWork,
+                                              size_W,
+                                              dinfo,
+                                              bc,
+                                              hA,
+                                              hNev,
+                                              hW,
+                                              hinfo,
+                                              &gpu_time_used,
+                                              &cpu_time_used,
+                                              hot_calls,
+                                              argus.perf);
         }
     }
 

@@ -4452,20 +4452,20 @@ catch(...)
 }
 
 /******************** SYEVDX/HEEVDX ********************/
-hipsolverStatus_t hipsolverSsyevdx_bufferSize(hipsolverHandle_t   handle,
-                                              hipsolverEigMode_t  jobz,
-                                              hipsolverEigRange_t range,
-                                              hipsolverFillMode_t uplo,
-                                              int                 n,
-                                              float*              A,
-                                              int                 lda,
-                                              float               vl,
-                                              float               vu,
-                                              int                 il,
-                                              int                 iu,
-                                              int*                nev,
-                                              float*              W,
-                                              int*                lwork)
+hipsolverStatus_t hipsolverDnSsyevdx_bufferSize(hipsolverHandle_t   handle,
+                                                hipsolverEigMode_t  jobz,
+                                                hipsolverEigRange_t range,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                float*              A,
+                                                int                 lda,
+                                                float               vl,
+                                                float               vu,
+                                                int                 il,
+                                                int                 iu,
+                                                int*                nev,
+                                                float*              W,
+                                                int*                lwork)
 try
 {
     return cuda2hip_status(cusolverDnSsyevdx_bufferSize((cusolverDnHandle_t)handle,
@@ -4488,20 +4488,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDsyevdx_bufferSize(hipsolverHandle_t   handle,
-                                              hipsolverEigMode_t  jobz,
-                                              hipsolverEigRange_t range,
-                                              hipsolverFillMode_t uplo,
-                                              int                 n,
-                                              double*             A,
-                                              int                 lda,
-                                              double              vl,
-                                              double              vu,
-                                              int                 il,
-                                              int                 iu,
-                                              int*                nev,
-                                              double*             W,
-                                              int*                lwork)
+hipsolverStatus_t hipsolverDnDsyevdx_bufferSize(hipsolverHandle_t   handle,
+                                                hipsolverEigMode_t  jobz,
+                                                hipsolverEigRange_t range,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                double*             A,
+                                                int                 lda,
+                                                double              vl,
+                                                double              vu,
+                                                int                 il,
+                                                int                 iu,
+                                                int*                nev,
+                                                double*             W,
+                                                int*                lwork)
 try
 {
     return cuda2hip_status(cusolverDnDsyevdx_bufferSize((cusolverDnHandle_t)handle,
@@ -4524,20 +4524,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCheevdx_bufferSize(hipsolverHandle_t   handle,
-                                              hipsolverEigMode_t  jobz,
-                                              hipsolverEigRange_t range,
-                                              hipsolverFillMode_t uplo,
-                                              int                 n,
-                                              hipFloatComplex*    A,
-                                              int                 lda,
-                                              float               vl,
-                                              float               vu,
-                                              int                 il,
-                                              int                 iu,
-                                              int*                nev,
-                                              float*              W,
-                                              int*                lwork)
+hipsolverStatus_t hipsolverDnCheevdx_bufferSize(hipsolverHandle_t   handle,
+                                                hipsolverEigMode_t  jobz,
+                                                hipsolverEigRange_t range,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                hipFloatComplex*    A,
+                                                int                 lda,
+                                                float               vl,
+                                                float               vu,
+                                                int                 il,
+                                                int                 iu,
+                                                int*                nev,
+                                                float*              W,
+                                                int*                lwork)
 try
 {
     return cuda2hip_status(cusolverDnCheevdx_bufferSize((cusolverDnHandle_t)handle,
@@ -4560,20 +4560,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZheevdx_bufferSize(hipsolverHandle_t   handle,
-                                              hipsolverEigMode_t  jobz,
-                                              hipsolverEigRange_t range,
-                                              hipsolverFillMode_t uplo,
-                                              int                 n,
-                                              hipDoubleComplex*   A,
-                                              int                 lda,
-                                              double              vl,
-                                              double              vu,
-                                              int                 il,
-                                              int                 iu,
-                                              int*                nev,
-                                              double*             W,
-                                              int*                lwork)
+hipsolverStatus_t hipsolverDnZheevdx_bufferSize(hipsolverHandle_t   handle,
+                                                hipsolverEigMode_t  jobz,
+                                                hipsolverEigRange_t range,
+                                                hipsolverFillMode_t uplo,
+                                                int                 n,
+                                                hipDoubleComplex*   A,
+                                                int                 lda,
+                                                double              vl,
+                                                double              vu,
+                                                int                 il,
+                                                int                 iu,
+                                                int*                nev,
+                                                double*             W,
+                                                int*                lwork)
 try
 {
     return cuda2hip_status(cusolverDnZheevdx_bufferSize((cusolverDnHandle_t)handle,
@@ -4596,22 +4596,22 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverSsyevdx(hipsolverHandle_t   handle,
-                                   hipsolverEigMode_t  jobz,
-                                   hipsolverEigRange_t range,
-                                   hipsolverFillMode_t uplo,
-                                   int                 n,
-                                   float*              A,
-                                   int                 lda,
-                                   float               vl,
-                                   float               vu,
-                                   int                 il,
-                                   int                 iu,
-                                   int*                nev,
-                                   float*              W,
-                                   float*              work,
-                                   int                 lwork,
-                                   int*                devInfo)
+hipsolverStatus_t hipsolverDnSsyevdx(hipsolverHandle_t   handle,
+                                     hipsolverEigMode_t  jobz,
+                                     hipsolverEigRange_t range,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     float*              A,
+                                     int                 lda,
+                                     float               vl,
+                                     float               vu,
+                                     int                 il,
+                                     int                 iu,
+                                     int*                nev,
+                                     float*              W,
+                                     float*              work,
+                                     int                 lwork,
+                                     int*                devInfo)
 try
 {
     return cuda2hip_status(cusolverDnSsyevdx((cusolverDnHandle_t)handle,
@@ -4636,22 +4636,22 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDsyevdx(hipsolverHandle_t   handle,
-                                   hipsolverEigMode_t  jobz,
-                                   hipsolverEigRange_t range,
-                                   hipsolverFillMode_t uplo,
-                                   int                 n,
-                                   double*             A,
-                                   int                 lda,
-                                   double              vl,
-                                   double              vu,
-                                   int                 il,
-                                   int                 iu,
-                                   int*                nev,
-                                   double*             W,
-                                   double*             work,
-                                   int                 lwork,
-                                   int*                devInfo)
+hipsolverStatus_t hipsolverDnDsyevdx(hipsolverHandle_t   handle,
+                                     hipsolverEigMode_t  jobz,
+                                     hipsolverEigRange_t range,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     double*             A,
+                                     int                 lda,
+                                     double              vl,
+                                     double              vu,
+                                     int                 il,
+                                     int                 iu,
+                                     int*                nev,
+                                     double*             W,
+                                     double*             work,
+                                     int                 lwork,
+                                     int*                devInfo)
 try
 {
     return cuda2hip_status(cusolverDnDsyevdx((cusolverDnHandle_t)handle,
@@ -4676,22 +4676,22 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCheevdx(hipsolverHandle_t   handle,
-                                   hipsolverEigMode_t  jobz,
-                                   hipsolverEigRange_t range,
-                                   hipsolverFillMode_t uplo,
-                                   int                 n,
-                                   hipFloatComplex*    A,
-                                   int                 lda,
-                                   float               vl,
-                                   float               vu,
-                                   int                 il,
-                                   int                 iu,
-                                   int*                nev,
-                                   float*              W,
-                                   hipFloatComplex*    work,
-                                   int                 lwork,
-                                   int*                devInfo)
+hipsolverStatus_t hipsolverDnCheevdx(hipsolverHandle_t   handle,
+                                     hipsolverEigMode_t  jobz,
+                                     hipsolverEigRange_t range,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     hipFloatComplex*    A,
+                                     int                 lda,
+                                     float               vl,
+                                     float               vu,
+                                     int                 il,
+                                     int                 iu,
+                                     int*                nev,
+                                     float*              W,
+                                     hipFloatComplex*    work,
+                                     int                 lwork,
+                                     int*                devInfo)
 try
 {
     return cuda2hip_status(cusolverDnCheevdx((cusolverDnHandle_t)handle,
@@ -4716,22 +4716,22 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZheevdx(hipsolverHandle_t   handle,
-                                   hipsolverEigMode_t  jobz,
-                                   hipsolverEigRange_t range,
-                                   hipsolverFillMode_t uplo,
-                                   int                 n,
-                                   hipDoubleComplex*   A,
-                                   int                 lda,
-                                   double              vl,
-                                   double              vu,
-                                   int                 il,
-                                   int                 iu,
-                                   int*                nev,
-                                   double*             W,
-                                   hipDoubleComplex*   work,
-                                   int                 lwork,
-                                   int*                devInfo)
+hipsolverStatus_t hipsolverDnZheevdx(hipsolverHandle_t   handle,
+                                     hipsolverEigMode_t  jobz,
+                                     hipsolverEigRange_t range,
+                                     hipsolverFillMode_t uplo,
+                                     int                 n,
+                                     hipDoubleComplex*   A,
+                                     int                 lda,
+                                     double              vl,
+                                     double              vu,
+                                     int                 il,
+                                     int                 iu,
+                                     int*                nev,
+                                     double*             W,
+                                     hipDoubleComplex*   work,
+                                     int                 lwork,
+                                     int*                devInfo)
 try
 {
     return cuda2hip_status(cusolverDnZheevdx((cusolverDnHandle_t)handle,

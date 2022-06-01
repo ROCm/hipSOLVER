@@ -125,14 +125,10 @@ LAPACK main functions
 
     :ref:`hipsolverXsyevd_bufferSize <syevd_bufferSize>`, x, x, ,
     :ref:`hipsolverXsyevd <syevd>`, x, x, ,
-    :ref:`hipsolverXsyevdx_bufferSize <syevdx_bufferSize>`, x, x, ,
-    :ref:`hipsolverXsyevdx <syevdx>`, x, x, ,
     :ref:`hipsolverXsygvd_bufferSize <sygvd_bufferSize>`, x, x, ,
     :ref:`hipsolverXsygvd <sygvd>`, x, x, ,
     :ref:`hipsolverXheevd_bufferSize <heevd_bufferSize>`, , , x, x
     :ref:`hipsolverXheevd <heevd>`, , , x, x
-    :ref:`hipsolverXheevdx_bufferSize <heevdx_bufferSize>`, , , x, x
-    :ref:`hipsolverXheevdx <heevdx>`, , , x, x
     :ref:`hipsolverXhegvd_bufferSize <hegvd_bufferSize>`, , , x, x
     :ref:`hipsolverXhegvd <hegvd>`, , , x, x
 
@@ -151,7 +147,7 @@ that uses a different algorithmic approach. These functions are provided as part
 in rocSOLVER.
 
 Iterative Jacobi functions
-----------------------------
+------------------------------
 
 rocSOLVER has yet to implement the following Jacobi functions, therefore hipSOLVER will instead call functions that use classic, non-iterative
 approaches (e.g. the QR algorithm). Note that parameters specific to the Jacobi algorithm will be ignored by the rocSOLVER backend, such as the
@@ -180,4 +176,15 @@ error tolerance and number of iterations. All results are computed to machine pr
     :ref:`hipsolverDnXgesvdj <compat_gesvdj>`, x, x, x, x
     :ref:`hipsolverDnXgesvdjBatched_bufferSize <compat_gesvdj_batched_bufferSize>`, x, x, x, x
     :ref:`hipsolverDnXgesvdjBatched <compat_gesvdj_batched>`, x, x, x, x
+
+Partial eigensolver functions
+------------------------------
+
+.. csv-table:: Symmetric eigensolvers
+    :header: "Function", "single", "double", "single complex", "double complex"
+
+    :ref:`hipsolverDnXsyevdx_bufferSize <compat_syevdx_bufferSize>`, x, x, ,
+    :ref:`hipsolverDnXsyevdx <compat_syevdx>`, x, x, ,
+    :ref:`hipsolverDnXheevdx_bufferSize <compat_heevdx_bufferSize>`, , , x, x
+    :ref:`hipsolverDnXheevdx <compat_heevdx>`, , , x, x
 

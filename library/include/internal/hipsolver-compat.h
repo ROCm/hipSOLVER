@@ -24,6 +24,13 @@ typedef void* hipsolverGesvdjInfo_t;
 
 typedef void* hipsolverSyevjInfo_t;
 
+typedef enum
+{
+    HIPSOLVER_EIG_RANGE_ALL = 221,
+    HIPSOLVER_EIG_RANGE_V   = 222,
+    HIPSOLVER_EIG_RANGE_I   = 223,
+} hipsolverEigRange_t;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
