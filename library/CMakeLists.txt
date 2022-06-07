@@ -47,12 +47,6 @@ set( hipsolver_headers_public
 
 source_group( "Header Files\\Public" FILES ${hipsolver_headers_public} )
 
-include( GNUInstallDirs )
-
-set( BIN_INSTALL_DIR ${CMAKE_INSTALL_BINDIR} )
-set( LIB_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR} )
-set( INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR} )
-
 set(CMAKE_Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/include/hipsolver/internal)
 
 # Build into subdirectories
