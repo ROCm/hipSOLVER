@@ -68,30 +68,33 @@ module hipsolver
     
     interface
         function hipsolverCreate(handle) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCreate')
             use iso_c_binding
+            use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCreate
             type(c_ptr), value :: handle
         end function hipsolverCreate
     end interface
 
     interface
         function hipsolverDestroy(handle) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDestroy')
             use iso_c_binding
+            use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDestroy
             type(c_ptr), value :: handle
         end function hipsolverDestroy
     end interface
 
     interface
         function hipsolverSetStream(handle, streamId) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSetStream')
             use iso_c_binding
+            use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSetStream
             type(c_ptr), value :: handle
             type(c_ptr), value :: streamId
         end function hipsolverSetStream
@@ -99,10 +102,11 @@ module hipsolver
 
     interface
         function hipsolverGetStream(handle, streamId) &
-                result(c_int) &
                 bind(c, name = 'hipsolverGetStream')
             use iso_c_binding
+            use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverGetStream
             type(c_ptr), value :: handle
             type(c_ptr), value :: streamId
         end function hipsolverGetStream
@@ -115,11 +119,11 @@ module hipsolver
     ! ******************** ORGBR/UNGBR ********************
     interface
         function hipsolverSorgbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSorgbr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSorgbr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(c_int), value :: m
@@ -134,11 +138,11 @@ module hipsolver
     
     interface
         function hipsolverDorgbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDorgbr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDorgbr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(c_int), value :: m
@@ -153,11 +157,11 @@ module hipsolver
     
     interface
         function hipsolverCungbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCungbr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCungbr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(c_int), value :: m
@@ -172,11 +176,11 @@ module hipsolver
     
     interface
         function hipsolverZungbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZungbr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZungbr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(c_int), value :: m
@@ -191,11 +195,11 @@ module hipsolver
     
     interface
         function hipsolverSorgbr(handle, side, m, n, k, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSorgbr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSorgbr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(c_int), value :: m
@@ -212,11 +216,11 @@ module hipsolver
     
     interface
         function hipsolverDorgbr(handle, side, m, n, k, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDorgbr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDorgbr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(c_int), value :: m
@@ -233,11 +237,11 @@ module hipsolver
     
     interface
         function hipsolverCungbr(handle, side, m, n, k, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCungbr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCungbr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(c_int), value :: m
@@ -254,11 +258,11 @@ module hipsolver
     
     interface
         function hipsolverZungbr(handle, side, m, n, k, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZungbr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZungbr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(c_int), value :: m
@@ -276,11 +280,11 @@ module hipsolver
     ! ******************** ORGQR/UNGQR ********************
     interface
         function hipsolverSorgqr_bufferSize(handle, m, n, k, A, lda, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSorgqr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSorgqr_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -294,11 +298,11 @@ module hipsolver
     
     interface
         function hipsolverDorgqr_bufferSize(handle, m, n, k, A, lda, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDorgqr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDorgqr_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -312,11 +316,11 @@ module hipsolver
     
     interface
         function hipsolverCungqr_bufferSize(handle, m, n, k, A, lda, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCungqr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCungqr_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -330,11 +334,11 @@ module hipsolver
     
     interface
         function hipsolverZungqr_bufferSize(handle, m, n, k, A, lda, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZungqr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZungqr_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -348,11 +352,11 @@ module hipsolver
     
     interface
         function hipsolverSorgqr(handle, m, n, k, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSorgqr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSorgqr
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -368,11 +372,11 @@ module hipsolver
     
     interface
         function hipsolverDorgqr(handle, m, n, k, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDorgqr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDorgqr
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -388,11 +392,11 @@ module hipsolver
     
     interface
         function hipsolverCungqr(handle, m, n, k, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCungqr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCungqr
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -408,11 +412,11 @@ module hipsolver
     
     interface
         function hipsolverZungqr(handle, m, n, k, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZungqr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZungqr
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -429,11 +433,11 @@ module hipsolver
     ! ******************** ORGTR/UNGTR ********************
     interface
         function hipsolverSorgtr_bufferSize(handle, uplo, n, A, lda, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSorgtr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSorgtr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -446,11 +450,11 @@ module hipsolver
     
     interface
         function hipsolverDorgtr_bufferSize(handle, uplo, n, A, lda, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDorgtr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDorgtr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -463,11 +467,11 @@ module hipsolver
     
     interface
         function hipsolverCungtr_bufferSize(handle, uplo, n, A, lda, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCungtr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCungtr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -480,11 +484,11 @@ module hipsolver
     
     interface
         function hipsolverZungtr_bufferSize(handle, uplo, n, A, lda, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZungtr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZungtr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -497,11 +501,11 @@ module hipsolver
     
     interface
         function hipsolverSorgtr(handle, uplo, n, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSorgtr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSorgtr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -516,11 +520,11 @@ module hipsolver
     
     interface
         function hipsolverDorgtr(handle, uplo, n, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDorgtr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDorgtr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -535,11 +539,11 @@ module hipsolver
     
     interface
         function hipsolverCungtr(handle, uplo, n, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCungtr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCungtr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -554,11 +558,11 @@ module hipsolver
     
     interface
         function hipsolverZungtr(handle, uplo, n, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZungtr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZungtr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -574,11 +578,11 @@ module hipsolver
     ! ******************** ORMQR/UNMQR ********************
     interface
         function hipsolverSormqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSormqr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSormqr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_OP_N)), value :: trans
@@ -596,11 +600,11 @@ module hipsolver
     
     interface
         function hipsolverDormqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDormqr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDormqr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_OP_N)), value :: trans
@@ -618,11 +622,11 @@ module hipsolver
     
     interface
         function hipsolverCunmqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCunmqr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCunmqr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_OP_N)), value :: trans
@@ -640,11 +644,11 @@ module hipsolver
     
     interface
         function hipsolverZunmqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZunmqr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZunmqr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_OP_N)), value :: trans
@@ -662,11 +666,11 @@ module hipsolver
     
     interface
         function hipsolverSormqr(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSormqr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSormqr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_OP_N)), value :: trans
@@ -686,11 +690,11 @@ module hipsolver
     
     interface
         function hipsolverDormqr(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDormqr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDormqr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_OP_N)), value :: trans
@@ -710,11 +714,11 @@ module hipsolver
     
     interface
         function hipsolverCunmqr(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCunmqr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCunmqr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_OP_N)), value :: trans
@@ -734,11 +738,11 @@ module hipsolver
     
     interface
         function hipsolverZunmqr(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZunmqr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZunmqr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_OP_N)), value :: trans
@@ -759,11 +763,11 @@ module hipsolver
     ! ******************** ORMTR/UNMTR ********************
     interface
         function hipsolverSormtr_bufferSize(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSormtr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSormtr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -781,11 +785,11 @@ module hipsolver
     
     interface
         function hipsolverDormtr_bufferSize(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDormtr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDormtr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -803,11 +807,11 @@ module hipsolver
     
     interface
         function hipsolverCunmtr_bufferSize(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCunmtr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCunmtr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -825,11 +829,11 @@ module hipsolver
     
     interface
         function hipsolverZunmtr_bufferSize(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZunmtr_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZunmtr_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -847,11 +851,11 @@ module hipsolver
     
     interface
         function hipsolverSormtr(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSormtr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSormtr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -871,11 +875,11 @@ module hipsolver
     
     interface
         function hipsolverDormtr(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDormtr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDormtr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -895,11 +899,11 @@ module hipsolver
     
     interface
         function hipsolverCunmtr(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCunmtr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCunmtr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -919,11 +923,11 @@ module hipsolver
     
     interface
         function hipsolverZunmtr(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZunmtr')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZunmtr
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_SIDE_LEFT)), value :: side
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -944,11 +948,11 @@ module hipsolver
     ! ******************** GEBRD ********************
     interface
         function hipsolverSgebrd_bufferSize(handle, m, n, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSgebrd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSgebrd_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -958,11 +962,11 @@ module hipsolver
     
     interface
         function hipsolverDgebrd_bufferSize(handle, m, n, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDgebrd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDgebrd_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -972,11 +976,11 @@ module hipsolver
     
     interface
         function hipsolverCgebrd_bufferSize(handle, m, n, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCgebrd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCgebrd_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -986,11 +990,11 @@ module hipsolver
     
     interface
         function hipsolverZgebrd_bufferSize(handle, m, n, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZgebrd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZgebrd_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1000,11 +1004,11 @@ module hipsolver
 
     interface
         function hipsolverSgebrd(handle, m, n, A, lda, D, E, tauq, taup, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSgebrd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSgebrd
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1022,11 +1026,11 @@ module hipsolver
 
     interface
         function hipsolverDgebrd(handle, m, n, A, lda, D, E, tauq, taup, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDgebrd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDgebrd
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1044,11 +1048,11 @@ module hipsolver
 
     interface
         function hipsolverCgebrd(handle, m, n, A, lda, D, E, tauq, taup, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCgebrd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCgebrd
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1066,11 +1070,11 @@ module hipsolver
 
     interface
         function hipsolverZgebrd(handle, m, n, A, lda, D, E, tauq, taup, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZgebrd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZgebrd
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1089,11 +1093,11 @@ module hipsolver
     ! ******************** GELS ********************
     interface
         function hipsolverSSgels_bufferSize(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSSgels_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSSgels_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1110,11 +1114,11 @@ module hipsolver
     
     interface
         function hipsolverDDgels_bufferSize(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDDgels_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDDgels_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1131,11 +1135,11 @@ module hipsolver
     
     interface
         function hipsolverCCgels_bufferSize(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCCgels_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCCgels_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1152,11 +1156,11 @@ module hipsolver
     
     interface
         function hipsolverZZgels_bufferSize(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZZgels_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZZgels_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1173,11 +1177,11 @@ module hipsolver
 
     interface
         function hipsolverSSgels(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSSgels')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSSgels
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1197,11 +1201,11 @@ module hipsolver
 
     interface
         function hipsolverDDgels(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDDgels')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDDgels
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1221,11 +1225,11 @@ module hipsolver
 
     interface
         function hipsolverCCgels(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCCgels')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCCgels
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1245,11 +1249,11 @@ module hipsolver
 
     interface
         function hipsolverZZgels(handle, m, n, nrhs, A, lda, B, ldb, X, ldx, work, lwork, niters, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZZgels')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZZgels
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1270,11 +1274,11 @@ module hipsolver
     ! ******************** GEQRF ********************
     interface
         function hipsolverSgeqrf_bufferSize(handle, m, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSgeqrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSgeqrf_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1286,11 +1290,11 @@ module hipsolver
 
     interface
         function hipsolverDgeqrf_bufferSize(handle, m, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDgeqrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDgeqrf_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1302,11 +1306,11 @@ module hipsolver
 
     interface
         function hipsolverCgeqrf_bufferSize(handle, m, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCgeqrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCgeqrf_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1318,11 +1322,11 @@ module hipsolver
 
     interface
         function hipsolverZgeqrf_bufferSize(handle, m, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZgeqrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZgeqrf_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1334,11 +1338,11 @@ module hipsolver
 
     interface
         function hipsolverSgeqrf(handle, m, n, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSgeqrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSgeqrf
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1353,11 +1357,11 @@ module hipsolver
 
     interface
         function hipsolverDgeqrf(handle, m, n, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDgeqrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDgeqrf
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1372,11 +1376,11 @@ module hipsolver
 
     interface
         function hipsolverCgeqrf(handle, m, n, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCgeqrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCgeqrf
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1391,11 +1395,11 @@ module hipsolver
 
     interface
         function hipsolverZgeqrf(handle, m, n, A, lda, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZgeqrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZgeqrf
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1411,11 +1415,11 @@ module hipsolver
     ! ******************** GESV ********************
     interface
         function hipsolverSSgesv_bufferSize(handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSSgesv_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSSgesv_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: n
             integer(c_int), value :: nrhs
@@ -1432,11 +1436,11 @@ module hipsolver
     
     interface
         function hipsolverDDgesv_bufferSize(handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDDgesv_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDDgesv_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: n
             integer(c_int), value :: nrhs
@@ -1453,11 +1457,11 @@ module hipsolver
     
     interface
         function hipsolverCCgesv_bufferSize(handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCCgesv_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCCgesv_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: n
             integer(c_int), value :: nrhs
@@ -1474,11 +1478,11 @@ module hipsolver
     
     interface
         function hipsolverZZgesv_bufferSize(handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZZgesv_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZZgesv_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: n
             integer(c_int), value :: nrhs
@@ -1495,11 +1499,11 @@ module hipsolver
 
     interface
         function hipsolverSSgesv(handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, work, lwork, niters, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSSgesv')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSSgesv
             type(c_ptr), value :: handle
             integer(c_int), value :: n
             integer(c_int), value :: nrhs
@@ -1519,11 +1523,11 @@ module hipsolver
 
     interface
         function hipsolverDDgesv(handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, work, lwork, niters, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDDgesv')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDDgesv
             type(c_ptr), value :: handle
             integer(c_int), value :: n
             integer(c_int), value :: nrhs
@@ -1543,11 +1547,11 @@ module hipsolver
 
     interface
         function hipsolverCCgesv(handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, work, lwork, niters, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCCgesv')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCCgesv
             type(c_ptr), value :: handle
             integer(c_int), value :: n
             integer(c_int), value :: nrhs
@@ -1567,11 +1571,11 @@ module hipsolver
 
     interface
         function hipsolverZZgesv(handle, n, nrhs, A, lda, ipiv, B, ldb, X, ldx, work, lwork, niters, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZZgesv')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZZgesv
             type(c_ptr), value :: handle
             integer(c_int), value :: n
             integer(c_int), value :: nrhs
@@ -1592,11 +1596,11 @@ module hipsolver
     ! ******************** GESVD ********************
     interface
         function hipsolverSgesvd_bufferSize(handle, jobu, jobv, m, n, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSgesvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSgesvd_bufferSize
             type(c_ptr), value :: handle
             integer(c_signed_char), value :: jobu
             integer(c_signed_char), value :: jobv
@@ -1608,11 +1612,11 @@ module hipsolver
     
     interface
         function hipsolverDgesvd_bufferSize(handle, jobu, jobv, m, n, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDgesvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDgesvd_bufferSize
             type(c_ptr), value :: handle
             integer(c_signed_char), value :: jobu
             integer(c_signed_char), value :: jobv
@@ -1624,11 +1628,11 @@ module hipsolver
     
     interface
         function hipsolverCgesvd_bufferSize(handle, jobu, jobv, m, n, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCgesvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCgesvd_bufferSize
             type(c_ptr), value :: handle
             integer(c_signed_char), value :: jobu
             integer(c_signed_char), value :: jobv
@@ -1640,11 +1644,11 @@ module hipsolver
     
     interface
         function hipsolverZgesvd_bufferSize(handle, jobu, jobv, m, n, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZgesvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZgesvd_bufferSize
             type(c_ptr), value :: handle
             integer(c_signed_char), value :: jobu
             integer(c_signed_char), value :: jobv
@@ -1656,11 +1660,11 @@ module hipsolver
 
     interface
         function hipsolverSgesvd(handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSgesvd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSgesvd
             type(c_ptr), value :: handle
             integer(c_signed_char), value :: jobu
             integer(c_signed_char), value :: jobv
@@ -1682,11 +1686,11 @@ module hipsolver
 
     interface
         function hipsolverDgesvd(handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDgesvd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDgesvd
             type(c_ptr), value :: handle
             integer(c_signed_char), value :: jobu
             integer(c_signed_char), value :: jobv
@@ -1708,11 +1712,11 @@ module hipsolver
 
     interface
         function hipsolverCgesvd(handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCgesvd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCgesvd
             type(c_ptr), value :: handle
             integer(c_signed_char), value :: jobu
             integer(c_signed_char), value :: jobv
@@ -1734,11 +1738,11 @@ module hipsolver
 
     interface
         function hipsolverZgesvd(handle, jobu, jobv, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, rwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZgesvd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZgesvd
             type(c_ptr), value :: handle
             integer(c_signed_char), value :: jobu
             integer(c_signed_char), value :: jobv
@@ -1761,11 +1765,11 @@ module hipsolver
     ! ******************** GETRF ********************
     interface
         function hipsolverSgetrf_bufferSize(handle, m, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSgetrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSgetrf_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1777,11 +1781,11 @@ module hipsolver
     
     interface
         function hipsolverDgetrf_bufferSize(handle, m, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDgetrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDgetrf_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1793,11 +1797,11 @@ module hipsolver
     
     interface
         function hipsolverCgetrf_bufferSize(handle, m, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCgetrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCgetrf_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1809,11 +1813,11 @@ module hipsolver
     
     interface
         function hipsolverZgetrf_bufferSize(handle, m, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZgetrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZgetrf_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1825,11 +1829,11 @@ module hipsolver
 
     interface
         function hipsolverSgetrf(handle, m, n, A, lda, work, lwork, ipiv, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSgetrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSgetrf
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1844,11 +1848,11 @@ module hipsolver
     
     interface
         function hipsolverDgetrf(handle, m, n, A, lda, work, lwork, ipiv, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDgetrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDgetrf
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1863,11 +1867,11 @@ module hipsolver
     
     interface
         function hipsolverCgetrf(handle, m, n, A, lda, work, lwork, ipiv, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCgetrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCgetrf
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1882,11 +1886,11 @@ module hipsolver
     
     interface
         function hipsolverZgetrf(handle, m, n, A, lda, work, lwork, ipiv, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZgetrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZgetrf
             type(c_ptr), value :: handle
             integer(c_int), value :: m
             integer(c_int), value :: n
@@ -1902,11 +1906,11 @@ module hipsolver
     ! ******************** GETRS ********************
     interface
         function hipsolverSgetrs_bufferSize(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSgetrs_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSgetrs_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_OP_N)), value :: trans
             integer(c_int), value :: n
@@ -1922,11 +1926,11 @@ module hipsolver
     
     interface
         function hipsolverDgetrs_bufferSize(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDgetrs_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDgetrs_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_OP_N)), value :: trans
             integer(c_int), value :: n
@@ -1942,11 +1946,11 @@ module hipsolver
     
     interface
         function hipsolverCgetrs_bufferSize(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCgetrs_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCgetrs_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_OP_N)), value :: trans
             integer(c_int), value :: n
@@ -1962,11 +1966,11 @@ module hipsolver
     
     interface
         function hipsolverZgetrs_bufferSize(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZgetrs_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZgetrs_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_OP_N)), value :: trans
             integer(c_int), value :: n
@@ -1982,11 +1986,11 @@ module hipsolver
 
     interface
         function hipsolverSgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSgetrs')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSgetrs
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_OP_N)), value :: trans
             integer(c_int), value :: n
@@ -2004,11 +2008,11 @@ module hipsolver
     
     interface
         function hipsolverDgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDgetrs')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDgetrs
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_OP_N)), value :: trans
             integer(c_int), value :: n
@@ -2026,11 +2030,11 @@ module hipsolver
     
     interface
         function hipsolverCgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCgetrs')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCgetrs
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_OP_N)), value :: trans
             integer(c_int), value :: n
@@ -2048,11 +2052,11 @@ module hipsolver
     
     interface
         function hipsolverZgetrs(handle, trans, n, nrhs, A, lda, ipiv, B, ldb, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZgetrs')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZgetrs
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_OP_N)), value :: trans
             integer(c_int), value :: n
@@ -2071,11 +2075,11 @@ module hipsolver
     ! ******************** POTRF ********************
     interface
         function hipsolverSpotrf_bufferSize(handle, uplo, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSpotrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSpotrf_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2087,11 +2091,11 @@ module hipsolver
     
     interface
         function hipsolverDpotrf_bufferSize(handle, uplo, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDpotrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDpotrf_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2103,11 +2107,11 @@ module hipsolver
     
     interface
         function hipsolverCpotrf_bufferSize(handle, uplo, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCpotrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCpotrf_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2119,11 +2123,11 @@ module hipsolver
     
     interface
         function hipsolverZpotrf_bufferSize(handle, uplo, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZpotrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZpotrf_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2135,11 +2139,11 @@ module hipsolver
 
     interface
         function hipsolverSpotrf(handle, uplo, n, A, lda, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSpotrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSpotrf
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2153,11 +2157,11 @@ module hipsolver
 
     interface
         function hipsolverDpotrf(handle, uplo, n, A, lda, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDpotrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDpotrf
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2171,11 +2175,11 @@ module hipsolver
 
     interface
         function hipsolverCpotrf(handle, uplo, n, A, lda, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCpotrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCpotrf
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2189,11 +2193,11 @@ module hipsolver
 
     interface
         function hipsolverZpotrf(handle, uplo, n, A, lda, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZpotrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZpotrf
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2208,11 +2212,11 @@ module hipsolver
     ! ******************** POTRF_BATCHED ********************
     interface
         function hipsolverSpotrfBatched_bufferSize(handle, uplo, n, A, lda, lwork, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSpotrfBatched_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSpotrfBatched_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2225,11 +2229,11 @@ module hipsolver
     
     interface
         function hipsolverDpotrfBatched_bufferSize(handle, uplo, n, A, lda, lwork, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDpotrfBatched_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDpotrfBatched_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2242,11 +2246,11 @@ module hipsolver
     
     interface
         function hipsolverCpotrfBatched_bufferSize(handle, uplo, n, A, lda, lwork, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCpotrfBatched_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCpotrfBatched_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2259,11 +2263,11 @@ module hipsolver
     
     interface
         function hipsolverZpotrfBatched_bufferSize(handle, uplo, n, A, lda, lwork, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZpotrfBatched_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZpotrfBatched_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2276,11 +2280,11 @@ module hipsolver
 
     interface
         function hipsolverSpotrfBatched(handle, uplo, n, A, lda, work, lwork, info, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSpotrfBatched')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSpotrfBatched
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2295,11 +2299,11 @@ module hipsolver
     
     interface
         function hipsolverDpotrfBatched(handle, uplo, n, A, lda, work, lwork, info, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDpotrfBatched')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDpotrfBatched
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2314,11 +2318,11 @@ module hipsolver
     
     interface
         function hipsolverCpotrfBatched(handle, uplo, n, A, lda, work, lwork, info, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCpotrfBatched')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCpotrfBatched
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2333,11 +2337,11 @@ module hipsolver
     
     interface
         function hipsolverZpotrfBatched(handle, uplo, n, A, lda, work, lwork, info, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZpotrfBatched')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZpotrfBatched
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2353,11 +2357,11 @@ module hipsolver
     ! ******************** POTRI ********************
     interface
         function hipsolverSpotri_bufferSize(handle, uplo, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSpotri_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSpotri_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2369,11 +2373,11 @@ module hipsolver
     
     interface
         function hipsolverDpotri_bufferSize(handle, uplo, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDpotri_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDpotri_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2385,11 +2389,11 @@ module hipsolver
     
     interface
         function hipsolverCpotri_bufferSize(handle, uplo, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCpotri_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCpotri_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2401,11 +2405,11 @@ module hipsolver
     
     interface
         function hipsolverZpotri_bufferSize(handle, uplo, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZpotri_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZpotri_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2417,11 +2421,11 @@ module hipsolver
 
     interface
         function hipsolverSpotri(handle, uplo, n, A, lda, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSpotri')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSpotri
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2435,11 +2439,11 @@ module hipsolver
 
     interface
         function hipsolverDpotri(handle, uplo, n, A, lda, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDpotri')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDpotri
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2453,11 +2457,11 @@ module hipsolver
 
     interface
         function hipsolverCpotri(handle, uplo, n, A, lda, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCpotri')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCpotri
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2471,11 +2475,11 @@ module hipsolver
 
     interface
         function hipsolverZpotri(handle, uplo, n, A, lda, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZpotri')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZpotri
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2490,11 +2494,11 @@ module hipsolver
     ! ******************** POTRS ********************
     interface
         function hipsolverSpotrs_bufferSize(handle, uplo, n, nrhs, A, lda, B, ldb, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSpotrs_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSpotrs_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2509,11 +2513,11 @@ module hipsolver
     
     interface
         function hipsolverDpotrs_bufferSize(handle, uplo, n, nrhs, A, lda, B, ldb, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDpotrs_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDpotrs_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2528,11 +2532,11 @@ module hipsolver
     
     interface
         function hipsolverCpotrs_bufferSize(handle, uplo, n, nrhs, A, lda, B, ldb, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCpotrs_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCpotrs_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2547,11 +2551,11 @@ module hipsolver
     
     interface
         function hipsolverZpotrs_bufferSize(handle, uplo, n, nrhs, A, lda, B, ldb, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZpotrs_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZpotrs_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2566,11 +2570,11 @@ module hipsolver
 
     interface
         function hipsolverSpotrs(handle, uplo, n, nrhs, A, lda, B, ldb, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSpotrs')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSpotrs
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2587,11 +2591,11 @@ module hipsolver
 
     interface
         function hipsolverDpotrs(handle, uplo, n, nrhs, A, lda, B, ldb, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDpotrs')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDpotrs
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2608,11 +2612,11 @@ module hipsolver
 
     interface
         function hipsolverCpotrs(handle, uplo, n, nrhs, A, lda, B, ldb, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCpotrs')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCpotrs
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2629,11 +2633,11 @@ module hipsolver
 
     interface
         function hipsolverZpotrs(handle, uplo, n, nrhs, A, lda, B, ldb, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZpotrs')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZpotrs
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2651,11 +2655,11 @@ module hipsolver
     ! ******************** POTRS_BATCHED ********************
     interface
         function hipsolverSpotrsBatched_bufferSize(handle, uplo, n, nrhs, A, lda, B, ldb, lwork, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSpotrsBatched_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSpotrsBatched_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2671,11 +2675,11 @@ module hipsolver
     
     interface
         function hipsolverDpotrsBatched_bufferSize(handle, uplo, n, nrhs, A, lda, B, ldb, lwork, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDpotrsBatched_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDpotrsBatched_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2691,11 +2695,11 @@ module hipsolver
     
     interface
         function hipsolverCpotrsBatched_bufferSize(handle, uplo, n, nrhs, A, lda, B, ldb, lwork, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCpotrsBatched_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCpotrsBatched_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2711,11 +2715,11 @@ module hipsolver
     
     interface
         function hipsolverZpotrsBatched_bufferSize(handle, uplo, n, nrhs, A, lda, B, ldb, lwork, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZpotrsBatched_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZpotrsBatched_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2731,11 +2735,11 @@ module hipsolver
 
     interface
         function hipsolverSpotrsBatched(handle, uplo, n, nrhs, A, lda, B, ldb, work, lwork, info, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSpotrsBatched')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSpotrsBatched
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2753,11 +2757,11 @@ module hipsolver
 
     interface
         function hipsolverDpotrsBatched(handle, uplo, n, nrhs, A, lda, B, ldb, work, lwork, info, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDpotrsBatched')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDpotrsBatched
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2775,11 +2779,11 @@ module hipsolver
 
     interface
         function hipsolverCpotrsBatched(handle, uplo, n, nrhs, A, lda, B, ldb, work, lwork, info, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCpotrsBatched')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCpotrsBatched
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2797,11 +2801,11 @@ module hipsolver
 
     interface
         function hipsolverZpotrsBatched(handle, uplo, n, nrhs, A, lda, B, ldb, work, lwork, info, batch_count) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZpotrsBatched')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZpotrsBatched
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -2820,11 +2824,11 @@ module hipsolver
     ! ******************** SYEVD/HEEVD ********************
     interface
         function hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSsyevd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSsyevd_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -2838,11 +2842,11 @@ module hipsolver
     
     interface
         function hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDsyevd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDsyevd_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -2856,11 +2860,11 @@ module hipsolver
     
     interface
         function hipsolverCheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCheevd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCheevd_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -2874,11 +2878,11 @@ module hipsolver
     
     interface
         function hipsolverZheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZheevd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZheevd_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -2892,11 +2896,11 @@ module hipsolver
 
     interface
         function hipsolverSsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSsyevd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSsyevd
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -2912,11 +2916,11 @@ module hipsolver
 
     interface
         function hipsolverDsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDsyevd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDsyevd
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -2932,11 +2936,11 @@ module hipsolver
 
     interface
         function hipsolverCheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCheevd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCheevd
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -2952,11 +2956,11 @@ module hipsolver
 
     interface
         function hipsolverZheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZheevd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZheevd
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
@@ -2973,11 +2977,11 @@ module hipsolver
     ! ******************** SYGVD/HEGVD ********************
     interface
         function hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSsygvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSsygvd_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_TYPE_1)), value :: itype
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
@@ -2994,11 +2998,11 @@ module hipsolver
     
     interface
         function hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDsygvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDsygvd_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_TYPE_1)), value :: itype
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
@@ -3015,11 +3019,11 @@ module hipsolver
     
     interface
         function hipsolverChegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverChegvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverChegvd_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_TYPE_1)), value :: itype
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
@@ -3036,11 +3040,11 @@ module hipsolver
     
     interface
         function hipsolverZhegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZhegvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZhegvd_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_TYPE_1)), value :: itype
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
@@ -3057,11 +3061,11 @@ module hipsolver
 
     interface
         function hipsolverSsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSsygvd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSsygvd
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_TYPE_1)), value :: itype
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
@@ -3080,11 +3084,11 @@ module hipsolver
 
     interface
         function hipsolverDsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDsygvd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDsygvd
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_TYPE_1)), value :: itype
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
@@ -3103,11 +3107,11 @@ module hipsolver
 
     interface
         function hipsolverChegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverChegvd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverChegvd
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_TYPE_1)), value :: itype
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
@@ -3126,11 +3130,11 @@ module hipsolver
 
     interface
         function hipsolverZhegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZhegvd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZhegvd
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_EIG_TYPE_1)), value :: itype
             integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
@@ -3150,11 +3154,11 @@ module hipsolver
     ! ******************** SYTRD/HETRD ********************
     interface
         function hipsolverSsytrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSsytrd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSsytrd_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -3169,11 +3173,11 @@ module hipsolver
     
     interface
         function hipsolverDsytrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDsytrd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDsytrd_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -3188,11 +3192,11 @@ module hipsolver
     
     interface
         function hipsolverChetrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverChetrd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverChetrd_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -3207,11 +3211,11 @@ module hipsolver
     
     interface
         function hipsolverZhetrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZhetrd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZhetrd_bufferSize
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -3226,11 +3230,11 @@ module hipsolver
 
     interface
         function hipsolverSsytrd(handle, uplo, n, A, lda, D, E, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSsytrd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSsytrd
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -3247,11 +3251,11 @@ module hipsolver
 
     interface
         function hipsolverDsytrd(handle, uplo, n, A, lda, D, E, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDsytrd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDsytrd
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -3268,11 +3272,11 @@ module hipsolver
 
     interface
         function hipsolverChetrd(handle, uplo, n, A, lda, D, E, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverChetrd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverChetrd
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -3289,11 +3293,11 @@ module hipsolver
 
     interface
         function hipsolverZhetrd(handle, uplo, n, A, lda, D, E, tau, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZhetrd')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZhetrd
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -3311,11 +3315,11 @@ module hipsolver
     ! ******************** SYTRF ********************
     interface
         function hipsolverSsytrf_bufferSize(handle, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSsytrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSsytrf_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: n
             type(c_ptr), value :: A
@@ -3326,11 +3330,11 @@ module hipsolver
     
     interface
         function hipsolverDsytrf_bufferSize(handle, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDsytrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDsytrf_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: n
             type(c_ptr), value :: A
@@ -3341,11 +3345,11 @@ module hipsolver
     
     interface
         function hipsolverCsytrf_bufferSize(handle, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCsytrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCsytrf_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: n
             type(c_ptr), value :: A
@@ -3356,11 +3360,11 @@ module hipsolver
     
     interface
         function hipsolverZsytrf_bufferSize(handle, n, A, lda, lwork) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZsytrf_bufferSize')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZsytrf_bufferSize
             type(c_ptr), value :: handle
             integer(c_int), value :: n
             type(c_ptr), value :: A
@@ -3371,11 +3375,11 @@ module hipsolver
 
     interface
         function hipsolverSsytrf(handle, uplo, n, A, lda, ipiv, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverSsytrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSsytrf
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -3390,11 +3394,11 @@ module hipsolver
 
     interface
         function hipsolverDsytrf(handle, uplo, n, A, lda, ipiv, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverDsytrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDsytrf
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -3409,11 +3413,11 @@ module hipsolver
 
     interface
         function hipsolverCsytrf(handle, uplo, n, A, lda, ipiv, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverCsytrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCsytrf
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n
@@ -3428,11 +3432,11 @@ module hipsolver
 
     interface
         function hipsolverZsytrf(handle, uplo, n, A, lda, ipiv, work, lwork, info) &
-                result(c_int) &
                 bind(c, name = 'hipsolverZsytrf')
             use iso_c_binding
             use hipsolver_enums
             implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZsytrf
             type(c_ptr), value :: handle
             integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
             integer(c_int), value :: n

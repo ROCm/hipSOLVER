@@ -8,9 +8,7 @@
 
 #include "hipsolver.h"
 #include "exceptions.hpp"
-#include <cuda_runtime.h>
 #include <cusolverDn.h>
-#include <hip/hip_runtime.h>
 
 extern "C" {
 
