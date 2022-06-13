@@ -25,10 +25,10 @@ set(hipsolver_test_source
   potri_gtest.cpp
   potrs_gtest.cpp
   syevd_heevd_gtest.cpp
-  syevdx_heevdx_gtest.cpp
   syevj_heevj_gtest.cpp
   sygvd_hegvd_gtest.cpp
   sygvj_hegvj_gtest.cpp
+  syevdx_heevdx_gtest.cpp
   sytrd_hetrd_gtest.cpp
   sytrf_gtest.cpp
   orgbr_ungbr_gtest.cpp
