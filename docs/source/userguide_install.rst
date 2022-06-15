@@ -78,7 +78,7 @@ the ``CMAKE_PREFIX_PATH`` definition. The following is a sequence of steps to bu
 
     mkdir -p <HIPSOLVER_BUILD_DIR_PATH>/release/deps
     cd <HIPSOLVER_BUILD_DIR_PATH>/release/deps
-    cmake -DBUILD_BOOST=OFF <HIPSOLVER_SOURCE_PATH>/deps   #assuming boost is installed through package manager as above
+    cmake <HIPSOLVER_SOURCE_PATH>/deps
     make -j$(nproc) install
 
 Library and clients

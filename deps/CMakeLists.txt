@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright 2016-2021 Advanced Micro Devices, Inc.
+# Copyright 2016-2022 Advanced Micro Devices, Inc.
 # ########################################################################
 # Helper cmake script to automate building dependencies for hipsolver
 # This script can be invoked manually by the user with 'cmake -P'
@@ -28,7 +28,6 @@ endif()
 # The superbuild does not build anything itself; all compiling is done in external projects
 project( hipsolver-dependencies NONE )
 
-option( BUILD_BOOST "Download and build boost library" ON )
 option( BUILD_GTEST "Download and build googletest library" ON )
 option( BUILD_LAPACK "Download and build lapack library" ON )
 # option( BUILD_VERBOSE "Print helpful build debug information" OFF )
@@ -51,21 +50,16 @@ if( BUILD_GTEST )
   include( external-gtest )
 
   list( APPEND hipsolver_dependencies googletest )
-  set( gtest_custom_target COMMAND cd ${GTEST_BINARY_ROOT}$<SEMICOLON> ${CMAKE_COMMAND} --build . --target install )
+  set( gtest_custom_target COMMAND cd ${GTEST_BINARY_ROOT}$<SEMICOLON> ${CMAKE_COMMAND} --build . )
+  set( gtest_install_target COMMAND cd ${GTEST_BINARY_ROOT}$<SEMICOLON> ${CMAKE_COMMAND} --build . --target install )
 endif( )
 
 if( BUILD_LAPACK )
   include( external-lapack )
 
   list( APPEND hipsolver_dependencies lapack )
-  set( lapack_custom_target COMMAND cd ${LAPACK_BINARY_ROOT}$<SEMICOLON> ${CMAKE_COMMAND} --build . --target install )
-endif( )
-
-if( BUILD_BOOST )
-  include( external-boost )
-
-  list( APPEND hipsolver_dependencies boost )
-  set( boost_custom_target COMMAND cd ${BOOST_BINARY_ROOT}$<SEMICOLON> ${Boost.Command} install )
+  set( lapack_custom_target COMMAND cd ${LAPACK_BINARY_ROOT}$<SEMICOLON> ${CMAKE_COMMAND} --build . )
+  set( lapack_install_target COMMAND cd ${LAPACK_BINARY_ROOT}$<SEMICOLON> ${CMAKE_COMMAND} --build . --target install )
 endif( )
 
 # POLICY CMP0037 - "Target names should not be reserved and should match a validity pattern"
@@ -74,9 +68,14 @@ if( POLICY CMP0037 )
   cmake_policy( SET CMP0037 OLD )
 endif( )
 
-add_custom_target( install
-  ${boost_custom_target}
+add_custom_target( build_deps
   ${gtest_custom_target}
   ${lapack_custom_target}
   DEPENDS ${hipsolver_dependencies}
+)
+
+add_custom_target( install_deps
+  ${gtest_install_target}
+  ${lapack_install_target}
+  DEPENDS ${build_deps}
 )
