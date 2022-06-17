@@ -797,7 +797,7 @@ void testing_syevdx_heevdx(Arguments& argus)
         }
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(1);
+            rocsolver_bench_inform(inform_invalid_size);
 
         return;
     }

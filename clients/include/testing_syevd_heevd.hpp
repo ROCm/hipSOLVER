@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2021 Advanced Micro Devices, Inc.
+ * Copyright 2021-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -570,7 +570,7 @@ void testing_syevd_heevd(Arguments& argus)
         }
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(1);
+            rocsolver_bench_inform(inform_invalid_size);
 
         return;
     }

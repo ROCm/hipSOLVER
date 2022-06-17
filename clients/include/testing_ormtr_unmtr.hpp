@@ -517,7 +517,7 @@ void testing_ormtr_unmtr(Arguments& argus)
                               HIPSOLVER_STATUS_INVALID_VALUE);
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(2);
+            rocsolver_bench_inform(inform_invalid_args);
 
         return;
     }
@@ -554,7 +554,7 @@ void testing_ormtr_unmtr(Arguments& argus)
                               HIPSOLVER_STATUS_INVALID_VALUE);
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(1);
+            rocsolver_bench_inform(inform_invalid_size);
 
         return;
     }

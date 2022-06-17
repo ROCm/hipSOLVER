@@ -280,7 +280,7 @@ void testing_orgqr_ungqr(Arguments& argus)
                               HIPSOLVER_STATUS_INVALID_VALUE);
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(1);
+            rocsolver_bench_inform(inform_invalid_size);
 
         return;
     }

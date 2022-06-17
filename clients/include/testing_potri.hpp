@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -289,7 +289,7 @@ void testing_potri(Arguments& argus)
         }
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(2);
+            rocsolver_bench_inform(inform_invalid_args);
 
         return;
     }
@@ -336,7 +336,7 @@ void testing_potri(Arguments& argus)
         }
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(1);
+            rocsolver_bench_inform(inform_invalid_size);
 
         return;
     }
