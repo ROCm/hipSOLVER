@@ -470,6 +470,16 @@ void testing_sytrf(Arguments& argus)
         return;
     }
 
+    // memory size query is necessary
+    int size_W;
+    hipsolver_sytrf_bufferSize(FORTRAN, handle, n, (T*)nullptr, lda, &size_W);
+
+    if(argus.mem_query)
+    {
+        rocsolver_bench_inform(inform_mem_query, size_W);
+        return;
+    }
+
     if(BATCHED)
     {
         // // memory allocations
@@ -482,15 +492,12 @@ void testing_sytrf(Arguments& argus)
         // device_batch_vector<T>           dA(size_A, 1, bc);
         // device_strided_batch_vector<int> dIpiv(size_P, 1, stP, bc);
         // device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
         // CHECK_HIP_ERROR(dInfo.memcheck());
         // if(size_P)
         //     CHECK_HIP_ERROR(dIpiv.memcheck());
-
-        // int size_W;
-        // hipsolver_sytrf_bufferSize(FORTRAN, handle, n, dA.data(), lda, &size_W);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -551,15 +558,12 @@ void testing_sytrf(Arguments& argus)
         device_strided_batch_vector<T>   dA(size_A, 1, stA, bc);
         device_strided_batch_vector<int> dIpiv(size_P, 1, stP, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());
         if(size_P)
             CHECK_HIP_ERROR(dIpiv.memcheck());
-
-        int size_W;
-        hipsolver_sytrf_bufferSize(FORTRAN, handle, n, dA.data(), lda, &size_W);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 

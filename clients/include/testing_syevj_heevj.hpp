@@ -628,6 +628,17 @@ void testing_syevj_heevj(Arguments& argus)
         return;
     }
 
+    // memory size query is necessary
+    int size_W;
+    hipsolver_syevj_heevj_bufferSize(
+        API, STRIDED, handle, evect, uplo, n, (T*)nullptr, lda, (S*)nullptr, &size_W, params, bc);
+
+    if(argus.mem_query)
+    {
+        rocsolver_bench_inform(inform_mem_query, size_W);
+        return;
+    }
+
     // memory allocations (all cases)
     // host
     host_strided_batch_vector<S>   hD(size_D, 1, stD, bc);
@@ -637,25 +648,21 @@ void testing_syevj_heevj(Arguments& argus)
     // device
     device_strided_batch_vector<S>   dD(size_D, 1, stD, bc);
     device_strided_batch_vector<int> dinfo(1, 1, 1, bc);
+    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
     if(size_D)
         CHECK_HIP_ERROR(dD.memcheck());
     CHECK_HIP_ERROR(dinfo.memcheck());
+    if(size_W)
+        CHECK_HIP_ERROR(dWork.memcheck());
 
     if(BATCHED)
     {
         // // memory allocations
-        // host_batch_vector<T>   hA(size_A, 1, bc);
-        // host_batch_vector<T>   hAres(size_Ares, 1, bc);
-        // device_batch_vector<T> dA(size_A, 1, bc);
+        // host_batch_vector<T>           hA(size_A, 1, bc);
+        // host_batch_vector<T>           hAres(size_Ares, 1, bc);
+        // device_batch_vector<T>         dA(size_A, 1, bc);
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
-
-        // int size_W;
-        // hipsolver_syevj_heevj_bufferSize(
-        //     API, STRIDED, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W, params, bc);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        // if(size_W)
-        //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check computations
         // if(argus.unit_check || argus.norm_check)
@@ -718,13 +725,6 @@ void testing_syevj_heevj(Arguments& argus)
         device_strided_batch_vector<T> dA(size_A, 1, stA, bc);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
-
-        int size_W;
-        hipsolver_syevj_heevj_bufferSize(
-            API, STRIDED, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W, params, bc);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        if(size_W)
-            CHECK_HIP_ERROR(dWork.memcheck());
 
         // check computations
         if(argus.unit_check || argus.norm_check)

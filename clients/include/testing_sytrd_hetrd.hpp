@@ -744,6 +744,17 @@ void testing_sytrd_hetrd(Arguments& argus)
         return;
     }
 
+    // memory size query is necessary
+    int size_W;
+    hipsolver_sytrd_hetrd_bufferSize(
+        FORTRAN, handle, uplo, n, (T*)nullptr, lda, (S*)nullptr, (S*)nullptr, (T*)nullptr, &size_W);
+
+    if(argus.mem_query)
+    {
+        rocsolver_bench_inform(inform_mem_query, size_W);
+        return;
+    }
+
     // memory allocations (all cases)
     // host
     host_strided_batch_vector<S>   hD(size_D, 1, stD, bc);
@@ -756,6 +767,7 @@ void testing_sytrd_hetrd(Arguments& argus)
     device_strided_batch_vector<S>   dE(size_E, 1, stE, bc);
     device_strided_batch_vector<T>   dTau(size_tau, 1, stP, bc);
     device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
     if(size_D)
         CHECK_HIP_ERROR(dD.memcheck());
     if(size_E)
@@ -763,22 +775,17 @@ void testing_sytrd_hetrd(Arguments& argus)
     if(size_tau)
         CHECK_HIP_ERROR(dTau.memcheck());
     CHECK_HIP_ERROR(dInfo.memcheck());
+    if(size_W)
+        CHECK_HIP_ERROR(dWork.memcheck());
 
     if(BATCHED)
     {
         // // memory allocations
-        // host_batch_vector<T>   hA(size_A, 1, bc);
-        // host_batch_vector<T>   hARes(size_ARes, 1, bc);
-        // device_batch_vector<T> dA(size_A, 1, bc);
+        // host_batch_vector<T>           hA(size_A, 1, bc);
+        // host_batch_vector<T>           hARes(size_ARes, 1, bc);
+        // device_batch_vector<T>         dA(size_A, 1, bc);
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
-
-        // int size_W;
-        // hipsolver_sytrd_hetrd_bufferSize(
-        //     FORTRAN, handle, uplo, n, dA.data(), lda, dD.data(), dE.data(), dTau.data(), &size_W);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        // if(size_W)
-        //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check computations
         // if(argus.unit_check || argus.norm_check)
@@ -844,13 +851,6 @@ void testing_sytrd_hetrd(Arguments& argus)
         device_strided_batch_vector<T> dA(size_A, 1, stA, bc);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
-
-        int size_W;
-        hipsolver_sytrd_hetrd_bufferSize(
-            FORTRAN, handle, uplo, n, dA.data(), lda, dD.data(), dE.data(), dTau.data(), &size_W);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        if(size_W)
-            CHECK_HIP_ERROR(dWork.memcheck());
 
         // check computations
         if(argus.unit_check || argus.norm_check)

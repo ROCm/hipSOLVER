@@ -633,6 +633,17 @@ void testing_gels(Arguments& argus)
         return;
     }
 
+    // memory size query is necessary
+    size_t size_W;
+    hipsolver_gels_bufferSize(
+        API, handle, m, n, nrhs, (T*)nullptr, lda, (T*)nullptr, ldb, (T*)nullptr, ldx, &size_W);
+
+    if(argus.mem_query)
+    {
+        rocsolver_bench_inform(inform_mem_query, size_W);
+        return;
+    }
+
     if(BATCHED)
     {
         // // memory allocations
@@ -648,6 +659,7 @@ void testing_gels(Arguments& argus)
         // device_batch_vector<T>           dB(size_B, 1, bc);
         // device_batch_vector<T>           dX(size_X, 1, bc);
         // device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
         // if(size_B)
@@ -656,11 +668,6 @@ void testing_gels(Arguments& argus)
         //     CHECK_HIP_ERROR(dX.memcheck());
         // if(bc)
         //     CHECK_HIP_ERROR(dInfo.memcheck());
-
-        // size_t size_W;
-        // hipsolver_gels_bufferSize(
-        //     API, handle, m, n, nrhs, dA.data(), lda, dB.data(), ldb, dX.data(), ldx, &size_W);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -737,6 +744,7 @@ void testing_gels(Arguments& argus)
         device_strided_batch_vector<T>   dB(size_B, 1, stB, bc);
         device_strided_batch_vector<T>   dX(size_X, 1, stX, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         if(size_B)
@@ -745,11 +753,6 @@ void testing_gels(Arguments& argus)
             CHECK_HIP_ERROR(dX.memcheck());
         if(bc)
             CHECK_HIP_ERROR(dInfo.memcheck());
-
-        size_t size_W;
-        hipsolver_gels_bufferSize(
-            API, handle, m, n, nrhs, dA.data(), lda, dB.data(), ldb, dX.data(), ldx, &size_W);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
