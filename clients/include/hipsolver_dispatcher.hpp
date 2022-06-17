@@ -25,6 +25,7 @@
 #include "testing_potri.hpp"
 #include "testing_potrs.hpp"
 #include "testing_syevd_heevd.hpp"
+#include "testing_syevdx_heevdx.hpp"
 #include "testing_syevj_heevj.hpp"
 #include "testing_sygvd_hegvd.hpp"
 #include "testing_sygvj_hegvj.hpp"
@@ -89,6 +90,7 @@ class hipsolver_dispatcher
             {"ormqr", testing_ormqr_unmqr<false, T>},
             {"ormtr", testing_ormtr_unmtr<false, T>},
             {"syevd", testing_syevd_heevd<false, false, false, T>},
+            {"syevdx", testing_syevdx_heevdx<API_COMPAT, false, false, T>},
             {"syevj", testing_syevj_heevj<API_COMPAT, false, false, T>},
             {"syevj_batched", testing_syevj_heevj<API_COMPAT, false, true, T>},
             {"sygvj", testing_sygvj_hegvj<API_COMPAT, false, false, T>},
@@ -118,6 +120,7 @@ class hipsolver_dispatcher
             {"unmqr", testing_ormqr_unmqr<false, T>},
             {"unmtr", testing_ormtr_unmtr<false, T>},
             {"heevd", testing_syevd_heevd<false, false, false, T>},
+            {"heevdx", testing_syevdx_heevdx<API_COMPAT, false, false, T>},
             {"heevj", testing_syevj_heevj<API_COMPAT, false, false, T>},
             {"heevj_batched", testing_syevj_heevj<API_COMPAT, false, true, T>},
             {"hegvj", testing_sygvj_hegvj<API_COMPAT, false, false, T>},

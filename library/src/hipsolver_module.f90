@@ -37,6 +37,12 @@ module hipsolver_enums
     end enum
 
     enum, bind(c)
+        enumerator :: HIPSOLVER_EIG_RANGE_ALL = 221
+        enumerator :: HIPSOLVER_EIG_RANGE_V   = 222
+        enumerator :: HIPSOLVER_EIG_RANGE_I   = 223
+    end enum
+
+    enum, bind(c)
         enumerator :: HIPSOLVER_STATUS_SUCCESS           = 0
         enumerator :: HIPSOLVER_STATUS_NOT_INITIALIZED   = 1
         enumerator :: HIPSOLVER_STATUS_ALLOC_FAILED      = 2
@@ -2817,7 +2823,7 @@ module hipsolver
 
     ! ******************** SYEVD/HEEVD ********************
     interface
-        function hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork) &
+        function hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork) &
                 bind(c, name = 'hipsolverSsyevd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
@@ -2829,13 +2835,13 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: lwork
         end function hipsolverSsyevd_bufferSize
     end interface
     
     interface
-        function hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork) &
+        function hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork) &
                 bind(c, name = 'hipsolverDsyevd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
@@ -2847,13 +2853,13 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: lwork
         end function hipsolverDsyevd_bufferSize
     end interface
     
     interface
-        function hipsolverCheevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork) &
+        function hipsolverCheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork) &
                 bind(c, name = 'hipsolverCheevd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
@@ -2865,13 +2871,13 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: lwork
         end function hipsolverCheevd_bufferSize
     end interface
     
     interface
-        function hipsolverZheevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork) &
+        function hipsolverZheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork) &
                 bind(c, name = 'hipsolverZheevd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
@@ -2883,13 +2889,13 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: lwork
         end function hipsolverZheevd_bufferSize
     end interface
 
     interface
-        function hipsolverSsyevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info) &
+        function hipsolverSsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
                 bind(c, name = 'hipsolverSsyevd')
             use iso_c_binding
             use hipsolver_enums
@@ -2901,7 +2907,7 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -2909,7 +2915,7 @@ module hipsolver
     end interface
 
     interface
-        function hipsolverDsyevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info) &
+        function hipsolverDsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
                 bind(c, name = 'hipsolverDsyevd')
             use iso_c_binding
             use hipsolver_enums
@@ -2921,7 +2927,7 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -2929,7 +2935,7 @@ module hipsolver
     end interface
 
     interface
-        function hipsolverCheevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info) &
+        function hipsolverCheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
                 bind(c, name = 'hipsolverCheevd')
             use iso_c_binding
             use hipsolver_enums
@@ -2941,7 +2947,7 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -2949,7 +2955,7 @@ module hipsolver
     end interface
 
     interface
-        function hipsolverZheevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info) &
+        function hipsolverZheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
                 bind(c, name = 'hipsolverZheevd')
             use iso_c_binding
             use hipsolver_enums
@@ -2961,7 +2967,7 @@ module hipsolver
             integer(c_int), value :: n
             type(c_ptr), value :: A
             integer(c_int), value :: lda
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -2970,7 +2976,7 @@ module hipsolver
 
     ! ******************** SYGVD/HEGVD ********************
     interface
-        function hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork) &
+        function hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
                 bind(c, name = 'hipsolverSsygvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
@@ -2985,13 +2991,13 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: lwork
         end function hipsolverSsygvd_bufferSize
     end interface
     
     interface
-        function hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork) &
+        function hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
                 bind(c, name = 'hipsolverDsygvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
@@ -3006,13 +3012,13 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: lwork
         end function hipsolverDsygvd_bufferSize
     end interface
     
     interface
-        function hipsolverChegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork) &
+        function hipsolverChegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
                 bind(c, name = 'hipsolverChegvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
@@ -3027,13 +3033,13 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: lwork
         end function hipsolverChegvd_bufferSize
     end interface
     
     interface
-        function hipsolverZhegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork) &
+        function hipsolverZhegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
                 bind(c, name = 'hipsolverZhegvd_bufferSize')
             use iso_c_binding
             use hipsolver_enums
@@ -3048,13 +3054,13 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: lwork
         end function hipsolverZhegvd_bufferSize
     end interface
 
     interface
-        function hipsolverSsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info) &
+        function hipsolverSsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
                 bind(c, name = 'hipsolverSsygvd')
             use iso_c_binding
             use hipsolver_enums
@@ -3069,7 +3075,7 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -3077,7 +3083,7 @@ module hipsolver
     end interface
 
     interface
-        function hipsolverDsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info) &
+        function hipsolverDsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
                 bind(c, name = 'hipsolverDsygvd')
             use iso_c_binding
             use hipsolver_enums
@@ -3092,7 +3098,7 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -3100,7 +3106,7 @@ module hipsolver
     end interface
 
     interface
-        function hipsolverChegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info) &
+        function hipsolverChegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
                 bind(c, name = 'hipsolverChegvd')
             use iso_c_binding
             use hipsolver_enums
@@ -3115,7 +3121,7 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info
@@ -3123,7 +3129,7 @@ module hipsolver
     end interface
 
     interface
-        function hipsolverZhegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info) &
+        function hipsolverZhegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
                 bind(c, name = 'hipsolverZhegvd')
             use iso_c_binding
             use hipsolver_enums
@@ -3138,7 +3144,7 @@ module hipsolver
             integer(c_int), value :: lda
             type(c_ptr), value :: B
             integer(c_int), value :: ldb
-            type(c_ptr), value :: D
+            type(c_ptr), value :: W
             type(c_ptr), value :: work
             integer(c_int), value :: lwork
             type(c_ptr), value :: info

@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 /*! \file
@@ -1525,7 +1525,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               float*              B,
                                                               int                 ldb,
-                                                              float*              D,
+                                                              float*              W,
                                                               int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd_bufferSize(hipsolverHandle_t   handle,
@@ -1537,7 +1537,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               double*             B,
                                                               int                 ldb,
-                                                              double*             D,
+                                                              double*             W,
                                                               int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd_bufferSize(hipsolverHandle_t   handle,
@@ -1549,7 +1549,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               hipFloatComplex*    B,
                                                               int                 ldb,
-                                                              float*              D,
+                                                              float*              W,
                                                               int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSize(hipsolverHandle_t   handle,
@@ -1561,7 +1561,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSize(hipsolverHandle_t 
                                                               int                 lda,
                                                               hipDoubleComplex*   B,
                                                               int                 ldb,
-                                                              double*             D,
+                                                              double*             W,
                                                               int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd(hipsolverHandle_t   handle,
@@ -1573,7 +1573,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    float*              B,
                                                    int                 ldb,
-                                                   float*              D,
+                                                   float*              W,
                                                    float*              work,
                                                    int                 lwork,
                                                    int*                devInfo);
@@ -1587,7 +1587,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    double*             B,
                                                    int                 ldb,
-                                                   double*             D,
+                                                   double*             W,
                                                    double*             work,
                                                    int                 lwork,
                                                    int*                devInfo);
@@ -1601,7 +1601,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    hipFloatComplex*    B,
                                                    int                 ldb,
-                                                   float*              D,
+                                                   float*              W,
                                                    hipFloatComplex*    work,
                                                    int                 lwork,
                                                    int*                devInfo);
@@ -1615,7 +1615,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd(hipsolverHandle_t   handle,
                                                    int                 lda,
                                                    hipDoubleComplex*   B,
                                                    int                 ldb,
-                                                   double*             D,
+                                                   double*             W,
                                                    hipDoubleComplex*   work,
                                                    int                 lwork,
                                                    int*                devInfo);
