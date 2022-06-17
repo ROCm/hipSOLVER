@@ -863,7 +863,7 @@ void testing_gesvd(Arguments& argus)
         }
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(2);
+            rocsolver_bench_inform(inform_invalid_args);
 
         return;
     }
@@ -1030,8 +1030,20 @@ void testing_gesvd(Arguments& argus)
         }
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(1);
+            rocsolver_bench_inform(inform_invalid_size);
 
+        return;
+    }
+
+    // memory size query is necessary
+    int size_W, w1, w2;
+    hipsolver_gesvd_bufferSize(API, handle, leftv, rightv, m, n, (T*)nullptr, lda, &w1);
+    hipsolver_gesvd_bufferSize(API, handle, leftvT, rightvT, mT, nT, (T*)nullptr, lda, &w2);
+    size_W = max(w1, w2);
+
+    if(argus.mem_query)
+    {
+        rocsolver_bench_inform(inform_mem_query, size_W);
         return;
     }
 
@@ -1055,6 +1067,7 @@ void testing_gesvd(Arguments& argus)
     device_strided_batch_vector<int> dinfo(1, 1, 1, bc);
     device_strided_batch_vector<T>   dVT(size_VT, 1, stVT, bc);
     device_strided_batch_vector<T>   dUT(size_UT, 1, stUT, bc);
+    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
     if(size_VT)
         CHECK_HIP_ERROR(dVT.memcheck());
     if(size_UT)
@@ -1068,6 +1081,8 @@ void testing_gesvd(Arguments& argus)
     if(size_U)
         CHECK_HIP_ERROR(dU.memcheck());
     CHECK_HIP_ERROR(dinfo.memcheck());
+    if(size_W)
+        CHECK_HIP_ERROR(dWork.memcheck());
 
     if(BATCHED)
     {
@@ -1076,14 +1091,6 @@ void testing_gesvd(Arguments& argus)
         // device_batch_vector<T> dA(size_A, 1, bc);
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
-
-        // int w1, w2;
-        // hipsolver_gesvd_bufferSize(API, handle, leftv, rightv, m, n, dA.data(), lda, &w1);
-        // hipsolver_gesvd_bufferSize(API, handle, leftvT, rightvT, mT, nT, dA.data(), lda, &w2);
-        // int size_W = max(w1, w2);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        // if(size_W)
-        //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check computations
         // if(argus.unit_check || argus.norm_check)
@@ -1182,14 +1189,6 @@ void testing_gesvd(Arguments& argus)
         device_strided_batch_vector<T> dA(size_A, 1, stA, bc);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
-
-        int w1, w2;
-        hipsolver_gesvd_bufferSize(API, handle, leftv, rightv, m, n, dA.data(), lda, &w1);
-        hipsolver_gesvd_bufferSize(API, handle, leftvT, rightvT, mT, nT, dA.data(), lda, &w2);
-        int                            size_W = max(w1, w2);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        if(size_W)
-            CHECK_HIP_ERROR(dWork.memcheck());
 
         // check computations
         if(argus.unit_check || argus.norm_check)

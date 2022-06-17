@@ -9,19 +9,6 @@
 #include <limits>
 #include <sstream>
 
-#define ROCSOLVER_BENCH_INFORM(case)                                    \
-    do                                                                  \
-    {                                                                   \
-        if(case == 2)                                                   \
-            std::cerr << "Invalid value in arguments ..." << std::endl; \
-        else if(case == 1)                                              \
-            std::cerr << "Invalid size arguments..." << std::endl;      \
-        else                                                            \
-            std::cerr << "Quick return..." << std::endl;                \
-        std::cerr << "No performance data to collect." << std::endl;    \
-        std::cerr << "No computations to verify." << std::endl;         \
-    } while(0)
-
 template <typename T>
 constexpr double get_epsilon()
 {
@@ -46,6 +33,36 @@ constexpr double get_safemin()
 #else
 #define ROCSOLVER_TEST_CHECK(T, max_error, tol)
 #endif
+
+typedef enum rocsolver_inform_type_
+{
+    inform_quick_return,
+    inform_invalid_size,
+    inform_invalid_args,
+    inform_mem_query,
+} rocsolver_inform_type;
+
+inline void rocsolver_bench_inform(rocsolver_inform_type it, size_t arg = 0)
+{
+    switch(it)
+    {
+    case inform_quick_return:
+        printf("Quick return...\n");
+        break;
+    case inform_invalid_size:
+        printf("Invalid size arguments...\n");
+        break;
+    case inform_invalid_args:
+        printf("Invalid value in arguments...\n");
+        break;
+    case inform_mem_query:
+        printf("%li bytes of device memory are required...\n", arg);
+        break;
+    }
+    printf("No performance data to collect.\n");
+    printf("No computations to verify.\n");
+    std::fflush(stdout);
+}
 
 inline void rocsolver_bench_output()
 {

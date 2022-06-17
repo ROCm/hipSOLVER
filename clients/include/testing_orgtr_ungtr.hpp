@@ -283,8 +283,19 @@ void testing_orgtr_ungtr(Arguments& argus)
                               HIPSOLVER_STATUS_INVALID_VALUE);
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(1);
+            rocsolver_bench_inform(inform_invalid_size);
 
+        return;
+    }
+
+    // memory size query is necessary
+    int size_W;
+    hipsolver_orgtr_ungtr_bufferSize(
+        FORTRAN, handle, uplo, n, (T*)nullptr, lda, (T*)nullptr, &size_W);
+
+    if(argus.mem_query)
+    {
+        rocsolver_bench_inform(inform_mem_query, size_W);
         return;
     }
 
@@ -297,16 +308,12 @@ void testing_orgtr_ungtr(Arguments& argus)
     device_strided_batch_vector<T>   dA(size_A, 1, size_A, 1);
     device_strided_batch_vector<T>   dIpiv(size_P, 1, size_P, 1);
     device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
+    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
     if(size_A)
         CHECK_HIP_ERROR(dA.memcheck());
     if(size_P)
         CHECK_HIP_ERROR(dIpiv.memcheck());
     CHECK_HIP_ERROR(dInfo.memcheck());
-
-    int size_W;
-    hipsolver_orgtr_ungtr_bufferSize(
-        FORTRAN, handle, uplo, n, dA.data(), lda, dIpiv.data(), &size_W);
-    device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
     if(size_W)
         CHECK_HIP_ERROR(dWork.memcheck());
 
