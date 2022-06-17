@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #include "../include/hipsolver_datatype2string.hpp"
@@ -71,6 +71,21 @@ char hipsolver2char_eform(hipsolverEigType_t value)
         return '2';
     case HIPSOLVER_EIG_TYPE_3:
         return '3';
+    default:
+        throw std::invalid_argument("Invalid enum");
+    }
+}
+
+char hipsolver2char_erange(hipsolverEigRange_t value)
+{
+    switch(value)
+    {
+    case HIPSOLVER_EIG_RANGE_ALL:
+        return 'A';
+    case HIPSOLVER_EIG_RANGE_V:
+        return 'V';
+    case HIPSOLVER_EIG_RANGE_I:
+        return 'I';
     default:
         throw std::invalid_argument("Invalid enum");
     }
@@ -169,6 +184,21 @@ hipsolverEigType_t char2hipsolver_eform(char value)
         return HIPSOLVER_EIG_TYPE_2;
     case '3':
         return HIPSOLVER_EIG_TYPE_3;
+    default:
+        throw std::invalid_argument("Invalid character");
+    }
+}
+
+hipsolverEigRange_t char2hipsolver_erange(char value)
+{
+    switch(value)
+    {
+    case 'A':
+        return HIPSOLVER_EIG_RANGE_ALL;
+    case 'V':
+        return HIPSOLVER_EIG_RANGE_V;
+    case 'I':
+        return HIPSOLVER_EIG_RANGE_I;
     default:
         throw std::invalid_argument("Invalid character");
     }

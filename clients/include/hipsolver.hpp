@@ -4744,13 +4744,13 @@ inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FO
                                                           int                 n,
                                                           float*              A,
                                                           int                 lda,
-                                                          float*              D,
+                                                          float*              W,
                                                           int*                lwork)
 {
     if(!FORTRAN)
-        return hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork);
+        return hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
     else
-        return hipsolverSsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, D, lwork);
+        return hipsolverSsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FORTRAN,
@@ -4760,13 +4760,13 @@ inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FO
                                                           int                 n,
                                                           double*             A,
                                                           int                 lda,
-                                                          double*             D,
+                                                          double*             W,
                                                           int*                lwork)
 {
     if(!FORTRAN)
-        return hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork);
+        return hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
     else
-        return hipsolverDsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, D, lwork);
+        return hipsolverDsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FORTRAN,
@@ -4776,15 +4776,15 @@ inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                FO
                                                           int                 n,
                                                           hipsolverComplex*   A,
                                                           int                 lda,
-                                                          float*              D,
+                                                          float*              W,
                                                           int*                lwork)
 {
     if(!FORTRAN)
         return hipsolverCheevd_bufferSize(
-            handle, jobz, uplo, n, (hipFloatComplex*)A, lda, D, lwork);
+            handle, jobz, uplo, n, (hipFloatComplex*)A, lda, W, lwork);
     else
         return hipsolverCheevd_bufferSizeFortran(
-            handle, jobz, uplo, n, (hipFloatComplex*)A, lda, D, lwork);
+            handle, jobz, uplo, n, (hipFloatComplex*)A, lda, W, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                    FORTRAN,
@@ -4794,15 +4794,15 @@ inline hipsolverStatus_t hipsolver_syevd_heevd_bufferSize(bool                  
                                                           int                     n,
                                                           hipsolverDoubleComplex* A,
                                                           int                     lda,
-                                                          double*                 D,
+                                                          double*                 W,
                                                           int*                    lwork)
 {
     if(!FORTRAN)
         return hipsolverZheevd_bufferSize(
-            handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, D, lwork);
+            handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, W, lwork);
     else
         return hipsolverZheevd_bufferSizeFortran(
-            handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, D, lwork);
+            handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, W, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
@@ -4813,7 +4813,7 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
                                                float*              A,
                                                int                 lda,
                                                int                 stA,
-                                               float*              D,
+                                               float*              W,
                                                int                 stW,
                                                float*              work,
                                                int                 lwork,
@@ -4821,9 +4821,9 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
                                                int                 bc)
 {
     if(!FORTRAN)
-        return hipsolverSsyevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info);
+        return hipsolverSsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
     else
-        return hipsolverSsyevdFortran(handle, jobz, uplo, n, A, lda, D, work, lwork, info);
+        return hipsolverSsyevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
 }
 
 inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
@@ -4834,7 +4834,7 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
                                                double*             A,
                                                int                 lda,
                                                int                 stA,
-                                               double*             D,
+                                               double*             W,
                                                int                 stW,
                                                double*             work,
                                                int                 lwork,
@@ -4842,9 +4842,9 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
                                                int                 bc)
 {
     if(!FORTRAN)
-        return hipsolverDsyevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info);
+        return hipsolverDsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
     else
-        return hipsolverDsyevdFortran(handle, jobz, uplo, n, A, lda, D, work, lwork, info);
+        return hipsolverDsyevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info);
 }
 
 inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
@@ -4855,7 +4855,7 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
                                                hipsolverComplex*   A,
                                                int                 lda,
                                                int                 stA,
-                                               float*              D,
+                                               float*              W,
                                                int                 stW,
                                                hipsolverComplex*   work,
                                                int                 lwork,
@@ -4869,7 +4869,7 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
                                n,
                                (hipFloatComplex*)A,
                                lda,
-                               D,
+                               W,
                                (hipFloatComplex*)work,
                                lwork,
                                info);
@@ -4880,7 +4880,7 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                FORTRAN,
                                       n,
                                       (hipFloatComplex*)A,
                                       lda,
-                                      D,
+                                      W,
                                       (hipFloatComplex*)work,
                                       lwork,
                                       info);
@@ -4894,7 +4894,7 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                    FORTRAN,
                                                hipsolverDoubleComplex* A,
                                                int                     lda,
                                                int                     stA,
-                                               double*                 D,
+                                               double*                 W,
                                                int                     stW,
                                                hipsolverDoubleComplex* work,
                                                int                     lwork,
@@ -4908,7 +4908,7 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                    FORTRAN,
                                n,
                                (hipDoubleComplex*)A,
                                lda,
-                               D,
+                               W,
                                (hipDoubleComplex*)work,
                                lwork,
                                info);
@@ -4919,10 +4919,269 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(bool                    FORTRAN,
                                       n,
                                       (hipDoubleComplex*)A,
                                       lda,
-                                      D,
+                                      W,
                                       (hipDoubleComplex*)work,
                                       lwork,
                                       info);
+}
+/********************************************************/
+
+/******************** SYEVDX/HEEVDX ********************/
+// normal and strided_batched
+inline hipsolverStatus_t hipsolver_syevdx_heevdx_bufferSize(testAPI_t           API,
+                                                            hipsolverHandle_t   handle,
+                                                            hipsolverEigMode_t  jobz,
+                                                            hipsolverEigRange_t range,
+                                                            hipsolverFillMode_t uplo,
+                                                            int                 n,
+                                                            float*              A,
+                                                            int                 lda,
+                                                            float               vl,
+                                                            float               vu,
+                                                            int                 il,
+                                                            int                 iu,
+                                                            int*                nev,
+                                                            float*              W,
+                                                            int*                lwork)
+{
+    switch(api2marshal(API, false))
+    {
+    case COMPAT_NORMAL:
+        return hipsolverDnSsyevdx_bufferSize(
+            handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_syevdx_heevdx_bufferSize(testAPI_t           API,
+                                                            hipsolverHandle_t   handle,
+                                                            hipsolverEigMode_t  jobz,
+                                                            hipsolverEigRange_t range,
+                                                            hipsolverFillMode_t uplo,
+                                                            int                 n,
+                                                            double*             A,
+                                                            int                 lda,
+                                                            double              vl,
+                                                            double              vu,
+                                                            int                 il,
+                                                            int                 iu,
+                                                            int*                nev,
+                                                            double*             W,
+                                                            int*                lwork)
+{
+    switch(api2marshal(API, false))
+    {
+    case COMPAT_NORMAL:
+        return hipsolverDnDsyevdx_bufferSize(
+            handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_syevdx_heevdx_bufferSize(testAPI_t           API,
+                                                            hipsolverHandle_t   handle,
+                                                            hipsolverEigMode_t  jobz,
+                                                            hipsolverEigRange_t range,
+                                                            hipsolverFillMode_t uplo,
+                                                            int                 n,
+                                                            hipsolverComplex*   A,
+                                                            int                 lda,
+                                                            float               vl,
+                                                            float               vu,
+                                                            int                 il,
+                                                            int                 iu,
+                                                            int*                nev,
+                                                            float*              W,
+                                                            int*                lwork)
+{
+    switch(api2marshal(API, false))
+    {
+    case COMPAT_NORMAL:
+        return hipsolverDnCheevdx_bufferSize(
+            handle, jobz, range, uplo, n, (hipFloatComplex*)A, lda, vl, vu, il, iu, nev, W, lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_syevdx_heevdx_bufferSize(testAPI_t               API,
+                                                            hipsolverHandle_t       handle,
+                                                            hipsolverEigMode_t      jobz,
+                                                            hipsolverEigRange_t     range,
+                                                            hipsolverFillMode_t     uplo,
+                                                            int                     n,
+                                                            hipsolverDoubleComplex* A,
+                                                            int                     lda,
+                                                            double                  vl,
+                                                            double                  vu,
+                                                            int                     il,
+                                                            int                     iu,
+                                                            int*                    nev,
+                                                            double*                 W,
+                                                            int*                    lwork)
+{
+    switch(api2marshal(API, false))
+    {
+    case COMPAT_NORMAL:
+        return hipsolverDnZheevdx_bufferSize(
+            handle, jobz, range, uplo, n, (hipDoubleComplex*)A, lda, vl, vu, il, iu, nev, W, lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_syevdx_heevdx(testAPI_t           API,
+                                                 hipsolverHandle_t   handle,
+                                                 hipsolverEigMode_t  jobz,
+                                                 hipsolverEigRange_t range,
+                                                 hipsolverFillMode_t uplo,
+                                                 int                 n,
+                                                 float*              A,
+                                                 int                 lda,
+                                                 int                 stA,
+                                                 float               vl,
+                                                 float               vu,
+                                                 int                 il,
+                                                 int                 iu,
+                                                 int*                nev,
+                                                 float*              W,
+                                                 int                 stW,
+                                                 float*              work,
+                                                 int                 lwork,
+                                                 int*                info,
+                                                 int                 bc)
+{
+    switch(api2marshal(API, false))
+    {
+    case COMPAT_NORMAL:
+        return hipsolverDnSsyevdx(
+            handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, work, lwork, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_syevdx_heevdx(testAPI_t           API,
+                                                 hipsolverHandle_t   handle,
+                                                 hipsolverEigMode_t  jobz,
+                                                 hipsolverEigRange_t range,
+                                                 hipsolverFillMode_t uplo,
+                                                 int                 n,
+                                                 double*             A,
+                                                 int                 lda,
+                                                 int                 stA,
+                                                 double              vl,
+                                                 double              vu,
+                                                 int                 il,
+                                                 int                 iu,
+                                                 int*                nev,
+                                                 double*             W,
+                                                 int                 stW,
+                                                 double*             work,
+                                                 int                 lwork,
+                                                 int*                info,
+                                                 int                 bc)
+{
+    switch(api2marshal(API, false))
+    {
+    case COMPAT_NORMAL:
+        return hipsolverDnDsyevdx(
+            handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, work, lwork, info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_syevdx_heevdx(testAPI_t           API,
+                                                 hipsolverHandle_t   handle,
+                                                 hipsolverEigMode_t  jobz,
+                                                 hipsolverEigRange_t range,
+                                                 hipsolverFillMode_t uplo,
+                                                 int                 n,
+                                                 hipsolverComplex*   A,
+                                                 int                 lda,
+                                                 int                 stA,
+                                                 float               vl,
+                                                 float               vu,
+                                                 int                 il,
+                                                 int                 iu,
+                                                 int*                nev,
+                                                 float*              W,
+                                                 int                 stW,
+                                                 hipsolverComplex*   work,
+                                                 int                 lwork,
+                                                 int*                info,
+                                                 int                 bc)
+{
+    switch(api2marshal(API, false))
+    {
+    case COMPAT_NORMAL:
+        return hipsolverDnCheevdx(handle,
+                                  jobz,
+                                  range,
+                                  uplo,
+                                  n,
+                                  (hipFloatComplex*)A,
+                                  lda,
+                                  vl,
+                                  vu,
+                                  il,
+                                  iu,
+                                  nev,
+                                  W,
+                                  (hipFloatComplex*)work,
+                                  lwork,
+                                  info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_syevdx_heevdx(testAPI_t               API,
+                                                 hipsolverHandle_t       handle,
+                                                 hipsolverEigMode_t      jobz,
+                                                 hipsolverEigRange_t     range,
+                                                 hipsolverFillMode_t     uplo,
+                                                 int                     n,
+                                                 hipsolverDoubleComplex* A,
+                                                 int                     lda,
+                                                 int                     stA,
+                                                 double                  vl,
+                                                 double                  vu,
+                                                 int                     il,
+                                                 int                     iu,
+                                                 int*                    nev,
+                                                 double*                 W,
+                                                 int                     stW,
+                                                 hipsolverDoubleComplex* work,
+                                                 int                     lwork,
+                                                 int*                    info,
+                                                 int                     bc)
+{
+    switch(api2marshal(API, false))
+    {
+    case COMPAT_NORMAL:
+        return hipsolverDnZheevdx(handle,
+                                  jobz,
+                                  range,
+                                  uplo,
+                                  n,
+                                  (hipDoubleComplex*)A,
+                                  lda,
+                                  vl,
+                                  vu,
+                                  il,
+                                  iu,
+                                  nev,
+                                  W,
+                                  (hipDoubleComplex*)work,
+                                  lwork,
+                                  info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
 }
 /********************************************************/
 
@@ -4936,7 +5195,7 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            A
                                                           int                  n,
                                                           float*               A,
                                                           int                  lda,
-                                                          float*               D,
+                                                          float*               W,
                                                           int*                 lwork,
                                                           hipsolverSyevjInfo_t params,
                                                           int                  bc)
@@ -4944,10 +5203,10 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            A
     switch(api2marshal(API, STRIDED))
     {
     case COMPAT_NORMAL:
-        return hipsolverDnSsyevj_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork, params);
+        return hipsolverDnSsyevj_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params);
     case COMPAT_NORMAL_ALT:
         return hipsolverDnSsyevjBatched_bufferSize(
-            handle, jobz, uplo, n, A, lda, D, lwork, params, bc);
+            handle, jobz, uplo, n, A, lda, W, lwork, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -4961,7 +5220,7 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            A
                                                           int                  n,
                                                           double*              A,
                                                           int                  lda,
-                                                          double*              D,
+                                                          double*              W,
                                                           int*                 lwork,
                                                           hipsolverSyevjInfo_t params,
                                                           int                  bc)
@@ -4969,10 +5228,10 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            A
     switch(api2marshal(API, STRIDED))
     {
     case COMPAT_NORMAL:
-        return hipsolverDnDsyevj_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork, params);
+        return hipsolverDnDsyevj_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params);
     case COMPAT_NORMAL_ALT:
         return hipsolverDnDsyevjBatched_bufferSize(
-            handle, jobz, uplo, n, A, lda, D, lwork, params, bc);
+            handle, jobz, uplo, n, A, lda, W, lwork, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -4986,7 +5245,7 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            A
                                                           int                  n,
                                                           hipsolverComplex*    A,
                                                           int                  lda,
-                                                          float*               D,
+                                                          float*               W,
                                                           int*                 lwork,
                                                           hipsolverSyevjInfo_t params,
                                                           int                  bc)
@@ -4995,10 +5254,10 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            A
     {
     case COMPAT_NORMAL:
         return hipsolverDnCheevj_bufferSize(
-            handle, jobz, uplo, n, (hipFloatComplex*)A, lda, D, lwork, params);
+            handle, jobz, uplo, n, (hipFloatComplex*)A, lda, W, lwork, params);
     case COMPAT_NORMAL_ALT:
         return hipsolverDnCheevjBatched_bufferSize(
-            handle, jobz, uplo, n, (hipFloatComplex*)A, lda, D, lwork, params, bc);
+            handle, jobz, uplo, n, (hipFloatComplex*)A, lda, W, lwork, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -5012,7 +5271,7 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t             
                                                           int                     n,
                                                           hipsolverDoubleComplex* A,
                                                           int                     lda,
-                                                          double*                 D,
+                                                          double*                 W,
                                                           int*                    lwork,
                                                           hipsolverSyevjInfo_t    params,
                                                           int                     bc)
@@ -5021,10 +5280,10 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t             
     {
     case COMPAT_NORMAL:
         return hipsolverDnZheevj_bufferSize(
-            handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, D, lwork, params);
+            handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, W, lwork, params);
     case COMPAT_NORMAL_ALT:
         return hipsolverDnZheevjBatched_bufferSize(
-            handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, D, lwork, params, bc);
+            handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, W, lwork, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -5039,7 +5298,7 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
                                                float*               A,
                                                int                  lda,
                                                int                  stA,
-                                               float*               D,
+                                               float*               W,
                                                int                  stW,
                                                float*               work,
                                                int                  lwork,
@@ -5050,10 +5309,10 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
     switch(api2marshal(API, STRIDED))
     {
     case COMPAT_NORMAL:
-        return hipsolverDnSsyevj(handle, jobz, uplo, n, A, lda, D, work, lwork, info, params);
+        return hipsolverDnSsyevj(handle, jobz, uplo, n, A, lda, W, work, lwork, info, params);
     case COMPAT_NORMAL_ALT:
         return hipsolverDnSsyevjBatched(
-            handle, jobz, uplo, n, A, lda, D, work, lwork, info, params, bc);
+            handle, jobz, uplo, n, A, lda, W, work, lwork, info, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -5068,7 +5327,7 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
                                                double*              A,
                                                int                  lda,
                                                int                  stA,
-                                               double*              D,
+                                               double*              W,
                                                int                  stW,
                                                double*              work,
                                                int                  lwork,
@@ -5079,10 +5338,10 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
     switch(api2marshal(API, STRIDED))
     {
     case COMPAT_NORMAL:
-        return hipsolverDnDsyevj(handle, jobz, uplo, n, A, lda, D, work, lwork, info, params);
+        return hipsolverDnDsyevj(handle, jobz, uplo, n, A, lda, W, work, lwork, info, params);
     case COMPAT_NORMAL_ALT:
         return hipsolverDnDsyevjBatched(
-            handle, jobz, uplo, n, A, lda, D, work, lwork, info, params, bc);
+            handle, jobz, uplo, n, A, lda, W, work, lwork, info, params, bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -5097,7 +5356,7 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
                                                hipsolverComplex*    A,
                                                int                  lda,
                                                int                  stA,
-                                               float*               D,
+                                               float*               W,
                                                int                  stW,
                                                hipsolverComplex*    work,
                                                int                  lwork,
@@ -5114,7 +5373,7 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
                                  n,
                                  (hipFloatComplex*)A,
                                  lda,
-                                 D,
+                                 W,
                                  (hipFloatComplex*)work,
                                  lwork,
                                  info,
@@ -5126,7 +5385,7 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
                                         n,
                                         (hipFloatComplex*)A,
                                         lda,
-                                        D,
+                                        W,
                                         (hipFloatComplex*)work,
                                         lwork,
                                         info,
@@ -5146,7 +5405,7 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t               API,
                                                hipsolverDoubleComplex* A,
                                                int                     lda,
                                                int                     stA,
-                                               double*                 D,
+                                               double*                 W,
                                                int                     stW,
                                                hipsolverDoubleComplex* work,
                                                int                     lwork,
@@ -5163,7 +5422,7 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t               API,
                                  n,
                                  (hipDoubleComplex*)A,
                                  lda,
-                                 D,
+                                 W,
                                  (hipDoubleComplex*)work,
                                  lwork,
                                  info,
@@ -5175,7 +5434,7 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t               API,
                                         n,
                                         (hipDoubleComplex*)A,
                                         lda,
-                                        D,
+                                        W,
                                         (hipDoubleComplex*)work,
                                         lwork,
                                         info,
@@ -5199,14 +5458,14 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                FO
                                                           int                 lda,
                                                           float*              B,
                                                           int                 ldb,
-                                                          float*              D,
+                                                          float*              W,
                                                           int*                lwork)
 {
     if(!FORTRAN)
-        return hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
+        return hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
     else
         return hipsolverSsygvd_bufferSizeFortran(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                FORTRAN,
@@ -5219,14 +5478,14 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                FO
                                                           int                 lda,
                                                           double*             B,
                                                           int                 ldb,
-                                                          double*             D,
+                                                          double*             W,
                                                           int*                lwork)
 {
     if(!FORTRAN)
-        return hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
+        return hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
     else
         return hipsolverDsygvd_bufferSizeFortran(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
 }
 
 inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                FORTRAN,
@@ -5239,7 +5498,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                FO
                                                           int                 lda,
                                                           hipsolverComplex*   B,
                                                           int                 ldb,
-                                                          float*              D,
+                                                          float*              W,
                                                           int*                lwork)
 {
     if(!FORTRAN)
@@ -5252,7 +5511,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                FO
                                           lda,
                                           (hipFloatComplex*)B,
                                           ldb,
-                                          D,
+                                          W,
                                           lwork);
     else
         return hipsolverChegvd_bufferSizeFortran(handle,
@@ -5264,7 +5523,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                FO
                                                  lda,
                                                  (hipFloatComplex*)B,
                                                  ldb,
-                                                 D,
+                                                 W,
                                                  lwork);
 }
 
@@ -5278,7 +5537,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                  
                                                           int                     lda,
                                                           hipsolverDoubleComplex* B,
                                                           int                     ldb,
-                                                          double*                 D,
+                                                          double*                 W,
                                                           int*                    lwork)
 {
     if(!FORTRAN)
@@ -5291,7 +5550,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                  
                                           lda,
                                           (hipDoubleComplex*)B,
                                           ldb,
-                                          D,
+                                          W,
                                           lwork);
     else
         return hipsolverZhegvd_bufferSizeFortran(handle,
@@ -5303,7 +5562,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(bool                  
                                                  lda,
                                                  (hipDoubleComplex*)B,
                                                  ldb,
-                                                 D,
+                                                 W,
                                                  lwork);
 }
 
@@ -5319,7 +5578,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
                                                float*              B,
                                                int                 ldb,
                                                int                 stB,
-                                               float*              D,
+                                               float*              W,
                                                int                 stW,
                                                float*              work,
                                                int                 lwork,
@@ -5327,10 +5586,10 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
                                                int                 bc)
 {
     if(!FORTRAN)
-        return hipsolverSsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info);
+        return hipsolverSsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info);
     else
         return hipsolverSsygvdFortran(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info);
 }
 
 inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
@@ -5345,7 +5604,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
                                                double*             B,
                                                int                 ldb,
                                                int                 stB,
-                                               double*             D,
+                                               double*             W,
                                                int                 stW,
                                                double*             work,
                                                int                 lwork,
@@ -5353,10 +5612,10 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
                                                int                 bc)
 {
     if(!FORTRAN)
-        return hipsolverDsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info);
+        return hipsolverDsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info);
     else
         return hipsolverDsygvdFortran(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info);
 }
 
 inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
@@ -5371,7 +5630,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
                                                hipsolverComplex*   B,
                                                int                 ldb,
                                                int                 stB,
-                                               float*              D,
+                                               float*              W,
                                                int                 stW,
                                                hipsolverComplex*   work,
                                                int                 lwork,
@@ -5388,7 +5647,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
                                lda,
                                (hipFloatComplex*)B,
                                ldb,
-                               D,
+                               W,
                                (hipFloatComplex*)work,
                                lwork,
                                info);
@@ -5402,7 +5661,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                FORTRAN,
                                       lda,
                                       (hipFloatComplex*)B,
                                       ldb,
-                                      D,
+                                      W,
                                       (hipFloatComplex*)work,
                                       lwork,
                                       info);
@@ -5420,7 +5679,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                    FORTRAN,
                                                hipsolverDoubleComplex* B,
                                                int                     ldb,
                                                int                     stB,
-                                               double*                 D,
+                                               double*                 W,
                                                int                     stW,
                                                hipsolverDoubleComplex* work,
                                                int                     lwork,
@@ -5437,7 +5696,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                    FORTRAN,
                                lda,
                                (hipDoubleComplex*)B,
                                ldb,
-                               D,
+                               W,
                                (hipDoubleComplex*)work,
                                lwork,
                                info);
@@ -5451,7 +5710,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                    FORTRAN,
                                       lda,
                                       (hipDoubleComplex*)B,
                                       ldb,
-                                      D,
+                                      W,
                                       (hipDoubleComplex*)work,
                                       lwork,
                                       info);
@@ -5470,7 +5729,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj_bufferSize(testAPI_t            A
                                                           int                  lda,
                                                           float*               B,
                                                           int                  ldb,
-                                                          float*               D,
+                                                          float*               W,
                                                           int*                 lwork,
                                                           hipsolverSyevjInfo_t params)
 {
@@ -5478,7 +5737,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj_bufferSize(testAPI_t            A
     {
     case API_COMPAT:
         return hipsolverDnSsygvj_bufferSize(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork, params);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -5494,7 +5753,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj_bufferSize(testAPI_t            A
                                                           int                  lda,
                                                           double*              B,
                                                           int                  ldb,
-                                                          double*              D,
+                                                          double*              W,
                                                           int*                 lwork,
                                                           hipsolverSyevjInfo_t params)
 {
@@ -5502,7 +5761,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj_bufferSize(testAPI_t            A
     {
     case API_COMPAT:
         return hipsolverDnDsygvj_bufferSize(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork, params);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -5518,7 +5777,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj_bufferSize(testAPI_t            A
                                                           int                  lda,
                                                           hipsolverComplex*    B,
                                                           int                  ldb,
-                                                          float*               D,
+                                                          float*               W,
                                                           int*                 lwork,
                                                           hipsolverSyevjInfo_t params)
 {
@@ -5534,7 +5793,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj_bufferSize(testAPI_t            A
                                             lda,
                                             (hipFloatComplex*)B,
                                             ldb,
-                                            D,
+                                            W,
                                             lwork,
                                             params);
     default:
@@ -5552,7 +5811,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj_bufferSize(testAPI_t             
                                                           int                     lda,
                                                           hipsolverDoubleComplex* B,
                                                           int                     ldb,
-                                                          double*                 D,
+                                                          double*                 W,
                                                           int*                    lwork,
                                                           hipsolverSyevjInfo_t    params)
 {
@@ -5568,7 +5827,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj_bufferSize(testAPI_t             
                                             lda,
                                             (hipDoubleComplex*)B,
                                             ldb,
-                                            D,
+                                            W,
                                             lwork,
                                             params);
     default:
@@ -5588,7 +5847,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj(testAPI_t            API,
                                                float*               B,
                                                int                  ldb,
                                                int                  stB,
-                                               float*               D,
+                                               float*               W,
                                                int                  stW,
                                                float*               work,
                                                int                  lwork,
@@ -5600,7 +5859,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj(testAPI_t            API,
     {
     case API_COMPAT:
         return hipsolverDnSsygvj(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info, params);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info, params);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -5618,7 +5877,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj(testAPI_t            API,
                                                double*              B,
                                                int                  ldb,
                                                int                  stB,
-                                               double*              D,
+                                               double*              W,
                                                int                  stW,
                                                double*              work,
                                                int                  lwork,
@@ -5630,7 +5889,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj(testAPI_t            API,
     {
     case API_COMPAT:
         return hipsolverDnDsygvj(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info, params);
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info, params);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -5648,7 +5907,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj(testAPI_t            API,
                                                hipsolverComplex*    B,
                                                int                  ldb,
                                                int                  stB,
-                                               float*               D,
+                                               float*               W,
                                                int                  stW,
                                                hipsolverComplex*    work,
                                                int                  lwork,
@@ -5668,7 +5927,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj(testAPI_t            API,
                                  lda,
                                  (hipFloatComplex*)B,
                                  ldb,
-                                 D,
+                                 W,
                                  (hipFloatComplex*)work,
                                  lwork,
                                  info,
@@ -5690,7 +5949,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj(testAPI_t               API,
                                                hipsolverDoubleComplex* B,
                                                int                     ldb,
                                                int                     stB,
-                                               double*                 D,
+                                               double*                 W,
                                                int                     stW,
                                                hipsolverDoubleComplex* work,
                                                int                     lwork,
@@ -5710,7 +5969,7 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj(testAPI_t               API,
                                  lda,
                                  (hipDoubleComplex*)B,
                                  ldb,
-                                 D,
+                                 W,
                                  (hipDoubleComplex*)work,
                                  lwork,
                                  info,

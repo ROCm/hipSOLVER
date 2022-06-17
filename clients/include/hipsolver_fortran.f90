@@ -2718,7 +2718,7 @@ module hipsolver_interface
     end function hipsolverZpotrsBatchedFortran
 
     ! ******************** SYEVD/HEEVD ********************
-    function hipsolverSsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, D, lwork) &
+    function hipsolverSsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork) &
             result(res) &
             bind(c, name = 'hipsolverSsyevd_bufferSizeFortran')
         use iso_c_binding
@@ -2730,13 +2730,13 @@ module hipsolver_interface
         integer(c_int), value :: n
         type(c_ptr), value :: A
         integer(c_int), value :: lda
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: lwork
         integer(c_int) :: res
-        res = hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork)
+        res = hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork)
     end function hipsolverSsyevd_bufferSizeFortran
     
-    function hipsolverDsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, D, lwork) &
+    function hipsolverDsyevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork) &
             result(res) &
             bind(c, name = 'hipsolverDsyevd_bufferSizeFortran')
         use iso_c_binding
@@ -2748,13 +2748,13 @@ module hipsolver_interface
         integer(c_int), value :: n
         type(c_ptr), value :: A
         integer(c_int), value :: lda
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: lwork
         integer(c_int) :: res
-        res = hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork)
+        res = hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork)
     end function hipsolverDsyevd_bufferSizeFortran
     
-    function hipsolverCheevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, D, lwork) &
+    function hipsolverCheevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork) &
             result(res) &
             bind(c, name = 'hipsolverCheevd_bufferSizeFortran')
         use iso_c_binding
@@ -2766,13 +2766,13 @@ module hipsolver_interface
         integer(c_int), value :: n
         type(c_ptr), value :: A
         integer(c_int), value :: lda
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: lwork
         integer(c_int) :: res
-        res = hipsolverCheevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork)
+        res = hipsolverCheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork)
     end function hipsolverCheevd_bufferSizeFortran
     
-    function hipsolverZheevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, D, lwork) &
+    function hipsolverZheevd_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork) &
             result(res) &
             bind(c, name = 'hipsolverZheevd_bufferSizeFortran')
         use iso_c_binding
@@ -2784,13 +2784,13 @@ module hipsolver_interface
         integer(c_int), value :: n
         type(c_ptr), value :: A
         integer(c_int), value :: lda
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: lwork
         integer(c_int) :: res
-        res = hipsolverZheevd_bufferSize(handle, jobz, uplo, n, A, lda, D, lwork)
+        res = hipsolverZheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork)
     end function hipsolverZheevd_bufferSizeFortran
 
-    function hipsolverSsyevdFortran(handle, jobz, uplo, n, A, lda, D, work, lwork, info) &
+    function hipsolverSsyevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
             result(res) &
             bind(c, name = 'hipsolverSsyevdFortran')
         use iso_c_binding
@@ -2802,15 +2802,15 @@ module hipsolver_interface
         integer(c_int), value :: n
         type(c_ptr), value :: A
         integer(c_int), value :: lda
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: work
         integer(c_int), value :: lwork
         type(c_ptr), value :: info
         integer(c_int) :: res
-        res = hipsolverSsyevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info)
+        res = hipsolverSsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info)
     end function hipsolverSsyevdFortran
 
-    function hipsolverDsyevdFortran(handle, jobz, uplo, n, A, lda, D, work, lwork, info) &
+    function hipsolverDsyevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
             result(res) &
             bind(c, name = 'hipsolverDsyevdFortran')
         use iso_c_binding
@@ -2822,15 +2822,15 @@ module hipsolver_interface
         integer(c_int), value :: n
         type(c_ptr), value :: A
         integer(c_int), value :: lda
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: work
         integer(c_int), value :: lwork
         type(c_ptr), value :: info
         integer(c_int) :: res
-        res = hipsolverDsyevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info)
+        res = hipsolverDsyevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info)
     end function hipsolverDsyevdFortran
 
-    function hipsolverCheevdFortran(handle, jobz, uplo, n, A, lda, D, work, lwork, info) &
+    function hipsolverCheevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
             result(res) &
             bind(c, name = 'hipsolverCheevdFortran')
         use iso_c_binding
@@ -2842,15 +2842,15 @@ module hipsolver_interface
         integer(c_int), value :: n
         type(c_ptr), value :: A
         integer(c_int), value :: lda
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: work
         integer(c_int), value :: lwork
         type(c_ptr), value :: info
         integer(c_int) :: res
-        res = hipsolverCheevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info)
+        res = hipsolverCheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info)
     end function hipsolverCheevdFortran
 
-    function hipsolverZheevdFortran(handle, jobz, uplo, n, A, lda, D, work, lwork, info) &
+    function hipsolverZheevdFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info) &
             result(res) &
             bind(c, name = 'hipsolverZheevdFortran')
         use iso_c_binding
@@ -2862,16 +2862,16 @@ module hipsolver_interface
         integer(c_int), value :: n
         type(c_ptr), value :: A
         integer(c_int), value :: lda
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: work
         integer(c_int), value :: lwork
         type(c_ptr), value :: info
         integer(c_int) :: res
-        res = hipsolverZheevd(handle, jobz, uplo, n, A, lda, D, work, lwork, info)
+        res = hipsolverZheevd(handle, jobz, uplo, n, A, lda, W, work, lwork, info)
     end function hipsolverZheevdFortran
 
     ! ******************** SYGVD/HEGVD ********************
-    function hipsolverSsygvd_bufferSizeFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork) &
+    function hipsolverSsygvd_bufferSizeFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
             result(res) &
             bind(c, name = 'hipsolverSsygvd_bufferSizeFortran')
         use iso_c_binding
@@ -2886,13 +2886,13 @@ module hipsolver_interface
         integer(c_int), value :: lda
         type(c_ptr), value :: B
         integer(c_int), value :: ldb
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: lwork
         integer(c_int) :: res
-        res = hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork)
+        res = hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork)
     end function hipsolverSsygvd_bufferSizeFortran
     
-    function hipsolverDsygvd_bufferSizeFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork) &
+    function hipsolverDsygvd_bufferSizeFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
             result(res) &
             bind(c, name = 'hipsolverDsygvd_bufferSizeFortran')
         use iso_c_binding
@@ -2907,13 +2907,13 @@ module hipsolver_interface
         integer(c_int), value :: lda
         type(c_ptr), value :: B
         integer(c_int), value :: ldb
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: lwork
         integer(c_int) :: res
-        res = hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork)
+        res = hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork)
     end function hipsolverDsygvd_bufferSizeFortran
     
-    function hipsolverChegvd_bufferSizeFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork) &
+    function hipsolverChegvd_bufferSizeFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
             result(res) &
             bind(c, name = 'hipsolverChegvd_bufferSizeFortran')
         use iso_c_binding
@@ -2928,13 +2928,13 @@ module hipsolver_interface
         integer(c_int), value :: lda
         type(c_ptr), value :: B
         integer(c_int), value :: ldb
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: lwork
         integer(c_int) :: res
-        res = hipsolverChegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork)
+        res = hipsolverChegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork)
     end function hipsolverChegvd_bufferSizeFortran
     
-    function hipsolverZhegvd_bufferSizeFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork) &
+    function hipsolverZhegvd_bufferSizeFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &
             result(res) &
             bind(c, name = 'hipsolverZhegvd_bufferSizeFortran')
         use iso_c_binding
@@ -2949,13 +2949,13 @@ module hipsolver_interface
         integer(c_int), value :: lda
         type(c_ptr), value :: B
         integer(c_int), value :: ldb
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: lwork
         integer(c_int) :: res
-        res = hipsolverZhegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, lwork)
+        res = hipsolverZhegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork)
     end function hipsolverZhegvd_bufferSizeFortran
 
-    function hipsolverSsygvdFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info) &
+    function hipsolverSsygvdFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
             result(res) &
             bind(c, name = 'hipsolverSsygvdFortran')
         use iso_c_binding
@@ -2970,15 +2970,15 @@ module hipsolver_interface
         integer(c_int), value :: lda
         type(c_ptr), value :: B
         integer(c_int), value :: ldb
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: work
         integer(c_int), value :: lwork
         type(c_ptr), value :: info
         integer(c_int) :: res
-        res = hipsolverSsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info)
+        res = hipsolverSsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info)
     end function hipsolverSsygvdFortran
 
-    function hipsolverDsygvdFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info) &
+    function hipsolverDsygvdFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
             result(res) &
             bind(c, name = 'hipsolverDsygvdFortran')
         use iso_c_binding
@@ -2993,15 +2993,15 @@ module hipsolver_interface
         integer(c_int), value :: lda
         type(c_ptr), value :: B
         integer(c_int), value :: ldb
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: work
         integer(c_int), value :: lwork
         type(c_ptr), value :: info
         integer(c_int) :: res
-        res = hipsolverDsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info)
+        res = hipsolverDsygvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info)
     end function hipsolverDsygvdFortran
 
-    function hipsolverChegvdFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info) &
+    function hipsolverChegvdFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
             result(res) &
             bind(c, name = 'hipsolverChegvdFortran')
         use iso_c_binding
@@ -3016,15 +3016,15 @@ module hipsolver_interface
         integer(c_int), value :: lda
         type(c_ptr), value :: B
         integer(c_int), value :: ldb
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: work
         integer(c_int), value :: lwork
         type(c_ptr), value :: info
         integer(c_int) :: res
-        res = hipsolverChegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info)
+        res = hipsolverChegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info)
     end function hipsolverChegvdFortran
 
-    function hipsolverZhegvdFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info) &
+    function hipsolverZhegvdFortran(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info) &
             result(res) &
             bind(c, name = 'hipsolverZhegvdFortran')
         use iso_c_binding
@@ -3039,12 +3039,12 @@ module hipsolver_interface
         integer(c_int), value :: lda
         type(c_ptr), value :: B
         integer(c_int), value :: ldb
-        type(c_ptr), value :: D
+        type(c_ptr), value :: W
         type(c_ptr), value :: work
         integer(c_int), value :: lwork
         type(c_ptr), value :: info
         integer(c_int) :: res
-        res = hipsolverZhegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, D, work, lwork, info)
+        res = hipsolverZhegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info)
     end function hipsolverZhegvdFortran
 
     ! ******************** SYTRD/HETRD ********************

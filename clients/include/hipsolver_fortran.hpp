@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -1442,7 +1442,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsyevd_bufferSizeFortran(hipsolverHa
                                                                      int                 n,
                                                                      float*              A,
                                                                      int                 lda,
-                                                                     float*              D,
+                                                                     float*              W,
                                                                      int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsyevd_bufferSizeFortran(hipsolverHandle_t   handle,
@@ -1451,7 +1451,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsyevd_bufferSizeFortran(hipsolverHa
                                                                      int                 n,
                                                                      double*             A,
                                                                      int                 lda,
-                                                                     double*             D,
+                                                                     double*             W,
                                                                      int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCheevd_bufferSizeFortran(hipsolverHandle_t   handle,
@@ -1460,7 +1460,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCheevd_bufferSizeFortran(hipsolverHa
                                                                      int                 n,
                                                                      hipFloatComplex*    A,
                                                                      int                 lda,
-                                                                     float*              D,
+                                                                     float*              W,
                                                                      int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZheevd_bufferSizeFortran(hipsolverHandle_t   handle,
@@ -1469,7 +1469,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZheevd_bufferSizeFortran(hipsolverHa
                                                                      int                 n,
                                                                      hipDoubleComplex*   A,
                                                                      int                 lda,
-                                                                     double*             D,
+                                                                     double*             W,
                                                                      int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsyevdFortran(hipsolverHandle_t   handle,
@@ -1478,7 +1478,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsyevdFortran(hipsolverHandle_t   ha
                                                           int                 n,
                                                           float*              A,
                                                           int                 lda,
-                                                          float*              D,
+                                                          float*              W,
                                                           float*              work,
                                                           int                 lwork,
                                                           int*                devInfo);
@@ -1489,7 +1489,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsyevdFortran(hipsolverHandle_t   ha
                                                           int                 n,
                                                           double*             A,
                                                           int                 lda,
-                                                          double*             D,
+                                                          double*             W,
                                                           double*             work,
                                                           int                 lwork,
                                                           int*                devInfo);
@@ -1500,7 +1500,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCheevdFortran(hipsolverHandle_t   ha
                                                           int                 n,
                                                           hipFloatComplex*    A,
                                                           int                 lda,
-                                                          float*              D,
+                                                          float*              W,
                                                           hipFloatComplex*    work,
                                                           int                 lwork,
                                                           int*                devInfo);
@@ -1511,7 +1511,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZheevdFortran(hipsolverHandle_t   ha
                                                           int                 n,
                                                           hipDoubleComplex*   A,
                                                           int                 lda,
-                                                          double*             D,
+                                                          double*             W,
                                                           hipDoubleComplex*   work,
                                                           int                 lwork,
                                                           int*                devInfo);
@@ -1526,7 +1526,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd_bufferSizeFortran(hipsolverHa
                                                                      int                 lda,
                                                                      float*              B,
                                                                      int                 ldb,
-                                                                     float*              D,
+                                                                     float*              W,
                                                                      int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd_bufferSizeFortran(hipsolverHandle_t   handle,
@@ -1538,7 +1538,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd_bufferSizeFortran(hipsolverHa
                                                                      int                 lda,
                                                                      double*             B,
                                                                      int                 ldb,
-                                                                     double*             D,
+                                                                     double*             W,
                                                                      int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd_bufferSizeFortran(hipsolverHandle_t   handle,
@@ -1550,7 +1550,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd_bufferSizeFortran(hipsolverHa
                                                                      int                 lda,
                                                                      hipFloatComplex*    B,
                                                                      int                 ldb,
-                                                                     float*              D,
+                                                                     float*              W,
                                                                      int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSizeFortran(hipsolverHandle_t   handle,
@@ -1562,7 +1562,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSizeFortran(hipsolverHa
                                                                      int                 lda,
                                                                      hipDoubleComplex*   B,
                                                                      int                 ldb,
-                                                                     double*             D,
+                                                                     double*             W,
                                                                      int*                lwork);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvdFortran(hipsolverHandle_t   handle,
@@ -1574,7 +1574,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvdFortran(hipsolverHandle_t   ha
                                                           int                 lda,
                                                           float*              B,
                                                           int                 ldb,
-                                                          float*              D,
+                                                          float*              W,
                                                           float*              work,
                                                           int                 lwork,
                                                           int*                devInfo);
@@ -1588,7 +1588,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvdFortran(hipsolverHandle_t   ha
                                                           int                 lda,
                                                           double*             B,
                                                           int                 ldb,
-                                                          double*             D,
+                                                          double*             W,
                                                           double*             work,
                                                           int                 lwork,
                                                           int*                devInfo);
@@ -1602,7 +1602,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvdFortran(hipsolverHandle_t   ha
                                                           int                 lda,
                                                           hipFloatComplex*    B,
                                                           int                 ldb,
-                                                          float*              D,
+                                                          float*              W,
                                                           hipFloatComplex*    work,
                                                           int                 lwork,
                                                           int*                devInfo);
@@ -1616,7 +1616,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvdFortran(hipsolverHandle_t   ha
                                                           int                 lda,
                                                           hipDoubleComplex*   B,
                                                           int                 ldb,
-                                                          double*             D,
+                                                          double*             W,
                                                           hipDoubleComplex*   work,
                                                           int                 lwork,
                                                           int*                devInfo);

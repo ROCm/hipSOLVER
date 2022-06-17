@@ -50,3 +50,7 @@ hipsolverEigType_t
 --------------------
 See :ref:`hipsolverEigType_t <eigtype_t>`.
 
+hipsolverEigRange_t
+--------------------
+.. doxygenenum:: hipsolverEigRange_t
+

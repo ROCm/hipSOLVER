@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2018-2021 Advanced Micro Devices, Inc.
+ * Copyright 2018-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -27,6 +27,18 @@ constexpr double get_epsilon()
 {
     using S = decltype(std::real(T{}));
     return std::numeric_limits<S>::epsilon();
+}
+
+template <typename T>
+constexpr double get_safemin()
+{
+    using S  = decltype(std::real(T{}));
+    auto eps = get_epsilon<S>();
+    auto s1  = std::numeric_limits<S>::min();
+    auto s2  = 1 / std::numeric_limits<S>::max();
+    if(s2 > s1)
+        return s2 * (1 + eps);
+    return s1;
 }
 
 #ifdef GOOGLE_TEST
