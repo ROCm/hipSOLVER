@@ -9,8 +9,8 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
     - hipsolverDnSsyevdx_bufferSize, hipsolverDnDsyevdx_bufferSize, hipsolverDnCheevdx_bufferSize, hipsolverDnZheevdx_bufferSize
     - hipsolverDnSsyevdx, hipsolverDnDsyevdx, hipsolverDnCheevdx, hipsolverDnZheevdx
   - sygvdx/hegvdx
-    - hipsolverSsygvdx_bufferSize, hipsolverDsygvdx_bufferSize, hipsolverChegvdx_bufferSize, hipsolverZhegvdx_bufferSize
-    - hipsolverSsygvdx, hipsolverDsygvdx, hipsolverChegvdx, hipsolverZhegvdx
+    - hipsolverDnSsygvdx_bufferSize, hipsolverDnDsygvdx_bufferSize, hipsolverDnChegvdx_bufferSize, hipsolverDnZhegvdx_bufferSize
+    - hipsolverDnSsygvdx, hipsolverDnDsygvdx, hipsolverDnChegvdx, hipsolverDnZhegvdx
 - Added --mem_query option to hipsolver-bench, which will print the amount of device memory workspace required by the function.
 
 ### Optimized

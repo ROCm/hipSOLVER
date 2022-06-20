@@ -5719,7 +5719,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                    FORTRAN,
 
 /******************** SYGVDX/HEGVDX ********************/
 // normal and strided_batched
-inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(bool                FORTRAN,
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(testAPI_t           API,
                                                             hipsolverHandle_t   handle,
                                                             hipsolverEigType_t  itype,
                                                             hipsolverEigMode_t  jobz,
@@ -5738,15 +5738,17 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(bool                
                                                             float*              W,
                                                             int*                lwork)
 {
-    if(!FORTRAN)
-        return hipsolverSsygvdx_bufferSize(
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnSsygvdx_bufferSize(
             handle, itype, jobz, range, uplo, n, A, lda, B, ldb, vl, vu, il, iu, nev, W, lwork);
-    else
-        return hipsolverSsygvdx_bufferSizeFortran(
-            handle, itype, jobz, range, uplo, n, A, lda, B, ldb, vl, vu, il, iu, nev, W, lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
 }
 
-inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(bool                FORTRAN,
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(testAPI_t           API,
                                                             hipsolverHandle_t   handle,
                                                             hipsolverEigType_t  itype,
                                                             hipsolverEigMode_t  jobz,
@@ -5765,15 +5767,17 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(bool                
                                                             double*             W,
                                                             int*                lwork)
 {
-    if(!FORTRAN)
-        return hipsolverDsygvdx_bufferSize(
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnDsygvdx_bufferSize(
             handle, itype, jobz, range, uplo, n, A, lda, B, ldb, vl, vu, il, iu, nev, W, lwork);
-    else
-        return hipsolverDsygvdx_bufferSizeFortran(
-            handle, itype, jobz, range, uplo, n, A, lda, B, ldb, vl, vu, il, iu, nev, W, lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
 }
 
-inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(bool                FORTRAN,
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(testAPI_t           API,
                                                             hipsolverHandle_t   handle,
                                                             hipsolverEigType_t  itype,
                                                             hipsolverEigMode_t  jobz,
@@ -5792,45 +5796,32 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(bool                
                                                             float*              W,
                                                             int*                lwork)
 {
-    if(!FORTRAN)
-        return hipsolverChegvdx_bufferSize(handle,
-                                           itype,
-                                           jobz,
-                                           range,
-                                           uplo,
-                                           n,
-                                           (hipFloatComplex*)A,
-                                           lda,
-                                           (hipFloatComplex*)B,
-                                           ldb,
-                                           vl,
-                                           vu,
-                                           il,
-                                           iu,
-                                           nev,
-                                           W,
-                                           lwork);
-    else
-        return hipsolverChegvdx_bufferSizeFortran(handle,
-                                                  itype,
-                                                  jobz,
-                                                  range,
-                                                  uplo,
-                                                  n,
-                                                  (hipFloatComplex*)A,
-                                                  lda,
-                                                  (hipFloatComplex*)B,
-                                                  ldb,
-                                                  vl,
-                                                  vu,
-                                                  il,
-                                                  iu,
-                                                  nev,
-                                                  W,
-                                                  lwork);
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnChegvdx_bufferSize(handle,
+                                             itype,
+                                             jobz,
+                                             range,
+                                             uplo,
+                                             n,
+                                             (hipFloatComplex*)A,
+                                             lda,
+                                             (hipFloatComplex*)B,
+                                             ldb,
+                                             vl,
+                                             vu,
+                                             il,
+                                             iu,
+                                             nev,
+                                             W,
+                                             lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
 }
 
-inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(bool                    FORTRAN,
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(testAPI_t               API,
                                                             hipsolverHandle_t       handle,
                                                             hipsolverEigType_t      itype,
                                                             hipsolverEigMode_t      jobz,
@@ -5849,45 +5840,32 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(bool                
                                                             double*                 W,
                                                             int*                    lwork)
 {
-    if(!FORTRAN)
-        return hipsolverZhegvdx_bufferSize(handle,
-                                           itype,
-                                           jobz,
-                                           range,
-                                           uplo,
-                                           n,
-                                           (hipDoubleComplex*)A,
-                                           lda,
-                                           (hipDoubleComplex*)B,
-                                           ldb,
-                                           vl,
-                                           vu,
-                                           il,
-                                           iu,
-                                           nev,
-                                           W,
-                                           lwork);
-    else
-        return hipsolverZhegvdx_bufferSizeFortran(handle,
-                                                  itype,
-                                                  jobz,
-                                                  range,
-                                                  uplo,
-                                                  n,
-                                                  (hipDoubleComplex*)A,
-                                                  lda,
-                                                  (hipDoubleComplex*)B,
-                                                  ldb,
-                                                  vl,
-                                                  vu,
-                                                  il,
-                                                  iu,
-                                                  nev,
-                                                  W,
-                                                  lwork);
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnZhegvdx_bufferSize(handle,
+                                             itype,
+                                             jobz,
+                                             range,
+                                             uplo,
+                                             n,
+                                             (hipDoubleComplex*)A,
+                                             lda,
+                                             (hipDoubleComplex*)B,
+                                             ldb,
+                                             vl,
+                                             vu,
+                                             il,
+                                             iu,
+                                             nev,
+                                             W,
+                                             lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
 }
 
-inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(bool                FORTRAN,
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(testAPI_t           API,
                                                  hipsolverHandle_t   handle,
                                                  hipsolverEigType_t  itype,
                                                  hipsolverEigMode_t  jobz,
@@ -5912,49 +5890,34 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(bool                FORTRAN,
                                                  int*                info,
                                                  int                 bc)
 {
-    if(!FORTRAN)
-        return hipsolverSsygvdx(handle,
-                                itype,
-                                jobz,
-                                range,
-                                uplo,
-                                n,
-                                A,
-                                lda,
-                                B,
-                                ldb,
-                                vl,
-                                vu,
-                                il,
-                                iu,
-                                nev,
-                                W,
-                                work,
-                                lwork,
-                                info);
-    else
-        return hipsolverSsygvdxFortran(handle,
-                                       itype,
-                                       jobz,
-                                       range,
-                                       uplo,
-                                       n,
-                                       A,
-                                       lda,
-                                       B,
-                                       ldb,
-                                       vl,
-                                       vu,
-                                       il,
-                                       iu,
-                                       nev,
-                                       W,
-                                       work,
-                                       lwork,
-                                       info);
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnSsygvdx(handle,
+                                  itype,
+                                  jobz,
+                                  range,
+                                  uplo,
+                                  n,
+                                  A,
+                                  lda,
+                                  B,
+                                  ldb,
+                                  vl,
+                                  vu,
+                                  il,
+                                  iu,
+                                  nev,
+                                  W,
+                                  work,
+                                  lwork,
+                                  info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
 }
 
-inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(bool                FORTRAN,
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(testAPI_t           API,
                                                  hipsolverHandle_t   handle,
                                                  hipsolverEigType_t  itype,
                                                  hipsolverEigMode_t  jobz,
@@ -5979,49 +5942,34 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(bool                FORTRAN,
                                                  int*                info,
                                                  int                 bc)
 {
-    if(!FORTRAN)
-        return hipsolverDsygvdx(handle,
-                                itype,
-                                jobz,
-                                range,
-                                uplo,
-                                n,
-                                A,
-                                lda,
-                                B,
-                                ldb,
-                                vl,
-                                vu,
-                                il,
-                                iu,
-                                nev,
-                                W,
-                                work,
-                                lwork,
-                                info);
-    else
-        return hipsolverDsygvdxFortran(handle,
-                                       itype,
-                                       jobz,
-                                       range,
-                                       uplo,
-                                       n,
-                                       A,
-                                       lda,
-                                       B,
-                                       ldb,
-                                       vl,
-                                       vu,
-                                       il,
-                                       iu,
-                                       nev,
-                                       W,
-                                       work,
-                                       lwork,
-                                       info);
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnDsygvdx(handle,
+                                  itype,
+                                  jobz,
+                                  range,
+                                  uplo,
+                                  n,
+                                  A,
+                                  lda,
+                                  B,
+                                  ldb,
+                                  vl,
+                                  vu,
+                                  il,
+                                  iu,
+                                  nev,
+                                  W,
+                                  work,
+                                  lwork,
+                                  info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
 }
 
-inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(bool                FORTRAN,
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(testAPI_t           API,
                                                  hipsolverHandle_t   handle,
                                                  hipsolverEigType_t  itype,
                                                  hipsolverEigMode_t  jobz,
@@ -6046,49 +5994,34 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(bool                FORTRAN,
                                                  int*                info,
                                                  int                 bc)
 {
-    if(!FORTRAN)
-        return hipsolverChegvdx(handle,
-                                itype,
-                                jobz,
-                                range,
-                                uplo,
-                                n,
-                                (hipFloatComplex*)A,
-                                lda,
-                                (hipFloatComplex*)B,
-                                ldb,
-                                vl,
-                                vu,
-                                il,
-                                iu,
-                                nev,
-                                W,
-                                (hipFloatComplex*)work,
-                                lwork,
-                                info);
-    else
-        return hipsolverChegvdxFortran(handle,
-                                       itype,
-                                       jobz,
-                                       range,
-                                       uplo,
-                                       n,
-                                       (hipFloatComplex*)A,
-                                       lda,
-                                       (hipFloatComplex*)B,
-                                       ldb,
-                                       vl,
-                                       vu,
-                                       il,
-                                       iu,
-                                       nev,
-                                       W,
-                                       (hipFloatComplex*)work,
-                                       lwork,
-                                       info);
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnChegvdx(handle,
+                                  itype,
+                                  jobz,
+                                  range,
+                                  uplo,
+                                  n,
+                                  (hipFloatComplex*)A,
+                                  lda,
+                                  (hipFloatComplex*)B,
+                                  ldb,
+                                  vl,
+                                  vu,
+                                  il,
+                                  iu,
+                                  nev,
+                                  W,
+                                  (hipFloatComplex*)work,
+                                  lwork,
+                                  info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
 }
 
-inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(bool                    FORTRAN,
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(testAPI_t               API,
                                                  hipsolverHandle_t       handle,
                                                  hipsolverEigType_t      itype,
                                                  hipsolverEigMode_t      jobz,
@@ -6113,46 +6046,31 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(bool                    FORTRAN
                                                  int*                    info,
                                                  int                     bc)
 {
-    if(!FORTRAN)
-        return hipsolverZhegvdx(handle,
-                                itype,
-                                jobz,
-                                range,
-                                uplo,
-                                n,
-                                (hipDoubleComplex*)A,
-                                lda,
-                                (hipDoubleComplex*)B,
-                                ldb,
-                                vl,
-                                vu,
-                                il,
-                                iu,
-                                nev,
-                                W,
-                                (hipDoubleComplex*)work,
-                                lwork,
-                                info);
-    else
-        return hipsolverZhegvdxFortran(handle,
-                                       itype,
-                                       jobz,
-                                       range,
-                                       uplo,
-                                       n,
-                                       (hipDoubleComplex*)A,
-                                       lda,
-                                       (hipDoubleComplex*)B,
-                                       ldb,
-                                       vl,
-                                       vu,
-                                       il,
-                                       iu,
-                                       nev,
-                                       W,
-                                       (hipDoubleComplex*)work,
-                                       lwork,
-                                       info);
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnZhegvdx(handle,
+                                  itype,
+                                  jobz,
+                                  range,
+                                  uplo,
+                                  n,
+                                  (hipDoubleComplex*)A,
+                                  lda,
+                                  (hipDoubleComplex*)B,
+                                  ldb,
+                                  vl,
+                                  vu,
+                                  il,
+                                  iu,
+                                  nev,
+                                  W,
+                                  (hipDoubleComplex*)work,
+                                  lwork,
+                                  info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
 }
 /********************************************************/
 

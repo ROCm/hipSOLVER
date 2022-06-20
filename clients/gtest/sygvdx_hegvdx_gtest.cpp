@@ -77,7 +77,7 @@ Arguments sygvdx_setup_arguments(sygvdx_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class SYGVDX_HEGVDX : public ::TestWithParam<sygvdx_tuple>
 {
 protected:
@@ -93,99 +93,55 @@ protected:
         if(arg.peek<char>("itype") == '1' && arg.peek<char>("jobz") == 'N'
            && arg.peek<char>("range") == 'A' && arg.peek<char>("uplo") == 'U'
            && arg.peek<rocblas_int>("n") == -1)
-            testing_sygvdx_hegvdx_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
+            testing_sygvdx_hegvdx_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_sygvdx_hegvdx<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_sygvdx_hegvdx<API, BATCHED, STRIDED, T>(arg);
     }
 };
 
-class SYGVDX : public SYGVDX_HEGVDX<false>
+class SYGVDX_COMPAT : public SYGVDX_HEGVDX<API_COMPAT>
 {
 };
 
-class HEGVDX : public SYGVDX_HEGVDX<false>
-{
-};
-
-class SYGVDX_FORTRAN : public SYGVDX_HEGVDX<true>
-{
-};
-
-class HEGVDX_FORTRAN : public SYGVDX_HEGVDX<true>
+class HEGVDX_COMPAT : public SYGVDX_HEGVDX<API_COMPAT>
 {
 };
 
 // non-batch tests
 
-TEST_P(SYGVDX, __float)
+TEST_P(SYGVDX_COMPAT, __float)
 {
     run_tests<false, false, float>();
 }
 
-TEST_P(SYGVDX, __double)
+TEST_P(SYGVDX_COMPAT, __double)
 {
     run_tests<false, false, double>();
 }
 
-TEST_P(HEGVDX, __float_complex)
+TEST_P(HEGVDX_COMPAT, __float_complex)
 {
     run_tests<false, false, rocblas_float_complex>();
 }
 
-TEST_P(HEGVDX, __double_complex)
-{
-    run_tests<false, false, rocblas_double_complex>();
-}
-
-TEST_P(SYGVDX_FORTRAN, __float)
-{
-    run_tests<false, false, float>();
-}
-
-TEST_P(SYGVDX_FORTRAN, __double)
-{
-    run_tests<false, false, double>();
-}
-
-TEST_P(HEGVDX_FORTRAN, __float_complex)
-{
-    run_tests<false, false, rocblas_float_complex>();
-}
-
-TEST_P(HEGVDX_FORTRAN, __double_complex)
+TEST_P(HEGVDX_COMPAT, __double_complex)
 {
     run_tests<false, false, rocblas_double_complex>();
 }
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          SYGVDX,
+//                          SYGVDX_COMPAT,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         SYGVDX,
+                         SYGVDX_COMPAT,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          HEGVDX,
+//                          HEGVDX_COMPAT,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         HEGVDX,
-                         Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
-
-// INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          SYGVDX_FORTRAN,
-//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
-
-INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         SYGVDX_FORTRAN,
-                         Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
-
-// INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          HEGVDX_FORTRAN,
-//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
-
-INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         HEGVDX_FORTRAN,
+                         HEGVDX_COMPAT,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));

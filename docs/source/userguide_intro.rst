@@ -127,14 +127,10 @@ LAPACK main functions
     :ref:`hipsolverXsyevd <syevd>`, x, x, ,
     :ref:`hipsolverXsygvd_bufferSize <sygvd_bufferSize>`, x, x, ,
     :ref:`hipsolverXsygvd <sygvd>`, x, x, ,
-    :ref:`hipsolverXsygvdx_bufferSize <sygvdx_bufferSize>`, x, x, ,
-    :ref:`hipsolverXsygvdx <sygvdx>`, x, x, ,
     :ref:`hipsolverXheevd_bufferSize <heevd_bufferSize>`, , , x, x
     :ref:`hipsolverXheevd <heevd>`, , , x, x
     :ref:`hipsolverXhegvd_bufferSize <hegvd_bufferSize>`, , , x, x
     :ref:`hipsolverXhegvd <hegvd>`, , , x, x
-    :ref:`hipsolverXhegvdx_bufferSize <hegvdx_bufferSize>`, , , x, x
-    :ref:`hipsolverXhegvdx <hegvdx>`, , , x, x
 
 .. csv-table:: Singular value decomposition
     :header: "Function", "single", "double", "single complex", "double complex"
@@ -191,6 +187,10 @@ Partial eigensolvers have been implemented in rocSOLVER, but at present they do 
 
     :ref:`hipsolverDnXsyevdx_bufferSize <compat_syevdx_bufferSize>`, x, x, ,
     :ref:`hipsolverDnXsyevdx <compat_syevdx>`, x, x, ,
+    :ref:`hipsolverDnXsygvdx_bufferSize <compat_sygvdx_bufferSize>`, x, x, ,
+    :ref:`hipsolverDnXsygvdx <compat_sygvdx>`, x, x, ,
     :ref:`hipsolverDnXheevdx_bufferSize <compat_heevdx_bufferSize>`, , , x, x
     :ref:`hipsolverDnXheevdx <compat_heevdx>`, , , x, x
+    :ref:`hipsolverDnXhegvdx_bufferSize <compat_hegvdx_bufferSize>`, , , x, x
+    :ref:`hipsolverDnXhegvdx <compat_hegvdx>`, , , x, x
 
