@@ -1120,8 +1120,35 @@ void testing_sygvdx_hegvdx(Arguments& argus)
         }
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(1);
+            rocsolver_bench_inform(inform_invalid_size);
 
+        return;
+    }
+
+    // memory size query is necessary
+    int size_Work;
+    hipsolver_sygvdx_hegvdx_bufferSize(API,
+                                       handle,
+                                       itype,
+                                       evect,
+                                       erange,
+                                       uplo,
+                                       n,
+                                       (T*)nullptr,
+                                       lda,
+                                       (T*)nullptr,
+                                       ldb,
+                                       vl,
+                                       vu,
+                                       il,
+                                       iu,
+                                       (int*)nullptr,
+                                       (S*)nullptr,
+                                       &size_Work);
+
+    if(argus.mem_query)
+    {
+        rocsolver_bench_inform(inform_mem_query, size_Work);
         return;
     }
 
@@ -1136,9 +1163,12 @@ void testing_sygvdx_hegvdx(Arguments& argus)
     // device
     device_strided_batch_vector<S>   dW(size_W, 1, stW, bc);
     device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+    device_strided_batch_vector<T>   dWork(size_Work, 1, size_Work, bc);
     if(size_W)
         CHECK_HIP_ERROR(dW.memcheck());
     CHECK_HIP_ERROR(dInfo.memcheck());
+    if(size_Work)
+        CHECK_HIP_ERROR(dWork.memcheck());
 
     if(BATCHED)
     {
@@ -1152,29 +1182,6 @@ void testing_sygvdx_hegvdx(Arguments& argus)
         //     CHECK_HIP_ERROR(dA.memcheck());
         // if(size_B)
         //     CHECK_HIP_ERROR(dB.memcheck());
-
-        // int size_W;
-        // hipsolver_sygvdx_hegvdx_bufferSize(API,
-        //                                    handle,
-        //                                    itype,
-        //                                    evect,
-        //                                    erange,
-        //                                    uplo,
-        //                                    n,
-        //                                    dA.data(),
-        //                                    lda,
-        //                                    dB.data(),
-        //                                    ldb,
-        //                                    vl,
-        //                                    vu,
-        //                                    il,
-        //                                    iu,
-        //                                    hNev.data(),
-        //                                    dW.data(),
-        //                                    &size_W);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        // if(size_W)
-        //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check computations
         // if(argus.unit_check || argus.norm_check)
@@ -1198,7 +1205,7 @@ void testing_sygvdx_hegvdx(Arguments& argus)
         //                                        dW,
         //                                        stW,
         //                                        dWork,
-        //                                        size_W,
+        //                                        size_Work,
         //                                        dInfo,
         //                                        bc,
         //                                        hA,
@@ -1233,7 +1240,7 @@ void testing_sygvdx_hegvdx(Arguments& argus)
         //                                           dW,
         //                                           stW,
         //                                           dWork,
-        //                                           size_W,
+        //                                           size_Work,
         //                                           dInfo,
         //                                           bc,
         //                                           hA,
@@ -1260,29 +1267,6 @@ void testing_sygvdx_hegvdx(Arguments& argus)
         if(size_B)
             CHECK_HIP_ERROR(dB.memcheck());
 
-        int size_W;
-        hipsolver_sygvdx_hegvdx_bufferSize(API,
-                                           handle,
-                                           itype,
-                                           evect,
-                                           erange,
-                                           uplo,
-                                           n,
-                                           dA.data(),
-                                           lda,
-                                           dB.data(),
-                                           ldb,
-                                           vl,
-                                           vu,
-                                           il,
-                                           iu,
-                                           hNev.data(),
-                                           dW.data(),
-                                           &size_W);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        if(size_W)
-            CHECK_HIP_ERROR(dWork.memcheck());
-
         // check computations
         if(argus.unit_check || argus.norm_check)
             sygvdx_hegvdx_getError<API, T>(handle,
@@ -1305,7 +1289,7 @@ void testing_sygvdx_hegvdx(Arguments& argus)
                                            dW,
                                            stW,
                                            dWork,
-                                           size_W,
+                                           size_Work,
                                            dInfo,
                                            bc,
                                            hA,
@@ -1340,7 +1324,7 @@ void testing_sygvdx_hegvdx(Arguments& argus)
                                               dW,
                                               stW,
                                               dWork,
-                                              size_W,
+                                              size_Work,
                                               dInfo,
                                               bc,
                                               hA,
