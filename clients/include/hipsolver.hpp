@@ -5717,6 +5717,363 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(bool                    FORTRAN,
 }
 /********************************************************/
 
+/******************** SYGVDX/HEGVDX ********************/
+// normal and strided_batched
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(testAPI_t           API,
+                                                            hipsolverHandle_t   handle,
+                                                            hipsolverEigType_t  itype,
+                                                            hipsolverEigMode_t  jobz,
+                                                            hipsolverEigRange_t range,
+                                                            hipsolverFillMode_t uplo,
+                                                            int                 n,
+                                                            float*              A,
+                                                            int                 lda,
+                                                            float*              B,
+                                                            int                 ldb,
+                                                            float               vl,
+                                                            float               vu,
+                                                            int                 il,
+                                                            int                 iu,
+                                                            int*                nev,
+                                                            float*              W,
+                                                            int*                lwork)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnSsygvdx_bufferSize(
+            handle, itype, jobz, range, uplo, n, A, lda, B, ldb, vl, vu, il, iu, nev, W, lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(testAPI_t           API,
+                                                            hipsolverHandle_t   handle,
+                                                            hipsolverEigType_t  itype,
+                                                            hipsolverEigMode_t  jobz,
+                                                            hipsolverEigRange_t range,
+                                                            hipsolverFillMode_t uplo,
+                                                            int                 n,
+                                                            double*             A,
+                                                            int                 lda,
+                                                            double*             B,
+                                                            int                 ldb,
+                                                            double              vl,
+                                                            double              vu,
+                                                            int                 il,
+                                                            int                 iu,
+                                                            int*                nev,
+                                                            double*             W,
+                                                            int*                lwork)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnDsygvdx_bufferSize(
+            handle, itype, jobz, range, uplo, n, A, lda, B, ldb, vl, vu, il, iu, nev, W, lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(testAPI_t           API,
+                                                            hipsolverHandle_t   handle,
+                                                            hipsolverEigType_t  itype,
+                                                            hipsolverEigMode_t  jobz,
+                                                            hipsolverEigRange_t range,
+                                                            hipsolverFillMode_t uplo,
+                                                            int                 n,
+                                                            hipsolverComplex*   A,
+                                                            int                 lda,
+                                                            hipsolverComplex*   B,
+                                                            int                 ldb,
+                                                            float               vl,
+                                                            float               vu,
+                                                            int                 il,
+                                                            int                 iu,
+                                                            int*                nev,
+                                                            float*              W,
+                                                            int*                lwork)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnChegvdx_bufferSize(handle,
+                                             itype,
+                                             jobz,
+                                             range,
+                                             uplo,
+                                             n,
+                                             (hipFloatComplex*)A,
+                                             lda,
+                                             (hipFloatComplex*)B,
+                                             ldb,
+                                             vl,
+                                             vu,
+                                             il,
+                                             iu,
+                                             nev,
+                                             W,
+                                             lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(testAPI_t               API,
+                                                            hipsolverHandle_t       handle,
+                                                            hipsolverEigType_t      itype,
+                                                            hipsolverEigMode_t      jobz,
+                                                            hipsolverEigRange_t     range,
+                                                            hipsolverFillMode_t     uplo,
+                                                            int                     n,
+                                                            hipsolverDoubleComplex* A,
+                                                            int                     lda,
+                                                            hipsolverDoubleComplex* B,
+                                                            int                     ldb,
+                                                            double                  vl,
+                                                            double                  vu,
+                                                            int                     il,
+                                                            int                     iu,
+                                                            int*                    nev,
+                                                            double*                 W,
+                                                            int*                    lwork)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnZhegvdx_bufferSize(handle,
+                                             itype,
+                                             jobz,
+                                             range,
+                                             uplo,
+                                             n,
+                                             (hipDoubleComplex*)A,
+                                             lda,
+                                             (hipDoubleComplex*)B,
+                                             ldb,
+                                             vl,
+                                             vu,
+                                             il,
+                                             iu,
+                                             nev,
+                                             W,
+                                             lwork);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(testAPI_t           API,
+                                                 hipsolverHandle_t   handle,
+                                                 hipsolverEigType_t  itype,
+                                                 hipsolverEigMode_t  jobz,
+                                                 hipsolverEigRange_t range,
+                                                 hipsolverFillMode_t uplo,
+                                                 int                 n,
+                                                 float*              A,
+                                                 int                 lda,
+                                                 int                 stA,
+                                                 float*              B,
+                                                 int                 ldb,
+                                                 int                 stB,
+                                                 float               vl,
+                                                 float               vu,
+                                                 int                 il,
+                                                 int                 iu,
+                                                 int*                nev,
+                                                 float*              W,
+                                                 int                 stW,
+                                                 float*              work,
+                                                 int                 lwork,
+                                                 int*                info,
+                                                 int                 bc)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnSsygvdx(handle,
+                                  itype,
+                                  jobz,
+                                  range,
+                                  uplo,
+                                  n,
+                                  A,
+                                  lda,
+                                  B,
+                                  ldb,
+                                  vl,
+                                  vu,
+                                  il,
+                                  iu,
+                                  nev,
+                                  W,
+                                  work,
+                                  lwork,
+                                  info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(testAPI_t           API,
+                                                 hipsolverHandle_t   handle,
+                                                 hipsolverEigType_t  itype,
+                                                 hipsolverEigMode_t  jobz,
+                                                 hipsolverEigRange_t range,
+                                                 hipsolverFillMode_t uplo,
+                                                 int                 n,
+                                                 double*             A,
+                                                 int                 lda,
+                                                 int                 stA,
+                                                 double*             B,
+                                                 int                 ldb,
+                                                 int                 stB,
+                                                 double              vl,
+                                                 double              vu,
+                                                 int                 il,
+                                                 int                 iu,
+                                                 int*                nev,
+                                                 double*             W,
+                                                 int                 stW,
+                                                 double*             work,
+                                                 int                 lwork,
+                                                 int*                info,
+                                                 int                 bc)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnDsygvdx(handle,
+                                  itype,
+                                  jobz,
+                                  range,
+                                  uplo,
+                                  n,
+                                  A,
+                                  lda,
+                                  B,
+                                  ldb,
+                                  vl,
+                                  vu,
+                                  il,
+                                  iu,
+                                  nev,
+                                  W,
+                                  work,
+                                  lwork,
+                                  info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(testAPI_t           API,
+                                                 hipsolverHandle_t   handle,
+                                                 hipsolverEigType_t  itype,
+                                                 hipsolverEigMode_t  jobz,
+                                                 hipsolverEigRange_t range,
+                                                 hipsolverFillMode_t uplo,
+                                                 int                 n,
+                                                 hipsolverComplex*   A,
+                                                 int                 lda,
+                                                 int                 stA,
+                                                 hipsolverComplex*   B,
+                                                 int                 ldb,
+                                                 int                 stB,
+                                                 float               vl,
+                                                 float               vu,
+                                                 int                 il,
+                                                 int                 iu,
+                                                 int*                nev,
+                                                 float*              W,
+                                                 int                 stW,
+                                                 hipsolverComplex*   work,
+                                                 int                 lwork,
+                                                 int*                info,
+                                                 int                 bc)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnChegvdx(handle,
+                                  itype,
+                                  jobz,
+                                  range,
+                                  uplo,
+                                  n,
+                                  (hipFloatComplex*)A,
+                                  lda,
+                                  (hipFloatComplex*)B,
+                                  ldb,
+                                  vl,
+                                  vu,
+                                  il,
+                                  iu,
+                                  nev,
+                                  W,
+                                  (hipFloatComplex*)work,
+                                  lwork,
+                                  info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(testAPI_t               API,
+                                                 hipsolverHandle_t       handle,
+                                                 hipsolverEigType_t      itype,
+                                                 hipsolverEigMode_t      jobz,
+                                                 hipsolverEigRange_t     range,
+                                                 hipsolverFillMode_t     uplo,
+                                                 int                     n,
+                                                 hipsolverDoubleComplex* A,
+                                                 int                     lda,
+                                                 int                     stA,
+                                                 hipsolverDoubleComplex* B,
+                                                 int                     ldb,
+                                                 int                     stB,
+                                                 double                  vl,
+                                                 double                  vu,
+                                                 int                     il,
+                                                 int                     iu,
+                                                 int*                    nev,
+                                                 double*                 W,
+                                                 int                     stW,
+                                                 hipsolverDoubleComplex* work,
+                                                 int                     lwork,
+                                                 int*                    info,
+                                                 int                     bc)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnZhegvdx(handle,
+                                  itype,
+                                  jobz,
+                                  range,
+                                  uplo,
+                                  n,
+                                  (hipDoubleComplex*)A,
+                                  lda,
+                                  (hipDoubleComplex*)B,
+                                  ldb,
+                                  vl,
+                                  vu,
+                                  il,
+                                  iu,
+                                  nev,
+                                  W,
+                                  (hipDoubleComplex*)work,
+                                  lwork,
+                                  info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+/********************************************************/
+
 /******************** SYGVJ/HEGVJ ********************/
 // normal and strided_batched
 inline hipsolverStatus_t hipsolver_sygvj_hegvj_bufferSize(testAPI_t            API,
