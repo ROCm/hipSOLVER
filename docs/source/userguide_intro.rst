@@ -187,6 +187,10 @@ Partial eigensolvers have been implemented in rocSOLVER, but at present they do 
 
     :ref:`hipsolverDnXsyevdx_bufferSize <compat_syevdx_bufferSize>`, x, x, ,
     :ref:`hipsolverDnXsyevdx <compat_syevdx>`, x, x, ,
+    :ref:`hipsolverDnXsygvdx_bufferSize <compat_sygvdx_bufferSize>`, x, x, ,
+    :ref:`hipsolverDnXsygvdx <compat_sygvdx>`, x, x, ,
     :ref:`hipsolverDnXheevdx_bufferSize <compat_heevdx_bufferSize>`, , , x, x
     :ref:`hipsolverDnXheevdx <compat_heevdx>`, , , x, x
+    :ref:`hipsolverDnXhegvdx_bufferSize <compat_hegvdx_bufferSize>`, , , x, x
+    :ref:`hipsolverDnXhegvdx <compat_hegvdx>`, , , x, x
 

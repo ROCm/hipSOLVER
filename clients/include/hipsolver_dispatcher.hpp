@@ -28,6 +28,7 @@
 #include "testing_syevdx_heevdx.hpp"
 #include "testing_syevj_heevj.hpp"
 #include "testing_sygvd_hegvd.hpp"
+#include "testing_sygvdx_hegvdx.hpp"
 #include "testing_sygvj_hegvj.hpp"
 #include "testing_sytrd_hetrd.hpp"
 #include "testing_sytrf.hpp"
@@ -93,8 +94,9 @@ class hipsolver_dispatcher
             {"syevdx", testing_syevdx_heevdx<API_COMPAT, false, false, T>},
             {"syevj", testing_syevj_heevj<API_COMPAT, false, false, T>},
             {"syevj_batched", testing_syevj_heevj<API_COMPAT, false, true, T>},
-            {"sygvj", testing_sygvj_hegvj<API_COMPAT, false, false, T>},
             {"sygvd", testing_sygvd_hegvd<false, false, false, T>},
+            {"sygvdx", testing_sygvdx_hegvdx<API_COMPAT, false, false, T>},
+            {"sygvj", testing_sygvj_hegvj<API_COMPAT, false, false, T>},
             {"sytrd", testing_sytrd_hetrd<false, false, false, T>},
         };
 
@@ -123,8 +125,9 @@ class hipsolver_dispatcher
             {"heevdx", testing_syevdx_heevdx<API_COMPAT, false, false, T>},
             {"heevj", testing_syevj_heevj<API_COMPAT, false, false, T>},
             {"heevj_batched", testing_syevj_heevj<API_COMPAT, false, true, T>},
-            {"hegvj", testing_sygvj_hegvj<API_COMPAT, false, false, T>},
             {"hegvd", testing_sygvd_hegvd<false, false, false, T>},
+            {"hegvdx", testing_sygvdx_hegvdx<API_COMPAT, false, false, T>},
+            {"hegvj", testing_sygvj_hegvj<API_COMPAT, false, false, T>},
             {"hetrd", testing_sytrd_hetrd<false, false, false, T>},
         };
 
