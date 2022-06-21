@@ -4,6 +4,15 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ## (Unreleased) hipSOLVER
 ### Added
+- Added compatibility-only functions
+  - syevdx/heevdx
+    - hipsolverDnSsyevdx_bufferSize, hipsolverDnDsyevdx_bufferSize, hipsolverDnCheevdx_bufferSize, hipsolverDnZheevdx_bufferSize
+    - hipsolverDnSsyevdx, hipsolverDnDsyevdx, hipsolverDnCheevdx, hipsolverDnZheevdx
+  - sygvdx/hegvdx
+    - hipsolverDnSsygvdx_bufferSize, hipsolverDnDsygvdx_bufferSize, hipsolverDnChegvdx_bufferSize, hipsolverDnZhegvdx_bufferSize
+    - hipsolverDnSsygvdx, hipsolverDnDsygvdx, hipsolverDnChegvdx, hipsolverDnZhegvdx
+- Added --mem_query option to hipsolver-bench, which will print the amount of device memory workspace required by the function.
+
 ### Optimized
 ### Changed
 - The rocSOLVER backend will now set `info` to zero if rocSOLVER does not reference `info`. (Applies to orgbr/ungbr, orgqr/ungqr,

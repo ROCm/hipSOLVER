@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #include "../include/hipsolver_dispatcher.hpp"
@@ -75,6 +75,13 @@ try
          value<rocblas_int>(&argus.iters)->default_value(10),
             "Iterations to run inside the GPU timing loop.\n"
             "                           Reported time will be the average.\n"
+            "                           ")
+
+        ("mem_query",
+         value<rocblas_int>(&argus.mem_query)->default_value(0),
+            "Calculate the required amount of device workspace memory? 0 = No, 1 = Yes.\n"
+            "                           This forces the client to print only the amount of device memory required by\n"
+            "                           the function, in bytes.\n"
             "                           ")
 
         ("perf",
@@ -287,6 +294,40 @@ try
             "                           Indicates how the right singular vectors are to be calculated and stored.\n"
             "                           ")
 
+        // partial eigenvalue decomposition options
+        ("il",
+         value<rocblas_int>(),
+            "Lower index in ordered subset of eigenvalues.\n"
+            "                           Used in partial eigenvalue decomposition functions.\n"
+            "                           ")
+
+        ("iu",
+         value<rocblas_int>(),
+            "Upper index in ordered subset of eigenvalues.\n"
+            "                           Used in partial eigenvalue decomposition functions.\n"
+            "                           ")
+
+        ("range",
+         value<char>()->default_value('A'),
+            "A = all eigenvalues, V = in (vl, vu], I = from the il-th to the iu-th.\n"
+            "                           For partial eigenvalue decompositions, it indicates the type of interval in which\n"
+            "                           the eigenvalues will be found.\n"
+            "                           ")
+
+        ("vl",
+         value<double>(),
+            "Lower bound of half-open interval (vl, vu].\n"
+            "                           Used in partial eigenvalue decomposition functions.\n"
+            "                           Note: the used random input matrices have all eigenvalues in [-20, 20].\n"
+            "                           ")
+
+        ("vu",
+         value<double>(),
+            "Upper bound of half-open interval (vl, vu].\n"
+            "                           Used in partial eigenvalue decomposition functions.\n"
+            "                           Note: the used random input matrices have all eigenvalues in [-20, 20].\n"
+            "                           ")
+
         // other options
         // ("direct",
         //  value<char>()->default_value('F'),
@@ -376,6 +417,7 @@ try
     // argus.validate_workmode("fast_alg");
     argus.validate_itype("itype");
     argus.validate_evect("jobz");
+    argus.validate_erange("range");
 
     // select and dispatch function test/benchmark
     hipsolver_dispatcher::invoke(function, precision, argus);

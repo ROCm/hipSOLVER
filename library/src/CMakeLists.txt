@@ -117,7 +117,7 @@ target_include_directories( hipsolver
           $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/hipsolver>
           $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/hipsolver/internal>
           $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>
-          $<INSTALL_INTERFACE:include>
+          $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   PRIVATE
           ${CMAKE_CURRENT_SOURCE_DIR}/include
           ${CMAKE_CURRENT_SOURCE_DIR}
@@ -138,7 +138,8 @@ if (BUILD_FILE_REORG_BACKWARD_COMPATIBILITY AND NOT WIN32)
   rocm_wrap_header_file(
     internal/hipsolver-version.h internal/hipsolver-export.h
     GUARDS SYMLINK WRAPPER
-    WRAPPER_LOCATIONS include hipsolver/include
+    WRAPPER_LOCATIONS ${CMAKE_INSTALL_INCLUDEDIR} hipsolver/${CMAKE_INSTALL_INCLUDEDIR}
+    ORIGINAL_FILES ${PROJECT_BINARY_DIR}/include/hipsolver/internal/hipsolver-version.h
   )
 endif( )
 
@@ -174,7 +175,7 @@ endif( )
 if( UNIX )
   # Force installation of .f90 module files
   install(FILES "hipsolver_module.f90"
-          DESTINATION "include/hipsolver")
+          DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/hipsolver")
 endif( )
 
 if(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY AND NOT WIN32)

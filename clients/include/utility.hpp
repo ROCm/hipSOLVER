@@ -393,10 +393,10 @@ void print_matrix(T* CPU_result, T* GPU_result, int m, int n, int lda)
     for(int i = 0; i < m; i++)
         for(int j = 0; j < n; j++)
             printf("matrix  col %d, row %d, CPU result=%.8g, GPU result=%.8g\n",
-                   i,
                    j,
-                   double(CPU_result[j + i * lda]),
-                   double(GPU_result[j + i * lda]));
+                   i,
+                   double(CPU_result[i + j * lda]),
+                   double(GPU_result[i + j * lda]));
 }
 
 /*! \brief  Debugging purpose, print out CPU and GPU result matrix, valid for complex number  */
@@ -406,12 +406,12 @@ void print_matrix(T* CPU_result, T* GPU_result, int m, int n, int lda)
     for(int i = 0; i < m; i++)
         for(int j = 0; j < n; j++)
             printf("matrix  col %d, row %d, CPU result=(%.8g,%.8g), GPU result=(%.8g,%.8g)\n",
-                   i,
                    j,
-                   double(CPU_result[j + i * lda].real()),
-                   double(CPU_result[j + i * lda].imag()),
-                   double(GPU_result[j + i * lda].real()),
-                   double(GPU_result[j + i * lda].imag()));
+                   i,
+                   double(CPU_result[i + j * lda].real()),
+                   double(CPU_result[i + j * lda].imag()),
+                   double(GPU_result[i + j * lda].real()),
+                   double(GPU_result[i + j * lda].imag()));
 }
 
 /* =============================================================================================== */
