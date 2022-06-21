@@ -134,7 +134,7 @@ set_target_properties( hipsolver PROPERTIES CXX_VISIBILITY_PRESET "hidden" VISIB
 generate_export_header( hipsolver EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/include/hipsolver/internal/hipsolver-export.h )
 
 execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/library/include ${PROJECT_BINARY_DIR}/include/hipsolver)
-if (BUILD_FILE_REORG_BACKWARD_COMPATIBILITY AND NOT WIN32)
+if (BUILD_FILE_REORG_BACKWARD_COMPATIBILITY)
   rocm_wrap_header_file(
     internal/hipsolver-version.h internal/hipsolver-export.h
     GUARDS SYMLINK WRAPPER
@@ -178,7 +178,7 @@ if( UNIX )
           DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/hipsolver")
 endif( )
 
-if(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY AND NOT WIN32)
+if(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY)
   rocm_install(
     DIRECTORY
        "${PROJECT_BINARY_DIR}/hipsolver"
