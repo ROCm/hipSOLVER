@@ -587,7 +587,7 @@ catch(...)
     return exception2hip_status();
 }
 
-/******************** AUXILIARY (PARAMS) ********************/
+/******************** GESVDJ PARAMS ********************/
 hipsolverStatus_t hipsolverDnCreateGesvdjInfo(hipsolverGesvdjInfo_t* info)
 try
 {
@@ -673,14 +673,81 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnCreateSyevjInfo(hipsolverSyevjInfo_t* info)
+/******************** SYEVJ PARAMS ********************/
+struct hipsolverSyevjInfo
+{
+    int     capacity;
+    int     batch_count;
+    int*    n_sweeps;
+    double* residual;
+
+    int    max_sweeps;
+    double tolerance;
+    bool   is_float, is_batched;
+
+    // Constructor
+    explicit hipsolverSyevjInfo()
+        : max_sweeps(100)
+        , tolerance(0)
+        , capacity(0)
+    {
+    }
+
+    // Allocate device memory
+    hipsolverStatus_t malloc(int bc)
+    {
+        if(capacity < bc)
+        {
+            if(capacity > 0)
+            {
+                if(hipFree(n_sweeps) != hipSuccess)
+                    return HIPSOLVER_STATUS_INTERNAL_ERROR;
+                if(hipFree(residual) != hipSuccess)
+                    return HIPSOLVER_STATUS_INTERNAL_ERROR;
+            }
+
+            if(hipMalloc(&n_sweeps, sizeof(int) * bc) != hipSuccess)
+            {
+                capacity = 0;
+                return HIPSOLVER_STATUS_ALLOC_FAILED;
+            }
+            if(hipMalloc(&residual, sizeof(double) * bc) != hipSuccess)
+            {
+                capacity = 0;
+                hipFree(n_sweeps);
+                return HIPSOLVER_STATUS_ALLOC_FAILED;
+            }
+
+            capacity    = bc;
+            batch_count = bc;
+        }
+
+        return HIPSOLVER_STATUS_SUCCESS;
+    }
+
+    // Free device memory
+    hipsolverStatus_t free()
+    {
+        if(capacity > 0)
+        {
+            if(hipFree(n_sweeps) != hipSuccess)
+                return HIPSOLVER_STATUS_INTERNAL_ERROR;
+            if(hipFree(residual) != hipSuccess)
+                return HIPSOLVER_STATUS_INTERNAL_ERROR;
+            capacity = 0;
+        }
+
+        return HIPSOLVER_STATUS_SUCCESS;
+    }
+};
+
+hipsolverStatus_t hipsolverCreateSyevjInfo(hipsolverSyevjInfo_t* info)
 try
 {
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    // create dummy value
-    *info = new int;
+    *info = new hipsolverSyevjInfo;
 
     return HIPSOLVER_STATUS_SUCCESS;
 }
@@ -689,13 +756,15 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnDestroySyevjInfo(hipsolverSyevjInfo_t info)
+hipsolverStatus_t hipsolverDestroySyevjInfo(hipsolverSyevjInfo_t info)
 try
 {
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    delete(int*)info;
+    hipsolverSyevjInfo* ptr = (hipsolverSyevjInfo*)info;
+    ptr->free();
+    delete ptr;
 
     return HIPSOLVER_STATUS_SUCCESS;
 }
@@ -704,7 +773,25 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnXsyevjSetMaxSweeps(hipsolverSyevjInfo_t info, int max_sweeps)
+hipsolverStatus_t hipsolverXsyevjSetMaxSweeps(hipsolverSyevjInfo_t info, int max_sweeps)
+try
+{
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(max_sweeps < 0)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverSyevjInfo* ptr = (hipsolverSyevjInfo*)info;
+    ptr->max_sweeps         = max_sweeps;
+
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverXsyevjSetSortEig(hipsolverSyevjInfo_t info, int sort_eig)
 try
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
@@ -714,44 +801,82 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnXsyevjSetSortEig(hipsolverSyevjInfo_t info, int sort_eig)
+hipsolverStatus_t hipsolverXsyevjSetTolerance(hipsolverSyevjInfo_t info, double tolerance)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverSyevjInfo* ptr = (hipsolverSyevjInfo*)info;
+    ptr->tolerance          = tolerance;
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnXsyevjSetTolerance(hipsolverSyevjInfo_t info, double tolerance)
-try
-{
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
-}
-catch(...)
-{
-    return exception2hip_status();
-}
-
-hipsolverStatus_t hipsolverDnXsyevjGetResidual(hipsolverDnHandle_t  handle,
-                                               hipsolverSyevjInfo_t info,
-                                               double*              residual)
-try
-{
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
-}
-catch(...)
-{
-    return exception2hip_status();
-}
-
-hipsolverStatus_t hipsolverDnXsyevjGetSweeps(hipsolverDnHandle_t  handle,
+hipsolverStatus_t hipsolverXsyevjGetResidual(hipsolverDnHandle_t  handle,
                                              hipsolverSyevjInfo_t info,
-                                             int*                 executed_sweeps)
+                                             double*              residual)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!residual)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverSyevjInfo* ptr = (hipsolverSyevjInfo*)info;
+    if(ptr->is_batched)
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(ptr->capacity <= 0)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+
+    if(ptr->is_float)
+    {
+        float result;
+        if(hipMemcpy(&result, ptr->residual, sizeof(float), hipMemcpyDeviceToHost) != hipSuccess)
+            return HIPSOLVER_STATUS_INTERNAL_ERROR;
+        *residual = result;
+    }
+    else
+    {
+        if(hipMemcpy(residual, ptr->residual, sizeof(double), hipMemcpyDeviceToHost) != hipSuccess)
+            return HIPSOLVER_STATUS_INTERNAL_ERROR;
+    }
+
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverXsyevjGetSweeps(hipsolverDnHandle_t  handle,
+                                           hipsolverSyevjInfo_t info,
+                                           int*                 executed_sweeps)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!executed_sweeps)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverSyevjInfo* ptr = (hipsolverSyevjInfo*)info;
+    if(ptr->is_batched)
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(ptr->capacity <= 0)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+
+    if(hipMemcpy(executed_sweeps, ptr->n_sweeps, sizeof(int), hipMemcpyDeviceToHost) != hipSuccess)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {

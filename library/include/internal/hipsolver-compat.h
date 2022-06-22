@@ -22,8 +22,6 @@ typedef hipsolverHandle_t hipsolverDnHandle_t;
 
 typedef void* hipsolverGesvdjInfo_t;
 
-typedef void* hipsolverSyevjInfo_t;
-
 typedef enum
 {
     HIPSOLVER_EIG_RANGE_ALL = 221,
@@ -53,29 +51,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSetStream(hipsolverHandle_t handle
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnGetStream(hipsolverHandle_t handle,
                                                         hipStream_t*      streamId);
 
-// params
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnCreateSyevjInfo(hipsolverSyevjInfo_t* info);
-
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDestroySyevjInfo(hipsolverSyevjInfo_t info);
-
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjSetMaxSweeps(hipsolverSyevjInfo_t info,
-                                                                 int                  max_sweeps);
-
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjSetSortEig(hipsolverSyevjInfo_t info,
-                                                               int                  sort_eig);
-
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjSetTolerance(hipsolverSyevjInfo_t info,
-                                                                 double               tolerance);
-
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjGetResidual(hipsolverDnHandle_t  handle,
-                                                                hipsolverSyevjInfo_t info,
-                                                                double*              residual);
-
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjGetSweeps(hipsolverDnHandle_t  handle,
-                                                              hipsolverSyevjInfo_t info,
-                                                              int*                 executed_sweeps);
-
-// params
+// gesvdj params
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnCreateGesvdjInfo(hipsolverGesvdjInfo_t* info);
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDestroyGesvdjInfo(hipsolverGesvdjInfo_t info);
@@ -96,6 +72,28 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXgesvdjGetResidual(hipsolverDnHand
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXgesvdjGetSweeps(hipsolverDnHandle_t   handle,
                                                                hipsolverGesvdjInfo_t info,
                                                                int* executed_sweeps);
+
+// syevj params
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnCreateSyevjInfo(hipsolverSyevjInfo_t* info);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnDestroySyevjInfo(hipsolverSyevjInfo_t info);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjSetMaxSweeps(hipsolverSyevjInfo_t info,
+                                                                 int                  max_sweeps);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjSetSortEig(hipsolverSyevjInfo_t info,
+                                                               int                  sort_eig);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjSetTolerance(hipsolverSyevjInfo_t info,
+                                                                 double               tolerance);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjGetResidual(hipsolverDnHandle_t  handle,
+                                                                hipsolverSyevjInfo_t info,
+                                                                double*              residual);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXsyevjGetSweeps(hipsolverDnHandle_t  handle,
+                                                              hipsolverSyevjInfo_t info,
+                                                              int*                 executed_sweeps);
 
 // orgbr/ungbr
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSorgbr_bufferSize(hipsolverHandle_t   handle,

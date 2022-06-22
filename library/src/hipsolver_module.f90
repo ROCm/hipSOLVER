@@ -111,6 +111,91 @@ module hipsolver
             type(c_ptr), value :: streamId
         end function hipsolverGetStream
     end interface
+    
+    ! ******************** SYEVJ PARAMS ********************
+    interface
+        function hipsolverCreateSyevjInfo(info) &
+                bind(c, name = 'hipsolverCreateSyevjInfo')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCreateSyevjInfo
+            type(c_ptr), value :: info
+        end function hipsolverCreateSyevjInfo
+    end interface
+    
+    interface
+        function hipsolverDestroySyevjInfo(info) &
+                bind(c, name = 'hipsolverDestroySyevjInfo')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDestroySyevjInfo
+            type(c_ptr), value :: info
+        end function hipsolverDestroySyevjInfo
+    end interface
+    
+    interface
+        function hipsolverXsyevjSetMaxSweeps(info, max_sweeps) &
+                bind(c, name = 'hipsolverXsyevjSetMaxSweeps')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverXsyevjSetMaxSweeps
+            type(c_ptr), value :: info
+            integer(c_int), value :: max_sweeps
+        end function hipsolverXsyevjSetMaxSweeps
+    end interface
+    
+    interface
+        function hipsolverXsyevjSetSortEig(info, sort_eig) &
+                bind(c, name = 'hipsolverXsyevjSetSortEig')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverXsyevjSetSortEig
+            type(c_ptr), value :: info
+            integer(c_int), value :: sort_eig
+        end function hipsolverXsyevjSetSortEig
+    end interface
+    
+    interface
+        function hipsolverXsyevjSetTolerance(info, tolerance) &
+                bind(c, name = 'hipsolverXsyevjSetTolerance')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverXsyevjSetTolerance
+            type(c_ptr), value :: info
+            real(c_double), value :: tolerance
+        end function hipsolverXsyevjSetTolerance
+    end interface
+    
+    interface
+        function hipsolverXsyevjGetResidual(handle, info, residual) &
+                bind(c, name = 'hipsolverXsyevjSetTolerance')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverXsyevjGetResidual
+            type(c_ptr), value :: handle
+            type(c_ptr), value :: info
+            type(c_ptr), value :: residual
+        end function hipsolverXsyevjGetResidual
+    end interface
+    
+    interface
+        function hipsolverXsyevjGetSweeps(handle, info, executed_sweeps) &
+                bind(c, name = 'hipsolverXsyevjSetTolerance')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverXsyevjGetSweeps
+            type(c_ptr), value :: handle
+            type(c_ptr), value :: info
+            type(c_ptr), value :: executed_sweeps
+        end function hipsolverXsyevjGetSweeps
+    end interface
 
     !------------!
     !   LAPACK   !

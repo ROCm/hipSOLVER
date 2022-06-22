@@ -252,7 +252,7 @@ catch(...)
     return exception2hip_status();
 }
 
-/******************** AUXILIARY (PARAMS) ********************/
+/******************** GESVDJ PARAMS ********************/
 hipsolverStatus_t hipsolverDnCreateGesvdjInfo(hipsolverGesvdjInfo_t* info)
 try
 {
@@ -329,7 +329,8 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnCreateSyevjInfo(hipsolverSyevjInfo_t* info)
+/******************** SYEVJ PARAMS ********************/
+hipsolverStatus_t hipsolverCreateSyevjInfo(hipsolverSyevjInfo_t* info)
 try
 {
     return cuda2hip_status(cusolverDnCreateSyevjInfo((syevjInfo_t*)info));
@@ -339,7 +340,7 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnDestroySyevjInfo(hipsolverSyevjInfo_t info)
+hipsolverStatus_t hipsolverDestroySyevjInfo(hipsolverSyevjInfo_t info)
 try
 {
     return cuda2hip_status(cusolverDnDestroySyevjInfo((syevjInfo_t)info));
@@ -349,7 +350,7 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnXsyevjSetMaxSweeps(hipsolverSyevjInfo_t info, int max_sweeps)
+hipsolverStatus_t hipsolverXsyevjSetMaxSweeps(hipsolverSyevjInfo_t info, int max_sweeps)
 try
 {
     return cuda2hip_status(cusolverDnXsyevjSetMaxSweeps((syevjInfo_t)info, max_sweeps));
@@ -359,7 +360,7 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnXsyevjSetSortEig(hipsolverSyevjInfo_t info, int sort_eig)
+hipsolverStatus_t hipsolverXsyevjSetSortEig(hipsolverSyevjInfo_t info, int sort_eig)
 try
 {
     return cuda2hip_status(cusolverDnXsyevjSetSortEig((syevjInfo_t)info, sort_eig));
@@ -369,7 +370,7 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnXsyevjSetTolerance(hipsolverSyevjInfo_t info, double tolerance)
+hipsolverStatus_t hipsolverXsyevjSetTolerance(hipsolverSyevjInfo_t info, double tolerance)
 try
 {
     return cuda2hip_status(cusolverDnXsyevjSetTolerance((syevjInfo_t)info, tolerance));
@@ -379,9 +380,9 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnXsyevjGetResidual(hipsolverDnHandle_t  handle,
-                                               hipsolverSyevjInfo_t info,
-                                               double*              residual)
+hipsolverStatus_t hipsolverXsyevjGetResidual(hipsolverDnHandle_t  handle,
+                                             hipsolverSyevjInfo_t info,
+                                             double*              residual)
 try
 {
     return cuda2hip_status(
@@ -392,9 +393,9 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnXsyevjGetSweeps(hipsolverDnHandle_t  handle,
-                                             hipsolverSyevjInfo_t info,
-                                             int*                 executed_sweeps)
+hipsolverStatus_t hipsolverXsyevjGetSweeps(hipsolverDnHandle_t  handle,
+                                           hipsolverSyevjInfo_t info,
+                                           int*                 executed_sweeps)
 try
 {
     return cuda2hip_status(

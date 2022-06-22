@@ -33,6 +33,46 @@ hipsolverStatus_t hipsolverDnGetStream(hipsolverHandle_t handle, hipStream_t* st
     return hipsolverGetStream(handle, streamId);
 }
 
+// syevj params
+hipsolverStatus_t hipsolverDnCreateSyevjInfo(hipsolverSyevjInfo_t* info)
+{
+    return hipsolverCreateSyevjInfo(info);
+}
+
+hipsolverStatus_t hipsolverDnDestroySyevjInfo(hipsolverSyevjInfo_t info)
+{
+    return hipsolverDestroySyevjInfo(info);
+}
+
+hipsolverStatus_t hipsolverDnXsyevjSetMaxSweeps(hipsolverSyevjInfo_t info, int max_sweeps)
+{
+    return hipsolverXsyevjSetMaxSweeps(info, max_sweeps);
+}
+
+hipsolverStatus_t hipsolverDnXsyevjSetSortEig(hipsolverSyevjInfo_t info, int sort_eig)
+{
+    return hipsolverXsyevjSetSortEig(info, sort_eig);
+}
+
+hipsolverStatus_t hipsolverDnXsyevjSetTolerance(hipsolverSyevjInfo_t info, double tolerance)
+{
+    return hipsolverXsyevjSetTolerance(info, tolerance);
+}
+
+hipsolverStatus_t hipsolverDnXsyevjGetResidual(hipsolverDnHandle_t  handle,
+                                               hipsolverSyevjInfo_t info,
+                                               double*              residual)
+{
+    return hipsolverXsyevjGetResidual(handle, info, residual);
+}
+
+hipsolverStatus_t hipsolverDnXsyevjGetSweeps(hipsolverDnHandle_t  handle,
+                                             hipsolverSyevjInfo_t info,
+                                             int*                 executed_sweeps)
+{
+    return hipsolverXsyevjGetSweeps(handle, info, executed_sweeps);
+}
+
 // orgbr/ungbr
 hipsolverStatus_t hipsolverDnSorgbr_bufferSize(hipsolverHandle_t   handle,
                                                hipsolverSideMode_t side,
