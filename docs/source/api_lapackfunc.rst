@@ -434,6 +434,38 @@ hipsolver<type>heevd()
    :outline:
 .. doxygenfunction:: hipsolverCheevd
 
+.. _syevj_bufferSize:
+
+hipsolver<type>syevj_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDsyevj_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverSsyevj_bufferSize
+
+.. _heevj_bufferSize:
+
+hipsolver<type>heevj_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZheevj_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverCheevj_bufferSize
+
+.. _syevj:
+
+hipsolver<type>syevj()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDsyevj
+   :outline:
+.. doxygenfunction:: hipsolverSsyevj
+
+.. _heevj:
+
+hipsolver<type>heevj()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZheevj
+   :outline:
+.. doxygenfunction:: hipsolverCheevj
+
 .. _sygvd_bufferSize:
 
 hipsolver<type>sygvd_bufferSize()
