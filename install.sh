@@ -558,14 +558,14 @@ pushd .
   fi
 
 
-if [[ "${build_freorg_bkwdcomp}" == true ]]; then
-  cmake_common_options="${cmake_common_options} -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=ON"
+  if [[ "${build_freorg_bkwdcomp}" == true ]]; then
+    cmake_common_options="${cmake_common_options} -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=ON"
   else
-  cmake_common_options="${cmake_common_options} -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF"
-fi
+    cmake_common_options="${cmake_common_options} -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF"
+  fi
 
-  #Setting default GNU LIBDIR in build scripts as per architecture board decision
-  cmake_common_options+=("-DCMAKE_INSTALL_LIBDIR=lib")
+  #Setting default GNU LIBDIR in build scripts as per arch board recommendation
+  cmake_common_options="${cmake_common_options} -DCMAKE_INSTALL_LIBDIR=lib"
   
   # Build library
   if [[ "${build_relocatable}" == true ]]; then
