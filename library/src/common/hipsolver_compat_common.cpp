@@ -2062,6 +2062,151 @@ hipsolverStatus_t hipsolverDnZhegvd(hipsolverHandle_t   handle,
     return hipsolverZhegvd(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, devInfo);
 }
 
+// sygvj/hegvj
+hipsolverStatus_t hipsolverDnSsygvj_bufferSize(hipsolverDnHandle_t  handle,
+                                               hipsolverEigType_t   itype,
+                                               hipsolverEigMode_t   jobz,
+                                               hipsolverFillMode_t  uplo,
+                                               int                  n,
+                                               float*               A,
+                                               int                  lda,
+                                               float*               B,
+                                               int                  ldb,
+                                               float*               W,
+                                               int*                 lwork,
+                                               hipsolverSyevjInfo_t params)
+{
+    return hipsolverSsygvj_bufferSize(
+        handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
+}
+
+hipsolverStatus_t hipsolverDnDsygvj_bufferSize(hipsolverDnHandle_t  handle,
+                                               hipsolverEigType_t   itype,
+                                               hipsolverEigMode_t   jobz,
+                                               hipsolverFillMode_t  uplo,
+                                               int                  n,
+                                               double*              A,
+                                               int                  lda,
+                                               double*              B,
+                                               int                  ldb,
+                                               double*              W,
+                                               int*                 lwork,
+                                               hipsolverSyevjInfo_t params)
+{
+    return hipsolverDsygvj_bufferSize(
+        handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
+}
+
+hipsolverStatus_t hipsolverDnChegvj_bufferSize(hipsolverDnHandle_t  handle,
+                                               hipsolverEigType_t   itype,
+                                               hipsolverEigMode_t   jobz,
+                                               hipsolverFillMode_t  uplo,
+                                               int                  n,
+                                               hipFloatComplex*     A,
+                                               int                  lda,
+                                               hipFloatComplex*     B,
+                                               int                  ldb,
+                                               float*               W,
+                                               int*                 lwork,
+                                               hipsolverSyevjInfo_t params)
+{
+    return hipsolverChegvj_bufferSize(
+        handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
+}
+
+hipsolverStatus_t hipsolverDnZhegvj_bufferSize(hipsolverDnHandle_t  handle,
+                                               hipsolverEigType_t   itype,
+                                               hipsolverEigMode_t   jobz,
+                                               hipsolverFillMode_t  uplo,
+                                               int                  n,
+                                               hipDoubleComplex*    A,
+                                               int                  lda,
+                                               hipDoubleComplex*    B,
+                                               int                  ldb,
+                                               double*              W,
+                                               int*                 lwork,
+                                               hipsolverSyevjInfo_t params)
+{
+    return hipsolverZhegvj_bufferSize(
+        handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
+}
+
+hipsolverStatus_t hipsolverDnSsygvj(hipsolverDnHandle_t  handle,
+                                    hipsolverEigType_t   itype,
+                                    hipsolverEigMode_t   jobz,
+                                    hipsolverFillMode_t  uplo,
+                                    int                  n,
+                                    float*               A,
+                                    int                  lda,
+                                    float*               B,
+                                    int                  ldb,
+                                    float*               W,
+                                    float*               work,
+                                    int                  lwork,
+                                    int*                 devInfo,
+                                    hipsolverSyevjInfo_t params)
+{
+    return hipsolverSsygvj(
+        handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, devInfo, params);
+}
+
+hipsolverStatus_t hipsolverDnDsygvj(hipsolverDnHandle_t  handle,
+                                    hipsolverEigType_t   itype,
+                                    hipsolverEigMode_t   jobz,
+                                    hipsolverFillMode_t  uplo,
+                                    int                  n,
+                                    double*              A,
+                                    int                  lda,
+                                    double*              B,
+                                    int                  ldb,
+                                    double*              W,
+                                    double*              work,
+                                    int                  lwork,
+                                    int*                 devInfo,
+                                    hipsolverSyevjInfo_t params)
+{
+    return hipsolverDsygvj(
+        handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, devInfo, params);
+}
+
+hipsolverStatus_t hipsolverDnChegvj(hipsolverDnHandle_t  handle,
+                                    hipsolverEigType_t   itype,
+                                    hipsolverEigMode_t   jobz,
+                                    hipsolverFillMode_t  uplo,
+                                    int                  n,
+                                    hipFloatComplex*     A,
+                                    int                  lda,
+                                    hipFloatComplex*     B,
+                                    int                  ldb,
+                                    float*               W,
+                                    hipFloatComplex*     work,
+                                    int                  lwork,
+                                    int*                 devInfo,
+                                    hipsolverSyevjInfo_t params)
+{
+    return hipsolverChegvj(
+        handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, devInfo, params);
+}
+
+hipsolverStatus_t hipsolverDnZhegvj(hipsolverDnHandle_t  handle,
+                                    hipsolverEigType_t   itype,
+                                    hipsolverEigMode_t   jobz,
+                                    hipsolverFillMode_t  uplo,
+                                    int                  n,
+                                    hipDoubleComplex*    A,
+                                    int                  lda,
+                                    hipDoubleComplex*    B,
+                                    int                  ldb,
+                                    double*              W,
+                                    hipDoubleComplex*    work,
+                                    int                  lwork,
+                                    int*                 devInfo,
+                                    hipsolverSyevjInfo_t params)
+{
+    return hipsolverZhegvj(
+        handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, devInfo, params);
+}
+
 // sytrd/hetrd
 hipsolverStatus_t hipsolverDnSsytrd_bufferSize(hipsolverHandle_t   handle,
                                                hipsolverFillMode_t uplo,

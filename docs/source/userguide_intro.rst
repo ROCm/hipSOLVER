@@ -148,10 +148,14 @@ LAPACK-like functions
     :ref:`hipsolverXsyevj <syevj>`, x, x, ,
     :ref:`hipsolverXsyevjBatched_bufferSize <syevj_batched_bufferSize>`, x, x, ,
     :ref:`hipsolverXsyevjBatched <syevj_batched>`, x, x, ,
+    :ref:`hipsolverXsygvj_bufferSize <sygvj_bufferSize>`, x, x, ,
+    :ref:`hipsolverXsygvj <sygvj>`, x, x, ,
     :ref:`hipsolverXheevj_bufferSize <heevj_bufferSize>`, , , x, x
     :ref:`hipsolverXheevj <heevj>`, , , x, x
     :ref:`hipsolverXheevjBatched_bufferSize <heevj_batched_bufferSize>`, , , x, x
     :ref:`hipsolverXheevjBatched <heevj_batched>`, , , x, x
+    :ref:`hipsolverXhegvj_bufferSize <hegvj_bufferSize>`, , , x, x
+    :ref:`hipsolverXhegvj <hegvj>`, , , x, x
 
 
 Compatibility-only functions
@@ -167,14 +171,6 @@ Iterative Jacobi functions
 rocSOLVER has yet to implement the following Jacobi functions, therefore hipSOLVER will instead call functions that use classic, non-iterative
 approaches (e.g. the QR algorithm). Note that parameters specific to the Jacobi algorithm will be ignored by the rocSOLVER backend, such as the
 error tolerance and number of iterations. All results are computed to machine precision.
-
-.. csv-table:: Symmetric eigensolvers
-    :header: "Function", "single", "double", "single complex", "double complex"
-
-    :ref:`hipsolverDnXsygvj_bufferSize <compat_sygvj_bufferSize>`, x, x, ,
-    :ref:`hipsolverDnXsygvj <compat_sygvj>`, x, x, ,
-    :ref:`hipsolverDnXhegvj_bufferSize <compat_hegvj_bufferSize>`, , , x, x
-    :ref:`hipsolverDnXhegvj <compat_hegvj>`, , , x, x
 
 .. csv-table:: Singular value decomposition
     :header: "Function", "single", "double", "single complex", "double complex"

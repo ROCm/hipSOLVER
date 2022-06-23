@@ -88,48 +88,92 @@ protected:
     }
 };
 
-class SYGVJ_COMPAT : public SYGVJ_HEGVJ<API_COMPAT>
+class SYGVJ : public SYGVJ_HEGVJ<API_NORMAL>
 {
 };
 
-class HEGVJ_COMPAT : public SYGVJ_HEGVJ<API_COMPAT>
+class HEGVJ : public SYGVJ_HEGVJ<API_NORMAL>
+{
+};
+
+class SYGVJ_FORTRAN : public SYGVJ_HEGVJ<API_FORTRAN>
+{
+};
+
+class HEGVJ_FORTRAN : public SYGVJ_HEGVJ<API_FORTRAN>
 {
 };
 
 // non-batch tests
 
-TEST_P(SYGVJ_COMPAT, __float)
+TEST_P(SYGVJ, __float)
 {
     run_tests<false, false, float>();
 }
 
-TEST_P(SYGVJ_COMPAT, __double)
+TEST_P(SYGVJ, __double)
 {
     run_tests<false, false, double>();
 }
 
-TEST_P(HEGVJ_COMPAT, __float_complex)
+TEST_P(HEGVJ, __float_complex)
 {
     run_tests<false, false, rocblas_float_complex>();
 }
 
-TEST_P(HEGVJ_COMPAT, __double_complex)
+TEST_P(HEGVJ, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
+TEST_P(SYGVJ_FORTRAN, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(SYGVJ_FORTRAN, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(HEGVJ_FORTRAN, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(HEGVJ_FORTRAN, __double_complex)
 {
     run_tests<false, false, rocblas_double_complex>();
 }
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          SYGVJ_COMPAT,
+//                          SYGVJ,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         SYGVJ_COMPAT,
+                         SYGVJ,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          HEGVJ_COMPAT,
+//                          HEGVJ,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         HEGVJ_COMPAT,
+                         HEGVJ,
+                         Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          SYGVJ_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         SYGVJ_FORTRAN,
+                         Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          HEGVJ_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         HEGVJ_FORTRAN,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));

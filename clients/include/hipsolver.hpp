@@ -6256,6 +6256,12 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj_bufferSize(testAPI_t            A
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverSsygvj_bufferSize(
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
+    case API_FORTRAN:
+        return hipsolverSsygvj_bufferSizeFortran(
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
     case API_COMPAT:
         return hipsolverDnSsygvj_bufferSize(
             handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
@@ -6280,6 +6286,12 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj_bufferSize(testAPI_t            A
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverDsygvj_bufferSize(
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
+    case API_FORTRAN:
+        return hipsolverDsygvj_bufferSizeFortran(
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
     case API_COMPAT:
         return hipsolverDnDsygvj_bufferSize(
             handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
@@ -6304,6 +6316,32 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj_bufferSize(testAPI_t            A
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverChegvj_bufferSize(handle,
+                                          itype,
+                                          jobz,
+                                          uplo,
+                                          n,
+                                          (hipFloatComplex*)A,
+                                          lda,
+                                          (hipFloatComplex*)B,
+                                          ldb,
+                                          W,
+                                          lwork,
+                                          params);
+    case API_FORTRAN:
+        return hipsolverChegvj_bufferSizeFortran(handle,
+                                                 itype,
+                                                 jobz,
+                                                 uplo,
+                                                 n,
+                                                 (hipFloatComplex*)A,
+                                                 lda,
+                                                 (hipFloatComplex*)B,
+                                                 ldb,
+                                                 W,
+                                                 lwork,
+                                                 params);
     case API_COMPAT:
         return hipsolverDnChegvj_bufferSize(handle,
                                             itype,
@@ -6338,6 +6376,32 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj_bufferSize(testAPI_t             
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverZhegvj_bufferSize(handle,
+                                          itype,
+                                          jobz,
+                                          uplo,
+                                          n,
+                                          (hipDoubleComplex*)A,
+                                          lda,
+                                          (hipDoubleComplex*)B,
+                                          ldb,
+                                          W,
+                                          lwork,
+                                          params);
+    case API_FORTRAN:
+        return hipsolverZhegvj_bufferSizeFortran(handle,
+                                                 itype,
+                                                 jobz,
+                                                 uplo,
+                                                 n,
+                                                 (hipDoubleComplex*)A,
+                                                 lda,
+                                                 (hipDoubleComplex*)B,
+                                                 ldb,
+                                                 W,
+                                                 lwork,
+                                                 params);
     case API_COMPAT:
         return hipsolverDnZhegvj_bufferSize(handle,
                                             itype,
@@ -6378,6 +6442,12 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj(testAPI_t            API,
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverSsygvj(
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info, params);
+    case API_FORTRAN:
+        return hipsolverSsygvjFortran(
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info, params);
     case API_COMPAT:
         return hipsolverDnSsygvj(
             handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info, params);
@@ -6408,6 +6478,12 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj(testAPI_t            API,
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverDsygvj(
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info, params);
+    case API_FORTRAN:
+        return hipsolverDsygvjFortran(
+            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info, params);
     case API_COMPAT:
         return hipsolverDnDsygvj(
             handle, itype, jobz, uplo, n, A, lda, B, ldb, W, work, lwork, info, params);
@@ -6438,6 +6514,36 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj(testAPI_t            API,
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverChegvj(handle,
+                               itype,
+                               jobz,
+                               uplo,
+                               n,
+                               (hipFloatComplex*)A,
+                               lda,
+                               (hipFloatComplex*)B,
+                               ldb,
+                               W,
+                               (hipFloatComplex*)work,
+                               lwork,
+                               info,
+                               params);
+    case API_FORTRAN:
+        return hipsolverChegvjFortran(handle,
+                                      itype,
+                                      jobz,
+                                      uplo,
+                                      n,
+                                      (hipFloatComplex*)A,
+                                      lda,
+                                      (hipFloatComplex*)B,
+                                      ldb,
+                                      W,
+                                      (hipFloatComplex*)work,
+                                      lwork,
+                                      info,
+                                      params);
     case API_COMPAT:
         return hipsolverDnChegvj(handle,
                                  itype,
@@ -6480,6 +6586,36 @@ inline hipsolverStatus_t hipsolver_sygvj_hegvj(testAPI_t               API,
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverZhegvj(handle,
+                               itype,
+                               jobz,
+                               uplo,
+                               n,
+                               (hipDoubleComplex*)A,
+                               lda,
+                               (hipDoubleComplex*)B,
+                               ldb,
+                               W,
+                               (hipDoubleComplex*)work,
+                               lwork,
+                               info,
+                               params);
+    case API_FORTRAN:
+        return hipsolverZhegvjFortran(handle,
+                                      itype,
+                                      jobz,
+                                      uplo,
+                                      n,
+                                      (hipDoubleComplex*)A,
+                                      lda,
+                                      (hipDoubleComplex*)B,
+                                      ldb,
+                                      W,
+                                      (hipDoubleComplex*)work,
+                                      lwork,
+                                      info,
+                                      params);
     case API_COMPAT:
         return hipsolverDnZhegvj(handle,
                                  itype,

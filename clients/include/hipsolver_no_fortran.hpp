@@ -199,6 +199,15 @@
 #define hipsolverDsygvdFortran hipsolverDsygvd
 #define hipsolverChegvdFortran hipsolverChegvd
 #define hipsolverZhegvdFortran hipsolverZhegvd
+// sygvj/hegvj
+#define hipsolverSsygvj_bufferSizeFortran hipsolverSsygvj_bufferSize
+#define hipsolverDsygvj_bufferSizeFortran hipsolverDsygvj_bufferSize
+#define hipsolverChegvj_bufferSizeFortran hipsolverChegvj_bufferSize
+#define hipsolverZhegvj_bufferSizeFortran hipsolverZhegvj_bufferSize
+#define hipsolverSsygvjFortran hipsolverSsygvj
+#define hipsolverDsygvjFortran hipsolverDsygvj
+#define hipsolverChegvjFortran hipsolverChegvj
+#define hipsolverZhegvjFortran hipsolverZhegvj
 // sytrd/hetrd
 #define hipsolverSsytrd_bufferSizeFortran hipsolverSsytrd_bufferSize
 #define hipsolverDsytrd_bufferSizeFortran hipsolverDsytrd_bufferSize
