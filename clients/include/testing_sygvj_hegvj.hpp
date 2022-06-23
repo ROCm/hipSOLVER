@@ -391,12 +391,13 @@ void sygvj_hegvj_initData(const hipsolverHandle_t       handle,
 
 template <testAPI_t API,
           typename T,
+          typename Sd,
           typename Td,
-          typename Ud,
-          typename Vd,
+          typename Id,
+          typename Sh,
           typename Th,
           typename Uh,
-          typename Vh>
+          typename Ih>
 void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
                           const hipsolverEigType_t  itype,
                           const hipsolverEigMode_t  evect,
@@ -408,25 +409,30 @@ void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
                           Td&                       dB,
                           const int                 ldb,
                           const int                 stB,
-                          Ud&                       dD,
+                          Sd&                       dD,
                           const int                 stD,
                           Td&                       dWork,
                           const int                 lwork,
-                          Vd&                       dInfo,
+                          Id&                       dInfo,
                           hipsolverSyevjInfo_t      params,
+                          const double              abstol,
+                          const int                 max_sweeps,
                           const int                 bc,
                           Th&                       hA,
                           Th&                       hARes,
                           Th&                       hB,
-                          Uh&                       hD,
-                          Uh&                       hDRes,
-                          Vh&                       hInfo,
-                          Vh&                       hInfoRes,
+                          Sh&                       hD,
+                          Sh&                       hDRes,
+                          Ih&                       hInfo,
+                          Ih&                       hInfoRes,
+                          Uh&                       hResidualRes,
+                          Ih&                       hSweepsRes,
                           double*                   max_err,
                           const bool                singular)
 {
     constexpr bool COMPLEX = is_complex<T>;
     using S                = decltype(std::real(T{}));
+    S atol                 = (abstol <= 0) ? get_epsilon<S>() : abstol;
 
     int lrwork, ltwork;
     if(!COMPLEX)
@@ -478,6 +484,9 @@ void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
     if(evect != HIPSOLVER_EIG_MODE_NOVECTOR)
         CHECK_HIP_ERROR(hARes.transfer_from(dA));
 
+    hipsolverXsyevjGetResidual(handle, params, hResidualRes.data());
+    hipsolverXsyevjGetSweeps(handle, params, hSweepsRes.data());
+
     // CPU lapack
     for(int b = 0; b < bc; ++b)
     {
@@ -499,15 +508,20 @@ void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
                           hInfo[b]);
     }
 
-    // (We expect the used input matrices to always converge. Testing
-    // implicitly the equivalent non-converged matrix is very complicated and it boils
-    // down to essentially run the algorithm again and until convergence is achieved.
-    // We do test with indefinite matrices B).
-
     // check info for non-convergence and/or positive-definiteness
     *max_err = 0;
     for(int b = 0; b < bc; ++b)
         if(hInfo[b][0] != hInfoRes[b][0])
+            *max_err += 1;
+
+    // Also check validity of residual
+    for(rocblas_int b = 0; b < bc; ++b)
+        if(hResidualRes[b][0] < 0 || hResidualRes[b][0] > atol)
+            *max_err += 1;
+
+    // Also check validity of sweeps
+    for(rocblas_int b = 0; b < bc; ++b)
+        if(hSweepsRes[b][0] < 0 || hSweepsRes[b][0] > max_sweeps)
             *max_err += 1;
 
     double err;
@@ -611,12 +625,12 @@ void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
 
 template <testAPI_t API,
           typename T,
+          typename Sd,
           typename Td,
-          typename Ud,
-          typename Vd,
+          typename Id,
+          typename Sh,
           typename Th,
-          typename Uh,
-          typename Vh>
+          typename Ih>
 void sygvj_hegvj_getPerfData(const hipsolverHandle_t   handle,
                              const hipsolverEigType_t  itype,
                              const hipsolverEigMode_t  evect,
@@ -628,17 +642,17 @@ void sygvj_hegvj_getPerfData(const hipsolverHandle_t   handle,
                              Td&                       dB,
                              const int                 ldb,
                              const int                 stB,
-                             Ud&                       dD,
+                             Sd&                       dD,
                              const int                 stD,
                              Td&                       dWork,
                              const int                 lwork,
-                             Vd&                       dInfo,
+                             Id&                       dInfo,
                              hipsolverSyevjInfo_t      params,
                              const int                 bc,
                              Th&                       hA,
                              Th&                       hB,
-                             Uh&                       hD,
-                             Vh&                       hInfo,
+                             Sh&                       hD,
+                             Ih&                       hInfo,
                              double*                   gpu_time_used,
                              double*                   cpu_time_used,
                              const int                 hot_calls,
@@ -779,6 +793,11 @@ void testing_sygvj_hegvj(Arguments& argus)
     int                        stB    = argus.get<int>("strideB", ldb * n);
     int                        stD    = argus.get<int>("strideD", n);
 
+    double      abstol     = argus.get<double>("tolerance", get_epsilon<T>());
+    rocblas_int max_sweeps = argus.get<int>("max_sweeps", 100);
+    hipsolverXsyevjSetTolerance(params, abstol);
+    hipsolverXsyevjSetMaxSweeps(params, max_sweeps);
+
     hipsolverEigType_t  itype     = char2hipsolver_eform(itypeC);
     hipsolverEigMode_t  evect     = char2hipsolver_evect(evectC);
     hipsolverFillMode_t uplo      = char2hipsolver_fill(uploC);
@@ -876,30 +895,36 @@ void testing_sygvj_hegvj(Arguments& argus)
         return;
     }
 
+    // memory allocations
+    // host
+    host_strided_batch_vector<double> hResidualRes(1, 1, 1, bc);
+    host_strided_batch_vector<int>    hSweepsRes(1, 1, 1, bc);
+    host_strided_batch_vector<S>      hD(size_D, 1, stD, bc);
+    host_strided_batch_vector<S>      hDRes(size_DRes, 1, stDRes, bc);
+    host_strided_batch_vector<int>    hInfo(1, 1, 1, bc);
+    host_strided_batch_vector<int>    hInfoRes(1, 1, 1, bc);
+    // device
+    device_strided_batch_vector<S>   dD(size_D, 1, stD, bc);
+    device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
+    if(size_D)
+        CHECK_HIP_ERROR(dD.memcheck());
+    CHECK_HIP_ERROR(dInfo.memcheck());
+    if(size_W)
+        CHECK_HIP_ERROR(dWork.memcheck());
+
     if(BATCHED)
     {
         // // memory allocations
         // host_batch_vector<T>             hA(size_A, 1, bc);
         // host_batch_vector<T>             hARes(size_ARes, 1, bc);
         // host_batch_vector<T>             hB(size_B, 1, bc);
-        // host_strided_batch_vector<S>     hD(size_D, 1, stD, bc);
-        // host_strided_batch_vector<S>     hDRes(size_DRes, 1, stDRes, bc);
-        // host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
-        // host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         // device_batch_vector<T>           dA(size_A, 1, bc);
         // device_batch_vector<T>           dB(size_B, 1, bc);
-        // device_strided_batch_vector<S>   dD(size_D, 1, stD, bc);
-        // device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
         // if(size_B)
         //     CHECK_HIP_ERROR(dB.memcheck());
-        // if(size_D)
-        //     CHECK_HIP_ERROR(dD.memcheck());
-        // CHECK_HIP_ERROR(dInfo.memcheck());
-        // if(size_W)
-        //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check computations
         // if(argus.unit_check || argus.norm_check)
@@ -920,6 +945,8 @@ void testing_sygvj_hegvj(Arguments& argus)
         //                                  size_W,
         //                                  dInfo,
         //                                  params,
+        //                                  abstol,
+        //                                  max_sweeps,
         //                                  bc,
         //                                  hA,
         //                                  hARes,
@@ -928,6 +955,8 @@ void testing_sygvj_hegvj(Arguments& argus)
         //                                  hDRes,
         //                                  hInfo,
         //                                  hInfoRes,
+        //                                  hResidualRes,
+        //                                  hSweepsRes,
         //                                  &max_error,
         //                                  argus.singular);
 
@@ -965,27 +994,15 @@ void testing_sygvj_hegvj(Arguments& argus)
     else
     {
         // memory allocations
-        host_strided_batch_vector<T>     hA(size_A, 1, stA, bc);
-        host_strided_batch_vector<T>     hARes(size_ARes, 1, stARes, bc);
-        host_strided_batch_vector<T>     hB(size_B, 1, stB, bc);
-        host_strided_batch_vector<S>     hD(size_D, 1, stD, bc);
-        host_strided_batch_vector<S>     hDRes(size_DRes, 1, stDRes, bc);
-        host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
-        host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
-        device_strided_batch_vector<T>   dA(size_A, 1, stA, bc);
-        device_strided_batch_vector<T>   dB(size_B, 1, stB, bc);
-        device_strided_batch_vector<S>   dD(size_D, 1, stD, bc);
-        device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
+        host_strided_batch_vector<T>   hA(size_A, 1, stA, bc);
+        host_strided_batch_vector<T>   hARes(size_ARes, 1, stARes, bc);
+        host_strided_batch_vector<T>   hB(size_B, 1, stB, bc);
+        device_strided_batch_vector<T> dA(size_A, 1, stA, bc);
+        device_strided_batch_vector<T> dB(size_B, 1, stB, bc);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         if(size_B)
             CHECK_HIP_ERROR(dB.memcheck());
-        if(size_D)
-            CHECK_HIP_ERROR(dD.memcheck());
-        CHECK_HIP_ERROR(dInfo.memcheck());
-        if(size_W)
-            CHECK_HIP_ERROR(dWork.memcheck());
 
         // check computations
         if(argus.unit_check || argus.norm_check)
@@ -1006,6 +1023,8 @@ void testing_sygvj_hegvj(Arguments& argus)
                                          size_W,
                                          dInfo,
                                          params,
+                                         abstol,
+                                         max_sweeps,
                                          bc,
                                          hA,
                                          hARes,
@@ -1014,6 +1033,8 @@ void testing_sygvj_hegvj(Arguments& argus)
                                          hDRes,
                                          hInfo,
                                          hInfoRes,
+                                         hResidualRes,
+                                         hSweepsRes,
                                          &max_error,
                                          argus.singular);
 
@@ -1063,9 +1084,18 @@ void testing_sygvj_hegvj(Arguments& argus)
             std::cerr << "============================================\n";
             if(BATCHED)
             {
+                rocsolver_bench_output("itype",
+                                       "evect",
+                                       "uplo",
+                                       "n",
+                                       "lda",
+                                       "ldb",
+                                       "strideD",
+                                       "tolerance",
+                                       "max_sweeps",
+                                       "batch_c");
                 rocsolver_bench_output(
-                    "itype", "evect", "uplo", "n", "lda", "ldb", "strideD", "batch_c");
-                rocsolver_bench_output(itypeC, evectC, uploC, n, lda, ldb, stD, bc);
+                    itypeC, evectC, uploC, n, lda, ldb, stD, abstol, max_sweeps, bc);
             }
             else if(STRIDED)
             {
@@ -1078,13 +1108,17 @@ void testing_sygvj_hegvj(Arguments& argus)
                                        "strideA",
                                        "strideB",
                                        "strideD",
+                                       "tolerance",
+                                       "max_sweeps",
                                        "batch_c");
-                rocsolver_bench_output(itypeC, evectC, uploC, n, lda, ldb, stA, stB, stD, bc);
+                rocsolver_bench_output(
+                    itypeC, evectC, uploC, n, lda, ldb, stA, stB, stD, abstol, max_sweeps, bc);
             }
             else
             {
-                rocsolver_bench_output("itype", "evect", "uplo", "n", "lda", "ldb");
-                rocsolver_bench_output(itypeC, evectC, uploC, n, lda, ldb);
+                rocsolver_bench_output(
+                    "itype", "evect", "uplo", "n", "lda", "ldb", "tolerance", "max_sweeps");
+                rocsolver_bench_output(itypeC, evectC, uploC, n, lda, ldb, abstol, max_sweeps);
             }
             std::cerr << "\n============================================\n";
             std::cerr << "Results:\n";

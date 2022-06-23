@@ -44,6 +44,7 @@ const vector<vector<int>> matrix_size_range = {
 //     {300, 300, 310},
 // };
 
+template <typename T>
 Arguments sygvj_setup_arguments(sygvj_tuple tup)
 {
     vector<int>  matrix_size = std::get<0>(tup);
@@ -58,6 +59,9 @@ Arguments sygvj_setup_arguments(sygvj_tuple tup)
     arg.set<char>("itype", type[0]);
     arg.set<char>("jobz", type[1]);
     arg.set<char>("uplo", type[2]);
+
+    arg.set<double>("tolerance", get_epsilon<T>());
+    arg.set<rocblas_int>("max_sweeps", 100);
 
     // only testing standard use case/defaults for strides
 
@@ -77,7 +81,7 @@ protected:
     template <bool BATCHED, bool STRIDED, typename T>
     void run_tests()
     {
-        Arguments arg = sygvj_setup_arguments(GetParam());
+        Arguments arg = sygvj_setup_arguments<T>(GetParam());
 
         if(arg.peek<char>("itype") == '1' && arg.peek<char>("jobz") == 'N'
            && arg.peek<char>("uplo") == 'U' && arg.peek<rocblas_int>("n") == -1)

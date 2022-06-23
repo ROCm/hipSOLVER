@@ -34,6 +34,7 @@ const vector<vector<int>> size_range = {
 // // for daily_lapack tests
 // const vector<vector<int>> large_size_range = {{192, 192}, {256, 270}, {300, 300}};
 
+template <typename T>
 Arguments syevj_heevj_setup_arguments(syevj_heevj_tuple tup)
 {
     vector<int>  size = std::get<0>(tup);
@@ -46,6 +47,9 @@ Arguments syevj_heevj_setup_arguments(syevj_heevj_tuple tup)
 
     arg.set<char>("jobz", op[0]);
     arg.set<char>("uplo", op[1]);
+
+    arg.set<double>("tolerance", get_epsilon<T>());
+    arg.set<rocblas_int>("max_sweeps", 100);
 
     // only testing standard use case/defaults for strides
 
@@ -65,7 +69,7 @@ protected:
     template <bool BATCHED, bool STRIDED, typename T>
     void run_tests()
     {
-        Arguments arg = syevj_heevj_setup_arguments(GetParam());
+        Arguments arg = syevj_heevj_setup_arguments<T>(GetParam());
 
         if(arg.peek<rocblas_int>("n") == 1 && arg.peek<char>("jobz") == 'N'
            && arg.peek<char>("uplo") == 'L')

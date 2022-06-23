@@ -328,6 +328,19 @@ try
             "                           Note: the used random input matrices have all eigenvalues in [-20, 20].\n"
             "                           ")
 
+        // iterative Jacobi options
+        ("max_sweeps",
+         value<rocblas_int>()->default_value(100),
+            "Maximum number of sweeps/iterations.\n"
+            "                           Used in iterative Jacobi functions.\n"
+            "                           ")
+
+        ("tolerance",
+         value<double>(),
+            "Absolute tolerance at which convergence is accepted.\n"
+            "                           Used in iterative Jacobi functions.\n"
+            "                           ")
+
         // other options
         // ("direct",
         //  value<char>()->default_value('F'),
