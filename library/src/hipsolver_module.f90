@@ -3220,6 +3220,175 @@ module hipsolver
         end function hipsolverZheevj
     end interface
 
+    ! ******************** SYEVJ_BATCHED/HEEVJ_BATCHED ********************
+    interface
+        function hipsolverSsyevjBatched_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params, batch_count) &
+                bind(c, name = 'hipsolverSsyevjBatched_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSsyevjBatched_bufferSize
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: W
+            type(c_ptr), value :: lwork
+            type(c_ptr), value :: params
+            integer(c_int), value :: batch_count
+        end function hipsolverSsyevjBatched_bufferSize
+    end interface
+    
+    interface
+        function hipsolverDsyevjBatched_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params, batch_count) &
+                bind(c, name = 'hipsolverDsyevjBatched_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDsyevjBatched_bufferSize
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: W
+            type(c_ptr), value :: lwork
+            type(c_ptr), value :: params
+            integer(c_int), value :: batch_count
+        end function hipsolverDsyevjBatched_bufferSize
+    end interface
+    
+    interface
+        function hipsolverCheevjBatched_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params, batch_count) &
+                bind(c, name = 'hipsolverCheevjBatched_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCheevjBatched_bufferSize
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: W
+            type(c_ptr), value :: lwork
+            type(c_ptr), value :: params
+            integer(c_int), value :: batch_count
+        end function hipsolverCheevjBatched_bufferSize
+    end interface
+    
+    interface
+        function hipsolverZheevjBatched_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params, batch_count) &
+                bind(c, name = 'hipsolverZheevjBatched_bufferSize')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZheevjBatched_bufferSize
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: W
+            type(c_ptr), value :: lwork
+            type(c_ptr), value :: params
+            integer(c_int), value :: batch_count
+        end function hipsolverZheevjBatched_bufferSize
+    end interface
+
+    interface
+        function hipsolverSsyevjBatched(handle, jobz, uplo, n, A, lda, W, work, lwork, info, params, batch_count) &
+                bind(c, name = 'hipsolverSsyevjBatched')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverSsyevjBatched
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: W
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+            type(c_ptr), value :: params
+            integer(c_int), value :: batch_count
+        end function hipsolverSsyevjBatched
+    end interface
+
+    interface
+        function hipsolverDsyevjBatched(handle, jobz, uplo, n, A, lda, W, work, lwork, info, params, batch_count) &
+                bind(c, name = 'hipsolverDsyevjBatched')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverDsyevjBatched
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: W
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+            type(c_ptr), value :: params
+            integer(c_int), value :: batch_count
+        end function hipsolverDsyevjBatched
+    end interface
+
+    interface
+        function hipsolverCheevjBatched(handle, jobz, uplo, n, A, lda, W, work, lwork, info, params, batch_count) &
+                bind(c, name = 'hipsolverCheevjBatched')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverCheevjBatched
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: W
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+            type(c_ptr), value :: params
+            integer(c_int), value :: batch_count
+        end function hipsolverCheevjBatched
+    end interface
+
+    interface
+        function hipsolverZheevjBatched(handle, jobz, uplo, n, A, lda, W, work, lwork, info, params, batch_count) &
+                bind(c, name = 'hipsolverZheevjBatched')
+            use iso_c_binding
+            use hipsolver_enums
+            implicit none
+            integer(kind(HIPSOLVER_STATUS_SUCCESS)) :: hipsolverZheevjBatched
+            type(c_ptr), value :: handle
+            integer(kind(HIPSOLVER_EIG_MODE_NOVECTOR)), value :: jobz
+            integer(kind(HIPSOLVER_FILL_MODE_LOWER)), value :: uplo
+            integer(c_int), value :: n
+            type(c_ptr), value :: A
+            integer(c_int), value :: lda
+            type(c_ptr), value :: W
+            type(c_ptr), value :: work
+            integer(c_int), value :: lwork
+            type(c_ptr), value :: info
+            type(c_ptr), value :: params
+            integer(c_int), value :: batch_count
+        end function hipsolverZheevjBatched
+    end interface
+
     ! ******************** SYGVD/HEGVD ********************
     interface
         function hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork) &

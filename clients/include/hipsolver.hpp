@@ -5204,8 +5204,14 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            A
     {
     case C_NORMAL:
         return hipsolverSsyevj_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params);
+    case C_NORMAL_ALT:
+        return hipsolverSsyevjBatched_bufferSize(
+            handle, jobz, uplo, n, A, lda, W, lwork, params, bc);
     case FORTRAN_NORMAL:
         return hipsolverSsyevj_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork, params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverSsyevjBatched_bufferSizeFortran(
+            handle, jobz, uplo, n, A, lda, W, lwork, params, bc);
     case COMPAT_NORMAL:
         return hipsolverDnSsyevj_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params);
     case COMPAT_NORMAL_ALT:
@@ -5233,8 +5239,14 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            A
     {
     case C_NORMAL:
         return hipsolverDsyevj_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params);
+    case C_NORMAL_ALT:
+        return hipsolverDsyevjBatched_bufferSize(
+            handle, jobz, uplo, n, A, lda, W, lwork, params, bc);
     case FORTRAN_NORMAL:
         return hipsolverDsyevj_bufferSizeFortran(handle, jobz, uplo, n, A, lda, W, lwork, params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverDsyevjBatched_bufferSizeFortran(
+            handle, jobz, uplo, n, A, lda, W, lwork, params, bc);
     case COMPAT_NORMAL:
         return hipsolverDnDsyevj_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params);
     case COMPAT_NORMAL_ALT:
@@ -5263,9 +5275,15 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t            A
     case C_NORMAL:
         return hipsolverCheevj_bufferSize(
             handle, jobz, uplo, n, (hipFloatComplex*)A, lda, W, lwork, params);
+    case C_NORMAL_ALT:
+        return hipsolverCheevjBatched_bufferSize(
+            handle, jobz, uplo, n, (hipFloatComplex*)A, lda, W, lwork, params, bc);
     case FORTRAN_NORMAL:
         return hipsolverCheevj_bufferSizeFortran(
             handle, jobz, uplo, n, (hipFloatComplex*)A, lda, W, lwork, params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverCheevjBatched_bufferSizeFortran(
+            handle, jobz, uplo, n, (hipFloatComplex*)A, lda, W, lwork, params, bc);
     case COMPAT_NORMAL:
         return hipsolverDnCheevj_bufferSize(
             handle, jobz, uplo, n, (hipFloatComplex*)A, lda, W, lwork, params);
@@ -5295,9 +5313,15 @@ inline hipsolverStatus_t hipsolver_syevj_heevj_bufferSize(testAPI_t             
     case C_NORMAL:
         return hipsolverZheevj_bufferSize(
             handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, W, lwork, params);
+    case C_NORMAL_ALT:
+        return hipsolverZheevjBatched_bufferSize(
+            handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, W, lwork, params, bc);
     case FORTRAN_NORMAL:
         return hipsolverZheevj_bufferSizeFortran(
             handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, W, lwork, params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverZheevjBatched_bufferSizeFortran(
+            handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, W, lwork, params, bc);
     case COMPAT_NORMAL:
         return hipsolverDnZheevj_bufferSize(
             handle, jobz, uplo, n, (hipDoubleComplex*)A, lda, W, lwork, params);
@@ -5330,8 +5354,14 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
     {
     case C_NORMAL:
         return hipsolverSsyevj(handle, jobz, uplo, n, A, lda, W, work, lwork, info, params);
+    case C_NORMAL_ALT:
+        return hipsolverSsyevjBatched(
+            handle, jobz, uplo, n, A, lda, W, work, lwork, info, params, bc);
     case FORTRAN_NORMAL:
         return hipsolverSsyevjFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info, params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverSsyevjBatchedFortran(
+            handle, jobz, uplo, n, A, lda, W, work, lwork, info, params, bc);
     case COMPAT_NORMAL:
         return hipsolverDnSsyevj(handle, jobz, uplo, n, A, lda, W, work, lwork, info, params);
     case COMPAT_NORMAL_ALT:
@@ -5363,8 +5393,14 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
     {
     case C_NORMAL:
         return hipsolverDsyevj(handle, jobz, uplo, n, A, lda, W, work, lwork, info, params);
+    case C_NORMAL_ALT:
+        return hipsolverDsyevjBatched(
+            handle, jobz, uplo, n, A, lda, W, work, lwork, info, params, bc);
     case FORTRAN_NORMAL:
         return hipsolverDsyevjFortran(handle, jobz, uplo, n, A, lda, W, work, lwork, info, params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverDsyevjBatchedFortran(
+            handle, jobz, uplo, n, A, lda, W, work, lwork, info, params, bc);
     case COMPAT_NORMAL:
         return hipsolverDnDsyevj(handle, jobz, uplo, n, A, lda, W, work, lwork, info, params);
     case COMPAT_NORMAL_ALT:
@@ -5406,6 +5442,19 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
                                lwork,
                                info,
                                params);
+    case C_NORMAL_ALT:
+        return hipsolverCheevjBatched(handle,
+                                      jobz,
+                                      uplo,
+                                      n,
+                                      (hipFloatComplex*)A,
+                                      lda,
+                                      W,
+                                      (hipFloatComplex*)work,
+                                      lwork,
+                                      info,
+                                      params,
+                                      bc);
     case FORTRAN_NORMAL:
         return hipsolverCheevjFortran(handle,
                                       jobz,
@@ -5418,6 +5467,19 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t            API,
                                       lwork,
                                       info,
                                       params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverCheevjBatchedFortran(handle,
+                                             jobz,
+                                             uplo,
+                                             n,
+                                             (hipFloatComplex*)A,
+                                             lda,
+                                             W,
+                                             (hipFloatComplex*)work,
+                                             lwork,
+                                             info,
+                                             params,
+                                             bc);
     case COMPAT_NORMAL:
         return hipsolverDnCheevj(handle,
                                  jobz,
@@ -5479,6 +5541,19 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t               API,
                                lwork,
                                info,
                                params);
+    case C_NORMAL_ALT:
+        return hipsolverZheevjBatched(handle,
+                                      jobz,
+                                      uplo,
+                                      n,
+                                      (hipDoubleComplex*)A,
+                                      lda,
+                                      W,
+                                      (hipDoubleComplex*)work,
+                                      lwork,
+                                      info,
+                                      params,
+                                      bc);
     case FORTRAN_NORMAL:
         return hipsolverZheevjFortran(handle,
                                       jobz,
@@ -5491,6 +5566,19 @@ inline hipsolverStatus_t hipsolver_syevj_heevj(testAPI_t               API,
                                       lwork,
                                       info,
                                       params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverZheevjBatchedFortran(handle,
+                                             jobz,
+                                             uplo,
+                                             n,
+                                             (hipDoubleComplex*)A,
+                                             lda,
+                                             W,
+                                             (hipDoubleComplex*)work,
+                                             lwork,
+                                             info,
+                                             params,
+                                             bc);
     case COMPAT_NORMAL:
         return hipsolverDnZheevj(handle,
                                  jobz,

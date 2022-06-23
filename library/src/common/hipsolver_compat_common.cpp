@@ -1804,6 +1804,135 @@ hipsolverStatus_t hipsolverDnZheevj(hipsolverDnHandle_t  handle,
     return hipsolverZheevj(handle, jobz, uplo, n, A, lda, W, work, lwork, devInfo, params);
 }
 
+// syevj_batched/heevj_batched
+hipsolverStatus_t hipsolverDnSsyevjBatched_bufferSize(hipsolverDnHandle_t  handle,
+                                                      hipsolverEigMode_t   jobz,
+                                                      hipsolverFillMode_t  uplo,
+                                                      int                  n,
+                                                      float*               A,
+                                                      int                  lda,
+                                                      float*               W,
+                                                      int*                 lwork,
+                                                      hipsolverSyevjInfo_t params,
+                                                      int                  batch_count)
+{
+    return hipsolverSsyevjBatched_bufferSize(
+        handle, jobz, uplo, n, A, lda, W, lwork, params, batch_count);
+}
+
+hipsolverStatus_t hipsolverDnDsyevjBatched_bufferSize(hipsolverDnHandle_t  handle,
+                                                      hipsolverEigMode_t   jobz,
+                                                      hipsolverFillMode_t  uplo,
+                                                      int                  n,
+                                                      double*              A,
+                                                      int                  lda,
+                                                      double*              W,
+                                                      int*                 lwork,
+                                                      hipsolverSyevjInfo_t params,
+                                                      int                  batch_count)
+{
+    return hipsolverDsyevjBatched_bufferSize(
+        handle, jobz, uplo, n, A, lda, W, lwork, params, batch_count);
+}
+
+hipsolverStatus_t hipsolverDnCheevjBatched_bufferSize(hipsolverDnHandle_t  handle,
+                                                      hipsolverEigMode_t   jobz,
+                                                      hipsolverFillMode_t  uplo,
+                                                      int                  n,
+                                                      hipFloatComplex*     A,
+                                                      int                  lda,
+                                                      float*               W,
+                                                      int*                 lwork,
+                                                      hipsolverSyevjInfo_t params,
+                                                      int                  batch_count)
+{
+    return hipsolverCheevjBatched_bufferSize(
+        handle, jobz, uplo, n, A, lda, W, lwork, params, batch_count);
+}
+
+hipsolverStatus_t hipsolverDnZheevjBatched_bufferSize(hipsolverDnHandle_t  handle,
+                                                      hipsolverEigMode_t   jobz,
+                                                      hipsolverFillMode_t  uplo,
+                                                      int                  n,
+                                                      hipDoubleComplex*    A,
+                                                      int                  lda,
+                                                      double*              W,
+                                                      int*                 lwork,
+                                                      hipsolverSyevjInfo_t params,
+                                                      int                  batch_count)
+{
+    return hipsolverZheevjBatched_bufferSize(
+        handle, jobz, uplo, n, A, lda, W, lwork, params, batch_count);
+}
+
+hipsolverStatus_t hipsolverDnSsyevjBatched(hipsolverDnHandle_t  handle,
+                                           hipsolverEigMode_t   jobz,
+                                           hipsolverFillMode_t  uplo,
+                                           int                  n,
+                                           float*               A,
+                                           int                  lda,
+                                           float*               W,
+                                           float*               work,
+                                           int                  lwork,
+                                           int*                 devInfo,
+                                           hipsolverSyevjInfo_t params,
+                                           int                  batch_count)
+{
+    return hipsolverSsyevjBatched(
+        handle, jobz, uplo, n, A, lda, W, work, lwork, devInfo, params, batch_count);
+}
+
+hipsolverStatus_t hipsolverDnDsyevjBatched(hipsolverDnHandle_t  handle,
+                                           hipsolverEigMode_t   jobz,
+                                           hipsolverFillMode_t  uplo,
+                                           int                  n,
+                                           double*              A,
+                                           int                  lda,
+                                           double*              W,
+                                           double*              work,
+                                           int                  lwork,
+                                           int*                 devInfo,
+                                           hipsolverSyevjInfo_t params,
+                                           int                  batch_count)
+{
+    return hipsolverDsyevjBatched(
+        handle, jobz, uplo, n, A, lda, W, work, lwork, devInfo, params, batch_count);
+}
+
+hipsolverStatus_t hipsolverDnCheevjBatched(hipsolverDnHandle_t  handle,
+                                           hipsolverEigMode_t   jobz,
+                                           hipsolverFillMode_t  uplo,
+                                           int                  n,
+                                           hipFloatComplex*     A,
+                                           int                  lda,
+                                           float*               W,
+                                           hipFloatComplex*     work,
+                                           int                  lwork,
+                                           int*                 devInfo,
+                                           hipsolverSyevjInfo_t params,
+                                           int                  batch_count)
+{
+    return hipsolverCheevjBatched(
+        handle, jobz, uplo, n, A, lda, W, work, lwork, devInfo, params, batch_count);
+}
+
+hipsolverStatus_t hipsolverDnZheevjBatched(hipsolverDnHandle_t  handle,
+                                           hipsolverEigMode_t   jobz,
+                                           hipsolverFillMode_t  uplo,
+                                           int                  n,
+                                           hipDoubleComplex*    A,
+                                           int                  lda,
+                                           double*              W,
+                                           hipDoubleComplex*    work,
+                                           int                  lwork,
+                                           int*                 devInfo,
+                                           hipsolverSyevjInfo_t params,
+                                           int                  batch_count)
+{
+    return hipsolverZheevjBatched(
+        handle, jobz, uplo, n, A, lda, W, work, lwork, devInfo, params, batch_count);
+}
+
 // sygvd/hegvd
 hipsolverStatus_t hipsolverDnSsygvd_bufferSize(hipsolverHandle_t   handle,
                                                hipsolverEigType_t  itype,

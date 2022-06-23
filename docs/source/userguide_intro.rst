@@ -146,8 +146,12 @@ LAPACK-like functions
 
     :ref:`hipsolverXsyevj_bufferSize <syevj_bufferSize>`, x, x, ,
     :ref:`hipsolverXsyevj <syevj>`, x, x, ,
+    :ref:`hipsolverXsyevjBatched_bufferSize <syevj_batched_bufferSize>`, x, x, ,
+    :ref:`hipsolverXsyevjBatched <syevj_batched>`, x, x, ,
     :ref:`hipsolverXheevj_bufferSize <heevj_bufferSize>`, , , x, x
     :ref:`hipsolverXheevj <heevj>`, , , x, x
+    :ref:`hipsolverXheevjBatched_bufferSize <heevj_batched_bufferSize>`, , , x, x
+    :ref:`hipsolverXheevjBatched <heevj_batched>`, , , x, x
 
 
 Compatibility-only functions
@@ -167,12 +171,8 @@ error tolerance and number of iterations. All results are computed to machine pr
 .. csv-table:: Symmetric eigensolvers
     :header: "Function", "single", "double", "single complex", "double complex"
 
-    :ref:`hipsolverDnXsyevjBatched_bufferSize <compat_syevj_batched_bufferSize>`, x, x, ,
-    :ref:`hipsolverDnXsyevjBatched <compat_syevj_batched>`, x, x, ,
     :ref:`hipsolverDnXsygvj_bufferSize <compat_sygvj_bufferSize>`, x, x, ,
     :ref:`hipsolverDnXsygvj <compat_sygvj>`, x, x, ,
-    :ref:`hipsolverDnXheevjBatched_bufferSize <compat_heevj_batched_bufferSize>`, , , x, x
-    :ref:`hipsolverDnXheevjBatched <compat_heevj_batched>`, , , x, x
     :ref:`hipsolverDnXhegvj_bufferSize <compat_hegvj_bufferSize>`, , , x, x
     :ref:`hipsolverDnXhegvj <compat_hegvj>`, , , x, x
 
