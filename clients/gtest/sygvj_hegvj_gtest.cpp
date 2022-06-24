@@ -60,7 +60,7 @@ Arguments sygvj_setup_arguments(sygvj_tuple tup)
     arg.set<char>("jobz", type[1]);
     arg.set<char>("uplo", type[2]);
 
-    arg.set<double>("tolerance", get_epsilon<T>());
+    arg.set<double>("tolerance", 2 * get_epsilon<T>());
     arg.set<rocblas_int>("max_sweeps", 100);
 
     // only testing standard use case/defaults for strides

@@ -582,7 +582,7 @@ void testing_syevj_heevj(Arguments& argus)
     int                        stA    = lda * n;
     int                        stD    = n;
 
-    double      abstol     = argus.get<double>("tolerance", get_epsilon<T>());
+    double      abstol     = argus.get<double>("tolerance", 2 * get_epsilon<T>());
     rocblas_int max_sweeps = argus.get<int>("max_sweeps", 100);
     hipsolverXsyevjSetTolerance(params, abstol);
     hipsolverXsyevjSetMaxSweeps(params, max_sweeps);

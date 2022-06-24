@@ -48,7 +48,7 @@ Arguments syevj_heevj_setup_arguments(syevj_heevj_tuple tup)
     arg.set<char>("jobz", op[0]);
     arg.set<char>("uplo", op[1]);
 
-    arg.set<double>("tolerance", get_epsilon<T>());
+    arg.set<double>("tolerance", 2 * get_epsilon<T>());
     arg.set<rocblas_int>("max_sweeps", 100);
 
     // only testing standard use case/defaults for strides
