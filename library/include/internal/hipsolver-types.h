@@ -13,6 +13,8 @@
 
 typedef void* hipsolverHandle_t;
 
+typedef void* hipsolverSyevjInfo_t;
+
 typedef enum
 {
     HIPSOLVER_STATUS_SUCCESS           = 0, // Function succeeds

@@ -34,6 +34,7 @@ const vector<vector<int>> size_range = {
 // // for daily_lapack tests
 // const vector<vector<int>> large_size_range = {{192, 192}, {256, 270}, {300, 300}};
 
+template <typename T>
 Arguments syevj_heevj_setup_arguments(syevj_heevj_tuple tup)
 {
     vector<int>  size = std::get<0>(tup);
@@ -46,6 +47,10 @@ Arguments syevj_heevj_setup_arguments(syevj_heevj_tuple tup)
 
     arg.set<char>("jobz", op[0]);
     arg.set<char>("uplo", op[1]);
+
+    arg.set<double>("tolerance", 2 * get_epsilon<T>());
+    arg.set<rocblas_int>("max_sweeps", 100);
+    arg.set<rocblas_int>("sort_eig", 1);
 
     // only testing standard use case/defaults for strides
 
@@ -65,7 +70,7 @@ protected:
     template <bool BATCHED, bool STRIDED, typename T>
     void run_tests()
     {
-        Arguments arg = syevj_heevj_setup_arguments(GetParam());
+        Arguments arg = syevj_heevj_setup_arguments<T>(GetParam());
 
         if(arg.peek<rocblas_int>("n") == 1 && arg.peek<char>("jobz") == 'N'
            && arg.peek<char>("uplo") == 'L')
@@ -76,70 +81,130 @@ protected:
     }
 };
 
-class SYEVJ_COMPAT : public SYEVJ_HEEVJ<API_COMPAT>
+class SYEVJ : public SYEVJ_HEEVJ<API_NORMAL>
 {
 };
 
-class HEEVJ_COMPAT : public SYEVJ_HEEVJ<API_COMPAT>
+class HEEVJ : public SYEVJ_HEEVJ<API_NORMAL>
+{
+};
+
+class SYEVJ_FORTRAN : public SYEVJ_HEEVJ<API_FORTRAN>
+{
+};
+
+class HEEVJ_FORTRAN : public SYEVJ_HEEVJ<API_FORTRAN>
 {
 };
 
 // non-batch tests
 
-TEST_P(SYEVJ_COMPAT, __float)
+TEST_P(SYEVJ, __float)
 {
     run_tests<false, false, float>();
 }
 
-TEST_P(SYEVJ_COMPAT, __double)
+TEST_P(SYEVJ, __double)
 {
     run_tests<false, false, double>();
 }
 
-TEST_P(HEEVJ_COMPAT, __float_complex)
+TEST_P(HEEVJ, __float_complex)
 {
     run_tests<false, false, rocblas_float_complex>();
 }
 
-TEST_P(HEEVJ_COMPAT, __double_complex)
+TEST_P(HEEVJ, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
+TEST_P(SYEVJ_FORTRAN, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(SYEVJ_FORTRAN, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(HEEVJ_FORTRAN, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(HEEVJ_FORTRAN, __double_complex)
 {
     run_tests<false, false, rocblas_double_complex>();
 }
 
 // strided_batched tests
 
-TEST_P(SYEVJ_COMPAT, strided_batched__float)
+TEST_P(SYEVJ, strided_batched__float)
 {
     run_tests<false, true, float>();
 }
 
-TEST_P(SYEVJ_COMPAT, strided_batched__double)
+TEST_P(SYEVJ, strided_batched__double)
 {
     run_tests<false, true, double>();
 }
 
-TEST_P(HEEVJ_COMPAT, strided_batched__float_complex)
+TEST_P(HEEVJ, strided_batched__float_complex)
 {
     run_tests<false, true, rocblas_float_complex>();
 }
 
-TEST_P(HEEVJ_COMPAT, strided_batched__double_complex)
+TEST_P(HEEVJ, strided_batched__double_complex)
+{
+    run_tests<false, true, rocblas_double_complex>();
+}
+
+TEST_P(SYEVJ_FORTRAN, strided_batched__float)
+{
+    run_tests<false, true, float>();
+}
+
+TEST_P(SYEVJ_FORTRAN, strided_batched__double)
+{
+    run_tests<false, true, double>();
+}
+
+TEST_P(HEEVJ_FORTRAN, strided_batched__float_complex)
+{
+    run_tests<false, true, rocblas_float_complex>();
+}
+
+TEST_P(HEEVJ_FORTRAN, strided_batched__double_complex)
 {
     run_tests<false, true, rocblas_double_complex>();
 }
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          SYEVJ_COMPAT,
+//                          SYEVJ,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack, SYEVJ, Combine(ValuesIn(size_range), ValuesIn(op_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          HEEVJ,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack, HEEVJ, Combine(ValuesIn(size_range), ValuesIn(op_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          SYEVJ_FORTRAN,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         SYEVJ_COMPAT,
+                         SYEVJ_FORTRAN,
                          Combine(ValuesIn(size_range), ValuesIn(op_range)));
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          HEEVJ_COMPAT,
+//                          HEEVJ_FORTRAN,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         HEEVJ_COMPAT,
+                         HEEVJ_FORTRAN,
                          Combine(ValuesIn(size_range), ValuesIn(op_range)));
