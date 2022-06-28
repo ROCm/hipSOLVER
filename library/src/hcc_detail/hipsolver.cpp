@@ -687,9 +687,14 @@ struct hipsolverSyevjInfo
 
     // Constructor
     explicit hipsolverSyevjInfo()
-        : max_sweeps(100)
+        : capacity(0)
+        , batch_count(0)
+        , n_sweeps(nullptr)
+        , residual(nullptr)
+        , max_sweeps(100)
         , tolerance(0)
-        , capacity(0)
+        , is_batched(false)
+        , is_float(false)
     {
     }
 
@@ -702,22 +707,15 @@ struct hipsolverSyevjInfo
             {
                 if(hipFree(n_sweeps) != hipSuccess)
                     return HIPSOLVER_STATUS_INTERNAL_ERROR;
-                if(hipFree(residual) != hipSuccess)
-                    return HIPSOLVER_STATUS_INTERNAL_ERROR;
             }
 
-            if(hipMalloc(&n_sweeps, sizeof(int) * bc) != hipSuccess)
+            if(hipMalloc(&n_sweeps, sizeof(int) * bc + sizeof(double) * bc) != hipSuccess)
             {
                 capacity = 0;
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
             }
-            if(hipMalloc(&residual, sizeof(double) * bc) != hipSuccess)
-            {
-                capacity = 0;
-                hipFree(n_sweeps);
-                return HIPSOLVER_STATUS_ALLOC_FAILED;
-            }
 
+            residual    = (double*)(n_sweeps + bc);
             capacity    = bc;
             batch_count = bc;
         }
@@ -726,18 +724,13 @@ struct hipsolverSyevjInfo
     }
 
     // Free device memory
-    hipsolverStatus_t free()
+    void free()
     {
         if(capacity > 0)
         {
-            if(hipFree(n_sweeps) != hipSuccess)
-                return HIPSOLVER_STATUS_INTERNAL_ERROR;
-            if(hipFree(residual) != hipSuccess)
-                return HIPSOLVER_STATUS_INTERNAL_ERROR;
+            hipFree(n_sweeps);
             capacity = 0;
         }
-
-        return HIPSOLVER_STATUS_SUCCESS;
     }
 };
 
@@ -778,7 +771,7 @@ try
 {
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
-    if(max_sweeps < 0)
+    if(max_sweeps <= 0)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     hipsolverSyevjInfo* params = (hipsolverSyevjInfo*)info;
