@@ -2,7 +2,7 @@
 
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
-## (Unreleased) hipSOLVER
+## (Unreleased) hipSOLVER 1.5.0
 ### Added
 - Added functions
   - syevj
@@ -23,16 +23,11 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
     - hipsolverDnSsygvdx, hipsolverDnDsygvdx, hipsolverDnChegvdx, hipsolverDnZhegvdx
 - Added --mem_query option to hipsolver-bench, which will print the amount of device memory workspace required by the function.
 
-### Optimized
 ### Changed
-- The rocSOLVER backend will now set `info` to zero if rocSOLVER does not reference `info`. (Applies to orgbr/ungbr, orgqr/ungqr,
-  orgtr/ungtr, ormqr/unmqr, ormtr/unmtr, gebrd, geqrf, getrs, potrs, and sytrd/hetrd).
+- The rocSOLVER backend will now set `info` to zero if rocSOLVER does not reference `info`. (Applies to orgbr/ungbr, orgqr/ungqr, orgtr/ungtr, ormqr/unmqr, ormtr/unmtr, gebrd, geqrf, getrs, potrs, and sytrd/hetrd).
 
-### Deprecated
-### Removed
 ### Fixed
-### Known Issues
-### Security
+- Fixed Fortran return value declarations within hipsolver_module.f90
 
 
 ## hipSOLVER 1.4.0 for ROCm 5.2.0
