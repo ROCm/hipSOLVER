@@ -683,7 +683,7 @@ struct hipsolverSyevjInfo
 
     int    max_sweeps;
     double tolerance;
-    bool   is_batched, is_float;
+    bool   is_batched, is_float, sort_eig;
 
     // Constructor
     explicit hipsolverSyevjInfo()
@@ -695,6 +695,7 @@ struct hipsolverSyevjInfo
         , tolerance(0)
         , is_batched(false)
         , is_float(false)
+        , sort_eig(true)
     {
     }
 
@@ -787,7 +788,13 @@ catch(...)
 hipsolverStatus_t hipsolverXsyevjSetSortEig(hipsolverSyevjInfo_t info, int sort_eig)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverSyevjInfo* params = (hipsolverSyevjInfo*)info;
+    params->sort_eig           = sort_eig;
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -8508,6 +8515,7 @@ try
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     hipsolverStatus_t status = rocblas2hip_status(rocsolver_ssyevj((rocblas_handle)handle,
+                                                                   rocblas_esort_ascending,
                                                                    hip2rocblas_evect(jobz),
                                                                    hip2rocblas_fill(uplo),
                                                                    n,
@@ -8558,6 +8566,7 @@ try
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     hipsolverStatus_t status = rocblas2hip_status(rocsolver_dsyevj((rocblas_handle)handle,
+                                                                   rocblas_esort_ascending,
                                                                    hip2rocblas_evect(jobz),
                                                                    hip2rocblas_fill(uplo),
                                                                    n,
@@ -8608,6 +8617,7 @@ try
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     hipsolverStatus_t status = rocblas2hip_status(rocsolver_cheevj((rocblas_handle)handle,
+                                                                   rocblas_esort_ascending,
                                                                    hip2rocblas_evect(jobz),
                                                                    hip2rocblas_fill(uplo),
                                                                    n,
@@ -8658,6 +8668,7 @@ try
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
     hipsolverStatus_t status = rocblas2hip_status(rocsolver_zheevj((rocblas_handle)handle,
+                                                                   rocblas_esort_ascending,
                                                                    hip2rocblas_evect(jobz),
                                                                    hip2rocblas_fill(uplo),
                                                                    n,
@@ -8717,6 +8728,7 @@ try
     params->is_float   = true;
 
     return rocblas2hip_status(rocsolver_ssyevj((rocblas_handle)handle,
+                                               rocblas_esort_ascending,
                                                hip2rocblas_evect(jobz),
                                                hip2rocblas_fill(uplo),
                                                n,
@@ -8767,6 +8779,7 @@ try
     params->is_float   = false;
 
     return rocblas2hip_status(rocsolver_dsyevj((rocblas_handle)handle,
+                                               rocblas_esort_ascending,
                                                hip2rocblas_evect(jobz),
                                                hip2rocblas_fill(uplo),
                                                n,
@@ -8817,6 +8830,7 @@ try
     params->is_float   = true;
 
     return rocblas2hip_status(rocsolver_cheevj((rocblas_handle)handle,
+                                               rocblas_esort_ascending,
                                                hip2rocblas_evect(jobz),
                                                hip2rocblas_fill(uplo),
                                                n,
@@ -8867,6 +8881,7 @@ try
     params->is_float   = false;
 
     return rocblas2hip_status(rocsolver_zheevj((rocblas_handle)handle,
+                                               rocblas_esort_ascending,
                                                hip2rocblas_evect(jobz),
                                                hip2rocblas_fill(uplo),
                                                n,
@@ -8909,22 +8924,23 @@ try
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status
-        = rocblas2hip_status(rocsolver_ssyevj_strided_batched((rocblas_handle)handle,
-                                                              hip2rocblas_evect(jobz),
-                                                              hip2rocblas_fill(uplo),
-                                                              n,
-                                                              nullptr,
-                                                              lda,
-                                                              lda * n,
-                                                              params->tolerance,
-                                                              nullptr,
-                                                              params->max_sweeps,
-                                                              nullptr,
-                                                              nullptr,
-                                                              n,
-                                                              nullptr,
-                                                              batch_count));
+    hipsolverStatus_t status = rocblas2hip_status(rocsolver_ssyevj_strided_batched(
+        (rocblas_handle)handle,
+        (params->sort_eig ? rocblas_esort_ascending : rocblas_esort_none),
+        hip2rocblas_evect(jobz),
+        hip2rocblas_fill(uplo),
+        n,
+        nullptr,
+        lda,
+        lda * n,
+        params->tolerance,
+        nullptr,
+        params->max_sweeps,
+        nullptr,
+        nullptr,
+        n,
+        nullptr,
+        batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -8964,22 +8980,23 @@ try
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status
-        = rocblas2hip_status(rocsolver_dsyevj_strided_batched((rocblas_handle)handle,
-                                                              hip2rocblas_evect(jobz),
-                                                              hip2rocblas_fill(uplo),
-                                                              n,
-                                                              nullptr,
-                                                              lda,
-                                                              lda * n,
-                                                              params->tolerance,
-                                                              nullptr,
-                                                              params->max_sweeps,
-                                                              nullptr,
-                                                              nullptr,
-                                                              n,
-                                                              nullptr,
-                                                              batch_count));
+    hipsolverStatus_t status = rocblas2hip_status(rocsolver_dsyevj_strided_batched(
+        (rocblas_handle)handle,
+        (params->sort_eig ? rocblas_esort_ascending : rocblas_esort_none),
+        hip2rocblas_evect(jobz),
+        hip2rocblas_fill(uplo),
+        n,
+        nullptr,
+        lda,
+        lda * n,
+        params->tolerance,
+        nullptr,
+        params->max_sweeps,
+        nullptr,
+        nullptr,
+        n,
+        nullptr,
+        batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -9019,22 +9036,23 @@ try
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status
-        = rocblas2hip_status(rocsolver_cheevj_strided_batched((rocblas_handle)handle,
-                                                              hip2rocblas_evect(jobz),
-                                                              hip2rocblas_fill(uplo),
-                                                              n,
-                                                              nullptr,
-                                                              lda,
-                                                              lda * n,
-                                                              params->tolerance,
-                                                              nullptr,
-                                                              params->max_sweeps,
-                                                              nullptr,
-                                                              nullptr,
-                                                              n,
-                                                              nullptr,
-                                                              batch_count));
+    hipsolverStatus_t status = rocblas2hip_status(rocsolver_cheevj_strided_batched(
+        (rocblas_handle)handle,
+        (params->sort_eig ? rocblas_esort_ascending : rocblas_esort_none),
+        hip2rocblas_evect(jobz),
+        hip2rocblas_fill(uplo),
+        n,
+        nullptr,
+        lda,
+        lda * n,
+        params->tolerance,
+        nullptr,
+        params->max_sweeps,
+        nullptr,
+        nullptr,
+        n,
+        nullptr,
+        batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -9074,22 +9092,23 @@ try
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status
-        = rocblas2hip_status(rocsolver_zheevj_strided_batched((rocblas_handle)handle,
-                                                              hip2rocblas_evect(jobz),
-                                                              hip2rocblas_fill(uplo),
-                                                              n,
-                                                              nullptr,
-                                                              lda,
-                                                              lda * n,
-                                                              params->tolerance,
-                                                              nullptr,
-                                                              params->max_sweeps,
-                                                              nullptr,
-                                                              nullptr,
-                                                              n,
-                                                              nullptr,
-                                                              batch_count));
+    hipsolverStatus_t status = rocblas2hip_status(rocsolver_zheevj_strided_batched(
+        (rocblas_handle)handle,
+        (params->sort_eig ? rocblas_esort_ascending : rocblas_esort_none),
+        hip2rocblas_evect(jobz),
+        hip2rocblas_fill(uplo),
+        n,
+        nullptr,
+        lda,
+        lda * n,
+        params->tolerance,
+        nullptr,
+        params->max_sweeps,
+        nullptr,
+        nullptr,
+        n,
+        nullptr,
+        batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -9138,21 +9157,23 @@ try
     params->is_batched = true;
     params->is_float   = true;
 
-    return rocblas2hip_status(rocsolver_ssyevj_strided_batched((rocblas_handle)handle,
-                                                               hip2rocblas_evect(jobz),
-                                                               hip2rocblas_fill(uplo),
-                                                               n,
-                                                               A,
-                                                               lda,
-                                                               lda * n,
-                                                               params->tolerance,
-                                                               (float*)params->residual,
-                                                               params->max_sweeps,
-                                                               params->n_sweeps,
-                                                               W,
-                                                               n,
-                                                               devInfo,
-                                                               batch_count));
+    return rocblas2hip_status(rocsolver_ssyevj_strided_batched(
+        (rocblas_handle)handle,
+        (params->sort_eig ? rocblas_esort_ascending : rocblas_esort_none),
+        hip2rocblas_evect(jobz),
+        hip2rocblas_fill(uplo),
+        n,
+        A,
+        lda,
+        lda * n,
+        params->tolerance,
+        (float*)params->residual,
+        params->max_sweeps,
+        params->n_sweeps,
+        W,
+        n,
+        devInfo,
+        batch_count));
 }
 catch(...)
 {
@@ -9192,21 +9213,23 @@ try
     params->is_batched = true;
     params->is_float   = false;
 
-    return rocblas2hip_status(rocsolver_dsyevj_strided_batched((rocblas_handle)handle,
-                                                               hip2rocblas_evect(jobz),
-                                                               hip2rocblas_fill(uplo),
-                                                               n,
-                                                               A,
-                                                               lda,
-                                                               lda * n,
-                                                               params->tolerance,
-                                                               params->residual,
-                                                               params->max_sweeps,
-                                                               params->n_sweeps,
-                                                               W,
-                                                               n,
-                                                               devInfo,
-                                                               batch_count));
+    return rocblas2hip_status(rocsolver_dsyevj_strided_batched(
+        (rocblas_handle)handle,
+        (params->sort_eig ? rocblas_esort_ascending : rocblas_esort_none),
+        hip2rocblas_evect(jobz),
+        hip2rocblas_fill(uplo),
+        n,
+        A,
+        lda,
+        lda * n,
+        params->tolerance,
+        params->residual,
+        params->max_sweeps,
+        params->n_sweeps,
+        W,
+        n,
+        devInfo,
+        batch_count));
 }
 catch(...)
 {
@@ -9246,21 +9269,23 @@ try
     params->is_batched = true;
     params->is_float   = true;
 
-    return rocblas2hip_status(rocsolver_cheevj_strided_batched((rocblas_handle)handle,
-                                                               hip2rocblas_evect(jobz),
-                                                               hip2rocblas_fill(uplo),
-                                                               n,
-                                                               (rocblas_float_complex*)A,
-                                                               lda,
-                                                               lda * n,
-                                                               params->tolerance,
-                                                               (float*)params->residual,
-                                                               params->max_sweeps,
-                                                               params->n_sweeps,
-                                                               W,
-                                                               n,
-                                                               devInfo,
-                                                               batch_count));
+    return rocblas2hip_status(rocsolver_cheevj_strided_batched(
+        (rocblas_handle)handle,
+        (params->sort_eig ? rocblas_esort_ascending : rocblas_esort_none),
+        hip2rocblas_evect(jobz),
+        hip2rocblas_fill(uplo),
+        n,
+        (rocblas_float_complex*)A,
+        lda,
+        lda * n,
+        params->tolerance,
+        (float*)params->residual,
+        params->max_sweeps,
+        params->n_sweeps,
+        W,
+        n,
+        devInfo,
+        batch_count));
 }
 catch(...)
 {
@@ -9300,21 +9325,23 @@ try
     params->is_batched = true;
     params->is_float   = false;
 
-    return rocblas2hip_status(rocsolver_zheevj_strided_batched((rocblas_handle)handle,
-                                                               hip2rocblas_evect(jobz),
-                                                               hip2rocblas_fill(uplo),
-                                                               n,
-                                                               (rocblas_double_complex*)A,
-                                                               lda,
-                                                               lda * n,
-                                                               params->tolerance,
-                                                               params->residual,
-                                                               params->max_sweeps,
-                                                               params->n_sweeps,
-                                                               W,
-                                                               n,
-                                                               devInfo,
-                                                               batch_count));
+    return rocblas2hip_status(rocsolver_zheevj_strided_batched(
+        (rocblas_handle)handle,
+        (params->sort_eig ? rocblas_esort_ascending : rocblas_esort_none),
+        hip2rocblas_evect(jobz),
+        hip2rocblas_fill(uplo),
+        n,
+        (rocblas_double_complex*)A,
+        lda,
+        lda * n,
+        params->tolerance,
+        params->residual,
+        params->max_sweeps,
+        params->n_sweeps,
+        W,
+        n,
+        devInfo,
+        batch_count));
 }
 catch(...)
 {

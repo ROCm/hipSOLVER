@@ -290,6 +290,7 @@ void syevj_heevj_getError(const hipsolverHandle_t   handle,
                           hipsolverSyevjInfo_t      params,
                           const double              abstol,
                           const int                 max_sweeps,
+                          const int                 sort_eig,
                           const int                 bc,
                           Th&                       hA,
                           Th&                       hAres,
@@ -398,7 +399,7 @@ void syevj_heevj_getError(const hipsolverHandle_t   handle,
 
             // error is ||hD - hDRes|| / ||hD||
             // using frobenius norm
-            if(hinfo[b][0] == 0)
+            if(hinfo[b][0] == 0 && sort_eig)
                 err = norm_error('F', 1, n, 1, hD[b], hDres[b]);
             *max_err = err > *max_err ? err : *max_err;
         }
@@ -584,8 +585,10 @@ void testing_syevj_heevj(Arguments& argus)
 
     double      abstol     = argus.get<double>("tolerance", 2 * get_epsilon<T>());
     rocblas_int max_sweeps = argus.get<int>("max_sweeps", 100);
+    rocblas_int sort_eig   = argus.get<int>("sort_eig", 1);
     hipsolverXsyevjSetTolerance(params, abstol);
     hipsolverXsyevjSetMaxSweeps(params, max_sweeps);
+    hipsolverXsyevjSetSortEig(params, sort_eig);
 
     hipsolverEigMode_t  evect     = char2hipsolver_evect(evectC);
     hipsolverFillMode_t uplo      = char2hipsolver_fill(uploC);
@@ -707,6 +710,7 @@ void testing_syevj_heevj(Arguments& argus)
         //                                          params,
         //                                          abstol,
         //                                          max_sweeps,
+        //                                          sort_eig,
         //                                          bc,
         //                                          hA,
         //                                          hAres,
@@ -773,6 +777,7 @@ void testing_syevj_heevj(Arguments& argus)
                                                   params,
                                                   abstol,
                                                   max_sweeps,
+                                                  sort_eig,
                                                   bc,
                                                   hA,
                                                   hAres,
@@ -827,9 +832,17 @@ void testing_syevj_heevj(Arguments& argus)
             std::cerr << "============================================\n";
             if(BATCHED)
             {
+                rocsolver_bench_output("jobz",
+                                       "uplo",
+                                       "n",
+                                       "lda",
+                                       "strideD",
+                                       "tolerance",
+                                       "max_sweeps",
+                                       "sort_eig",
+                                       "batch_c");
                 rocsolver_bench_output(
-                    "jobz", "uplo", "n", "lda", "strideD", "tolerance", "max_sweeps", "batch_c");
-                rocsolver_bench_output(evectC, uploC, n, lda, stD, abstol, max_sweeps, bc);
+                    evectC, uploC, n, lda, stD, abstol, max_sweeps, sort_eig, bc);
             }
             else if(STRIDED)
             {
@@ -841,13 +854,16 @@ void testing_syevj_heevj(Arguments& argus)
                                        "strideD",
                                        "tolerance",
                                        "max_sweeps",
+                                       "sort_eig",
                                        "batch_c");
-                rocsolver_bench_output(evectC, uploC, n, lda, stA, stD, abstol, max_sweeps, bc);
+                rocsolver_bench_output(
+                    evectC, uploC, n, lda, stA, stD, abstol, max_sweeps, sort_eig, bc);
             }
             else
             {
-                rocsolver_bench_output("jobz", "uplo", "n", "lda", "tolerance", "max_sweeps");
-                rocsolver_bench_output(evectC, uploC, n, lda, abstol, max_sweeps);
+                rocsolver_bench_output(
+                    "jobz", "uplo", "n", "lda", "tolerance", "max_sweeps", "sort_eig");
+                rocsolver_bench_output(evectC, uploC, n, lda, abstol, max_sweeps, sort_eig);
             }
             std::cerr << "\n============================================\n";
             std::cerr << "Results:\n";

@@ -62,6 +62,7 @@ Arguments sygvj_setup_arguments(sygvj_tuple tup)
 
     arg.set<double>("tolerance", 2 * get_epsilon<T>());
     arg.set<rocblas_int>("max_sweeps", 100);
+    arg.set<rocblas_int>("sort_eig", 1);
 
     // only testing standard use case/defaults for strides
 

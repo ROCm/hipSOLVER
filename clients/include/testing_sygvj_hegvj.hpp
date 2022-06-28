@@ -417,6 +417,7 @@ void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
                           hipsolverSyevjInfo_t      params,
                           const double              abstol,
                           const int                 max_sweeps,
+                          const int                 sort_eig,
                           const int                 bc,
                           Th&                       hA,
                           Th&                       hARes,
@@ -534,7 +535,7 @@ void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
         // using frobenius norm
         for(int b = 0; b < bc; ++b)
         {
-            if(hInfoRes[b][0] == 0)
+            if(hInfoRes[b][0] == 0 && sort_eig)
             {
                 err      = norm_error('F', 1, n, 1, hD[b], hDRes[b]);
                 *max_err = err > *max_err ? err : *max_err;
@@ -795,8 +796,10 @@ void testing_sygvj_hegvj(Arguments& argus)
 
     double      abstol     = argus.get<double>("tolerance", 2 * get_epsilon<T>());
     rocblas_int max_sweeps = argus.get<int>("max_sweeps", 100);
+    rocblas_int sort_eig   = argus.get<int>("sort_eig", 1);
     hipsolverXsyevjSetTolerance(params, abstol);
     hipsolverXsyevjSetMaxSweeps(params, max_sweeps);
+    hipsolverXsyevjSetSortEig(params, sort_eig);
 
     hipsolverEigType_t  itype     = char2hipsolver_eform(itypeC);
     hipsolverEigMode_t  evect     = char2hipsolver_evect(evectC);
@@ -947,6 +950,7 @@ void testing_sygvj_hegvj(Arguments& argus)
         //                                  params,
         //                                  abstol,
         //                                  max_sweeps,
+        //                                  sort_eig,
         //                                  bc,
         //                                  hA,
         //                                  hARes,
@@ -1025,6 +1029,7 @@ void testing_sygvj_hegvj(Arguments& argus)
                                          params,
                                          abstol,
                                          max_sweeps,
+                                         sort_eig,
                                          bc,
                                          hA,
                                          hARes,
@@ -1093,9 +1098,10 @@ void testing_sygvj_hegvj(Arguments& argus)
                                        "strideD",
                                        "tolerance",
                                        "max_sweeps",
+                                       "sort_eig",
                                        "batch_c");
                 rocsolver_bench_output(
-                    itypeC, evectC, uploC, n, lda, ldb, stD, abstol, max_sweeps, bc);
+                    itypeC, evectC, uploC, n, lda, ldb, stD, abstol, max_sweeps, sort_eig, bc);
             }
             else if(STRIDED)
             {
@@ -1110,15 +1116,35 @@ void testing_sygvj_hegvj(Arguments& argus)
                                        "strideD",
                                        "tolerance",
                                        "max_sweeps",
+                                       "sort_eig",
                                        "batch_c");
-                rocsolver_bench_output(
-                    itypeC, evectC, uploC, n, lda, ldb, stA, stB, stD, abstol, max_sweeps, bc);
+                rocsolver_bench_output(itypeC,
+                                       evectC,
+                                       uploC,
+                                       n,
+                                       lda,
+                                       ldb,
+                                       stA,
+                                       stB,
+                                       stD,
+                                       abstol,
+                                       max_sweeps,
+                                       sort_eig,
+                                       bc);
             }
             else
             {
+                rocsolver_bench_output("itype",
+                                       "evect",
+                                       "uplo",
+                                       "n",
+                                       "lda",
+                                       "ldb",
+                                       "tolerance",
+                                       "max_sweeps",
+                                       "sort_eig");
                 rocsolver_bench_output(
-                    "itype", "evect", "uplo", "n", "lda", "ldb", "tolerance", "max_sweeps");
-                rocsolver_bench_output(itypeC, evectC, uploC, n, lda, ldb, abstol, max_sweeps);
+                    itypeC, evectC, uploC, n, lda, ldb, abstol, max_sweeps, sort_eig);
             }
             std::cerr << "\n============================================\n";
             std::cerr << "Results:\n";

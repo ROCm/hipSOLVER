@@ -341,6 +341,13 @@ try
             "                           Used in iterative Jacobi functions.\n"
             "                           ")
 
+        ("sort_eig",
+         value<rocblas_int>()->default_value(1),
+            "0 = no sorting, 1 = ascending order.\n"
+            "                           Indicates whether the computed eigenvalues are sorted in ascending order.\n"
+            "                           Used in iterative Jacobi functions.\n"
+            "                           ")
+
         // other options
         // ("direct",
         //  value<char>()->default_value('F'),
