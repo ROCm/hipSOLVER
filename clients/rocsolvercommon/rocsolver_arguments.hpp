@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2018-2021 Advanced Micro Devices, Inc.
+ * Copyright 2018-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -28,6 +28,7 @@ public:
     rocblas_int perf        = 0;
     rocblas_int singular    = 0;
     rocblas_int iters       = 5;
+    rocblas_int mem_query   = 0;
     rocblas_int batch_count = 1;
 
     // get and set function arguments
@@ -191,6 +192,17 @@ public:
 
         char evect = val->second.as<char>();
         if(evect != 'V' && evect != 'I' && evect != 'N')
+            throw std::invalid_argument("Invalid value for " + name);
+    }
+
+    void validate_erange(const std::string name) const
+    {
+        auto val = find(name);
+        if(val == end())
+            return;
+
+        char range = val->second.as<char>();
+        if(range != 'A' && range != 'V' && range != 'I')
             throw std::invalid_argument("Invalid value for " + name);
     }
 

@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -118,6 +118,24 @@ void getrs_checkBadArgs(const hipsolverHandle_t    handle,
                                           dWork,
                                           lwork,
                                           dInfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrs(API,
+                                          handle,
+                                          trans,
+                                          m,
+                                          nrhs,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dIpiv,
+                                          stP,
+                                          dB,
+                                          ldb,
+                                          stB,
+                                          dWork,
+                                          lwork,
+                                          (U) nullptr,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
@@ -288,6 +306,7 @@ void getrs_getError(const hipsolverHandle_t    handle,
                     Th&                        hB,
                     Th&                        hBRes,
                     Uh&                        hInfo,
+                    Uh&                        hInfoRes,
                     double*                    max_err)
 {
     // input data initialization
@@ -314,11 +333,12 @@ void getrs_getError(const hipsolverHandle_t    handle,
                                         dInfo.data(),
                                         bc));
     CHECK_HIP_ERROR(hBRes.transfer_from(dB));
+    CHECK_HIP_ERROR(hInfoRes.transfer_from(dInfo));
 
     // CPU lapack
     for(int b = 0; b < bc; ++b)
     {
-        cblas_getrs<T>(trans, m, nrhs, hA[b], lda, hIpiv[b], hB[b], ldb);
+        cblas_getrs<T>(trans, m, nrhs, hA[b], lda, hIpiv[b], hB[b], ldb, hInfo[b]);
     }
 
     // error is ||hB - hBRes|| / ||hB||
@@ -332,6 +352,13 @@ void getrs_getError(const hipsolverHandle_t    handle,
         err      = norm_error('I', m, nrhs, ldb, hB[b], hBRes[b]);
         *max_err = err > *max_err ? err : *max_err;
     }
+
+    // check info
+    err = 0;
+    for(int b = 0; b < bc; ++b)
+        if(hInfo[b][0] != hInfoRes[b][0])
+            err++;
+    *max_err += err;
 }
 
 template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
@@ -369,7 +396,7 @@ void getrs_getPerfData(const hipsolverHandle_t    handle,
         *cpu_time_used = get_time_us_no_sync();
         for(int b = 0; b < bc; ++b)
         {
-            cblas_getrs<T>(trans, m, nrhs, hA[b], lda, hIpiv[b], hB[b], ldb);
+            cblas_getrs<T>(trans, m, nrhs, hA[b], lda, hIpiv[b], hB[b], ldb, hInfo[b]);
         }
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
@@ -514,8 +541,19 @@ void testing_getrs(Arguments& argus)
         }
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(1);
+            rocsolver_bench_inform(inform_invalid_size);
 
+        return;
+    }
+
+    // memory size query is necessary
+    int size_W;
+    hipsolver_getrs_bufferSize(
+        API, handle, trans, m, nrhs, (T*)nullptr, lda, (int*)nullptr, (T*)nullptr, ldb, &size_W);
+
+    if(argus.mem_query)
+    {
+        rocsolver_bench_inform(inform_mem_query, size_W);
         return;
     }
 
@@ -527,10 +565,12 @@ void testing_getrs(Arguments& argus)
         // host_batch_vector<T>             hBRes(size_BRes, 1, bc);
         // host_strided_batch_vector<int>   hIpiv(size_P, 1, stP, bc);
         // host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
+        // host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         // device_batch_vector<T>           dA(size_A, 1, bc);
         // device_batch_vector<T>           dB(size_B, 1, bc);
         // device_strided_batch_vector<int> dIpiv(size_P, 1, stP, bc);
         // device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
         // if(size_B)
@@ -538,11 +578,6 @@ void testing_getrs(Arguments& argus)
         // if(size_P)
         //     CHECK_HIP_ERROR(dIpiv.memcheck());
         // CHECK_HIP_ERROR(dInfo.memcheck());
-
-        // int size_W;
-        // hipsolver_getrs_bufferSize(
-        //    API, handle, trans, m, nrhs, dA.data(), lda, dIpiv.data(), dB.data(), ldb, &size_W);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -569,6 +604,7 @@ void testing_getrs(Arguments& argus)
         //                                hB,
         //                                hBRes,
         //                                hInfo,
+        //                                hInfoRes,
         //                                &max_error);
 
         // // collect performance data
@@ -607,10 +643,12 @@ void testing_getrs(Arguments& argus)
         host_strided_batch_vector<T>     hBRes(size_BRes, 1, stBRes, bc);
         host_strided_batch_vector<int>   hIpiv(size_P, 1, stP, bc);
         host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
+        host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         device_strided_batch_vector<T>   dA(size_A, 1, stA, bc);
         device_strided_batch_vector<T>   dB(size_B, 1, stB, bc);
         device_strided_batch_vector<int> dIpiv(size_P, 1, stP, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         if(size_B)
@@ -618,11 +656,6 @@ void testing_getrs(Arguments& argus)
         if(size_P)
             CHECK_HIP_ERROR(dIpiv.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());
-
-        int size_W;
-        hipsolver_getrs_bufferSize(
-            API, handle, trans, m, nrhs, dA.data(), lda, dIpiv.data(), dB.data(), ldb, &size_W);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -649,6 +682,7 @@ void testing_getrs(Arguments& argus)
                                    hB,
                                    hBRes,
                                    hInfo,
+                                   hInfoRes,
                                    &max_error);
 
         // collect performance data

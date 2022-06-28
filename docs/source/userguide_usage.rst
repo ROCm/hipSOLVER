@@ -94,9 +94,10 @@ return `HIPSOLVER_STATUS_NOT_SUPPORTED` if called with the rocSOLVER backend.
 Arguments not referenced by rocSOLVER
 --------------------------------------
 
-- Unlike cuSOLVER, rocSOLVER does not provide information on invalid arguments in its `info` arguments, though it will
-  provide info on singularities and algorithm convergence. As a result, the `info` argument of many functions will not be
-  referenced or altered by the rocSOLVER backend, excepting those that provide info on singularities or convergence.
+- Unlike cuSOLVER, rocSOLVER functions do not provide information on invalid arguments in the `info` parameter, though they
+  will provide info on singularities and algorithm convergence. Hence, when using the rocSOLVER backend, `info` will always
+  return a value >= 0. In those cases where a rocSOLVER function does not accept `info` as an argument, hipSOLVER will
+  set it to zero.
 
 - The `niters` argument of :ref:`hipsolverXXgels <gels>` and :ref:`hipsolverXXgesv <gesv>` is not referenced by the rocSOLVER
   backend; there is no iterative refinement currently implemented in rocSOLVER.

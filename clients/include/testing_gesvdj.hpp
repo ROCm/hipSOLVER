@@ -804,8 +804,34 @@ void testing_gesvdj(Arguments& argus)
         }
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(1);
+            rocsolver_bench_inform(inform_invalid_size);
 
+        return;
+    }
+
+    // memory size query is necessary
+    int size_W;
+    hipsolver_gesvdj_bufferSize(API,
+                                STRIDED,
+                                handle,
+                                jobz,
+                                econ,
+                                m,
+                                n,
+                                (T*)nullptr,
+                                lda,
+                                (S*)nullptr,
+                                (T*)nullptr,
+                                ldu,
+                                (T*)nullptr,
+                                ldv,
+                                &size_W,
+                                params,
+                                bc);
+
+    if(argus.mem_query)
+    {
+        rocsolver_bench_inform(inform_mem_query, size_W);
         return;
     }
 
@@ -824,6 +850,7 @@ void testing_gesvdj(Arguments& argus)
     device_strided_batch_vector<T>   dV(size_V, 1, stV, bc);
     device_strided_batch_vector<T>   dU(size_U, 1, stU, bc);
     device_strided_batch_vector<int> dinfo(1, 1, 1, bc);
+    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
     if(size_S)
         CHECK_HIP_ERROR(dS.memcheck());
     if(size_V)
@@ -831,36 +858,16 @@ void testing_gesvdj(Arguments& argus)
     if(size_U)
         CHECK_HIP_ERROR(dU.memcheck());
     CHECK_HIP_ERROR(dinfo.memcheck());
+    if(size_W)
+        CHECK_HIP_ERROR(dWork.memcheck());
 
     if(BATCHED)
     {
         // // memory allocations
-        // host_batch_vector<T>   hA(size_A, 1, bc);
-        // device_batch_vector<T> dA(size_A, 1, bc);
+        // host_batch_vector<T>           hA(size_A, 1, bc);
+        // device_batch_vector<T>         dA(size_A, 1, bc);
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
-
-        // int size_W;
-        // hipsolver_gesvdj_bufferSize(API,
-        //                             STRIDED,
-        //                             handle,
-        //                             jobz,
-        //                             econ,
-        //                             m,
-        //                             n,
-        //                             dA.data(),
-        //                             lda,
-        //                             dS.data(),
-        //                             dU.data(),
-        //                             ldu,
-        //                             dV.data(),
-        //                             ldv,
-        //                             &size_W,
-        //                             params,
-        //                             bc);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        // if(size_W)
-        //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check computations
         // if(argus.unit_check || argus.norm_check)
@@ -942,28 +949,6 @@ void testing_gesvdj(Arguments& argus)
         device_strided_batch_vector<T> dA(size_A, 1, stA, bc);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
-
-        int size_W;
-        hipsolver_gesvdj_bufferSize(API,
-                                    STRIDED,
-                                    handle,
-                                    jobz,
-                                    econ,
-                                    m,
-                                    n,
-                                    dA.data(),
-                                    lda,
-                                    dS.data(),
-                                    dU.data(),
-                                    ldu,
-                                    dV.data(),
-                                    ldv,
-                                    &size_W,
-                                    params,
-                                    bc);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        if(size_W)
-            CHECK_HIP_ERROR(dWork.memcheck());
 
         // check computations
         if(argus.unit_check || argus.norm_check)

@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2021 Advanced Micro Devices, Inc.
+ * Copyright 2021-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -80,6 +80,10 @@ void potrs_checkBadArgs(const hipsolverHandle_t   handle,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_potrs(
+            API, handle, uplo, n, nrhs, dA, lda, stA, dB, ldb, stB, dWork, lwork, (U) nullptr, bc),
+        HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
 }
 
@@ -230,6 +234,7 @@ void potrs_getError(const hipsolverHandle_t   handle,
                     Th&                       hB,
                     Th&                       hBRes,
                     Uh&                       hInfo,
+                    Uh&                       hInfoRes,
                     double*                   max_err)
 {
     // input data initialization
@@ -253,11 +258,12 @@ void potrs_getError(const hipsolverHandle_t   handle,
                                         dInfo.data(),
                                         bc));
     CHECK_HIP_ERROR(hBRes.transfer_from(dB));
+    CHECK_HIP_ERROR(hInfoRes.transfer_from(dInfo));
 
     // CPU lapack
     for(int b = 0; b < bc; ++b)
     {
-        cblas_potrs<T>(uplo, n, nrhs, hA[b], lda, hB[b], ldb);
+        cblas_potrs<T>(uplo, n, nrhs, hA[b], lda, hB[b], ldb, hInfo[b]);
     }
 
     // error is ||hB - hBRes|| / ||hB||
@@ -271,6 +277,13 @@ void potrs_getError(const hipsolverHandle_t   handle,
         err      = norm_error('I', n, nrhs, ldb, hB[b], hBRes[b]);
         *max_err = err > *max_err ? err : *max_err;
     }
+
+    // check info
+    err = 0;
+    for(int b = 0; b < bc; ++b)
+        if(hInfo[b][0] != hInfoRes[b][0])
+            err++;
+    *max_err += err;
 }
 
 template <testAPI_t API,
@@ -311,7 +324,7 @@ void potrs_getPerfData(const hipsolverHandle_t   handle,
         *cpu_time_used = get_time_us_no_sync();
         for(int b = 0; b < bc; ++b)
         {
-            cblas_potrs<T>(uplo, n, nrhs, hA[b], lda, hB[b], ldb);
+            cblas_potrs<T>(uplo, n, nrhs, hA[b], lda, hB[b], ldb, hInfo[b]);
         }
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
@@ -434,7 +447,7 @@ void testing_potrs(Arguments& argus)
         }
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(2);
+            rocsolver_bench_inform(inform_invalid_args);
 
         return;
     }
@@ -490,8 +503,23 @@ void testing_potrs(Arguments& argus)
         }
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(1);
+            rocsolver_bench_inform(inform_invalid_size);
 
+        return;
+    }
+
+    // memory size query is necessary
+    int size_W;
+    if(BATCHED)
+        hipsolver_potrs_bufferSize(
+            API, handle, uplo, n, nrhs, (T**)nullptr, lda, (T**)nullptr, ldb, &size_W, bc);
+    else
+        hipsolver_potrs_bufferSize(
+            API, handle, uplo, n, nrhs, (T*)nullptr, lda, (T*)nullptr, ldb, &size_W, bc);
+
+    if(argus.mem_query)
+    {
+        rocsolver_bench_inform(inform_mem_query, size_W);
         return;
     }
 
@@ -502,19 +530,16 @@ void testing_potrs(Arguments& argus)
         host_batch_vector<T>             hB(size_B, 1, bc);
         host_batch_vector<T>             hBRes(size_BRes, 1, bc);
         host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
+        host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         device_batch_vector<T>           dA(size_A, 1, bc);
         device_batch_vector<T>           dB(size_B, 1, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         if(size_B)
             CHECK_HIP_ERROR(dB.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());
-
-        int size_W;
-        hipsolver_potrs_bufferSize(
-            API, handle, uplo, n, nrhs, dA.data(), lda, dB.data(), ldb, &size_W, bc);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -538,6 +563,7 @@ void testing_potrs(Arguments& argus)
                                    hB,
                                    hBRes,
                                    hInfo,
+                                   hInfoRes,
                                    &max_error);
 
         // collect performance data
@@ -572,19 +598,16 @@ void testing_potrs(Arguments& argus)
         host_strided_batch_vector<T>     hB(size_B, 1, stB, bc);
         host_strided_batch_vector<T>     hBRes(size_BRes, 1, stBRes, bc);
         host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
+        host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         device_strided_batch_vector<T>   dA(size_A, 1, stA, bc);
         device_strided_batch_vector<T>   dB(size_B, 1, stB, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         if(size_B)
             CHECK_HIP_ERROR(dB.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());
-
-        int size_W;
-        hipsolver_potrs_bufferSize(
-            API, handle, uplo, n, nrhs, dA.data(), lda, dB.data(), ldb, &size_W, bc);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -608,6 +631,7 @@ void testing_potrs(Arguments& argus)
                                    hB,
                                    hBRes,
                                    hInfo,
+                                   hInfoRes,
                                    &max_error);
 
         // collect performance data

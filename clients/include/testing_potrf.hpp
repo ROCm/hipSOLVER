@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2021 Advanced Micro Devices, Inc.
+ * Copyright 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #pragma once
@@ -291,7 +291,7 @@ void testing_potrf(Arguments& argus)
         }
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(2);
+            rocsolver_bench_inform(inform_invalid_args);
 
         return;
     }
@@ -330,8 +330,21 @@ void testing_potrf(Arguments& argus)
         }
 
         if(argus.timing)
-            ROCSOLVER_BENCH_INFORM(1);
+            rocsolver_bench_inform(inform_invalid_size);
 
+        return;
+    }
+
+    // memory size query is necessary
+    int size_W;
+    if(BATCHED)
+        hipsolver_potrf_bufferSize(API, handle, uplo, n, (T**)nullptr, lda, &size_W, bc);
+    else
+        hipsolver_potrf_bufferSize(API, handle, uplo, n, (T*)nullptr, lda, &size_W, bc);
+
+    if(argus.mem_query)
+    {
+        rocsolver_bench_inform(inform_mem_query, size_W);
         return;
     }
 
@@ -344,13 +357,10 @@ void testing_potrf(Arguments& argus)
         host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         device_batch_vector<T>           dA(size_A, 1, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());
-
-        int size_W;
-        hipsolver_potrf_bufferSize(API, handle, uplo, n, dA.data(), lda, &size_W, bc);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -401,13 +411,10 @@ void testing_potrf(Arguments& argus)
         host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         device_strided_batch_vector<T>   dA(size_A, 1, stA, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());
-
-        int size_W;
-        hipsolver_potrf_bufferSize(API, handle, uplo, n, dA.data(), lda, &size_W, bc);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 

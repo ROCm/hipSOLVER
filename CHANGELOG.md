@@ -2,6 +2,29 @@
 
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
+## (Unreleased) hipSOLVER
+### Added
+- Added compatibility-only functions
+  - syevdx/heevdx
+    - hipsolverDnSsyevdx_bufferSize, hipsolverDnDsyevdx_bufferSize, hipsolverDnCheevdx_bufferSize, hipsolverDnZheevdx_bufferSize
+    - hipsolverDnSsyevdx, hipsolverDnDsyevdx, hipsolverDnCheevdx, hipsolverDnZheevdx
+  - sygvdx/hegvdx
+    - hipsolverDnSsygvdx_bufferSize, hipsolverDnDsygvdx_bufferSize, hipsolverDnChegvdx_bufferSize, hipsolverDnZhegvdx_bufferSize
+    - hipsolverDnSsygvdx, hipsolverDnDsygvdx, hipsolverDnChegvdx, hipsolverDnZhegvdx
+- Added --mem_query option to hipsolver-bench, which will print the amount of device memory workspace required by the function.
+
+### Optimized
+### Changed
+- The rocSOLVER backend will now set `info` to zero if rocSOLVER does not reference `info`. (Applies to orgbr/ungbr, orgqr/ungqr,
+  orgtr/ungtr, ormqr/unmqr, ormtr/unmtr, gebrd, geqrf, getrs, potrs, and sytrd/hetrd).
+
+### Deprecated
+### Removed
+### Fixed
+### Known Issues
+### Security
+
+
 ## hipSOLVER 1.4.0 for ROCm 5.2.0
 ### Added
 - Package generation for test and benchmark executables on all supported OSes using CPack.

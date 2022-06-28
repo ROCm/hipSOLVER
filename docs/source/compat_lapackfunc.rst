@@ -386,6 +386,38 @@ hipsolverDn<type>heevd()
    :outline:
 .. doxygenfunction:: hipsolverDnCheevd
 
+.. _compat_syevdx_bufferSize:
+
+hipsolverDn<type>syevdx_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnDsyevdx_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDnSsyevdx_bufferSize
+
+.. _compat_heevdx_bufferSize:
+
+hipsolverDn<type>heevdx_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnZheevdx_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDnCheevdx_bufferSize
+
+.. _compat_syevdx:
+
+hipsolverDn<type>syevdx()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnDsyevdx
+   :outline:
+.. doxygenfunction:: hipsolverDnSsyevdx
+
+.. _compat_heevdx:
+
+hipsolverDn<type>heevdx()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnZheevdx
+   :outline:
+.. doxygenfunction:: hipsolverDnCheevdx
+
 .. _compat_syevj_bufferSize:
 
 hipsolverDn<type>syevj_bufferSize()
@@ -481,6 +513,38 @@ hipsolverDn<type>hegvd()
 .. doxygenfunction:: hipsolverDnZhegvd
    :outline:
 .. doxygenfunction:: hipsolverDnChegvd
+
+.. _compat_sygvdx_bufferSize:
+
+hipsolverDn<type>sygvdx_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnDsygvdx_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDnSsygvdx_bufferSize
+
+.. _compat_hegvdx_bufferSize:
+
+hipsolverDn<type>hegvdx_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnZhegvdx_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDnChegvdx_bufferSize
+
+.. _compat_sygvdx:
+
+hipsolverDn<type>sygvdx()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnDsygvdx
+   :outline:
+.. doxygenfunction:: hipsolverDnSsygvdx
+
+.. _compat_hegvdx:
+
+hipsolverDn<type>hegvdx()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDnZhegvdx
+   :outline:
+.. doxygenfunction:: hipsolverDnChegvdx
 
 .. _compat_sygvj_bufferSize:
 
