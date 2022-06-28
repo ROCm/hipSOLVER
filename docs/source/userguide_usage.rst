@@ -84,11 +84,6 @@ return `HIPSOLVER_STATUS_NOT_SUPPORTED` if called with the rocSOLVER backend.
   * :ref:`hipsolverDnXgesvdjSetTolerance <compat_gesvdj_set_tolerance>`,
   * :ref:`hipsolverDnXgesvdjGetResidual <compat_gesvdj_get_residual>`, and
   * :ref:`hipsolverDnXgesvdjGetSweeps <compat_gesvdj_get_sweeps>`.
-  * :ref:`hipsolverDnXsyevjSetMaxSweeps <compat_syevj_set_max_sweeps>`,
-  * :ref:`hipsolverDnXsyevjSetSortEig <compat_syevj_set_sort_eig>`,
-  * :ref:`hipsolverDnXsyevjSetTolerance <compat_syevj_set_tolerance>`,
-  * :ref:`hipsolverDnXsyevjGetResidual <compat_syevj_get_residual>`, and
-  * :ref:`hipsolverDnXsyevjGetSweeps <compat_syevj_get_sweeps>`.
 
 
 Arguments not referenced by rocSOLVER
@@ -101,9 +96,6 @@ Arguments not referenced by rocSOLVER
 
 - The `niters` argument of :ref:`hipsolverXXgels <gels>` and :ref:`hipsolverXXgesv <gesv>` is not referenced by the rocSOLVER
   backend; there is no iterative refinement currently implemented in rocSOLVER.
-
-- The `params` argument of the compatibility-only Jacobi functions (e.g. :ref:`hipsolverDnXsyevj <compat_syevj>`) is not
-  referenced by the rocSOLVER backend; there are currently no Jacobi functions implemented in rocSOLVER.
 
 
 .. _mem_model:

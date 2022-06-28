@@ -44,6 +44,7 @@ const vector<vector<int>> matrix_size_range = {
 //     {300, 300, 310},
 // };
 
+template <typename T>
 Arguments sygvj_setup_arguments(sygvj_tuple tup)
 {
     vector<int>  matrix_size = std::get<0>(tup);
@@ -58,6 +59,10 @@ Arguments sygvj_setup_arguments(sygvj_tuple tup)
     arg.set<char>("itype", type[0]);
     arg.set<char>("jobz", type[1]);
     arg.set<char>("uplo", type[2]);
+
+    arg.set<double>("tolerance", 2 * get_epsilon<T>());
+    arg.set<rocblas_int>("max_sweeps", 100);
+    arg.set<rocblas_int>("sort_eig", 1);
 
     // only testing standard use case/defaults for strides
 
@@ -77,7 +82,7 @@ protected:
     template <bool BATCHED, bool STRIDED, typename T>
     void run_tests()
     {
-        Arguments arg = sygvj_setup_arguments(GetParam());
+        Arguments arg = sygvj_setup_arguments<T>(GetParam());
 
         if(arg.peek<char>("itype") == '1' && arg.peek<char>("jobz") == 'N'
            && arg.peek<char>("uplo") == 'U' && arg.peek<rocblas_int>("n") == -1)
@@ -88,48 +93,92 @@ protected:
     }
 };
 
-class SYGVJ_COMPAT : public SYGVJ_HEGVJ<API_COMPAT>
+class SYGVJ : public SYGVJ_HEGVJ<API_NORMAL>
 {
 };
 
-class HEGVJ_COMPAT : public SYGVJ_HEGVJ<API_COMPAT>
+class HEGVJ : public SYGVJ_HEGVJ<API_NORMAL>
+{
+};
+
+class SYGVJ_FORTRAN : public SYGVJ_HEGVJ<API_FORTRAN>
+{
+};
+
+class HEGVJ_FORTRAN : public SYGVJ_HEGVJ<API_FORTRAN>
 {
 };
 
 // non-batch tests
 
-TEST_P(SYGVJ_COMPAT, __float)
+TEST_P(SYGVJ, __float)
 {
     run_tests<false, false, float>();
 }
 
-TEST_P(SYGVJ_COMPAT, __double)
+TEST_P(SYGVJ, __double)
 {
     run_tests<false, false, double>();
 }
 
-TEST_P(HEGVJ_COMPAT, __float_complex)
+TEST_P(HEGVJ, __float_complex)
 {
     run_tests<false, false, rocblas_float_complex>();
 }
 
-TEST_P(HEGVJ_COMPAT, __double_complex)
+TEST_P(HEGVJ, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
+TEST_P(SYGVJ_FORTRAN, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(SYGVJ_FORTRAN, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(HEGVJ_FORTRAN, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(HEGVJ_FORTRAN, __double_complex)
 {
     run_tests<false, false, rocblas_double_complex>();
 }
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          SYGVJ_COMPAT,
+//                          SYGVJ,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         SYGVJ_COMPAT,
+                         SYGVJ,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          HEGVJ_COMPAT,
+//                          HEGVJ,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         HEGVJ_COMPAT,
+                         HEGVJ,
+                         Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          SYGVJ_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         SYGVJ_FORTRAN,
+                         Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          HEGVJ_FORTRAN,
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         HEGVJ_FORTRAN,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));

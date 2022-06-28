@@ -92,11 +92,11 @@ class hipsolver_dispatcher
             {"ormtr", testing_ormtr_unmtr<false, T>},
             {"syevd", testing_syevd_heevd<false, false, false, T>},
             {"syevdx", testing_syevdx_heevdx<API_COMPAT, false, false, T>},
-            {"syevj", testing_syevj_heevj<API_COMPAT, false, false, T>},
-            {"syevj_batched", testing_syevj_heevj<API_COMPAT, false, true, T>},
+            {"syevj", testing_syevj_heevj<API_NORMAL, false, false, T>},
+            {"syevj_batched", testing_syevj_heevj<API_NORMAL, false, true, T>},
             {"sygvd", testing_sygvd_hegvd<false, false, false, T>},
             {"sygvdx", testing_sygvdx_hegvdx<API_COMPAT, false, false, T>},
-            {"sygvj", testing_sygvj_hegvj<API_COMPAT, false, false, T>},
+            {"sygvj", testing_sygvj_hegvj<API_NORMAL, false, false, T>},
             {"sytrd", testing_sytrd_hetrd<false, false, false, T>},
         };
 
@@ -123,11 +123,11 @@ class hipsolver_dispatcher
             {"unmtr", testing_ormtr_unmtr<false, T>},
             {"heevd", testing_syevd_heevd<false, false, false, T>},
             {"heevdx", testing_syevdx_heevdx<API_COMPAT, false, false, T>},
-            {"heevj", testing_syevj_heevj<API_COMPAT, false, false, T>},
-            {"heevj_batched", testing_syevj_heevj<API_COMPAT, false, true, T>},
+            {"heevj", testing_syevj_heevj<API_NORMAL, false, false, T>},
+            {"heevj_batched", testing_syevj_heevj<API_NORMAL, false, true, T>},
             {"hegvd", testing_sygvd_hegvd<false, false, false, T>},
             {"hegvdx", testing_sygvdx_hegvdx<API_COMPAT, false, false, T>},
-            {"hegvj", testing_sygvj_hegvj<API_COMPAT, false, false, T>},
+            {"hegvj", testing_sygvj_hegvj<API_NORMAL, false, false, T>},
             {"hetrd", testing_sytrd_hetrd<false, false, false, T>},
         };
 

@@ -172,6 +172,24 @@
 #define hipsolverDsyevdFortran hipsolverDsyevd
 #define hipsolverCheevdFortran hipsolverCheevd
 #define hipsolverZheevdFortran hipsolverZheevd
+// syevj/heevj
+#define hipsolverSsyevj_bufferSizeFortran hipsolverSsyevj_bufferSize
+#define hipsolverDsyevj_bufferSizeFortran hipsolverDsyevj_bufferSize
+#define hipsolverCheevj_bufferSizeFortran hipsolverCheevj_bufferSize
+#define hipsolverZheevj_bufferSizeFortran hipsolverZheevj_bufferSize
+#define hipsolverSsyevjFortran hipsolverSsyevj
+#define hipsolverDsyevjFortran hipsolverDsyevj
+#define hipsolverCheevjFortran hipsolverCheevj
+#define hipsolverZheevjFortran hipsolverZheevj
+// syevj/heevj
+#define hipsolverSsyevjBatched_bufferSizeFortran hipsolverSsyevjBatched_bufferSize
+#define hipsolverDsyevjBatched_bufferSizeFortran hipsolverDsyevjBatched_bufferSize
+#define hipsolverCheevjBatched_bufferSizeFortran hipsolverCheevjBatched_bufferSize
+#define hipsolverZheevjBatched_bufferSizeFortran hipsolverZheevjBatched_bufferSize
+#define hipsolverSsyevjBatchedFortran hipsolverSsyevjBatched
+#define hipsolverDsyevjBatchedFortran hipsolverDsyevjBatched
+#define hipsolverCheevjBatchedFortran hipsolverCheevjBatched
+#define hipsolverZheevjBatchedFortran hipsolverZheevjBatched
 // sygvd/hegvd
 #define hipsolverSsygvd_bufferSizeFortran hipsolverSsygvd_bufferSize
 #define hipsolverDsygvd_bufferSizeFortran hipsolverDsygvd_bufferSize
@@ -181,6 +199,15 @@
 #define hipsolverDsygvdFortran hipsolverDsygvd
 #define hipsolverChegvdFortran hipsolverChegvd
 #define hipsolverZhegvdFortran hipsolverZhegvd
+// sygvj/hegvj
+#define hipsolverSsygvj_bufferSizeFortran hipsolverSsygvj_bufferSize
+#define hipsolverDsygvj_bufferSizeFortran hipsolverDsygvj_bufferSize
+#define hipsolverChegvj_bufferSizeFortran hipsolverChegvj_bufferSize
+#define hipsolverZhegvj_bufferSizeFortran hipsolverZhegvj_bufferSize
+#define hipsolverSsygvjFortran hipsolverSsygvj
+#define hipsolverDsygvjFortran hipsolverDsygvj
+#define hipsolverChegvjFortran hipsolverChegvj
+#define hipsolverZhegvjFortran hipsolverZhegvj
 // sytrd/hetrd
 #define hipsolverSsytrd_bufferSizeFortran hipsolverSsytrd_bufferSize
 #define hipsolverDsytrd_bufferSizeFortran hipsolverDsytrd_bufferSize
