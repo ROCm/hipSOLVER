@@ -33,7 +33,8 @@ const vector<vector<int>> size_range = {
     {1, 1, 0},
     {20, 20, 0},
     {30, 30, 0},
-    {32, 30, 0}};
+    {32, 30, 0},
+};
 
 const vector<vector<int>> opt_range = {
     // normal (valid) samples
@@ -76,10 +77,7 @@ Arguments gesvdj_setup_arguments(gesvdj_tuple tup, bool STRIDED)
     // leading dimensions
     arg.set<rocblas_int>("lda", m + opt[0] * 10);
     arg.set<rocblas_int>("ldu", m + opt[1] * 10);
-    if(opt[4] == 2 || STRIDED)
-        arg.set<rocblas_int>("ldv", n + opt[2] * 10);
-    else
-        arg.set<rocblas_int>("ldv", min(m, n) + opt[2] * 10);
+    arg.set<rocblas_int>("ldv", n + opt[2] * 10);
 
     // vector options
     if(opt[3] == 0)
