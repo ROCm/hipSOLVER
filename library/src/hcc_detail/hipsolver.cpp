@@ -5327,6 +5327,8 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(ldv < 1)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     rocblas_device_malloc mem((rocblas_handle)handle);
     float*                E;
@@ -5334,12 +5336,14 @@ try
 
     const float one         = 1.0f;
     const float zero        = 0.0f;
+    bool        use_V_copy  = false;
     int         ldv_copy    = 1;
     size_t      size_V_copy = 0;
     if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
     {
         if(ldv < n || !V)
             return HIPSOLVER_STATUS_INVALID_VALUE;
+        use_V_copy  = true;
         ldv_copy    = n;
         size_V_copy = sizeof(float) * ldv_copy * n * batch_count;
     }
@@ -5352,7 +5356,7 @@ try
             work = E + min(m, n) * batch_count;
 
         V_copy = work;
-        if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
+        if(use_V_copy)
             work = V_copy + ldv_copy * n * batch_count;
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
@@ -5410,9 +5414,9 @@ try
     if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
         return rocblas2hip_status(rocblas_sgeam_strided_batched((rocblas_handle)handle,
                                                                 rocblas_operation_transpose,
-                                                                rocblas_operation_none,
+                                                                rocblas_operation_transpose,
                                                                 n,
-                                                                ldv_copy,
+                                                                n,
                                                                 &one,
                                                                 V_copy,
                                                                 ldv_copy,
@@ -5453,6 +5457,8 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(ldv < 1)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     rocblas_device_malloc mem((rocblas_handle)handle);
     double*               E;
@@ -5460,12 +5466,14 @@ try
 
     const double one         = 1.0;
     const double zero        = 0.0;
+    bool         use_V_copy  = false;
     int          ldv_copy    = 1;
     size_t       size_V_copy = 0;
     if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
     {
         if(ldv < n || !V)
             return HIPSOLVER_STATUS_INVALID_VALUE;
+        use_V_copy  = true;
         ldv_copy    = n;
         size_V_copy = sizeof(double) * ldv_copy * n * batch_count;
     }
@@ -5478,7 +5486,7 @@ try
             work = E + min(m, n) * batch_count;
 
         V_copy = work;
-        if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
+        if(use_V_copy)
             work = V_copy + ldv_copy * n * batch_count;
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
@@ -5536,9 +5544,9 @@ try
     if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
         return rocblas2hip_status(rocblas_dgeam_strided_batched((rocblas_handle)handle,
                                                                 rocblas_operation_transpose,
-                                                                rocblas_operation_none,
+                                                                rocblas_operation_transpose,
                                                                 n,
-                                                                ldv_copy,
+                                                                n,
                                                                 &one,
                                                                 V_copy,
                                                                 ldv_copy,
@@ -5579,6 +5587,8 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(ldv < 1)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     rocblas_device_malloc  mem((rocblas_handle)handle);
     float*                 E;
@@ -5586,12 +5596,14 @@ try
 
     const rocblas_float_complex one         = {1.0f, 0.0f};
     const rocblas_float_complex zero        = {0.0f, 0.0f};
+    bool                        use_V_copy  = false;
     int                         ldv_copy    = 1;
     size_t                      size_V_copy = 0;
     if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
     {
         if(ldv < n || !V)
             return HIPSOLVER_STATUS_INVALID_VALUE;
+        use_V_copy  = true;
         ldv_copy    = n;
         size_V_copy = sizeof(rocblas_float_complex) * ldv_copy * n * batch_count;
     }
@@ -5604,7 +5616,7 @@ try
             work = (hipFloatComplex*)(E + min(m, n) * batch_count);
 
         V_copy = (rocblas_float_complex*)work;
-        if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
+        if(use_V_copy)
             work = (hipFloatComplex*)(V_copy + ldv_copy * n * batch_count);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
@@ -5663,9 +5675,9 @@ try
         return rocblas2hip_status(
             rocblas_cgeam_strided_batched((rocblas_handle)handle,
                                           rocblas_operation_conjugate_transpose,
-                                          rocblas_operation_none,
+                                          rocblas_operation_conjugate_transpose,
                                           n,
-                                          ldv_copy,
+                                          n,
                                           &one,
                                           V_copy,
                                           ldv_copy,
@@ -5706,6 +5718,8 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(ldv < 1)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     rocblas_device_malloc   mem((rocblas_handle)handle);
     double*                 E;
@@ -5713,12 +5727,14 @@ try
 
     const rocblas_double_complex one         = {1.0, 0.0};
     const rocblas_double_complex zero        = {0.0, 0.0};
+    bool                         use_V_copy  = false;
     int                          ldv_copy    = 1;
     size_t                       size_V_copy = 0;
     if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
     {
         if(ldv < n || !V)
             return HIPSOLVER_STATUS_INVALID_VALUE;
+        use_V_copy  = true;
         ldv_copy    = n;
         size_V_copy = sizeof(rocblas_double_complex) * ldv_copy * n * batch_count;
     }
@@ -5731,7 +5747,7 @@ try
             work = (hipDoubleComplex*)(E + min(m, n) * batch_count);
 
         V_copy = (rocblas_double_complex*)work;
-        if(min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
+        if(use_V_copy)
             work = (hipDoubleComplex*)(V_copy + ldv_copy * n * batch_count);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
@@ -5790,9 +5806,9 @@ try
         return rocblas2hip_status(
             rocblas_zgeam_strided_batched((rocblas_handle)handle,
                                           rocblas_operation_conjugate_transpose,
-                                          rocblas_operation_none,
+                                          rocblas_operation_conjugate_transpose,
                                           n,
-                                          ldv_copy,
+                                          n,
                                           &one,
                                           V_copy,
                                           ldv_copy,
