@@ -4256,11 +4256,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(lwork == nullptr)
         return HIPSOLVER_STATUS_INVALID_VALUE;
-    if(ldv < n)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
     size_t sz;
+
+    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR && ldv < n)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(jobz == HIPSOLVER_EIG_MODE_NOVECTOR && ldv < 1)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     bool use_V_copy = min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR && !econ;
     int  ldv_copy   = use_V_copy ? n : 1;
@@ -4328,11 +4331,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(lwork == nullptr)
         return HIPSOLVER_STATUS_INVALID_VALUE;
-    if(ldv < n)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
     size_t sz;
+
+    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR && ldv < n)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(jobz == HIPSOLVER_EIG_MODE_NOVECTOR && ldv < 1)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     bool use_V_copy = min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR && !econ;
     int  ldv_copy   = use_V_copy ? n : 1;
@@ -4400,11 +4406,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(lwork == nullptr)
         return HIPSOLVER_STATUS_INVALID_VALUE;
-    if(ldv < n)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
     size_t sz;
+
+    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR && ldv < n)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(jobz == HIPSOLVER_EIG_MODE_NOVECTOR && ldv < 1)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     bool use_V_copy = min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR && !econ;
     int  ldv_copy   = use_V_copy ? n : 1;
@@ -4472,11 +4481,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(lwork == nullptr)
         return HIPSOLVER_STATUS_INVALID_VALUE;
-    if(ldv < n)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
     size_t sz;
+
+    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR && ldv < n)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(jobz == HIPSOLVER_EIG_MODE_NOVECTOR && ldv < 1)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     bool use_V_copy = min(m, n) > 0 && jobz != HIPSOLVER_EIG_MODE_NOVECTOR && !econ;
     int  ldv_copy   = use_V_copy ? n : 1;
@@ -4544,6 +4556,8 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(ldv < 1)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     rocblas_device_malloc mem((rocblas_handle)handle);
     float*                E;
@@ -4660,6 +4674,8 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(ldv < 1)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     rocblas_device_malloc mem((rocblas_handle)handle);
     double*               E;
@@ -4777,6 +4793,8 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(ldv < 1)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     rocblas_device_malloc  mem((rocblas_handle)handle);
     float*                 E;
@@ -4893,6 +4911,8 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(ldv < 1)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     rocblas_device_malloc   mem((rocblas_handle)handle);
     double*                 E;
