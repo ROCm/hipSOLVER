@@ -34,8 +34,8 @@ const vector<vector<int>> size_range = {
     {20, 20, 0},
     {30, 30, 0},
     {32, 30, 0},
-    {4, 60, 0},
-    {60, 4, 0},
+    {4, 32, 0},
+    {32, 4, 0},
 };
 
 const vector<vector<int>> opt_range = {
