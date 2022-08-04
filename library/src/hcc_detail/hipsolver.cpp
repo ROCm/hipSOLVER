@@ -4225,12 +4225,12 @@ hipsolverStatus_t hipsolverDnSgesvdj_bufferSize(hipsolverDnHandle_t   handle,
                                                 int                   econ,
                                                 int                   m,
                                                 int                   n,
-                                                float*                A,
+                                                const float*          A,
                                                 int                   lda,
-                                                float*                S,
-                                                float*                U,
+                                                const float*          S,
+                                                const float*          U,
                                                 int                   ldu,
-                                                float*                V,
+                                                const float*          V,
                                                 int                   ldv,
                                                 int*                  lwork,
                                                 hipsolverGesvdjInfo_t params)
@@ -4295,12 +4295,12 @@ hipsolverStatus_t hipsolverDnDgesvdj_bufferSize(hipsolverDnHandle_t   handle,
                                                 int                   econ,
                                                 int                   m,
                                                 int                   n,
-                                                double*               A,
+                                                const double*         A,
                                                 int                   lda,
-                                                double*               S,
-                                                double*               U,
+                                                const double*         S,
+                                                const double*         U,
                                                 int                   ldu,
-                                                double*               V,
+                                                const double*         V,
                                                 int                   ldv,
                                                 int*                  lwork,
                                                 hipsolverGesvdjInfo_t params)
@@ -4360,20 +4360,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnCgesvdj_bufferSize(hipsolverDnHandle_t   handle,
-                                                hipsolverEigMode_t    jobz,
-                                                int                   econ,
-                                                int                   m,
-                                                int                   n,
-                                                hipFloatComplex*      A,
-                                                int                   lda,
-                                                float*                S,
-                                                hipFloatComplex*      U,
-                                                int                   ldu,
-                                                hipFloatComplex*      V,
-                                                int                   ldv,
-                                                int*                  lwork,
-                                                hipsolverGesvdjInfo_t params)
+hipsolverStatus_t hipsolverDnCgesvdj_bufferSize(hipsolverDnHandle_t    handle,
+                                                hipsolverEigMode_t     jobz,
+                                                int                    econ,
+                                                int                    m,
+                                                int                    n,
+                                                const hipFloatComplex* A,
+                                                int                    lda,
+                                                const float*           S,
+                                                const hipFloatComplex* U,
+                                                int                    ldu,
+                                                const hipFloatComplex* V,
+                                                int                    ldv,
+                                                int*                   lwork,
+                                                hipsolverGesvdjInfo_t  params)
 try
 {
     if(!handle)
@@ -4431,20 +4431,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnZgesvdj_bufferSize(hipsolverDnHandle_t   handle,
-                                                hipsolverEigMode_t    jobz,
-                                                int                   econ,
-                                                int                   m,
-                                                int                   n,
-                                                hipDoubleComplex*     A,
-                                                int                   lda,
-                                                double*               S,
-                                                hipDoubleComplex*     U,
-                                                int                   ldu,
-                                                hipDoubleComplex*     V,
-                                                int                   ldv,
-                                                int*                  lwork,
-                                                hipsolverGesvdjInfo_t params)
+hipsolverStatus_t hipsolverDnZgesvdj_bufferSize(hipsolverDnHandle_t     handle,
+                                                hipsolverEigMode_t      jobz,
+                                                int                     econ,
+                                                int                     m,
+                                                int                     n,
+                                                const hipDoubleComplex* A,
+                                                int                     lda,
+                                                const double*           S,
+                                                const hipDoubleComplex* U,
+                                                int                     ldu,
+                                                const hipDoubleComplex* V,
+                                                int                     ldv,
+                                                int*                    lwork,
+                                                hipsolverGesvdjInfo_t   params)
 try
 {
     if(!handle)
@@ -4921,12 +4921,12 @@ hipsolverStatus_t hipsolverDnSgesvdjBatched_bufferSize(hipsolverDnHandle_t   han
                                                        hipsolverEigMode_t    jobz,
                                                        int                   m,
                                                        int                   n,
-                                                       float*                A,
+                                                       const float*          A,
                                                        int                   lda,
-                                                       float*                S,
-                                                       float*                U,
+                                                       const float*          S,
+                                                       const float*          U,
                                                        int                   ldu,
-                                                       float*                V,
+                                                       const float*          V,
                                                        int                   ldv,
                                                        int*                  lwork,
                                                        hipsolverGesvdjInfo_t params,
@@ -4995,12 +4995,12 @@ hipsolverStatus_t hipsolverDnDgesvdjBatched_bufferSize(hipsolverDnHandle_t   han
                                                        hipsolverEigMode_t    jobz,
                                                        int                   m,
                                                        int                   n,
-                                                       double*               A,
+                                                       const double*         A,
                                                        int                   lda,
-                                                       double*               S,
-                                                       double*               U,
+                                                       const double*         S,
+                                                       const double*         U,
                                                        int                   ldu,
-                                                       double*               V,
+                                                       const double*         V,
                                                        int                   ldv,
                                                        int*                  lwork,
                                                        hipsolverGesvdjInfo_t params,
@@ -5065,20 +5065,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnCgesvdjBatched_bufferSize(hipsolverDnHandle_t   handle,
-                                                       hipsolverEigMode_t    jobz,
-                                                       int                   m,
-                                                       int                   n,
-                                                       hipFloatComplex*      A,
-                                                       int                   lda,
-                                                       float*                S,
-                                                       hipFloatComplex*      U,
-                                                       int                   ldu,
-                                                       hipFloatComplex*      V,
-                                                       int                   ldv,
-                                                       int*                  lwork,
-                                                       hipsolverGesvdjInfo_t params,
-                                                       int                   batch_count)
+hipsolverStatus_t hipsolverDnCgesvdjBatched_bufferSize(hipsolverDnHandle_t    handle,
+                                                       hipsolverEigMode_t     jobz,
+                                                       int                    m,
+                                                       int                    n,
+                                                       const hipFloatComplex* A,
+                                                       int                    lda,
+                                                       const float*           S,
+                                                       const hipFloatComplex* U,
+                                                       int                    ldu,
+                                                       const hipFloatComplex* V,
+                                                       int                    ldv,
+                                                       int*                   lwork,
+                                                       hipsolverGesvdjInfo_t  params,
+                                                       int                    batch_count)
 try
 {
     if(!handle)
@@ -5139,20 +5139,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnZgesvdjBatched_bufferSize(hipsolverDnHandle_t   handle,
-                                                       hipsolverEigMode_t    jobz,
-                                                       int                   m,
-                                                       int                   n,
-                                                       hipDoubleComplex*     A,
-                                                       int                   lda,
-                                                       double*               S,
-                                                       hipDoubleComplex*     U,
-                                                       int                   ldu,
-                                                       hipDoubleComplex*     V,
-                                                       int                   ldv,
-                                                       int*                  lwork,
-                                                       hipsolverGesvdjInfo_t params,
-                                                       int                   batch_count)
+hipsolverStatus_t hipsolverDnZgesvdjBatched_bufferSize(hipsolverDnHandle_t     handle,
+                                                       hipsolverEigMode_t      jobz,
+                                                       int                     m,
+                                                       int                     n,
+                                                       const hipDoubleComplex* A,
+                                                       int                     lda,
+                                                       const double*           S,
+                                                       const hipDoubleComplex* U,
+                                                       int                     ldu,
+                                                       const hipDoubleComplex* V,
+                                                       int                     ldv,
+                                                       int*                    lwork,
+                                                       hipsolverGesvdjInfo_t   params,
+                                                       int                     batch_count)
 try
 {
     if(!handle)
@@ -8079,14 +8079,14 @@ hipsolverStatus_t hipsolverDnSsyevdx_bufferSize(hipsolverHandle_t   handle,
                                                 hipsolverEigRange_t range,
                                                 hipsolverFillMode_t uplo,
                                                 int                 n,
-                                                float*              A,
+                                                const float*        A,
                                                 int                 lda,
                                                 float               vl,
                                                 float               vu,
                                                 int                 il,
                                                 int                 iu,
                                                 int*                m,
-                                                float*              W,
+                                                const float*        W,
                                                 int*                lwork)
 try
 {
@@ -8135,14 +8135,14 @@ hipsolverStatus_t hipsolverDnDsyevdx_bufferSize(hipsolverHandle_t   handle,
                                                 hipsolverEigRange_t range,
                                                 hipsolverFillMode_t uplo,
                                                 int                 n,
-                                                double*             A,
+                                                const double*       A,
                                                 int                 lda,
                                                 double              vl,
                                                 double              vu,
                                                 int                 il,
                                                 int                 iu,
                                                 int*                nev,
-                                                double*             W,
+                                                const double*       W,
                                                 int*                lwork)
 try
 {
@@ -8186,20 +8186,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnCheevdx_bufferSize(hipsolverHandle_t   handle,
-                                                hipsolverEigMode_t  jobz,
-                                                hipsolverEigRange_t range,
-                                                hipsolverFillMode_t uplo,
-                                                int                 n,
-                                                hipFloatComplex*    A,
-                                                int                 lda,
-                                                float               vl,
-                                                float               vu,
-                                                int                 il,
-                                                int                 iu,
-                                                int*                nev,
-                                                float*              W,
-                                                int*                lwork)
+hipsolverStatus_t hipsolverDnCheevdx_bufferSize(hipsolverHandle_t      handle,
+                                                hipsolverEigMode_t     jobz,
+                                                hipsolverEigRange_t    range,
+                                                hipsolverFillMode_t    uplo,
+                                                int                    n,
+                                                const hipFloatComplex* A,
+                                                int                    lda,
+                                                float                  vl,
+                                                float                  vu,
+                                                int                    il,
+                                                int                    iu,
+                                                int*                   nev,
+                                                const float*           W,
+                                                int*                   lwork)
 try
 {
     if(!handle)
@@ -8242,20 +8242,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnZheevdx_bufferSize(hipsolverHandle_t   handle,
-                                                hipsolverEigMode_t  jobz,
-                                                hipsolverEigRange_t range,
-                                                hipsolverFillMode_t uplo,
-                                                int                 n,
-                                                hipDoubleComplex*   A,
-                                                int                 lda,
-                                                double              vl,
-                                                double              vu,
-                                                int                 il,
-                                                int                 iu,
-                                                int*                nev,
-                                                double*             W,
-                                                int*                lwork)
+hipsolverStatus_t hipsolverDnZheevdx_bufferSize(hipsolverHandle_t       handle,
+                                                hipsolverEigMode_t      jobz,
+                                                hipsolverEigRange_t     range,
+                                                hipsolverFillMode_t     uplo,
+                                                int                     n,
+                                                const hipDoubleComplex* A,
+                                                int                     lda,
+                                                double                  vl,
+                                                double                  vu,
+                                                int                     il,
+                                                int                     iu,
+                                                int*                    nev,
+                                                const double*           W,
+                                                int*                    lwork)
 try
 {
     if(!handle)
@@ -9808,16 +9808,16 @@ hipsolverStatus_t hipsolverDnSsygvdx_bufferSize(hipsolverHandle_t   handle,
                                                 hipsolverEigRange_t range,
                                                 hipsolverFillMode_t uplo,
                                                 int                 n,
-                                                float*              A,
+                                                const float*        A,
                                                 int                 lda,
-                                                float*              B,
+                                                const float*        B,
                                                 int                 ldb,
                                                 float               vl,
                                                 float               vu,
                                                 int                 il,
                                                 int                 iu,
                                                 int*                nev,
-                                                float*              W,
+                                                const float*        W,
                                                 int*                lwork)
 try
 {
@@ -9870,16 +9870,16 @@ hipsolverStatus_t hipsolverDnDsygvdx_bufferSize(hipsolverHandle_t   handle,
                                                 hipsolverEigRange_t range,
                                                 hipsolverFillMode_t uplo,
                                                 int                 n,
-                                                double*             A,
+                                                const double*       A,
                                                 int                 lda,
-                                                double*             B,
+                                                const double*       B,
                                                 int                 ldb,
                                                 double              vl,
                                                 double              vu,
                                                 int                 il,
                                                 int                 iu,
                                                 int*                nev,
-                                                double*             W,
+                                                const double*       W,
                                                 int*                lwork)
 try
 {
@@ -9926,23 +9926,23 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnChegvdx_bufferSize(hipsolverHandle_t   handle,
-                                                hipsolverEigType_t  itype,
-                                                hipsolverEigMode_t  jobz,
-                                                hipsolverEigRange_t range,
-                                                hipsolverFillMode_t uplo,
-                                                int                 n,
-                                                hipFloatComplex*    A,
-                                                int                 lda,
-                                                hipFloatComplex*    B,
-                                                int                 ldb,
-                                                float               vl,
-                                                float               vu,
-                                                int                 il,
-                                                int                 iu,
-                                                int*                nev,
-                                                float*              W,
-                                                int*                lwork)
+hipsolverStatus_t hipsolverDnChegvdx_bufferSize(hipsolverHandle_t      handle,
+                                                hipsolverEigType_t     itype,
+                                                hipsolverEigMode_t     jobz,
+                                                hipsolverEigRange_t    range,
+                                                hipsolverFillMode_t    uplo,
+                                                int                    n,
+                                                const hipFloatComplex* A,
+                                                int                    lda,
+                                                const hipFloatComplex* B,
+                                                int                    ldb,
+                                                float                  vl,
+                                                float                  vu,
+                                                int                    il,
+                                                int                    iu,
+                                                int*                   nev,
+                                                const float*           W,
+                                                int*                   lwork)
 try
 {
     if(!handle)
@@ -9988,23 +9988,23 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnZhegvdx_bufferSize(hipsolverHandle_t   handle,
-                                                hipsolverEigType_t  itype,
-                                                hipsolverEigMode_t  jobz,
-                                                hipsolverEigRange_t range,
-                                                hipsolverFillMode_t uplo,
-                                                int                 n,
-                                                hipDoubleComplex*   A,
-                                                int                 lda,
-                                                hipDoubleComplex*   B,
-                                                int                 ldb,
-                                                double              vl,
-                                                double              vu,
-                                                int                 il,
-                                                int                 iu,
-                                                int*                nev,
-                                                double*             W,
-                                                int*                lwork)
+hipsolverStatus_t hipsolverDnZhegvdx_bufferSize(hipsolverHandle_t       handle,
+                                                hipsolverEigType_t      itype,
+                                                hipsolverEigMode_t      jobz,
+                                                hipsolverEigRange_t     range,
+                                                hipsolverFillMode_t     uplo,
+                                                int                     n,
+                                                const hipDoubleComplex* A,
+                                                int                     lda,
+                                                const hipDoubleComplex* B,
+                                                int                     ldb,
+                                                double                  vl,
+                                                double                  vu,
+                                                int                     il,
+                                                int                     iu,
+                                                int*                    nev,
+                                                const double*           W,
+                                                int*                    lwork)
 try
 {
     if(!handle)
