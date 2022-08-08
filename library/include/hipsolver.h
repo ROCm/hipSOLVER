@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright 2020-2022 Advanced Micro Devices, Inc.
+ * Copyright (C) 2020-2022 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 // HIP = Heterogeneous-compute Interface for Portability
