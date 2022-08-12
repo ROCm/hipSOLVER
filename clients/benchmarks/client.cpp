@@ -348,6 +348,12 @@ try
             "                           ")
 
         // iterative Jacobi options
+        ("econ",
+         value<rocblas_int>()->default_value(0),
+            "Enable economy size for singular vector matrices? 0 = No, 1 = Yes.\n"
+            "                           Only applicable to gesvdj.\n"
+            "                           ")
+
         ("max_sweeps",
          value<rocblas_int>()->default_value(100),
             "Maximum number of sweeps/iterations.\n"
