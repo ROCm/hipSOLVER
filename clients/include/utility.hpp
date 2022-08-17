@@ -111,10 +111,10 @@ public:
         hipsolverDestroy(m_handle);
     }
 
-    hipsolver_local_handle(const hipsolver_local_handle&)            = delete;
-    hipsolver_local_handle(hipsolver_local_handle&&)                 = delete;
+    hipsolver_local_handle(const hipsolver_local_handle&) = delete;
+    hipsolver_local_handle(hipsolver_local_handle&&)      = delete;
     hipsolver_local_handle& operator=(const hipsolver_local_handle&) = delete;
-    hipsolver_local_handle& operator=(hipsolver_local_handle&&)      = delete;
+    hipsolver_local_handle& operator=(hipsolver_local_handle&&) = delete;
 
     // Allow hipsolver_local_handle to be used anywhere hipsolverHandle_t is expected
     operator hipsolverHandle_t&()
@@ -144,10 +144,10 @@ public:
         hipsolverDnDestroyGesvdjInfo(m_info);
     }
 
-    hipsolver_local_gesvdj_info(const hipsolver_local_gesvdj_info&)            = delete;
-    hipsolver_local_gesvdj_info(hipsolver_local_gesvdj_info&&)                 = delete;
+    hipsolver_local_gesvdj_info(const hipsolver_local_gesvdj_info&) = delete;
+    hipsolver_local_gesvdj_info(hipsolver_local_gesvdj_info&&)      = delete;
     hipsolver_local_gesvdj_info& operator=(const hipsolver_local_gesvdj_info&) = delete;
-    hipsolver_local_gesvdj_info& operator=(hipsolver_local_gesvdj_info&&)      = delete;
+    hipsolver_local_gesvdj_info& operator=(hipsolver_local_gesvdj_info&&) = delete;
 
     // Allow hipsolver_local_gesvdj_info to be used anywhere hipsolverGesvdjInfo_t is expected
     operator hipsolverGesvdjInfo_t&()
@@ -177,10 +177,10 @@ public:
         hipsolverDnDestroySyevjInfo(m_info);
     }
 
-    hipsolver_local_syevj_info(const hipsolver_local_syevj_info&)            = delete;
-    hipsolver_local_syevj_info(hipsolver_local_syevj_info&&)                 = delete;
+    hipsolver_local_syevj_info(const hipsolver_local_syevj_info&) = delete;
+    hipsolver_local_syevj_info(hipsolver_local_syevj_info&&)      = delete;
     hipsolver_local_syevj_info& operator=(const hipsolver_local_syevj_info&) = delete;
-    hipsolver_local_syevj_info& operator=(hipsolver_local_syevj_info&&)      = delete;
+    hipsolver_local_syevj_info& operator=(hipsolver_local_syevj_info&&) = delete;
 
     // Allow hipsolver_local_syevj_info to be used anywhere hipsolverSyevjInfo_t is expected
     operator hipsolverSyevjInfo_t&()
