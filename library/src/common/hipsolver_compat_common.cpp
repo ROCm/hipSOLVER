@@ -103,8 +103,7 @@ hipsolverStatus_t hipsolverDnSorgbr_bufferSize(hipsolverHandle_t   handle,
                                                const float*        tau,
                                                int*                lwork)
 {
-    return hipsolverSorgbr_bufferSize(
-        handle, side, m, n, k, const_cast<float*>(A), lda, const_cast<float*>(tau), lwork);
+    return hipsolverSorgbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnDorgbr_bufferSize(hipsolverHandle_t   handle,
@@ -117,8 +116,7 @@ hipsolverStatus_t hipsolverDnDorgbr_bufferSize(hipsolverHandle_t   handle,
                                                const double*       tau,
                                                int*                lwork)
 {
-    return hipsolverDorgbr_bufferSize(
-        handle, side, m, n, k, const_cast<double*>(A), lda, const_cast<double*>(tau), lwork);
+    return hipsolverDorgbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnCungbr_bufferSize(hipsolverHandle_t      handle,
@@ -131,15 +129,7 @@ hipsolverStatus_t hipsolverDnCungbr_bufferSize(hipsolverHandle_t      handle,
                                                const hipFloatComplex* tau,
                                                int*                   lwork)
 {
-    return hipsolverCungbr_bufferSize(handle,
-                                      side,
-                                      m,
-                                      n,
-                                      k,
-                                      const_cast<hipFloatComplex*>(A),
-                                      lda,
-                                      const_cast<hipFloatComplex*>(tau),
-                                      lwork);
+    return hipsolverCungbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnZungbr_bufferSize(hipsolverHandle_t       handle,
@@ -152,15 +142,7 @@ hipsolverStatus_t hipsolverDnZungbr_bufferSize(hipsolverHandle_t       handle,
                                                const hipDoubleComplex* tau,
                                                int*                    lwork)
 {
-    return hipsolverZungbr_bufferSize(handle,
-                                      side,
-                                      m,
-                                      n,
-                                      k,
-                                      const_cast<hipDoubleComplex*>(A),
-                                      lda,
-                                      const_cast<hipDoubleComplex*>(tau),
-                                      lwork);
+    return hipsolverZungbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnSorgbr(hipsolverHandle_t   handle,
@@ -175,8 +157,7 @@ hipsolverStatus_t hipsolverDnSorgbr(hipsolverHandle_t   handle,
                                     int                 lwork,
                                     int*                devInfo)
 {
-    return hipsolverSorgbr(
-        handle, side, m, n, k, A, lda, const_cast<float*>(tau), work, lwork, devInfo);
+    return hipsolverSorgbr(handle, side, m, n, k, A, lda, tau, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnDorgbr(hipsolverHandle_t   handle,
@@ -191,8 +172,7 @@ hipsolverStatus_t hipsolverDnDorgbr(hipsolverHandle_t   handle,
                                     int                 lwork,
                                     int*                devInfo)
 {
-    return hipsolverDorgbr(
-        handle, side, m, n, k, A, lda, const_cast<double*>(tau), work, lwork, devInfo);
+    return hipsolverDorgbr(handle, side, m, n, k, A, lda, tau, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnCungbr(hipsolverHandle_t      handle,
@@ -207,8 +187,7 @@ hipsolverStatus_t hipsolverDnCungbr(hipsolverHandle_t      handle,
                                     int                    lwork,
                                     int*                   devInfo)
 {
-    return hipsolverCungbr(
-        handle, side, m, n, k, A, lda, const_cast<hipFloatComplex*>(tau), work, lwork, devInfo);
+    return hipsolverCungbr(handle, side, m, n, k, A, lda, tau, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnZungbr(hipsolverHandle_t       handle,
@@ -223,8 +202,7 @@ hipsolverStatus_t hipsolverDnZungbr(hipsolverHandle_t       handle,
                                     int                     lwork,
                                     int*                    devInfo)
 {
-    return hipsolverZungbr(
-        handle, side, m, n, k, A, lda, const_cast<hipDoubleComplex*>(tau), work, lwork, devInfo);
+    return hipsolverZungbr(handle, side, m, n, k, A, lda, tau, work, lwork, devInfo);
 }
 
 // orgqr/ungqr
@@ -237,8 +215,7 @@ hipsolverStatus_t hipsolverDnSorgqr_bufferSize(hipsolverHandle_t handle,
                                                const float*      tau,
                                                int*              lwork)
 {
-    return hipsolverSorgqr_bufferSize(
-        handle, m, n, k, const_cast<float*>(A), lda, const_cast<float*>(tau), lwork);
+    return hipsolverSorgqr_bufferSize(handle, m, n, k, A, lda, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnDorgqr_bufferSize(hipsolverHandle_t handle,
@@ -250,8 +227,7 @@ hipsolverStatus_t hipsolverDnDorgqr_bufferSize(hipsolverHandle_t handle,
                                                const double*     tau,
                                                int*              lwork)
 {
-    return hipsolverDorgqr_bufferSize(
-        handle, m, n, k, const_cast<double*>(A), lda, const_cast<double*>(tau), lwork);
+    return hipsolverDorgqr_bufferSize(handle, m, n, k, A, lda, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnCungqr_bufferSize(hipsolverHandle_t      handle,
@@ -263,14 +239,7 @@ hipsolverStatus_t hipsolverDnCungqr_bufferSize(hipsolverHandle_t      handle,
                                                const hipFloatComplex* tau,
                                                int*                   lwork)
 {
-    return hipsolverCungqr_bufferSize(handle,
-                                      m,
-                                      n,
-                                      k,
-                                      const_cast<hipFloatComplex*>(A),
-                                      lda,
-                                      const_cast<hipFloatComplex*>(tau),
-                                      lwork);
+    return hipsolverCungqr_bufferSize(handle, m, n, k, A, lda, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnZungqr_bufferSize(hipsolverHandle_t       handle,
@@ -282,14 +251,7 @@ hipsolverStatus_t hipsolverDnZungqr_bufferSize(hipsolverHandle_t       handle,
                                                const hipDoubleComplex* tau,
                                                int*                    lwork)
 {
-    return hipsolverZungqr_bufferSize(handle,
-                                      m,
-                                      n,
-                                      k,
-                                      const_cast<hipDoubleComplex*>(A),
-                                      lda,
-                                      const_cast<hipDoubleComplex*>(tau),
-                                      lwork);
+    return hipsolverZungqr_bufferSize(handle, m, n, k, A, lda, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnSorgqr(hipsolverHandle_t handle,
@@ -303,7 +265,7 @@ hipsolverStatus_t hipsolverDnSorgqr(hipsolverHandle_t handle,
                                     int               lwork,
                                     int*              devInfo)
 {
-    return hipsolverSorgqr(handle, m, n, k, A, lda, const_cast<float*>(tau), work, lwork, devInfo);
+    return hipsolverSorgqr(handle, m, n, k, A, lda, tau, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnDorgqr(hipsolverHandle_t handle,
@@ -317,7 +279,7 @@ hipsolverStatus_t hipsolverDnDorgqr(hipsolverHandle_t handle,
                                     int               lwork,
                                     int*              devInfo)
 {
-    return hipsolverDorgqr(handle, m, n, k, A, lda, const_cast<double*>(tau), work, lwork, devInfo);
+    return hipsolverDorgqr(handle, m, n, k, A, lda, tau, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnCungqr(hipsolverHandle_t      handle,
@@ -331,8 +293,7 @@ hipsolverStatus_t hipsolverDnCungqr(hipsolverHandle_t      handle,
                                     int                    lwork,
                                     int*                   devInfo)
 {
-    return hipsolverCungqr(
-        handle, m, n, k, A, lda, const_cast<hipFloatComplex*>(tau), work, lwork, devInfo);
+    return hipsolverCungqr(handle, m, n, k, A, lda, tau, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnZungqr(hipsolverHandle_t       handle,
@@ -346,8 +307,7 @@ hipsolverStatus_t hipsolverDnZungqr(hipsolverHandle_t       handle,
                                     int                     lwork,
                                     int*                    devInfo)
 {
-    return hipsolverZungqr(
-        handle, m, n, k, A, lda, const_cast<hipDoubleComplex*>(tau), work, lwork, devInfo);
+    return hipsolverZungqr(handle, m, n, k, A, lda, tau, work, lwork, devInfo);
 }
 
 // orgtr/ungtr
@@ -359,8 +319,7 @@ hipsolverStatus_t hipsolverDnSorgtr_bufferSize(hipsolverHandle_t   handle,
                                                const float*        tau,
                                                int*                lwork)
 {
-    return hipsolverSorgtr_bufferSize(
-        handle, uplo, n, const_cast<float*>(A), lda, const_cast<float*>(tau), lwork);
+    return hipsolverSorgtr_bufferSize(handle, uplo, n, A, lda, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnDorgtr_bufferSize(hipsolverHandle_t   handle,
@@ -371,8 +330,7 @@ hipsolverStatus_t hipsolverDnDorgtr_bufferSize(hipsolverHandle_t   handle,
                                                const double*       tau,
                                                int*                lwork)
 {
-    return hipsolverDorgtr_bufferSize(
-        handle, uplo, n, const_cast<double*>(A), lda, const_cast<double*>(tau), lwork);
+    return hipsolverDorgtr_bufferSize(handle, uplo, n, A, lda, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnCungtr_bufferSize(hipsolverHandle_t      handle,
@@ -383,13 +341,7 @@ hipsolverStatus_t hipsolverDnCungtr_bufferSize(hipsolverHandle_t      handle,
                                                const hipFloatComplex* tau,
                                                int*                   lwork)
 {
-    return hipsolverCungtr_bufferSize(handle,
-                                      uplo,
-                                      n,
-                                      const_cast<hipFloatComplex*>(A),
-                                      lda,
-                                      const_cast<hipFloatComplex*>(tau),
-                                      lwork);
+    return hipsolverCungtr_bufferSize(handle, uplo, n, A, lda, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnZungtr_bufferSize(hipsolverHandle_t       handle,
@@ -400,13 +352,7 @@ hipsolverStatus_t hipsolverDnZungtr_bufferSize(hipsolverHandle_t       handle,
                                                const hipDoubleComplex* tau,
                                                int*                    lwork)
 {
-    return hipsolverZungtr_bufferSize(handle,
-                                      uplo,
-                                      n,
-                                      const_cast<hipDoubleComplex*>(A),
-                                      lda,
-                                      const_cast<hipDoubleComplex*>(tau),
-                                      lwork);
+    return hipsolverZungtr_bufferSize(handle, uplo, n, A, lda, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnSorgtr(hipsolverHandle_t   handle,
@@ -419,7 +365,7 @@ hipsolverStatus_t hipsolverDnSorgtr(hipsolverHandle_t   handle,
                                     int                 lwork,
                                     int*                devInfo)
 {
-    return hipsolverSorgtr(handle, uplo, n, A, lda, const_cast<float*>(tau), work, lwork, devInfo);
+    return hipsolverSorgtr(handle, uplo, n, A, lda, tau, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnDorgtr(hipsolverHandle_t   handle,
@@ -432,7 +378,7 @@ hipsolverStatus_t hipsolverDnDorgtr(hipsolverHandle_t   handle,
                                     int                 lwork,
                                     int*                devInfo)
 {
-    return hipsolverDorgtr(handle, uplo, n, A, lda, const_cast<double*>(tau), work, lwork, devInfo);
+    return hipsolverDorgtr(handle, uplo, n, A, lda, tau, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnCungtr(hipsolverHandle_t      handle,
@@ -445,8 +391,7 @@ hipsolverStatus_t hipsolverDnCungtr(hipsolverHandle_t      handle,
                                     int                    lwork,
                                     int*                   devInfo)
 {
-    return hipsolverCungtr(
-        handle, uplo, n, A, lda, const_cast<hipFloatComplex*>(tau), work, lwork, devInfo);
+    return hipsolverCungtr(handle, uplo, n, A, lda, tau, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnZungtr(hipsolverHandle_t       handle,
@@ -459,8 +404,7 @@ hipsolverStatus_t hipsolverDnZungtr(hipsolverHandle_t       handle,
                                     int                     lwork,
                                     int*                    devInfo)
 {
-    return hipsolverZungtr(
-        handle, uplo, n, A, lda, const_cast<hipDoubleComplex*>(tau), work, lwork, devInfo);
+    return hipsolverZungtr(handle, uplo, n, A, lda, tau, work, lwork, devInfo);
 }
 
 // ormqr/unmqr
@@ -477,18 +421,7 @@ hipsolverStatus_t hipsolverDnSormqr_bufferSize(hipsolverHandle_t    handle,
                                                int                  ldc,
                                                int*                 lwork)
 {
-    return hipsolverSormqr_bufferSize(handle,
-                                      side,
-                                      trans,
-                                      m,
-                                      n,
-                                      k,
-                                      const_cast<float*>(A),
-                                      lda,
-                                      const_cast<float*>(tau),
-                                      const_cast<float*>(C),
-                                      ldc,
-                                      lwork);
+    return hipsolverSormqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
 }
 
 hipsolverStatus_t hipsolverDnDormqr_bufferSize(hipsolverHandle_t    handle,
@@ -504,18 +437,7 @@ hipsolverStatus_t hipsolverDnDormqr_bufferSize(hipsolverHandle_t    handle,
                                                int                  ldc,
                                                int*                 lwork)
 {
-    return hipsolverDormqr_bufferSize(handle,
-                                      side,
-                                      trans,
-                                      m,
-                                      n,
-                                      k,
-                                      const_cast<double*>(A),
-                                      lda,
-                                      const_cast<double*>(tau),
-                                      const_cast<double*>(C),
-                                      ldc,
-                                      lwork);
+    return hipsolverDormqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
 }
 
 hipsolverStatus_t hipsolverDnCunmqr_bufferSize(hipsolverHandle_t      handle,
@@ -531,18 +453,7 @@ hipsolverStatus_t hipsolverDnCunmqr_bufferSize(hipsolverHandle_t      handle,
                                                int                    ldc,
                                                int*                   lwork)
 {
-    return hipsolverCunmqr_bufferSize(handle,
-                                      side,
-                                      trans,
-                                      m,
-                                      n,
-                                      k,
-                                      const_cast<hipFloatComplex*>(A),
-                                      lda,
-                                      const_cast<hipFloatComplex*>(tau),
-                                      const_cast<hipFloatComplex*>(C),
-                                      ldc,
-                                      lwork);
+    return hipsolverCunmqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
 }
 
 hipsolverStatus_t hipsolverDnZunmqr_bufferSize(hipsolverHandle_t       handle,
@@ -558,18 +469,7 @@ hipsolverStatus_t hipsolverDnZunmqr_bufferSize(hipsolverHandle_t       handle,
                                                int                     ldc,
                                                int*                    lwork)
 {
-    return hipsolverZunmqr_bufferSize(handle,
-                                      side,
-                                      trans,
-                                      m,
-                                      n,
-                                      k,
-                                      const_cast<hipDoubleComplex*>(A),
-                                      lda,
-                                      const_cast<hipDoubleComplex*>(tau),
-                                      const_cast<hipDoubleComplex*>(C),
-                                      ldc,
-                                      lwork);
+    return hipsolverZunmqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
 }
 
 hipsolverStatus_t hipsolverDnSormqr(hipsolverHandle_t    handle,
@@ -587,20 +487,7 @@ hipsolverStatus_t hipsolverDnSormqr(hipsolverHandle_t    handle,
                                     int                  lwork,
                                     int*                 devInfo)
 {
-    return hipsolverSormqr(handle,
-                           side,
-                           trans,
-                           m,
-                           n,
-                           k,
-                           const_cast<float*>(A),
-                           lda,
-                           const_cast<float*>(tau),
-                           C,
-                           ldc,
-                           work,
-                           lwork,
-                           devInfo);
+    return hipsolverSormqr(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnDormqr(hipsolverHandle_t    handle,
@@ -618,20 +505,7 @@ hipsolverStatus_t hipsolverDnDormqr(hipsolverHandle_t    handle,
                                     int                  lwork,
                                     int*                 devInfo)
 {
-    return hipsolverDormqr(handle,
-                           side,
-                           trans,
-                           m,
-                           n,
-                           k,
-                           const_cast<double*>(A),
-                           lda,
-                           const_cast<double*>(tau),
-                           C,
-                           ldc,
-                           work,
-                           lwork,
-                           devInfo);
+    return hipsolverDormqr(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnCunmqr(hipsolverHandle_t      handle,
@@ -649,20 +523,7 @@ hipsolverStatus_t hipsolverDnCunmqr(hipsolverHandle_t      handle,
                                     int                    lwork,
                                     int*                   devInfo)
 {
-    return hipsolverCunmqr(handle,
-                           side,
-                           trans,
-                           m,
-                           n,
-                           k,
-                           const_cast<hipFloatComplex*>(A),
-                           lda,
-                           const_cast<hipFloatComplex*>(tau),
-                           C,
-                           ldc,
-                           work,
-                           lwork,
-                           devInfo);
+    return hipsolverCunmqr(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnZunmqr(hipsolverHandle_t       handle,
@@ -680,20 +541,7 @@ hipsolverStatus_t hipsolverDnZunmqr(hipsolverHandle_t       handle,
                                     int                     lwork,
                                     int*                    devInfo)
 {
-    return hipsolverZunmqr(handle,
-                           side,
-                           trans,
-                           m,
-                           n,
-                           k,
-                           const_cast<hipDoubleComplex*>(A),
-                           lda,
-                           const_cast<hipDoubleComplex*>(tau),
-                           C,
-                           ldc,
-                           work,
-                           lwork,
-                           devInfo);
+    return hipsolverZunmqr(handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, devInfo);
 }
 
 // ormtr/unmtr
@@ -710,18 +558,7 @@ hipsolverStatus_t hipsolverDnSormtr_bufferSize(hipsolverHandle_t    handle,
                                                int                  ldc,
                                                int*                 lwork)
 {
-    return hipsolverSormtr_bufferSize(handle,
-                                      side,
-                                      uplo,
-                                      trans,
-                                      m,
-                                      n,
-                                      const_cast<float*>(A),
-                                      lda,
-                                      const_cast<float*>(tau),
-                                      const_cast<float*>(C),
-                                      ldc,
-                                      lwork);
+    return hipsolverSormtr_bufferSize(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork);
 }
 
 hipsolverStatus_t hipsolverDnDormtr_bufferSize(hipsolverHandle_t    handle,
@@ -737,18 +574,7 @@ hipsolverStatus_t hipsolverDnDormtr_bufferSize(hipsolverHandle_t    handle,
                                                int                  ldc,
                                                int*                 lwork)
 {
-    return hipsolverDormtr_bufferSize(handle,
-                                      side,
-                                      uplo,
-                                      trans,
-                                      m,
-                                      n,
-                                      const_cast<double*>(A),
-                                      lda,
-                                      const_cast<double*>(tau),
-                                      const_cast<double*>(C),
-                                      ldc,
-                                      lwork);
+    return hipsolverDormtr_bufferSize(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork);
 }
 
 hipsolverStatus_t hipsolverDnCunmtr_bufferSize(hipsolverHandle_t      handle,
@@ -764,18 +590,7 @@ hipsolverStatus_t hipsolverDnCunmtr_bufferSize(hipsolverHandle_t      handle,
                                                int                    ldc,
                                                int*                   lwork)
 {
-    return hipsolverCunmtr_bufferSize(handle,
-                                      side,
-                                      uplo,
-                                      trans,
-                                      m,
-                                      n,
-                                      const_cast<hipFloatComplex*>(A),
-                                      lda,
-                                      const_cast<hipFloatComplex*>(tau),
-                                      const_cast<hipFloatComplex*>(C),
-                                      ldc,
-                                      lwork);
+    return hipsolverCunmtr_bufferSize(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork);
 }
 
 hipsolverStatus_t hipsolverDnZunmtr_bufferSize(hipsolverHandle_t       handle,
@@ -791,18 +606,7 @@ hipsolverStatus_t hipsolverDnZunmtr_bufferSize(hipsolverHandle_t       handle,
                                                int                     ldc,
                                                int*                    lwork)
 {
-    return hipsolverZunmtr_bufferSize(handle,
-                                      side,
-                                      uplo,
-                                      trans,
-                                      m,
-                                      n,
-                                      const_cast<hipDoubleComplex*>(A),
-                                      lda,
-                                      const_cast<hipDoubleComplex*>(tau),
-                                      const_cast<hipDoubleComplex*>(C),
-                                      ldc,
-                                      lwork);
+    return hipsolverZunmtr_bufferSize(handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork);
 }
 
 hipsolverStatus_t hipsolverDnSormtr(hipsolverHandle_t    handle,
@@ -1447,18 +1251,7 @@ hipsolverStatus_t hipsolverDnSgetrs(hipsolverHandle_t    handle,
                                     int                  ldb,
                                     int*                 devInfo)
 {
-    return hipsolverSgetrs(handle,
-                           trans,
-                           n,
-                           nrhs,
-                           const_cast<float*>(A),
-                           lda,
-                           const_cast<int*>(devIpiv),
-                           B,
-                           ldb,
-                           nullptr,
-                           0,
-                           devInfo);
+    return hipsolverSgetrs(handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, nullptr, 0, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnDgetrs(hipsolverHandle_t    handle,
@@ -1472,18 +1265,7 @@ hipsolverStatus_t hipsolverDnDgetrs(hipsolverHandle_t    handle,
                                     int                  ldb,
                                     int*                 devInfo)
 {
-    return hipsolverDgetrs(handle,
-                           trans,
-                           n,
-                           nrhs,
-                           const_cast<double*>(A),
-                           lda,
-                           const_cast<int*>(devIpiv),
-                           B,
-                           ldb,
-                           nullptr,
-                           0,
-                           devInfo);
+    return hipsolverDgetrs(handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, nullptr, 0, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnCgetrs(hipsolverHandle_t      handle,
@@ -1497,18 +1279,7 @@ hipsolverStatus_t hipsolverDnCgetrs(hipsolverHandle_t      handle,
                                     int                    ldb,
                                     int*                   devInfo)
 {
-    return hipsolverCgetrs(handle,
-                           trans,
-                           n,
-                           nrhs,
-                           const_cast<hipFloatComplex*>(A),
-                           lda,
-                           const_cast<int*>(devIpiv),
-                           B,
-                           ldb,
-                           nullptr,
-                           0,
-                           devInfo);
+    return hipsolverCgetrs(handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, nullptr, 0, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnZgetrs(hipsolverHandle_t       handle,
@@ -1522,18 +1293,7 @@ hipsolverStatus_t hipsolverDnZgetrs(hipsolverHandle_t       handle,
                                     int                     ldb,
                                     int*                    devInfo)
 {
-    return hipsolverZgetrs(handle,
-                           trans,
-                           n,
-                           nrhs,
-                           const_cast<hipDoubleComplex*>(A),
-                           lda,
-                           const_cast<int*>(devIpiv),
-                           B,
-                           ldb,
-                           nullptr,
-                           0,
-                           devInfo);
+    return hipsolverZgetrs(handle, trans, n, nrhs, A, lda, devIpiv, B, ldb, nullptr, 0, devInfo);
 }
 
 // potrf
@@ -1754,8 +1514,7 @@ hipsolverStatus_t hipsolverDnSpotrs(hipsolverHandle_t   handle,
                                     int                 ldb,
                                     int*                devInfo)
 {
-    return hipsolverSpotrs(
-        handle, uplo, n, nrhs, const_cast<float*>(A), lda, B, ldb, nullptr, 0, devInfo);
+    return hipsolverSpotrs(handle, uplo, n, nrhs, A, lda, B, ldb, nullptr, 0, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnDpotrs(hipsolverHandle_t   handle,
@@ -1768,8 +1527,7 @@ hipsolverStatus_t hipsolverDnDpotrs(hipsolverHandle_t   handle,
                                     int                 ldb,
                                     int*                devInfo)
 {
-    return hipsolverDpotrs(
-        handle, uplo, n, nrhs, const_cast<double*>(A), lda, B, ldb, nullptr, 0, devInfo);
+    return hipsolverDpotrs(handle, uplo, n, nrhs, A, lda, B, ldb, nullptr, 0, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnCpotrs(hipsolverHandle_t      handle,
@@ -1782,8 +1540,7 @@ hipsolverStatus_t hipsolverDnCpotrs(hipsolverHandle_t      handle,
                                     int                    ldb,
                                     int*                   devInfo)
 {
-    return hipsolverCpotrs(
-        handle, uplo, n, nrhs, const_cast<hipFloatComplex*>(A), lda, B, ldb, nullptr, 0, devInfo);
+    return hipsolverCpotrs(handle, uplo, n, nrhs, A, lda, B, ldb, nullptr, 0, devInfo);
 }
 
 hipsolverStatus_t hipsolverDnZpotrs(hipsolverHandle_t       handle,
@@ -1796,8 +1553,7 @@ hipsolverStatus_t hipsolverDnZpotrs(hipsolverHandle_t       handle,
                                     int                     ldb,
                                     int*                    devInfo)
 {
-    return hipsolverZpotrs(
-        handle, uplo, n, nrhs, const_cast<hipDoubleComplex*>(A), lda, B, ldb, nullptr, 0, devInfo);
+    return hipsolverZpotrs(handle, uplo, n, nrhs, A, lda, B, ldb, nullptr, 0, devInfo);
 }
 
 // potrs_batched
@@ -1871,8 +1627,7 @@ hipsolverStatus_t hipsolverDnSsyevd_bufferSize(hipsolverHandle_t   handle,
                                                const float*        W,
                                                int*                lwork)
 {
-    return hipsolverSsyevd_bufferSize(
-        handle, jobz, uplo, n, const_cast<float*>(A), lda, const_cast<float*>(W), lwork);
+    return hipsolverSsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnDsyevd_bufferSize(hipsolverHandle_t   handle,
@@ -1884,8 +1639,7 @@ hipsolverStatus_t hipsolverDnDsyevd_bufferSize(hipsolverHandle_t   handle,
                                                const double*       W,
                                                int*                lwork)
 {
-    return hipsolverDsyevd_bufferSize(
-        handle, jobz, uplo, n, const_cast<double*>(A), lda, const_cast<double*>(W), lwork);
+    return hipsolverDsyevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnCheevd_bufferSize(hipsolverHandle_t      handle,
@@ -1897,8 +1651,7 @@ hipsolverStatus_t hipsolverDnCheevd_bufferSize(hipsolverHandle_t      handle,
                                                const float*           W,
                                                int*                   lwork)
 {
-    return hipsolverCheevd_bufferSize(
-        handle, jobz, uplo, n, const_cast<hipFloatComplex*>(A), lda, const_cast<float*>(W), lwork);
+    return hipsolverCheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnZheevd_bufferSize(hipsolverHandle_t       handle,
@@ -1910,14 +1663,7 @@ hipsolverStatus_t hipsolverDnZheevd_bufferSize(hipsolverHandle_t       handle,
                                                const double*           W,
                                                int*                    lwork)
 {
-    return hipsolverZheevd_bufferSize(handle,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      const_cast<hipDoubleComplex*>(A),
-                                      lda,
-                                      const_cast<double*>(W),
-                                      lwork);
+    return hipsolverZheevd_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnSsyevd(hipsolverHandle_t   handle,
@@ -1987,8 +1733,7 @@ hipsolverStatus_t hipsolverDnSsyevj_bufferSize(hipsolverDnHandle_t  handle,
                                                int*                 lwork,
                                                hipsolverSyevjInfo_t params)
 {
-    return hipsolverSsyevj_bufferSize(
-        handle, jobz, uplo, n, const_cast<float*>(A), lda, const_cast<float*>(W), lwork, params);
+    return hipsolverSsyevj_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params);
 }
 
 hipsolverStatus_t hipsolverDnDsyevj_bufferSize(hipsolverDnHandle_t  handle,
@@ -2001,8 +1746,7 @@ hipsolverStatus_t hipsolverDnDsyevj_bufferSize(hipsolverDnHandle_t  handle,
                                                int*                 lwork,
                                                hipsolverSyevjInfo_t params)
 {
-    return hipsolverDsyevj_bufferSize(
-        handle, jobz, uplo, n, const_cast<double*>(A), lda, const_cast<double*>(W), lwork, params);
+    return hipsolverDsyevj_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params);
 }
 
 hipsolverStatus_t hipsolverDnCheevj_bufferSize(hipsolverDnHandle_t    handle,
@@ -2015,15 +1759,7 @@ hipsolverStatus_t hipsolverDnCheevj_bufferSize(hipsolverDnHandle_t    handle,
                                                int*                   lwork,
                                                hipsolverSyevjInfo_t   params)
 {
-    return hipsolverCheevj_bufferSize(handle,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      const_cast<hipFloatComplex*>(A),
-                                      lda,
-                                      const_cast<float*>(W),
-                                      lwork,
-                                      params);
+    return hipsolverCheevj_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params);
 }
 
 hipsolverStatus_t hipsolverDnZheevj_bufferSize(hipsolverDnHandle_t     handle,
@@ -2036,15 +1772,7 @@ hipsolverStatus_t hipsolverDnZheevj_bufferSize(hipsolverDnHandle_t     handle,
                                                int*                    lwork,
                                                hipsolverSyevjInfo_t    params)
 {
-    return hipsolverZheevj_bufferSize(handle,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      const_cast<hipDoubleComplex*>(A),
-                                      lda,
-                                      const_cast<double*>(W),
-                                      lwork,
-                                      params);
+    return hipsolverZheevj_bufferSize(handle, jobz, uplo, n, A, lda, W, lwork, params);
 }
 
 hipsolverStatus_t hipsolverDnSsyevj(hipsolverDnHandle_t  handle,
@@ -2119,16 +1847,8 @@ hipsolverStatus_t hipsolverDnSsyevjBatched_bufferSize(hipsolverDnHandle_t  handl
                                                       hipsolverSyevjInfo_t params,
                                                       int                  batch_count)
 {
-    return hipsolverSsyevjBatched_bufferSize(handle,
-                                             jobz,
-                                             uplo,
-                                             n,
-                                             const_cast<float*>(A),
-                                             lda,
-                                             const_cast<float*>(W),
-                                             lwork,
-                                             params,
-                                             batch_count);
+    return hipsolverSsyevjBatched_bufferSize(
+        handle, jobz, uplo, n, A, lda, W, lwork, params, batch_count);
 }
 
 hipsolverStatus_t hipsolverDnDsyevjBatched_bufferSize(hipsolverDnHandle_t  handle,
@@ -2142,16 +1862,8 @@ hipsolverStatus_t hipsolverDnDsyevjBatched_bufferSize(hipsolverDnHandle_t  handl
                                                       hipsolverSyevjInfo_t params,
                                                       int                  batch_count)
 {
-    return hipsolverDsyevjBatched_bufferSize(handle,
-                                             jobz,
-                                             uplo,
-                                             n,
-                                             const_cast<double*>(A),
-                                             lda,
-                                             const_cast<double*>(W),
-                                             lwork,
-                                             params,
-                                             batch_count);
+    return hipsolverDsyevjBatched_bufferSize(
+        handle, jobz, uplo, n, A, lda, W, lwork, params, batch_count);
 }
 
 hipsolverStatus_t hipsolverDnCheevjBatched_bufferSize(hipsolverDnHandle_t    handle,
@@ -2165,16 +1877,8 @@ hipsolverStatus_t hipsolverDnCheevjBatched_bufferSize(hipsolverDnHandle_t    han
                                                       hipsolverSyevjInfo_t   params,
                                                       int                    batch_count)
 {
-    return hipsolverCheevjBatched_bufferSize(handle,
-                                             jobz,
-                                             uplo,
-                                             n,
-                                             const_cast<hipFloatComplex*>(A),
-                                             lda,
-                                             const_cast<float*>(W),
-                                             lwork,
-                                             params,
-                                             batch_count);
+    return hipsolverCheevjBatched_bufferSize(
+        handle, jobz, uplo, n, A, lda, W, lwork, params, batch_count);
 }
 
 hipsolverStatus_t hipsolverDnZheevjBatched_bufferSize(hipsolverDnHandle_t     handle,
@@ -2188,16 +1892,8 @@ hipsolverStatus_t hipsolverDnZheevjBatched_bufferSize(hipsolverDnHandle_t     ha
                                                       hipsolverSyevjInfo_t    params,
                                                       int                     batch_count)
 {
-    return hipsolverZheevjBatched_bufferSize(handle,
-                                             jobz,
-                                             uplo,
-                                             n,
-                                             const_cast<hipDoubleComplex*>(A),
-                                             lda,
-                                             const_cast<double*>(W),
-                                             lwork,
-                                             params,
-                                             batch_count);
+    return hipsolverZheevjBatched_bufferSize(
+        handle, jobz, uplo, n, A, lda, W, lwork, params, batch_count);
 }
 
 hipsolverStatus_t hipsolverDnSsyevjBatched(hipsolverDnHandle_t  handle,
@@ -2281,17 +1977,7 @@ hipsolverStatus_t hipsolverDnSsygvd_bufferSize(hipsolverHandle_t   handle,
                                                const float*        W,
                                                int*                lwork)
 {
-    return hipsolverSsygvd_bufferSize(handle,
-                                      itype,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      const_cast<float*>(A),
-                                      lda,
-                                      const_cast<float*>(B),
-                                      ldb,
-                                      const_cast<float*>(W),
-                                      lwork);
+    return hipsolverSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnDsygvd_bufferSize(hipsolverHandle_t   handle,
@@ -2306,17 +1992,7 @@ hipsolverStatus_t hipsolverDnDsygvd_bufferSize(hipsolverHandle_t   handle,
                                                const double*       W,
                                                int*                lwork)
 {
-    return hipsolverDsygvd_bufferSize(handle,
-                                      itype,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      const_cast<double*>(A),
-                                      lda,
-                                      const_cast<double*>(B),
-                                      ldb,
-                                      const_cast<double*>(W),
-                                      lwork);
+    return hipsolverDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnChegvd_bufferSize(hipsolverHandle_t      handle,
@@ -2331,17 +2007,7 @@ hipsolverStatus_t hipsolverDnChegvd_bufferSize(hipsolverHandle_t      handle,
                                                const float*           W,
                                                int*                   lwork)
 {
-    return hipsolverChegvd_bufferSize(handle,
-                                      itype,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      const_cast<hipFloatComplex*>(A),
-                                      lda,
-                                      const_cast<hipFloatComplex*>(B),
-                                      ldb,
-                                      const_cast<float*>(W),
-                                      lwork);
+    return hipsolverChegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnZhegvd_bufferSize(hipsolverHandle_t       handle,
@@ -2356,17 +2022,7 @@ hipsolverStatus_t hipsolverDnZhegvd_bufferSize(hipsolverHandle_t       handle,
                                                const double*           W,
                                                int*                    lwork)
 {
-    return hipsolverZhegvd_bufferSize(handle,
-                                      itype,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      const_cast<hipDoubleComplex*>(A),
-                                      lda,
-                                      const_cast<hipDoubleComplex*>(B),
-                                      ldb,
-                                      const_cast<double*>(W),
-                                      lwork);
+    return hipsolverZhegvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
 }
 
 hipsolverStatus_t hipsolverDnSsygvd(hipsolverHandle_t   handle,
@@ -2451,18 +2107,8 @@ hipsolverStatus_t hipsolverDnSsygvj_bufferSize(hipsolverDnHandle_t  handle,
                                                int*                 lwork,
                                                hipsolverSyevjInfo_t params)
 {
-    return hipsolverSsygvj_bufferSize(handle,
-                                      itype,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      const_cast<float*>(A),
-                                      lda,
-                                      const_cast<float*>(B),
-                                      ldb,
-                                      const_cast<float*>(W),
-                                      lwork,
-                                      params);
+    return hipsolverSsygvj_bufferSize(
+        handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
 }
 
 hipsolverStatus_t hipsolverDnDsygvj_bufferSize(hipsolverDnHandle_t  handle,
@@ -2478,18 +2124,8 @@ hipsolverStatus_t hipsolverDnDsygvj_bufferSize(hipsolverDnHandle_t  handle,
                                                int*                 lwork,
                                                hipsolverSyevjInfo_t params)
 {
-    return hipsolverDsygvj_bufferSize(handle,
-                                      itype,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      const_cast<double*>(A),
-                                      lda,
-                                      const_cast<double*>(B),
-                                      ldb,
-                                      const_cast<double*>(W),
-                                      lwork,
-                                      params);
+    return hipsolverDsygvj_bufferSize(
+        handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
 }
 
 hipsolverStatus_t hipsolverDnChegvj_bufferSize(hipsolverDnHandle_t    handle,
@@ -2505,18 +2141,8 @@ hipsolverStatus_t hipsolverDnChegvj_bufferSize(hipsolverDnHandle_t    handle,
                                                int*                   lwork,
                                                hipsolverSyevjInfo_t   params)
 {
-    return hipsolverChegvj_bufferSize(handle,
-                                      itype,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      const_cast<hipFloatComplex*>(A),
-                                      lda,
-                                      const_cast<hipFloatComplex*>(B),
-                                      ldb,
-                                      const_cast<float*>(W),
-                                      lwork,
-                                      params);
+    return hipsolverChegvj_bufferSize(
+        handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
 }
 
 hipsolverStatus_t hipsolverDnZhegvj_bufferSize(hipsolverDnHandle_t     handle,
@@ -2532,18 +2158,8 @@ hipsolverStatus_t hipsolverDnZhegvj_bufferSize(hipsolverDnHandle_t     handle,
                                                int*                    lwork,
                                                hipsolverSyevjInfo_t    params)
 {
-    return hipsolverZhegvj_bufferSize(handle,
-                                      itype,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      const_cast<hipDoubleComplex*>(A),
-                                      lda,
-                                      const_cast<hipDoubleComplex*>(B),
-                                      ldb,
-                                      const_cast<double*>(W),
-                                      lwork,
-                                      params);
+    return hipsolverZhegvj_bufferSize(
+        handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork, params);
 }
 
 hipsolverStatus_t hipsolverDnSsygvj(hipsolverDnHandle_t  handle,
@@ -2633,15 +2249,7 @@ hipsolverStatus_t hipsolverDnSsytrd_bufferSize(hipsolverHandle_t   handle,
                                                const float*        tau,
                                                int*                lwork)
 {
-    return hipsolverSsytrd_bufferSize(handle,
-                                      uplo,
-                                      n,
-                                      const_cast<float*>(A),
-                                      lda,
-                                      const_cast<float*>(D),
-                                      const_cast<float*>(E),
-                                      const_cast<float*>(tau),
-                                      lwork);
+    return hipsolverSsytrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnDsytrd_bufferSize(hipsolverHandle_t   handle,
@@ -2654,15 +2262,7 @@ hipsolverStatus_t hipsolverDnDsytrd_bufferSize(hipsolverHandle_t   handle,
                                                const double*       tau,
                                                int*                lwork)
 {
-    return hipsolverDsytrd_bufferSize(handle,
-                                      uplo,
-                                      n,
-                                      const_cast<double*>(A),
-                                      lda,
-                                      const_cast<double*>(D),
-                                      const_cast<double*>(E),
-                                      const_cast<double*>(tau),
-                                      lwork);
+    return hipsolverDsytrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnChetrd_bufferSize(hipsolverHandle_t      handle,
@@ -2675,15 +2275,7 @@ hipsolverStatus_t hipsolverDnChetrd_bufferSize(hipsolverHandle_t      handle,
                                                const hipFloatComplex* tau,
                                                int*                   lwork)
 {
-    return hipsolverChetrd_bufferSize(handle,
-                                      uplo,
-                                      n,
-                                      const_cast<hipFloatComplex*>(A),
-                                      lda,
-                                      const_cast<float*>(D),
-                                      const_cast<float*>(E),
-                                      const_cast<hipFloatComplex*>(tau),
-                                      lwork);
+    return hipsolverChetrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnZhetrd_bufferSize(hipsolverHandle_t       handle,
@@ -2696,15 +2288,7 @@ hipsolverStatus_t hipsolverDnZhetrd_bufferSize(hipsolverHandle_t       handle,
                                                const hipDoubleComplex* tau,
                                                int*                    lwork)
 {
-    return hipsolverZhetrd_bufferSize(handle,
-                                      uplo,
-                                      n,
-                                      const_cast<hipDoubleComplex*>(A),
-                                      lda,
-                                      const_cast<double*>(D),
-                                      const_cast<double*>(E),
-                                      const_cast<hipDoubleComplex*>(tau),
-                                      lwork);
+    return hipsolverZhetrd_bufferSize(handle, uplo, n, A, lda, D, E, tau, lwork);
 }
 
 hipsolverStatus_t hipsolverDnSsytrd(hipsolverHandle_t   handle,

@@ -431,9 +431,9 @@ hipsolverStatus_t hipsolverSorgbr_bufferSize(hipsolverHandle_t   handle,
                                              int                 m,
                                              int                 n,
                                              int                 k,
-                                             float*              A,
+                                             const float*        A,
                                              int                 lda,
-                                             float*              tau,
+                                             const float*        tau,
                                              int*                lwork)
 try
 {
@@ -450,9 +450,9 @@ hipsolverStatus_t hipsolverDorgbr_bufferSize(hipsolverHandle_t   handle,
                                              int                 m,
                                              int                 n,
                                              int                 k,
-                                             double*             A,
+                                             const double*       A,
                                              int                 lda,
-                                             double*             tau,
+                                             const double*       tau,
                                              int*                lwork)
 try
 {
@@ -464,15 +464,15 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCungbr_bufferSize(hipsolverHandle_t   handle,
-                                             hipsolverSideMode_t side,
-                                             int                 m,
-                                             int                 n,
-                                             int                 k,
-                                             hipFloatComplex*    A,
-                                             int                 lda,
-                                             hipFloatComplex*    tau,
-                                             int*                lwork)
+hipsolverStatus_t hipsolverCungbr_bufferSize(hipsolverHandle_t      handle,
+                                             hipsolverSideMode_t    side,
+                                             int                    m,
+                                             int                    n,
+                                             int                    k,
+                                             const hipFloatComplex* A,
+                                             int                    lda,
+                                             const hipFloatComplex* tau,
+                                             int*                   lwork)
 try
 {
     return cuda2hip_status(cusolverDnCungbr_bufferSize((cusolverDnHandle_t)handle,
@@ -490,15 +490,15 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZungbr_bufferSize(hipsolverHandle_t   handle,
-                                             hipsolverSideMode_t side,
-                                             int                 m,
-                                             int                 n,
-                                             int                 k,
-                                             hipDoubleComplex*   A,
-                                             int                 lda,
-                                             hipDoubleComplex*   tau,
-                                             int*                lwork)
+hipsolverStatus_t hipsolverZungbr_bufferSize(hipsolverHandle_t       handle,
+                                             hipsolverSideMode_t     side,
+                                             int                     m,
+                                             int                     n,
+                                             int                     k,
+                                             const hipDoubleComplex* A,
+                                             int                     lda,
+                                             const hipDoubleComplex* tau,
+                                             int*                    lwork)
 try
 {
     return cuda2hip_status(cusolverDnZungbr_bufferSize((cusolverDnHandle_t)handle,
@@ -523,7 +523,7 @@ hipsolverStatus_t hipsolverSorgbr(hipsolverHandle_t   handle,
                                   int                 k,
                                   float*              A,
                                   int                 lda,
-                                  float*              tau,
+                                  const float*        tau,
                                   float*              work,
                                   int                 lwork,
                                   int*                devInfo)
@@ -553,7 +553,7 @@ hipsolverStatus_t hipsolverDorgbr(hipsolverHandle_t   handle,
                                   int                 k,
                                   double*             A,
                                   int                 lda,
-                                  double*             tau,
+                                  const double*       tau,
                                   double*             work,
                                   int                 lwork,
                                   int*                devInfo)
@@ -576,17 +576,17 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCungbr(hipsolverHandle_t   handle,
-                                  hipsolverSideMode_t side,
-                                  int                 m,
-                                  int                 n,
-                                  int                 k,
-                                  hipFloatComplex*    A,
-                                  int                 lda,
-                                  hipFloatComplex*    tau,
-                                  hipFloatComplex*    work,
-                                  int                 lwork,
-                                  int*                devInfo)
+hipsolverStatus_t hipsolverCungbr(hipsolverHandle_t      handle,
+                                  hipsolverSideMode_t    side,
+                                  int                    m,
+                                  int                    n,
+                                  int                    k,
+                                  hipFloatComplex*       A,
+                                  int                    lda,
+                                  const hipFloatComplex* tau,
+                                  hipFloatComplex*       work,
+                                  int                    lwork,
+                                  int*                   devInfo)
 try
 {
     return cuda2hip_status(cusolverDnCungbr((cusolverDnHandle_t)handle,
@@ -606,17 +606,17 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZungbr(hipsolverHandle_t   handle,
-                                  hipsolverSideMode_t side,
-                                  int                 m,
-                                  int                 n,
-                                  int                 k,
-                                  hipDoubleComplex*   A,
-                                  int                 lda,
-                                  hipDoubleComplex*   tau,
-                                  hipDoubleComplex*   work,
-                                  int                 lwork,
-                                  int*                devInfo)
+hipsolverStatus_t hipsolverZungbr(hipsolverHandle_t       handle,
+                                  hipsolverSideMode_t     side,
+                                  int                     m,
+                                  int                     n,
+                                  int                     k,
+                                  hipDoubleComplex*       A,
+                                  int                     lda,
+                                  const hipDoubleComplex* tau,
+                                  hipDoubleComplex*       work,
+                                  int                     lwork,
+                                  int*                    devInfo)
 try
 {
     return cuda2hip_status(cusolverDnZungbr((cusolverDnHandle_t)handle,
@@ -637,8 +637,14 @@ catch(...)
 }
 
 /******************** ORGQR/UNGQR ********************/
-hipsolverStatus_t hipsolverSorgqr_bufferSize(
-    hipsolverHandle_t handle, int m, int n, int k, float* A, int lda, float* tau, int* lwork)
+hipsolverStatus_t hipsolverSorgqr_bufferSize(hipsolverHandle_t handle,
+                                             int               m,
+                                             int               n,
+                                             int               k,
+                                             const float*      A,
+                                             int               lda,
+                                             const float*      tau,
+                                             int*              lwork)
 try
 {
     return cuda2hip_status(
@@ -649,8 +655,14 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDorgqr_bufferSize(
-    hipsolverHandle_t handle, int m, int n, int k, double* A, int lda, double* tau, int* lwork)
+hipsolverStatus_t hipsolverDorgqr_bufferSize(hipsolverHandle_t handle,
+                                             int               m,
+                                             int               n,
+                                             int               k,
+                                             const double*     A,
+                                             int               lda,
+                                             const double*     tau,
+                                             int*              lwork)
 try
 {
     return cuda2hip_status(
@@ -661,14 +673,14 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCungqr_bufferSize(hipsolverHandle_t handle,
-                                             int               m,
-                                             int               n,
-                                             int               k,
-                                             hipFloatComplex*  A,
-                                             int               lda,
-                                             hipFloatComplex*  tau,
-                                             int*              lwork)
+hipsolverStatus_t hipsolverCungqr_bufferSize(hipsolverHandle_t      handle,
+                                             int                    m,
+                                             int                    n,
+                                             int                    k,
+                                             const hipFloatComplex* A,
+                                             int                    lda,
+                                             const hipFloatComplex* tau,
+                                             int*                   lwork)
 try
 {
     return cuda2hip_status(cusolverDnCungqr_bufferSize(
@@ -679,14 +691,14 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZungqr_bufferSize(hipsolverHandle_t handle,
-                                             int               m,
-                                             int               n,
-                                             int               k,
-                                             hipDoubleComplex* A,
-                                             int               lda,
-                                             hipDoubleComplex* tau,
-                                             int*              lwork)
+hipsolverStatus_t hipsolverZungqr_bufferSize(hipsolverHandle_t       handle,
+                                             int                     m,
+                                             int                     n,
+                                             int                     k,
+                                             const hipDoubleComplex* A,
+                                             int                     lda,
+                                             const hipDoubleComplex* tau,
+                                             int*                    lwork)
 try
 {
     return cuda2hip_status(cusolverDnZungqr_bufferSize((cusolverDnHandle_t)handle,
@@ -709,7 +721,7 @@ hipsolverStatus_t hipsolverSorgqr(hipsolverHandle_t handle,
                                   int               k,
                                   float*            A,
                                   int               lda,
-                                  float*            tau,
+                                  const float*      tau,
                                   float*            work,
                                   int               lwork,
                                   int*              devInfo)
@@ -729,7 +741,7 @@ hipsolverStatus_t hipsolverDorgqr(hipsolverHandle_t handle,
                                   int               k,
                                   double*           A,
                                   int               lda,
-                                  double*           tau,
+                                  const double*     tau,
                                   double*           work,
                                   int               lwork,
                                   int*              devInfo)
@@ -743,16 +755,16 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCungqr(hipsolverHandle_t handle,
-                                  int               m,
-                                  int               n,
-                                  int               k,
-                                  hipFloatComplex*  A,
-                                  int               lda,
-                                  hipFloatComplex*  tau,
-                                  hipFloatComplex*  work,
-                                  int               lwork,
-                                  int*              devInfo)
+hipsolverStatus_t hipsolverCungqr(hipsolverHandle_t      handle,
+                                  int                    m,
+                                  int                    n,
+                                  int                    k,
+                                  hipFloatComplex*       A,
+                                  int                    lda,
+                                  const hipFloatComplex* tau,
+                                  hipFloatComplex*       work,
+                                  int                    lwork,
+                                  int*                   devInfo)
 try
 {
     return cuda2hip_status(cusolverDnCungqr((cusolverDnHandle_t)handle,
@@ -771,16 +783,16 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZungqr(hipsolverHandle_t handle,
-                                  int               m,
-                                  int               n,
-                                  int               k,
-                                  hipDoubleComplex* A,
-                                  int               lda,
-                                  hipDoubleComplex* tau,
-                                  hipDoubleComplex* work,
-                                  int               lwork,
-                                  int*              devInfo)
+hipsolverStatus_t hipsolverZungqr(hipsolverHandle_t       handle,
+                                  int                     m,
+                                  int                     n,
+                                  int                     k,
+                                  hipDoubleComplex*       A,
+                                  int                     lda,
+                                  const hipDoubleComplex* tau,
+                                  hipDoubleComplex*       work,
+                                  int                     lwork,
+                                  int*                    devInfo)
 try
 {
     return cuda2hip_status(cusolverDnZungqr((cusolverDnHandle_t)handle,
@@ -803,9 +815,9 @@ catch(...)
 hipsolverStatus_t hipsolverSorgtr_bufferSize(hipsolverHandle_t   handle,
                                              hipsolverFillMode_t uplo,
                                              int                 n,
-                                             float*              A,
+                                             const float*        A,
                                              int                 lda,
-                                             float*              tau,
+                                             const float*        tau,
                                              int*                lwork)
 try
 {
@@ -820,9 +832,9 @@ catch(...)
 hipsolverStatus_t hipsolverDorgtr_bufferSize(hipsolverHandle_t   handle,
                                              hipsolverFillMode_t uplo,
                                              int                 n,
-                                             double*             A,
+                                             const double*       A,
                                              int                 lda,
-                                             double*             tau,
+                                             const double*       tau,
                                              int*                lwork)
 try
 {
@@ -834,13 +846,13 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCungtr_bufferSize(hipsolverHandle_t   handle,
-                                             hipsolverFillMode_t uplo,
-                                             int                 n,
-                                             hipFloatComplex*    A,
-                                             int                 lda,
-                                             hipFloatComplex*    tau,
-                                             int*                lwork)
+hipsolverStatus_t hipsolverCungtr_bufferSize(hipsolverHandle_t      handle,
+                                             hipsolverFillMode_t    uplo,
+                                             int                    n,
+                                             const hipFloatComplex* A,
+                                             int                    lda,
+                                             const hipFloatComplex* tau,
+                                             int*                   lwork)
 try
 {
     return cuda2hip_status(cusolverDnCungtr_bufferSize((cusolverDnHandle_t)handle,
@@ -856,13 +868,13 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZungtr_bufferSize(hipsolverHandle_t   handle,
-                                             hipsolverFillMode_t uplo,
-                                             int                 n,
-                                             hipDoubleComplex*   A,
-                                             int                 lda,
-                                             hipDoubleComplex*   tau,
-                                             int*                lwork)
+hipsolverStatus_t hipsolverZungtr_bufferSize(hipsolverHandle_t       handle,
+                                             hipsolverFillMode_t     uplo,
+                                             int                     n,
+                                             const hipDoubleComplex* A,
+                                             int                     lda,
+                                             const hipDoubleComplex* tau,
+                                             int*                    lwork)
 try
 {
     return cuda2hip_status(cusolverDnZungtr_bufferSize((cusolverDnHandle_t)handle,
@@ -883,7 +895,7 @@ hipsolverStatus_t hipsolverSorgtr(hipsolverHandle_t   handle,
                                   int                 n,
                                   float*              A,
                                   int                 lda,
-                                  float*              tau,
+                                  const float*        tau,
                                   float*              work,
                                   int                 lwork,
                                   int*                devInfo)
@@ -902,7 +914,7 @@ hipsolverStatus_t hipsolverDorgtr(hipsolverHandle_t   handle,
                                   int                 n,
                                   double*             A,
                                   int                 lda,
-                                  double*             tau,
+                                  const double*       tau,
                                   double*             work,
                                   int                 lwork,
                                   int*                devInfo)
@@ -916,15 +928,15 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCungtr(hipsolverHandle_t   handle,
-                                  hipsolverFillMode_t uplo,
-                                  int                 n,
-                                  hipFloatComplex*    A,
-                                  int                 lda,
-                                  hipFloatComplex*    tau,
-                                  hipFloatComplex*    work,
-                                  int                 lwork,
-                                  int*                devInfo)
+hipsolverStatus_t hipsolverCungtr(hipsolverHandle_t      handle,
+                                  hipsolverFillMode_t    uplo,
+                                  int                    n,
+                                  hipFloatComplex*       A,
+                                  int                    lda,
+                                  const hipFloatComplex* tau,
+                                  hipFloatComplex*       work,
+                                  int                    lwork,
+                                  int*                   devInfo)
 try
 {
     return cuda2hip_status(cusolverDnCungtr((cusolverDnHandle_t)handle,
@@ -942,15 +954,15 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZungtr(hipsolverHandle_t   handle,
-                                  hipsolverFillMode_t uplo,
-                                  int                 n,
-                                  hipDoubleComplex*   A,
-                                  int                 lda,
-                                  hipDoubleComplex*   tau,
-                                  hipDoubleComplex*   work,
-                                  int                 lwork,
-                                  int*                devInfo)
+hipsolverStatus_t hipsolverZungtr(hipsolverHandle_t       handle,
+                                  hipsolverFillMode_t     uplo,
+                                  int                     n,
+                                  hipDoubleComplex*       A,
+                                  int                     lda,
+                                  const hipDoubleComplex* tau,
+                                  hipDoubleComplex*       work,
+                                  int                     lwork,
+                                  int*                    devInfo)
 try
 {
     return cuda2hip_status(cusolverDnZungtr((cusolverDnHandle_t)handle,
@@ -975,10 +987,10 @@ hipsolverStatus_t hipsolverSormqr_bufferSize(hipsolverHandle_t    handle,
                                              int                  m,
                                              int                  n,
                                              int                  k,
-                                             float*               A,
+                                             const float*         A,
                                              int                  lda,
-                                             float*               tau,
-                                             float*               C,
+                                             const float*         tau,
+                                             const float*         C,
                                              int                  ldc,
                                              int*                 lwork)
 try
@@ -1007,10 +1019,10 @@ hipsolverStatus_t hipsolverDormqr_bufferSize(hipsolverHandle_t    handle,
                                              int                  m,
                                              int                  n,
                                              int                  k,
-                                             double*              A,
+                                             const double*        A,
                                              int                  lda,
-                                             double*              tau,
-                                             double*              C,
+                                             const double*        tau,
+                                             const double*        C,
                                              int                  ldc,
                                              int*                 lwork)
 try
@@ -1033,18 +1045,18 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCunmqr_bufferSize(hipsolverHandle_t    handle,
-                                             hipsolverSideMode_t  side,
-                                             hipsolverOperation_t trans,
-                                             int                  m,
-                                             int                  n,
-                                             int                  k,
-                                             hipFloatComplex*     A,
-                                             int                  lda,
-                                             hipFloatComplex*     tau,
-                                             hipFloatComplex*     C,
-                                             int                  ldc,
-                                             int*                 lwork)
+hipsolverStatus_t hipsolverCunmqr_bufferSize(hipsolverHandle_t      handle,
+                                             hipsolverSideMode_t    side,
+                                             hipsolverOperation_t   trans,
+                                             int                    m,
+                                             int                    n,
+                                             int                    k,
+                                             const hipFloatComplex* A,
+                                             int                    lda,
+                                             const hipFloatComplex* tau,
+                                             const hipFloatComplex* C,
+                                             int                    ldc,
+                                             int*                   lwork)
 try
 {
     return cuda2hip_status(cusolverDnCunmqr_bufferSize((cusolverDnHandle_t)handle,
@@ -1065,18 +1077,18 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZunmqr_bufferSize(hipsolverHandle_t    handle,
-                                             hipsolverSideMode_t  side,
-                                             hipsolverOperation_t trans,
-                                             int                  m,
-                                             int                  n,
-                                             int                  k,
-                                             hipDoubleComplex*    A,
-                                             int                  lda,
-                                             hipDoubleComplex*    tau,
-                                             hipDoubleComplex*    C,
-                                             int                  ldc,
-                                             int*                 lwork)
+hipsolverStatus_t hipsolverZunmqr_bufferSize(hipsolverHandle_t       handle,
+                                             hipsolverSideMode_t     side,
+                                             hipsolverOperation_t    trans,
+                                             int                     m,
+                                             int                     n,
+                                             int                     k,
+                                             const hipDoubleComplex* A,
+                                             int                     lda,
+                                             const hipDoubleComplex* tau,
+                                             const hipDoubleComplex* C,
+                                             int                     ldc,
+                                             int*                    lwork)
 try
 {
     return cuda2hip_status(cusolverDnZunmqr_bufferSize((cusolverDnHandle_t)handle,
@@ -1103,9 +1115,9 @@ hipsolverStatus_t hipsolverSormqr(hipsolverHandle_t    handle,
                                   int                  m,
                                   int                  n,
                                   int                  k,
-                                  float*               A,
+                                  const float*         A,
                                   int                  lda,
-                                  float*               tau,
+                                  const float*         tau,
                                   float*               C,
                                   int                  ldc,
                                   float*               work,
@@ -1139,9 +1151,9 @@ hipsolverStatus_t hipsolverDormqr(hipsolverHandle_t    handle,
                                   int                  m,
                                   int                  n,
                                   int                  k,
-                                  double*              A,
+                                  const double*        A,
                                   int                  lda,
-                                  double*              tau,
+                                  const double*        tau,
                                   double*              C,
                                   int                  ldc,
                                   double*              work,
@@ -1169,20 +1181,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCunmqr(hipsolverHandle_t    handle,
-                                  hipsolverSideMode_t  side,
-                                  hipsolverOperation_t trans,
-                                  int                  m,
-                                  int                  n,
-                                  int                  k,
-                                  hipFloatComplex*     A,
-                                  int                  lda,
-                                  hipFloatComplex*     tau,
-                                  hipFloatComplex*     C,
-                                  int                  ldc,
-                                  hipFloatComplex*     work,
-                                  int                  lwork,
-                                  int*                 devInfo)
+hipsolverStatus_t hipsolverCunmqr(hipsolverHandle_t      handle,
+                                  hipsolverSideMode_t    side,
+                                  hipsolverOperation_t   trans,
+                                  int                    m,
+                                  int                    n,
+                                  int                    k,
+                                  const hipFloatComplex* A,
+                                  int                    lda,
+                                  const hipFloatComplex* tau,
+                                  hipFloatComplex*       C,
+                                  int                    ldc,
+                                  hipFloatComplex*       work,
+                                  int                    lwork,
+                                  int*                   devInfo)
 try
 {
     return cuda2hip_status(cusolverDnCunmqr((cusolverDnHandle_t)handle,
@@ -1205,20 +1217,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZunmqr(hipsolverHandle_t    handle,
-                                  hipsolverSideMode_t  side,
-                                  hipsolverOperation_t trans,
-                                  int                  m,
-                                  int                  n,
-                                  int                  k,
-                                  hipDoubleComplex*    A,
-                                  int                  lda,
-                                  hipDoubleComplex*    tau,
-                                  hipDoubleComplex*    C,
-                                  int                  ldc,
-                                  hipDoubleComplex*    work,
-                                  int                  lwork,
-                                  int*                 devInfo)
+hipsolverStatus_t hipsolverZunmqr(hipsolverHandle_t       handle,
+                                  hipsolverSideMode_t     side,
+                                  hipsolverOperation_t    trans,
+                                  int                     m,
+                                  int                     n,
+                                  int                     k,
+                                  const hipDoubleComplex* A,
+                                  int                     lda,
+                                  const hipDoubleComplex* tau,
+                                  hipDoubleComplex*       C,
+                                  int                     ldc,
+                                  hipDoubleComplex*       work,
+                                  int                     lwork,
+                                  int*                    devInfo)
 try
 {
     return cuda2hip_status(cusolverDnZunmqr((cusolverDnHandle_t)handle,
@@ -1248,10 +1260,10 @@ hipsolverStatus_t hipsolverSormtr_bufferSize(hipsolverHandle_t    handle,
                                              hipsolverOperation_t trans,
                                              int                  m,
                                              int                  n,
-                                             float*               A,
+                                             const float*         A,
                                              int                  lda,
-                                             float*               tau,
-                                             float*               C,
+                                             const float*         tau,
+                                             const float*         C,
                                              int                  ldc,
                                              int*                 lwork)
 try
@@ -1280,10 +1292,10 @@ hipsolverStatus_t hipsolverDormtr_bufferSize(hipsolverHandle_t    handle,
                                              hipsolverOperation_t trans,
                                              int                  m,
                                              int                  n,
-                                             double*              A,
+                                             const double*        A,
                                              int                  lda,
-                                             double*              tau,
-                                             double*              C,
+                                             const double*        tau,
+                                             const double*        C,
                                              int                  ldc,
                                              int*                 lwork)
 try
@@ -1306,18 +1318,18 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCunmtr_bufferSize(hipsolverHandle_t    handle,
-                                             hipsolverSideMode_t  side,
-                                             hipsolverFillMode_t  uplo,
-                                             hipsolverOperation_t trans,
-                                             int                  m,
-                                             int                  n,
-                                             hipFloatComplex*     A,
-                                             int                  lda,
-                                             hipFloatComplex*     tau,
-                                             hipFloatComplex*     C,
-                                             int                  ldc,
-                                             int*                 lwork)
+hipsolverStatus_t hipsolverCunmtr_bufferSize(hipsolverHandle_t      handle,
+                                             hipsolverSideMode_t    side,
+                                             hipsolverFillMode_t    uplo,
+                                             hipsolverOperation_t   trans,
+                                             int                    m,
+                                             int                    n,
+                                             const hipFloatComplex* A,
+                                             int                    lda,
+                                             const hipFloatComplex* tau,
+                                             const hipFloatComplex* C,
+                                             int                    ldc,
+                                             int*                   lwork)
 try
 {
     return cuda2hip_status(cusolverDnCunmtr_bufferSize((cusolverDnHandle_t)handle,
@@ -1338,18 +1350,18 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZunmtr_bufferSize(hipsolverHandle_t    handle,
-                                             hipsolverSideMode_t  side,
-                                             hipsolverFillMode_t  uplo,
-                                             hipsolverOperation_t trans,
-                                             int                  m,
-                                             int                  n,
-                                             hipDoubleComplex*    A,
-                                             int                  lda,
-                                             hipDoubleComplex*    tau,
-                                             hipDoubleComplex*    C,
-                                             int                  ldc,
-                                             int*                 lwork)
+hipsolverStatus_t hipsolverZunmtr_bufferSize(hipsolverHandle_t       handle,
+                                             hipsolverSideMode_t     side,
+                                             hipsolverFillMode_t     uplo,
+                                             hipsolverOperation_t    trans,
+                                             int                     m,
+                                             int                     n,
+                                             const hipDoubleComplex* A,
+                                             int                     lda,
+                                             const hipDoubleComplex* tau,
+                                             const hipDoubleComplex* C,
+                                             int                     ldc,
+                                             int*                    lwork)
 try
 {
     return cuda2hip_status(cusolverDnZunmtr_bufferSize((cusolverDnHandle_t)handle,
@@ -3251,10 +3263,10 @@ hipsolverStatus_t hipsolverSgetrs_bufferSize(hipsolverHandle_t    handle,
                                              hipsolverOperation_t trans,
                                              int                  n,
                                              int                  nrhs,
-                                             float*               A,
+                                             const float*         A,
                                              int                  lda,
-                                             int*                 devIpiv,
-                                             float*               B,
+                                             const int*           devIpiv,
+                                             const float*         B,
                                              int                  ldb,
                                              int*                 lwork)
 try
@@ -3271,10 +3283,10 @@ hipsolverStatus_t hipsolverDgetrs_bufferSize(hipsolverHandle_t    handle,
                                              hipsolverOperation_t trans,
                                              int                  n,
                                              int                  nrhs,
-                                             double*              A,
+                                             const double*        A,
                                              int                  lda,
-                                             int*                 devIpiv,
-                                             double*              B,
+                                             const int*           devIpiv,
+                                             const double*        B,
                                              int                  ldb,
                                              int*                 lwork)
 try
@@ -3287,16 +3299,16 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCgetrs_bufferSize(hipsolverHandle_t    handle,
-                                             hipsolverOperation_t trans,
-                                             int                  n,
-                                             int                  nrhs,
-                                             hipFloatComplex*     A,
-                                             int                  lda,
-                                             int*                 devIpiv,
-                                             hipFloatComplex*     B,
-                                             int                  ldb,
-                                             int*                 lwork)
+hipsolverStatus_t hipsolverCgetrs_bufferSize(hipsolverHandle_t      handle,
+                                             hipsolverOperation_t   trans,
+                                             int                    n,
+                                             int                    nrhs,
+                                             const hipFloatComplex* A,
+                                             int                    lda,
+                                             const int*             devIpiv,
+                                             const hipFloatComplex* B,
+                                             int                    ldb,
+                                             int*                   lwork)
 try
 {
     *lwork = 0;
@@ -3307,16 +3319,16 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZgetrs_bufferSize(hipsolverHandle_t    handle,
-                                             hipsolverOperation_t trans,
-                                             int                  n,
-                                             int                  nrhs,
-                                             hipDoubleComplex*    A,
-                                             int                  lda,
-                                             int*                 devIpiv,
-                                             hipDoubleComplex*    B,
-                                             int                  ldb,
-                                             int*                 lwork)
+hipsolverStatus_t hipsolverZgetrs_bufferSize(hipsolverHandle_t       handle,
+                                             hipsolverOperation_t    trans,
+                                             int                     n,
+                                             int                     nrhs,
+                                             const hipDoubleComplex* A,
+                                             int                     lda,
+                                             const int*              devIpiv,
+                                             const hipDoubleComplex* B,
+                                             int                     ldb,
+                                             int*                    lwork)
 try
 {
     *lwork = 0;
@@ -3331,9 +3343,9 @@ hipsolverStatus_t hipsolverSgetrs(hipsolverHandle_t    handle,
                                   hipsolverOperation_t trans,
                                   int                  n,
                                   int                  nrhs,
-                                  float*               A,
+                                  const float*         A,
                                   int                  lda,
-                                  int*                 devIpiv,
+                                  const int*           devIpiv,
                                   float*               B,
                                   int                  ldb,
                                   float*               work,
@@ -3361,9 +3373,9 @@ hipsolverStatus_t hipsolverDgetrs(hipsolverHandle_t    handle,
                                   hipsolverOperation_t trans,
                                   int                  n,
                                   int                  nrhs,
-                                  double*              A,
+                                  const double*        A,
                                   int                  lda,
-                                  int*                 devIpiv,
+                                  const int*           devIpiv,
                                   double*              B,
                                   int                  ldb,
                                   double*              work,
@@ -3387,18 +3399,18 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCgetrs(hipsolverHandle_t    handle,
-                                  hipsolverOperation_t trans,
-                                  int                  n,
-                                  int                  nrhs,
-                                  hipFloatComplex*     A,
-                                  int                  lda,
-                                  int*                 devIpiv,
-                                  hipFloatComplex*     B,
-                                  int                  ldb,
-                                  hipFloatComplex*     work,
-                                  int                  lwork,
-                                  int*                 devInfo)
+hipsolverStatus_t hipsolverCgetrs(hipsolverHandle_t      handle,
+                                  hipsolverOperation_t   trans,
+                                  int                    n,
+                                  int                    nrhs,
+                                  const hipFloatComplex* A,
+                                  int                    lda,
+                                  const int*             devIpiv,
+                                  hipFloatComplex*       B,
+                                  int                    ldb,
+                                  hipFloatComplex*       work,
+                                  int                    lwork,
+                                  int*                   devInfo)
 try
 {
     return cuda2hip_status(cusolverDnCgetrs((cusolverDnHandle_t)handle,
@@ -3417,18 +3429,18 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t    handle,
-                                  hipsolverOperation_t trans,
-                                  int                  n,
-                                  int                  nrhs,
-                                  hipDoubleComplex*    A,
-                                  int                  lda,
-                                  int*                 devIpiv,
-                                  hipDoubleComplex*    B,
-                                  int                  ldb,
-                                  hipDoubleComplex*    work,
-                                  int                  lwork,
-                                  int*                 devInfo)
+hipsolverStatus_t hipsolverZgetrs(hipsolverHandle_t       handle,
+                                  hipsolverOperation_t    trans,
+                                  int                     n,
+                                  int                     nrhs,
+                                  const hipDoubleComplex* A,
+                                  int                     lda,
+                                  const int*              devIpiv,
+                                  hipDoubleComplex*       B,
+                                  int                     ldb,
+                                  hipDoubleComplex*       work,
+                                  int                     lwork,
+                                  int*                    devInfo)
 try
 {
     return cuda2hip_status(cusolverDnZgetrs((cusolverDnHandle_t)handle,
@@ -3889,9 +3901,9 @@ hipsolverStatus_t hipsolverSpotrs_bufferSize(hipsolverHandle_t   handle,
                                              hipsolverFillMode_t uplo,
                                              int                 n,
                                              int                 nrhs,
-                                             float*              A,
+                                             const float*        A,
                                              int                 lda,
-                                             float*              B,
+                                             const float*        B,
                                              int                 ldb,
                                              int*                lwork)
 try
@@ -3908,9 +3920,9 @@ hipsolverStatus_t hipsolverDpotrs_bufferSize(hipsolverHandle_t   handle,
                                              hipsolverFillMode_t uplo,
                                              int                 n,
                                              int                 nrhs,
-                                             double*             A,
+                                             const double*       A,
                                              int                 lda,
-                                             double*             B,
+                                             const double*       B,
                                              int                 ldb,
                                              int*                lwork)
 try
@@ -3923,15 +3935,15 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCpotrs_bufferSize(hipsolverHandle_t   handle,
-                                             hipsolverFillMode_t uplo,
-                                             int                 n,
-                                             int                 nrhs,
-                                             hipFloatComplex*    A,
-                                             int                 lda,
-                                             hipFloatComplex*    B,
-                                             int                 ldb,
-                                             int*                lwork)
+hipsolverStatus_t hipsolverCpotrs_bufferSize(hipsolverHandle_t      handle,
+                                             hipsolverFillMode_t    uplo,
+                                             int                    n,
+                                             int                    nrhs,
+                                             const hipFloatComplex* A,
+                                             int                    lda,
+                                             const hipFloatComplex* B,
+                                             int                    ldb,
+                                             int*                   lwork)
 try
 {
     *lwork = 0;
@@ -3942,15 +3954,15 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZpotrs_bufferSize(hipsolverHandle_t   handle,
-                                             hipsolverFillMode_t uplo,
-                                             int                 n,
-                                             int                 nrhs,
-                                             hipDoubleComplex*   A,
-                                             int                 lda,
-                                             hipDoubleComplex*   B,
-                                             int                 ldb,
-                                             int*                lwork)
+hipsolverStatus_t hipsolverZpotrs_bufferSize(hipsolverHandle_t       handle,
+                                             hipsolverFillMode_t     uplo,
+                                             int                     n,
+                                             int                     nrhs,
+                                             const hipDoubleComplex* A,
+                                             int                     lda,
+                                             const hipDoubleComplex* B,
+                                             int                     ldb,
+                                             int*                    lwork)
 try
 {
     *lwork = 0;
@@ -3965,7 +3977,7 @@ hipsolverStatus_t hipsolverSpotrs(hipsolverHandle_t   handle,
                                   hipsolverFillMode_t uplo,
                                   int                 n,
                                   int                 nrhs,
-                                  float*              A,
+                                  const float*        A,
                                   int                 lda,
                                   float*              B,
                                   int                 ldb,
@@ -3986,7 +3998,7 @@ hipsolverStatus_t hipsolverDpotrs(hipsolverHandle_t   handle,
                                   hipsolverFillMode_t uplo,
                                   int                 n,
                                   int                 nrhs,
-                                  double*             A,
+                                  const double*       A,
                                   int                 lda,
                                   double*             B,
                                   int                 ldb,
@@ -4003,17 +4015,17 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCpotrs(hipsolverHandle_t   handle,
-                                  hipsolverFillMode_t uplo,
-                                  int                 n,
-                                  int                 nrhs,
-                                  hipFloatComplex*    A,
-                                  int                 lda,
-                                  hipFloatComplex*    B,
-                                  int                 ldb,
-                                  hipFloatComplex*    work,
-                                  int                 lwork,
-                                  int*                devInfo)
+hipsolverStatus_t hipsolverCpotrs(hipsolverHandle_t      handle,
+                                  hipsolverFillMode_t    uplo,
+                                  int                    n,
+                                  int                    nrhs,
+                                  const hipFloatComplex* A,
+                                  int                    lda,
+                                  hipFloatComplex*       B,
+                                  int                    ldb,
+                                  hipFloatComplex*       work,
+                                  int                    lwork,
+                                  int*                   devInfo)
 try
 {
     return cuda2hip_status(cusolverDnCpotrs((cusolverDnHandle_t)handle,
@@ -4031,17 +4043,17 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZpotrs(hipsolverHandle_t   handle,
-                                  hipsolverFillMode_t uplo,
-                                  int                 n,
-                                  int                 nrhs,
-                                  hipDoubleComplex*   A,
-                                  int                 lda,
-                                  hipDoubleComplex*   B,
-                                  int                 ldb,
-                                  hipDoubleComplex*   work,
-                                  int                 lwork,
-                                  int*                devInfo)
+hipsolverStatus_t hipsolverZpotrs(hipsolverHandle_t       handle,
+                                  hipsolverFillMode_t     uplo,
+                                  int                     n,
+                                  int                     nrhs,
+                                  const hipDoubleComplex* A,
+                                  int                     lda,
+                                  hipDoubleComplex*       B,
+                                  int                     ldb,
+                                  hipDoubleComplex*       work,
+                                  int                     lwork,
+                                  int*                    devInfo)
 try
 {
     return cuda2hip_status(cusolverDnZpotrs((cusolverDnHandle_t)handle,
@@ -4265,9 +4277,9 @@ hipsolverStatus_t hipsolverSsyevd_bufferSize(hipsolverHandle_t   handle,
                                              hipsolverEigMode_t  jobz,
                                              hipsolverFillMode_t uplo,
                                              int                 n,
-                                             float*              A,
+                                             const float*        A,
                                              int                 lda,
-                                             float*              W,
+                                             const float*        W,
                                              int*                lwork)
 try
 {
@@ -4289,9 +4301,9 @@ hipsolverStatus_t hipsolverDsyevd_bufferSize(hipsolverHandle_t   handle,
                                              hipsolverEigMode_t  jobz,
                                              hipsolverFillMode_t uplo,
                                              int                 n,
-                                             double*             A,
+                                             const double*       A,
                                              int                 lda,
-                                             double*             W,
+                                             const double*       W,
                                              int*                lwork)
 try
 {
@@ -4309,14 +4321,14 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCheevd_bufferSize(hipsolverHandle_t   handle,
-                                             hipsolverEigMode_t  jobz,
-                                             hipsolverFillMode_t uplo,
-                                             int                 n,
-                                             hipFloatComplex*    A,
-                                             int                 lda,
-                                             float*              W,
-                                             int*                lwork)
+hipsolverStatus_t hipsolverCheevd_bufferSize(hipsolverHandle_t      handle,
+                                             hipsolverEigMode_t     jobz,
+                                             hipsolverFillMode_t    uplo,
+                                             int                    n,
+                                             const hipFloatComplex* A,
+                                             int                    lda,
+                                             const float*           W,
+                                             int*                   lwork)
 try
 {
     return cuda2hip_status(cusolverDnCheevd_bufferSize((cusolverDnHandle_t)handle,
@@ -4333,14 +4345,14 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZheevd_bufferSize(hipsolverHandle_t   handle,
-                                             hipsolverEigMode_t  jobz,
-                                             hipsolverFillMode_t uplo,
-                                             int                 n,
-                                             hipDoubleComplex*   A,
-                                             int                 lda,
-                                             double*             W,
-                                             int*                lwork)
+hipsolverStatus_t hipsolverZheevd_bufferSize(hipsolverHandle_t       handle,
+                                             hipsolverEigMode_t      jobz,
+                                             hipsolverFillMode_t     uplo,
+                                             int                     n,
+                                             const hipDoubleComplex* A,
+                                             int                     lda,
+                                             const double*           W,
+                                             int*                    lwork)
 try
 {
     return cuda2hip_status(cusolverDnZheevd_bufferSize((cusolverDnHandle_t)handle,
@@ -4779,9 +4791,9 @@ hipsolverStatus_t hipsolverSsyevj_bufferSize(hipsolverDnHandle_t  handle,
                                              hipsolverEigMode_t   jobz,
                                              hipsolverFillMode_t  uplo,
                                              int                  n,
-                                             float*               A,
+                                             const float*         A,
                                              int                  lda,
-                                             float*               W,
+                                             const float*         W,
                                              int*                 lwork,
                                              hipsolverSyevjInfo_t params)
 try
@@ -4805,9 +4817,9 @@ hipsolverStatus_t hipsolverDsyevj_bufferSize(hipsolverDnHandle_t  handle,
                                              hipsolverEigMode_t   jobz,
                                              hipsolverFillMode_t  uplo,
                                              int                  n,
-                                             double*              A,
+                                             const double*        A,
                                              int                  lda,
-                                             double*              W,
+                                             const double*        W,
                                              int*                 lwork,
                                              hipsolverSyevjInfo_t params)
 try
@@ -4827,15 +4839,15 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCheevj_bufferSize(hipsolverDnHandle_t  handle,
-                                             hipsolverEigMode_t   jobz,
-                                             hipsolverFillMode_t  uplo,
-                                             int                  n,
-                                             hipFloatComplex*     A,
-                                             int                  lda,
-                                             float*               W,
-                                             int*                 lwork,
-                                             hipsolverSyevjInfo_t params)
+hipsolverStatus_t hipsolverCheevj_bufferSize(hipsolverDnHandle_t    handle,
+                                             hipsolverEigMode_t     jobz,
+                                             hipsolverFillMode_t    uplo,
+                                             int                    n,
+                                             const hipFloatComplex* A,
+                                             int                    lda,
+                                             const float*           W,
+                                             int*                   lwork,
+                                             hipsolverSyevjInfo_t   params)
 try
 {
     return cuda2hip_status(cusolverDnCheevj_bufferSize((cusolverDnHandle_t)handle,
@@ -4853,15 +4865,15 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZheevj_bufferSize(hipsolverDnHandle_t  handle,
-                                             hipsolverEigMode_t   jobz,
-                                             hipsolverFillMode_t  uplo,
-                                             int                  n,
-                                             hipDoubleComplex*    A,
-                                             int                  lda,
-                                             double*              W,
-                                             int*                 lwork,
-                                             hipsolverSyevjInfo_t params)
+hipsolverStatus_t hipsolverZheevj_bufferSize(hipsolverDnHandle_t     handle,
+                                             hipsolverEigMode_t      jobz,
+                                             hipsolverFillMode_t     uplo,
+                                             int                     n,
+                                             const hipDoubleComplex* A,
+                                             int                     lda,
+                                             const double*           W,
+                                             int*                    lwork,
+                                             hipsolverSyevjInfo_t    params)
 try
 {
     return cuda2hip_status(cusolverDnZheevj_bufferSize((cusolverDnHandle_t)handle,
@@ -5004,9 +5016,9 @@ hipsolverStatus_t hipsolverSsyevjBatched_bufferSize(hipsolverDnHandle_t  handle,
                                                     hipsolverEigMode_t   jobz,
                                                     hipsolverFillMode_t  uplo,
                                                     int                  n,
-                                                    float*               A,
+                                                    const float*         A,
                                                     int                  lda,
-                                                    float*               W,
+                                                    const float*         W,
                                                     int*                 lwork,
                                                     hipsolverSyevjInfo_t params,
                                                     int                  batch_count)
@@ -5032,9 +5044,9 @@ hipsolverStatus_t hipsolverDsyevjBatched_bufferSize(hipsolverDnHandle_t  handle,
                                                     hipsolverEigMode_t   jobz,
                                                     hipsolverFillMode_t  uplo,
                                                     int                  n,
-                                                    double*              A,
+                                                    const double*        A,
                                                     int                  lda,
-                                                    double*              W,
+                                                    const double*        W,
                                                     int*                 lwork,
                                                     hipsolverSyevjInfo_t params,
                                                     int                  batch_count)
@@ -5056,16 +5068,16 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverCheevjBatched_bufferSize(hipsolverDnHandle_t  handle,
-                                                    hipsolverEigMode_t   jobz,
-                                                    hipsolverFillMode_t  uplo,
-                                                    int                  n,
-                                                    hipFloatComplex*     A,
-                                                    int                  lda,
-                                                    float*               W,
-                                                    int*                 lwork,
-                                                    hipsolverSyevjInfo_t params,
-                                                    int                  batch_count)
+hipsolverStatus_t hipsolverCheevjBatched_bufferSize(hipsolverDnHandle_t    handle,
+                                                    hipsolverEigMode_t     jobz,
+                                                    hipsolverFillMode_t    uplo,
+                                                    int                    n,
+                                                    const hipFloatComplex* A,
+                                                    int                    lda,
+                                                    const float*           W,
+                                                    int*                   lwork,
+                                                    hipsolverSyevjInfo_t   params,
+                                                    int                    batch_count)
 try
 {
     return cuda2hip_status(cusolverDnCheevjBatched_bufferSize((cusolverDnHandle_t)handle,
@@ -5084,16 +5096,16 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZheevjBatched_bufferSize(hipsolverDnHandle_t  handle,
-                                                    hipsolverEigMode_t   jobz,
-                                                    hipsolverFillMode_t  uplo,
-                                                    int                  n,
-                                                    hipDoubleComplex*    A,
-                                                    int                  lda,
-                                                    double*              W,
-                                                    int*                 lwork,
-                                                    hipsolverSyevjInfo_t params,
-                                                    int                  batch_count)
+hipsolverStatus_t hipsolverZheevjBatched_bufferSize(hipsolverDnHandle_t     handle,
+                                                    hipsolverEigMode_t      jobz,
+                                                    hipsolverFillMode_t     uplo,
+                                                    int                     n,
+                                                    const hipDoubleComplex* A,
+                                                    int                     lda,
+                                                    const double*           W,
+                                                    int*                    lwork,
+                                                    hipsolverSyevjInfo_t    params,
+                                                    int                     batch_count)
 try
 {
     return cuda2hip_status(cusolverDnZheevjBatched_bufferSize((cusolverDnHandle_t)handle,
@@ -5246,11 +5258,11 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvd_bufferSize(hipsolverHandle_t 
                                                               hipsolverEigMode_t  jobz,
                                                               hipsolverFillMode_t uplo,
                                                               int                 n,
-                                                              float*              A,
+                                                              const float*        A,
                                                               int                 lda,
-                                                              float*              B,
+                                                              const float*        B,
                                                               int                 ldb,
-                                                              float*              W,
+                                                              const float*        W,
                                                               int*                lwork)
 try
 {
@@ -5276,11 +5288,11 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvd_bufferSize(hipsolverHandle_t 
                                                               hipsolverEigMode_t  jobz,
                                                               hipsolverFillMode_t uplo,
                                                               int                 n,
-                                                              double*             A,
+                                                              const double*       A,
                                                               int                 lda,
-                                                              double*             B,
+                                                              const double*       B,
                                                               int                 ldb,
-                                                              double*             W,
+                                                              const double*       W,
                                                               int*                lwork)
 try
 {
@@ -5301,17 +5313,17 @@ catch(...)
     return exception2hip_status();
 }
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd_bufferSize(hipsolverHandle_t   handle,
-                                                              hipsolverEigType_t  itype,
-                                                              hipsolverEigMode_t  jobz,
-                                                              hipsolverFillMode_t uplo,
-                                                              int                 n,
-                                                              hipFloatComplex*    A,
-                                                              int                 lda,
-                                                              hipFloatComplex*    B,
-                                                              int                 ldb,
-                                                              float*              W,
-                                                              int*                lwork)
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvd_bufferSize(hipsolverHandle_t      handle,
+                                                              hipsolverEigType_t     itype,
+                                                              hipsolverEigMode_t     jobz,
+                                                              hipsolverFillMode_t    uplo,
+                                                              int                    n,
+                                                              const hipFloatComplex* A,
+                                                              int                    lda,
+                                                              const hipFloatComplex* B,
+                                                              int                    ldb,
+                                                              const float*           W,
+                                                              int*                   lwork)
 try
 {
     return cuda2hip_status(cusolverDnChegvd_bufferSize((cusolverDnHandle_t)handle,
@@ -5331,17 +5343,17 @@ catch(...)
     return exception2hip_status();
 }
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSize(hipsolverHandle_t   handle,
-                                                              hipsolverEigType_t  itype,
-                                                              hipsolverEigMode_t  jobz,
-                                                              hipsolverFillMode_t uplo,
-                                                              int                 n,
-                                                              hipDoubleComplex*   A,
-                                                              int                 lda,
-                                                              hipDoubleComplex*   B,
-                                                              int                 ldb,
-                                                              double*             W,
-                                                              int*                lwork)
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvd_bufferSize(hipsolverHandle_t       handle,
+                                                              hipsolverEigType_t      itype,
+                                                              hipsolverEigMode_t      jobz,
+                                                              hipsolverFillMode_t     uplo,
+                                                              int                     n,
+                                                              const hipDoubleComplex* A,
+                                                              int                     lda,
+                                                              const hipDoubleComplex* B,
+                                                              int                     ldb,
+                                                              const double*           W,
+                                                              int*                    lwork)
 try
 {
     return cuda2hip_status(cusolverDnZhegvd_bufferSize((cusolverDnHandle_t)handle,
@@ -5856,11 +5868,11 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvj_bufferSize(hipsolverHandle_t 
                                                               hipsolverEigMode_t   jobz,
                                                               hipsolverFillMode_t  uplo,
                                                               int                  n,
-                                                              float*               A,
+                                                              const float*         A,
                                                               int                  lda,
-                                                              float*               B,
+                                                              const float*         B,
                                                               int                  ldb,
-                                                              float*               W,
+                                                              const float*         W,
                                                               int*                 lwork,
                                                               hipsolverSyevjInfo_t params)
 try
@@ -5888,11 +5900,11 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvj_bufferSize(hipsolverHandle_t 
                                                               hipsolverEigMode_t   jobz,
                                                               hipsolverFillMode_t  uplo,
                                                               int                  n,
-                                                              double*              A,
+                                                              const double*        A,
                                                               int                  lda,
-                                                              double*              B,
+                                                              const double*        B,
                                                               int                  ldb,
-                                                              double*              W,
+                                                              const double*        W,
                                                               int*                 lwork,
                                                               hipsolverSyevjInfo_t params)
 try
@@ -5915,18 +5927,18 @@ catch(...)
     return exception2hip_status();
 }
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvj_bufferSize(hipsolverHandle_t    handle,
-                                                              hipsolverEigType_t   itype,
-                                                              hipsolverEigMode_t   jobz,
-                                                              hipsolverFillMode_t  uplo,
-                                                              int                  n,
-                                                              hipFloatComplex*     A,
-                                                              int                  lda,
-                                                              hipFloatComplex*     B,
-                                                              int                  ldb,
-                                                              float*               W,
-                                                              int*                 lwork,
-                                                              hipsolverSyevjInfo_t params)
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvj_bufferSize(hipsolverHandle_t      handle,
+                                                              hipsolverEigType_t     itype,
+                                                              hipsolverEigMode_t     jobz,
+                                                              hipsolverFillMode_t    uplo,
+                                                              int                    n,
+                                                              const hipFloatComplex* A,
+                                                              int                    lda,
+                                                              const hipFloatComplex* B,
+                                                              int                    ldb,
+                                                              const float*           W,
+                                                              int*                   lwork,
+                                                              hipsolverSyevjInfo_t   params)
 try
 {
     return cuda2hip_status(cusolverDnChegvj_bufferSize((cusolverDnHandle_t)handle,
@@ -5947,18 +5959,18 @@ catch(...)
     return exception2hip_status();
 }
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvj_bufferSize(hipsolverHandle_t    handle,
-                                                              hipsolverEigType_t   itype,
-                                                              hipsolverEigMode_t   jobz,
-                                                              hipsolverFillMode_t  uplo,
-                                                              int                  n,
-                                                              hipDoubleComplex*    A,
-                                                              int                  lda,
-                                                              hipDoubleComplex*    B,
-                                                              int                  ldb,
-                                                              double*              W,
-                                                              int*                 lwork,
-                                                              hipsolverSyevjInfo_t params)
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvj_bufferSize(hipsolverHandle_t       handle,
+                                                              hipsolverEigType_t      itype,
+                                                              hipsolverEigMode_t      jobz,
+                                                              hipsolverFillMode_t     uplo,
+                                                              int                     n,
+                                                              const hipDoubleComplex* A,
+                                                              int                     lda,
+                                                              const hipDoubleComplex* B,
+                                                              int                     ldb,
+                                                              const double*           W,
+                                                              int*                    lwork,
+                                                              hipsolverSyevjInfo_t    params)
 try
 {
     return cuda2hip_status(cusolverDnZhegvj_bufferSize((cusolverDnHandle_t)handle,
@@ -6127,11 +6139,11 @@ catch(...)
 hipsolverStatus_t hipsolverSsytrd_bufferSize(hipsolverHandle_t   handle,
                                              hipsolverFillMode_t uplo,
                                              int                 n,
-                                             float*              A,
+                                             const float*        A,
                                              int                 lda,
-                                             float*              D,
-                                             float*              E,
-                                             float*              tau,
+                                             const float*        D,
+                                             const float*        E,
+                                             const float*        tau,
                                              int*                lwork)
 try
 {
@@ -6146,11 +6158,11 @@ catch(...)
 hipsolverStatus_t hipsolverDsytrd_bufferSize(hipsolverHandle_t   handle,
                                              hipsolverFillMode_t uplo,
                                              int                 n,
-                                             double*             A,
+                                             const double*       A,
                                              int                 lda,
-                                             double*             D,
-                                             double*             E,
-                                             double*             tau,
+                                             const double*       D,
+                                             const double*       E,
+                                             const double*       tau,
                                              int*                lwork)
 try
 {
@@ -6162,15 +6174,15 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverChetrd_bufferSize(hipsolverHandle_t   handle,
-                                             hipsolverFillMode_t uplo,
-                                             int                 n,
-                                             hipFloatComplex*    A,
-                                             int                 lda,
-                                             float*              D,
-                                             float*              E,
-                                             hipFloatComplex*    tau,
-                                             int*                lwork)
+hipsolverStatus_t hipsolverChetrd_bufferSize(hipsolverHandle_t      handle,
+                                             hipsolverFillMode_t    uplo,
+                                             int                    n,
+                                             const hipFloatComplex* A,
+                                             int                    lda,
+                                             const float*           D,
+                                             const float*           E,
+                                             const hipFloatComplex* tau,
+                                             int*                   lwork)
 try
 {
     return cuda2hip_status(cusolverDnChetrd_bufferSize((cusolverDnHandle_t)handle,
@@ -6188,15 +6200,15 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverZhetrd_bufferSize(hipsolverHandle_t   handle,
-                                             hipsolverFillMode_t uplo,
-                                             int                 n,
-                                             hipDoubleComplex*   A,
-                                             int                 lda,
-                                             double*             D,
-                                             double*             E,
-                                             hipDoubleComplex*   tau,
-                                             int*                lwork)
+hipsolverStatus_t hipsolverZhetrd_bufferSize(hipsolverHandle_t       handle,
+                                             hipsolverFillMode_t     uplo,
+                                             int                     n,
+                                             const hipDoubleComplex* A,
+                                             int                     lda,
+                                             const double*           D,
+                                             const double*           E,
+                                             const hipDoubleComplex* tau,
+                                             int*                    lwork)
 try
 {
     return cuda2hip_status(cusolverDnZhetrd_bufferSize((cusolverDnHandle_t)handle,
