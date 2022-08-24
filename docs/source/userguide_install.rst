@@ -92,6 +92,6 @@ to help find them.
 
 .. code-block:: bash
 
-    CXX=/opt/rocm/bin/hcc cmake -DBUILD_CLIENTS_TESTS=ON -DBUILD_CLIENTS_BENCHMARKS=ON [HIPSOLVER_SOURCE]
+    CXX=/opt/rocm/bin/hipcc cmake -DBUILD_CLIENTS_TESTS=ON -DBUILD_CLIENTS_BENCHMARKS=ON [HIPSOLVER_SOURCE]
     make -j$(nproc)
     sudo make install   # sudo required if installing into system directory such as /opt/rocm

@@ -42,14 +42,14 @@ prepend_path( ".." hipsolver_headers_public relative_hipsolver_headers_public )
 
 if( NOT USE_CUDA )
   set( hipsolver_source
-    "${CMAKE_CURRENT_SOURCE_DIR}/hcc_detail/hipsolver.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/hcc_detail/hipsolver_compat.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_compat.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
   )
 else( )
   set( hipsolver_source
-    "${CMAKE_CURRENT_SOURCE_DIR}/nvcc_detail/hipsolver.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/nvcc_detail/hipsolver_compat.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_compat.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
   )
 endif( )
