@@ -36,9 +36,12 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ### Changed
 - The rocSOLVER backend will now set `info` to zero if rocSOLVER does not reference `info`. (Applies to orgbr/ungbr, orgqr/ungqr, orgtr/ungtr, ormqr/unmqr, ormtr/unmtr, gebrd, geqrf, getrs, potrs, and sytrd/hetrd).
+- gesvdj will no longer require extra workspace to transpose `V` when `jobz` is `HIPSOLVER_EIG_MODE_VECTOR` and `econ` is 1.
 
 ### Fixed
 - Fixed Fortran return value declarations within hipsolver_module.f90
+- Fixed gesvdj_bufferSize returning `HIPSOLVER_STATUS_INVALID_VALUE` when `jobz` is `HIPSOLVER_EIG_MODE_NOVECTOR` and 1 <= `ldv` < `n`
+- Fixed gesvdj returning `HIPSOLVER_STATUS_INVALID_VALUE` when `jobz` is `HIPSOLVER_EIG_MODE_VECTOR`, `econ` is 1, and `m` < `n`
 
 
 ## hipSOLVER 1.4.0 for ROCm 5.2.0
