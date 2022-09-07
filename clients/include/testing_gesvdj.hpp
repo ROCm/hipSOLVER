@@ -450,9 +450,7 @@ void gesvdj_getError(const hipsolverHandle_t handle,
                      Wh&                     hA,
                      Th&                     hS,
                      Th&                     hSres,
-                     Uh&                     hU,
                      Uh&                     Ures,
-                     Uh&                     hV,
                      Uh&                     Vres,
                      Ih&                     hinfo,
                      Ih&                     hinfoRes,
@@ -465,8 +463,6 @@ void gesvdj_getError(const hipsolverHandle_t handle,
     std::vector<S> hE(size_W);
     std::vector<T> hWork(size_W);
     std::vector<T> A(lda * n * bc);
-
-    char svect = (jobz == HIPSOLVER_EIG_MODE_NOVECTOR ? 'N' : (econ == 0 ? 'A' : 'S'));
 
     // input data initialization
     gesvdj_initData<true, true, T>(handle, jobz, m, n, dA, lda, bc, hA, A);
@@ -506,17 +502,18 @@ void gesvdj_getError(const hipsolverHandle_t handle,
     }
 
     // CPU lapack
+    // Only singular values needed
     for(int b = 0; b < bc; ++b)
-        cblas_gesvd<T>(svect,
-                       svect,
+        cblas_gesvd<T>('N',
+                       'N',
                        m,
                        n,
                        hA[b],
                        lda,
                        hS[b],
-                       hU[b],
+                       nullptr,
                        ldu,
-                       hV[b],
+                       nullptr,
                        ldv,
                        hWork.data(),
                        size_W,
@@ -613,7 +610,8 @@ void gesvdj_getPerfData(const hipsolverHandle_t handle,
     std::vector<T> hWork(size_W);
     std::vector<T> A;
 
-    char svect = (jobz == HIPSOLVER_EIG_MODE_NOVECTOR ? 'N' : (econ == 0 ? 'A' : 'S'));
+    char svect     = (jobz == HIPSOLVER_EIG_MODE_NOVECTOR ? 'N' : (econ == 0 ? 'A' : 'S'));
+    int  ldv_trans = (jobz == HIPSOLVER_EIG_MODE_NOVECTOR ? 1 : (econ == 0 ? n : min(m, n)));
 
     if(!perf)
     {
@@ -632,7 +630,7 @@ void gesvdj_getPerfData(const hipsolverHandle_t handle,
                            hU[b],
                            ldu,
                            hV[b],
-                           ldv,
+                           ldv_trans,
                            hWork.data(),
                            size_W,
                            hE.data(),
@@ -727,8 +725,8 @@ void testing_gesvdj(Arguments& argus)
     int                         ldv   = argus.get<int>("ldv", n);
     int                         stA   = lda * n;
     int                         stS   = min(m, n);
-    int                         stU   = ldu * m;
-    int                         stV   = ldv * n;
+    int                         stU   = ldu * (econ ? min(m, n) : m);
+    int                         stV   = ldv * (econ ? min(m, n) : n);
 
     hipsolverEigMode_t jobz      = char2hipsolver_evect(jobzC);
     int                bc        = argus.batch_count;
@@ -740,23 +738,26 @@ void testing_gesvdj(Arguments& argus)
     // determine sizes
     size_t size_A = size_t(lda) * n;
     size_t size_S = size_t(min(m, n));
-    size_t size_V = size_t(ldv) * n;
-    size_t size_U = size_t(ldu) * m;
+    size_t size_V = 0;
+    size_t size_U = 0;
 
     size_t size_Sres = 0;
     size_t size_Ures = 0;
     size_t size_Vres = 0;
 
+    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
+    {
+        size_U = size_t(ldu) * (econ ? min(m, n) : m);
+        size_V = size_t(ldv) * (econ ? min(m, n) : n);
+    }
+
     if(argus.unit_check || argus.norm_check)
     {
         size_Sres = size_S;
-        if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-        {
-            size_Ures = size_U;
-            size_Vres = size_V;
-            stUres    = stU;
-            stVres    = stV;
-        }
+        size_Ures = size_U;
+        size_Vres = size_V;
+        stUres    = stU;
+        stVres    = stV;
     }
 
     double max_error = 0, gpu_time_used = 0, cpu_time_used = 0, max_errorv = 0;
@@ -915,9 +916,7 @@ void testing_gesvdj(Arguments& argus)
         //                                      hA,
         //                                      hS,
         //                                      hSres,
-        //                                      hU,
         //                                      Ures,
-        //                                      hV,
         //                                      Vres,
         //                                      hinfo,
         //                                      hinfoRes,
@@ -996,9 +995,7 @@ void testing_gesvdj(Arguments& argus)
                                              hA,
                                              hS,
                                              hSres,
-                                             hU,
                                              Ures,
-                                             hV,
                                              Vres,
                                              hinfo,
                                              hinfoRes,
@@ -1043,12 +1040,12 @@ void testing_gesvdj(Arguments& argus)
     }
 
     // validate results for rocsolver-test
-    // using 3 * min(m, n) * machine_precision as tolerance
+    // using 3 * max(m, n) * machine_precision as tolerance
     if(argus.unit_check)
     {
-        ROCSOLVER_TEST_CHECK(T, max_error, 3 * min(m, n));
+        ROCSOLVER_TEST_CHECK(T, max_error, 3 * max(m, n));
         if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-            ROCSOLVER_TEST_CHECK(T, max_errorv, 3 * min(m, n));
+            ROCSOLVER_TEST_CHECK(T, max_errorv, 3 * max(m, n));
     }
 
     // output results for rocsolver-bench
