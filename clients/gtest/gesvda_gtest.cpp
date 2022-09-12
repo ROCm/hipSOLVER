@@ -27,16 +27,6 @@ typedef std::tuple<vector<int>, vector<int>> gesvda_tuple;
 
 // for checkin_lapack tests
 const vector<vector<int>> size_range = {
-    // quick return
-    {0, 0, 0, 0, 0},
-    {0, 1, 0, 0, 0},
-    {1, 0, 0, 0, 0},
-    // invalid
-    {-1, 1, 0, 0, 0},
-    {1, -1, 0, 0, 0},
-    {10, 10, -1, 0, 0},
-    {10, 10, 0, -1, 0},
-    {10, 10, 0, 0, -1},
     // normal (valid) samples
     {1, 1, 0, 0, 0},
     {20, 20, 0, 0, 0},
@@ -48,10 +38,6 @@ const vector<vector<int>> size_range = {
     {50, 50, 1, 1, 1}};
 
 const vector<vector<int>> opt_range = {
-    // always invalid
-    {0, -1},
-    {0, 0},
-    {0, 60},
     // always valid samples
     {0, 1},
     {1, 1},
@@ -62,11 +48,11 @@ const vector<vector<int>> opt_range = {
     {1, 20},
 };
 
-// for daily_lapack tests
-const vector<vector<int>> large_size_range
-    = {{100, 100, 1, 0, 0}, {300, 120, 0, 0, 1}, {200, 300, 0, 0, 0}};
+// // for daily_lapack tests
+// const vector<vector<int>> large_size_range
+//     = {{100, 100, 1, 0, 0}, {300, 120, 0, 0, 1}, {200, 300, 0, 0, 0}};
 
-const vector<vector<int>> large_opt_range = {{0, 100}, {1, 10}, {1, 20}};
+// const vector<vector<int>> large_opt_range = {{0, 100}, {1, 10}, {1, 20}};
 
 Arguments gesvda_setup_arguments(gesvda_tuple tup)
 {
@@ -150,10 +136,10 @@ TEST_P(GESVDA_COMPAT, strided_batched__double_complex)
     run_tests<false, true, rocblas_double_complex>();
 }
 
-// daily_lapack tests normal execution with medium to large sizes
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         GESVDA_COMPAT,
-                         Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+// // daily_lapack tests normal execution with medium to large sizes
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GESVDA_COMPAT,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
 
 // checkin_lapack tests normal execution with small sizes, invalid sizes,
 // quick returns, and corner cases
