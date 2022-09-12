@@ -27,21 +27,9 @@ typedef std::tuple<vector<int>, vector<int>> gesvda_tuple;
 
 // for checkin_lapack tests
 const vector<vector<int>> size_range = {
-    // normal (valid) samples
-    {1, 1, 0, 0, 0},
-    {20, 20, 0, 0, 0},
-    {40, 30, 0, 0, 0},
-    {30, 40, 0, 0, 0},
-    {30, 30, 1, 0, 0},
-    {60, 40, 0, 1, 0},
-    {40, 60, 0, 0, 1},
-    {50, 50, 1, 1, 1}};
+    {20, 20, 0, 0, 0}, {30, 40, 0, 0, 0}, {30, 30, 1, 0, 0}, {60, 40, 0, 1, 0}, {50, 50, 1, 1, 1}};
 
 const vector<vector<int>> opt_range = {
-    // always valid samples
-    {0, 1},
-    {1, 1},
-    // valid only when n>1
     {0, 5},
     {0, 15},
     {1, 5},
