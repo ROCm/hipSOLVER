@@ -197,3 +197,14 @@ Partial eigensolvers have been implemented in rocSOLVER, but at present they do 
     :ref:`hipsolverDnXhegvdx_bufferSize <compat_hegvdx_bufferSize>`, , , x, x
     :ref:`hipsolverDnXhegvdx <compat_hegvdx>`, , , x, x
 
+Partial SVD functions
+------------------------------
+
+Partial SVD has been implemented in rocSOLVER, but at present it does not use an approximate algorithm, nor does it compute the residual norm.
+
+.. csv-table:: Singular value decomposition
+    :header: "Function", "single", "double", "single complex", "double complex"
+
+    :ref:`hipsolverDnXgesvdaStridedBatched_bufferSize <compat_gesvda_strided_batched_bufferSize>`, x, x, x, x
+    :ref:`hipsolverDnXgesvdaStridedBatched <compat_gesvda_strided_batched>`, x, x, x, x
+
