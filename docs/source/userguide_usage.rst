@@ -73,6 +73,15 @@ Different signatures and additional API methods
   in cuSOLVER do not need workspace).
 
 
+Different minimum array lengths
+--------------------------------
+
+- Currently, the following methods require larger arrays than the minimum required by cuSOLVER.
+
+  * :ref:`hipsolverDnXgesvdaStridedBatched <compat_gesvda_strided_batched>` requires `U` to be of length `ldu * min(m,n)` at
+    minimum, and `S` to be of length `min(m,n)` at minimum.
+
+
 Unsupported methods
 --------------------
 
