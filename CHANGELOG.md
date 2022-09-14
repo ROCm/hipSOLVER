@@ -2,6 +2,17 @@
 
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
+## (Unreleased) hipSOLVER
+### Added
+### Optimized
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Known Issues
+### Security
+
+
 ## (Unreleased) hipSOLVER 1.6.0
 ### Added
 - Added compatibility-only functions
