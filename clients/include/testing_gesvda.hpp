@@ -1035,12 +1035,12 @@ void testing_gesvda(Arguments& argus)
     }
 
     // validate results for rocsolver-test
-    // using 2 * min(m, n) * machine_precision as tolerance
+    // using 3 * min(m, n) * machine_precision as tolerance
     if(argus.unit_check)
     {
-        ROCSOLVER_TEST_CHECK(T, max_error, 2 * min(m, n));
+        ROCSOLVER_TEST_CHECK(T, max_error, 3 * min(m, n));
         if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-            ROCSOLVER_TEST_CHECK(T, max_errorv, 2 * min(m, n));
+            ROCSOLVER_TEST_CHECK(T, max_errorv, 3 * min(m, n));
     }
 
     // output results for rocsolver-bench
