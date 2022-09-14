@@ -2774,7 +2774,7 @@ inline hipsolverStatus_t hipsolver_gesvd(testAPI_t               API,
 }
 /********************************************************/
 
-/******************** GESVD ********************/
+/******************** GESVDJ ********************/
 inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
                                                      bool                  STRIDED,
                                                      hipsolverHandle_t     handle,
@@ -3146,6 +3146,376 @@ inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t               API,
                                          info,
                                          params,
                                          bc);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+/********************************************************/
+
+/******************** GESVDA ********************/
+inline hipsolverStatus_t hipsolver_gesvda_bufferSize(testAPI_t          API,
+                                                     bool               STRIDED,
+                                                     hipsolverHandle_t  handle,
+                                                     hipsolverEigMode_t jobz,
+                                                     int                rank,
+                                                     int                m,
+                                                     int                n,
+                                                     float*             A,
+                                                     int                lda,
+                                                     long long int      stA,
+                                                     float*             S,
+                                                     long long int      stS,
+                                                     float*             U,
+                                                     int                ldu,
+                                                     long long int      stU,
+                                                     float*             V,
+                                                     int                ldv,
+                                                     long long int      stV,
+                                                     int*               lwork,
+                                                     int                bc)
+{
+    switch(api2marshal(API, STRIDED))
+    {
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnSgesvdaStridedBatched_bufferSize(
+            handle, jobz, rank, m, n, A, lda, stA, S, stS, U, ldu, stU, V, ldv, stV, lwork, bc);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvda_bufferSize(testAPI_t          API,
+                                                     bool               STRIDED,
+                                                     hipsolverHandle_t  handle,
+                                                     hipsolverEigMode_t jobz,
+                                                     int                rank,
+                                                     int                m,
+                                                     int                n,
+                                                     double*            A,
+                                                     int                lda,
+                                                     long long int      stA,
+                                                     double*            S,
+                                                     long long int      stS,
+                                                     double*            U,
+                                                     int                ldu,
+                                                     long long int      stU,
+                                                     double*            V,
+                                                     int                ldv,
+                                                     long long int      stV,
+                                                     int*               lwork,
+                                                     int                bc)
+{
+    switch(api2marshal(API, STRIDED))
+    {
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnDgesvdaStridedBatched_bufferSize(
+            handle, jobz, rank, m, n, A, lda, stA, S, stS, U, ldu, stU, V, ldv, stV, lwork, bc);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvda_bufferSize(testAPI_t          API,
+                                                     bool               STRIDED,
+                                                     hipsolverHandle_t  handle,
+                                                     hipsolverEigMode_t jobz,
+                                                     int                rank,
+                                                     int                m,
+                                                     int                n,
+                                                     hipsolverComplex*  A,
+                                                     int                lda,
+                                                     long long int      stA,
+                                                     float*             S,
+                                                     long long int      stS,
+                                                     hipsolverComplex*  U,
+                                                     int                ldu,
+                                                     long long int      stU,
+                                                     hipsolverComplex*  V,
+                                                     int                ldv,
+                                                     long long int      stV,
+                                                     int*               lwork,
+                                                     int                bc)
+{
+    switch(api2marshal(API, STRIDED))
+    {
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnCgesvdaStridedBatched_bufferSize(handle,
+                                                           jobz,
+                                                           rank,
+                                                           m,
+                                                           n,
+                                                           (hipFloatComplex*)A,
+                                                           lda,
+                                                           stA,
+                                                           S,
+                                                           stS,
+                                                           (hipFloatComplex*)U,
+                                                           ldu,
+                                                           stU,
+                                                           (hipFloatComplex*)V,
+                                                           ldv,
+                                                           stV,
+                                                           lwork,
+                                                           bc);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvda_bufferSize(testAPI_t               API,
+                                                     bool                    STRIDED,
+                                                     hipsolverHandle_t       handle,
+                                                     hipsolverEigMode_t      jobz,
+                                                     int                     rank,
+                                                     int                     m,
+                                                     int                     n,
+                                                     hipsolverDoubleComplex* A,
+                                                     int                     lda,
+                                                     long long int           stA,
+                                                     double*                 S,
+                                                     long long int           stS,
+                                                     hipsolverDoubleComplex* U,
+                                                     int                     ldu,
+                                                     long long int           stU,
+                                                     hipsolverDoubleComplex* V,
+                                                     int                     ldv,
+                                                     long long int           stV,
+                                                     int*                    lwork,
+                                                     int                     bc)
+{
+    switch(api2marshal(API, STRIDED))
+    {
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnZgesvdaStridedBatched_bufferSize(handle,
+                                                           jobz,
+                                                           rank,
+                                                           m,
+                                                           n,
+                                                           (hipDoubleComplex*)A,
+                                                           lda,
+                                                           stA,
+                                                           S,
+                                                           stS,
+                                                           (hipDoubleComplex*)U,
+                                                           ldu,
+                                                           stU,
+                                                           (hipDoubleComplex*)V,
+                                                           ldv,
+                                                           stV,
+                                                           lwork,
+                                                           bc);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvda(testAPI_t          API,
+                                          bool               STRIDED,
+                                          hipsolverHandle_t  handle,
+                                          hipsolverEigMode_t jobz,
+                                          int                rank,
+                                          int                m,
+                                          int                n,
+                                          float*             A,
+                                          int                lda,
+                                          int                stA,
+                                          float*             S,
+                                          int                stS,
+                                          float*             U,
+                                          int                ldu,
+                                          int                stU,
+                                          float*             V,
+                                          int                ldv,
+                                          int                stV,
+                                          float*             work,
+                                          int                lwork,
+                                          int*               info,
+                                          double*            hRnrmF,
+                                          int                bc)
+{
+    switch(api2marshal(API, STRIDED))
+    {
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnSgesvdaStridedBatched(handle,
+                                                jobz,
+                                                rank,
+                                                m,
+                                                n,
+                                                A,
+                                                lda,
+                                                stA,
+                                                S,
+                                                stS,
+                                                U,
+                                                ldu,
+                                                stU,
+                                                V,
+                                                ldv,
+                                                stV,
+                                                work,
+                                                lwork,
+                                                info,
+                                                hRnrmF,
+                                                bc);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvda(testAPI_t          API,
+                                          bool               STRIDED,
+                                          hipsolverHandle_t  handle,
+                                          hipsolverEigMode_t jobz,
+                                          int                rank,
+                                          int                m,
+                                          int                n,
+                                          double*            A,
+                                          int                lda,
+                                          int                stA,
+                                          double*            S,
+                                          int                stS,
+                                          double*            U,
+                                          int                ldu,
+                                          int                stU,
+                                          double*            V,
+                                          int                ldv,
+                                          int                stV,
+                                          double*            work,
+                                          int                lwork,
+                                          int*               info,
+                                          double*            hRnrmF,
+                                          int                bc)
+{
+    switch(api2marshal(API, STRIDED))
+    {
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnDgesvdaStridedBatched(handle,
+                                                jobz,
+                                                rank,
+                                                m,
+                                                n,
+                                                A,
+                                                lda,
+                                                stA,
+                                                S,
+                                                stS,
+                                                U,
+                                                ldu,
+                                                stU,
+                                                V,
+                                                ldv,
+                                                stV,
+                                                work,
+                                                lwork,
+                                                info,
+                                                hRnrmF,
+                                                bc);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvda(testAPI_t          API,
+                                          bool               STRIDED,
+                                          hipsolverHandle_t  handle,
+                                          hipsolverEigMode_t jobz,
+                                          int                rank,
+                                          int                m,
+                                          int                n,
+                                          hipsolverComplex*  A,
+                                          int                lda,
+                                          int                stA,
+                                          float*             S,
+                                          int                stS,
+                                          hipsolverComplex*  U,
+                                          int                ldu,
+                                          int                stU,
+                                          hipsolverComplex*  V,
+                                          int                ldv,
+                                          int                stV,
+                                          hipsolverComplex*  work,
+                                          int                lwork,
+                                          int*               info,
+                                          double*            hRnrmF,
+                                          int                bc)
+{
+    switch(api2marshal(API, STRIDED))
+    {
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnCgesvdaStridedBatched(handle,
+                                                jobz,
+                                                rank,
+                                                m,
+                                                n,
+                                                (hipFloatComplex*)A,
+                                                lda,
+                                                stA,
+                                                S,
+                                                stS,
+                                                (hipFloatComplex*)U,
+                                                ldu,
+                                                stU,
+                                                (hipFloatComplex*)V,
+                                                ldv,
+                                                stV,
+                                                (hipFloatComplex*)work,
+                                                lwork,
+                                                info,
+                                                hRnrmF,
+                                                bc);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_gesvda(testAPI_t               API,
+                                          bool                    STRIDED,
+                                          hipsolverHandle_t       handle,
+                                          hipsolverEigMode_t      jobz,
+                                          int                     rank,
+                                          int                     m,
+                                          int                     n,
+                                          hipsolverDoubleComplex* A,
+                                          int                     lda,
+                                          int                     stA,
+                                          double*                 S,
+                                          int                     stS,
+                                          hipsolverDoubleComplex* U,
+                                          int                     ldu,
+                                          int                     stU,
+                                          hipsolverDoubleComplex* V,
+                                          int                     ldv,
+                                          int                     stV,
+                                          hipsolverDoubleComplex* work,
+                                          int                     lwork,
+                                          int*                    info,
+                                          double*                 hRnrmF,
+                                          int                     bc)
+{
+    switch(api2marshal(API, STRIDED))
+    {
+    case COMPAT_NORMAL_ALT:
+        return hipsolverDnZgesvdaStridedBatched(handle,
+                                                jobz,
+                                                rank,
+                                                m,
+                                                n,
+                                                (hipDoubleComplex*)A,
+                                                lda,
+                                                stA,
+                                                S,
+                                                stS,
+                                                (hipDoubleComplex*)U,
+                                                ldu,
+                                                stU,
+                                                (hipDoubleComplex*)V,
+                                                ldv,
+                                                stV,
+                                                (hipDoubleComplex*)work,
+                                                lwork,
+                                                info,
+                                                hRnrmF,
+                                                bc);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }

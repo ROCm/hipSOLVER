@@ -38,6 +38,7 @@ set(hipsolver_test_source
   geqrf_gtest.cpp
   gesv_gtest.cpp
   gesvd_gtest.cpp
+  gesvda_gtest.cpp
   gesvdj_gtest.cpp
   potrf_gtest.cpp
   potri_gtest.cpp

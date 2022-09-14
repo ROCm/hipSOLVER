@@ -3115,6 +3115,383 @@ catch(...)
     return exception2hip_status();
 }
 
+/******************** GESVDA_STRIDED_BATCHED ********************/
+hipsolverStatus_t hipsolverDnSgesvdaStridedBatched_bufferSize(hipsolverHandle_t  handle,
+                                                              hipsolverEigMode_t jobz,
+                                                              int                rank,
+                                                              int                m,
+                                                              int                n,
+                                                              const float*       A,
+                                                              int                lda,
+                                                              long long int      strideA,
+                                                              const float*       S,
+                                                              long long int      strideS,
+                                                              const float*       U,
+                                                              int                ldu,
+                                                              long long int      strideU,
+                                                              const float*       V,
+                                                              int                ldv,
+                                                              long long int      strideV,
+                                                              int*               lwork,
+                                                              int                batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnSgesvdaStridedBatched_bufferSize((cusolverDnHandle_t)handle,
+                                                                      hip2cuda_evect(jobz),
+                                                                      rank,
+                                                                      m,
+                                                                      n,
+                                                                      A,
+                                                                      lda,
+                                                                      strideA,
+                                                                      S,
+                                                                      strideS,
+                                                                      U,
+                                                                      ldu,
+                                                                      strideU,
+                                                                      V,
+                                                                      ldv,
+                                                                      strideV,
+                                                                      lwork,
+                                                                      batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnDgesvdaStridedBatched_bufferSize(hipsolverHandle_t  handle,
+                                                              hipsolverEigMode_t jobz,
+                                                              int                rank,
+                                                              int                m,
+                                                              int                n,
+                                                              const double*      A,
+                                                              int                lda,
+                                                              long long int      strideA,
+                                                              const double*      S,
+                                                              long long int      strideS,
+                                                              const double*      U,
+                                                              int                ldu,
+                                                              long long int      strideU,
+                                                              const double*      V,
+                                                              int                ldv,
+                                                              long long int      strideV,
+                                                              int*               lwork,
+                                                              int                batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnDgesvdaStridedBatched_bufferSize((cusolverDnHandle_t)handle,
+                                                                      hip2cuda_evect(jobz),
+                                                                      rank,
+                                                                      m,
+                                                                      n,
+                                                                      A,
+                                                                      lda,
+                                                                      strideA,
+                                                                      S,
+                                                                      strideS,
+                                                                      U,
+                                                                      ldu,
+                                                                      strideU,
+                                                                      V,
+                                                                      ldv,
+                                                                      strideV,
+                                                                      lwork,
+                                                                      batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnCgesvdaStridedBatched_bufferSize(hipsolverHandle_t      handle,
+                                                              hipsolverEigMode_t     jobz,
+                                                              int                    rank,
+                                                              int                    m,
+                                                              int                    n,
+                                                              const hipFloatComplex* A,
+                                                              int                    lda,
+                                                              long long int          strideA,
+                                                              const float*           S,
+                                                              long long int          strideS,
+                                                              const hipFloatComplex* U,
+                                                              int                    ldu,
+                                                              long long int          strideU,
+                                                              const hipFloatComplex* V,
+                                                              int                    ldv,
+                                                              long long int          strideV,
+                                                              int*                   lwork,
+                                                              int                    batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnCgesvdaStridedBatched_bufferSize((cusolverDnHandle_t)handle,
+                                                                      hip2cuda_evect(jobz),
+                                                                      rank,
+                                                                      m,
+                                                                      n,
+                                                                      (cuComplex*)A,
+                                                                      lda,
+                                                                      strideA,
+                                                                      S,
+                                                                      strideS,
+                                                                      (cuComplex*)U,
+                                                                      ldu,
+                                                                      strideU,
+                                                                      (cuComplex*)V,
+                                                                      ldv,
+                                                                      strideV,
+                                                                      lwork,
+                                                                      batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnZgesvdaStridedBatched_bufferSize(hipsolverHandle_t       handle,
+                                                              hipsolverEigMode_t      jobz,
+                                                              int                     rank,
+                                                              int                     m,
+                                                              int                     n,
+                                                              const hipDoubleComplex* A,
+                                                              int                     lda,
+                                                              long long int           strideA,
+                                                              const double*           S,
+                                                              long long int           strideS,
+                                                              const hipDoubleComplex* U,
+                                                              int                     ldu,
+                                                              long long int           strideU,
+                                                              const hipDoubleComplex* V,
+                                                              int                     ldv,
+                                                              long long int           strideV,
+                                                              int*                    lwork,
+                                                              int                     batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnZgesvdaStridedBatched_bufferSize((cusolverDnHandle_t)handle,
+                                                                      hip2cuda_evect(jobz),
+                                                                      rank,
+                                                                      m,
+                                                                      n,
+                                                                      (cuDoubleComplex*)A,
+                                                                      lda,
+                                                                      strideA,
+                                                                      S,
+                                                                      strideS,
+                                                                      (cuDoubleComplex*)U,
+                                                                      ldu,
+                                                                      strideU,
+                                                                      (cuDoubleComplex*)V,
+                                                                      ldv,
+                                                                      strideV,
+                                                                      lwork,
+                                                                      batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnSgesvdaStridedBatched(hipsolverHandle_t  handle,
+                                                   hipsolverEigMode_t jobz,
+                                                   int                rank,
+                                                   int                m,
+                                                   int                n,
+                                                   const float*       A,
+                                                   int                lda,
+                                                   long long int      strideA,
+                                                   float*             S,
+                                                   long long int      strideS,
+                                                   float*             U,
+                                                   int                ldu,
+                                                   long long int      strideU,
+                                                   float*             V,
+                                                   int                ldv,
+                                                   long long int      strideV,
+                                                   float*             work,
+                                                   int                lwork,
+                                                   int*               devInfo,
+                                                   double*            hRnrmF,
+                                                   int                batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnSgesvdaStridedBatched((cusolverDnHandle_t)handle,
+                                                           hip2cuda_evect(jobz),
+                                                           rank,
+                                                           m,
+                                                           n,
+                                                           A,
+                                                           lda,
+                                                           strideA,
+                                                           S,
+                                                           strideS,
+                                                           U,
+                                                           ldu,
+                                                           strideU,
+                                                           V,
+                                                           ldv,
+                                                           strideV,
+                                                           work,
+                                                           lwork,
+                                                           devInfo,
+                                                           hRnrmF,
+                                                           batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnDgesvdaStridedBatched(hipsolverHandle_t  handle,
+                                                   hipsolverEigMode_t jobz,
+                                                   int                rank,
+                                                   int                m,
+                                                   int                n,
+                                                   const double*      A,
+                                                   int                lda,
+                                                   long long int      strideA,
+                                                   double*            S,
+                                                   long long int      strideS,
+                                                   double*            U,
+                                                   int                ldu,
+                                                   long long int      strideU,
+                                                   double*            V,
+                                                   int                ldv,
+                                                   long long int      strideV,
+                                                   double*            work,
+                                                   int                lwork,
+                                                   int*               devInfo,
+                                                   double*            hRnrmF,
+                                                   int                batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnDgesvdaStridedBatched((cusolverDnHandle_t)handle,
+                                                           hip2cuda_evect(jobz),
+                                                           rank,
+                                                           m,
+                                                           n,
+                                                           A,
+                                                           lda,
+                                                           strideA,
+                                                           S,
+                                                           strideS,
+                                                           U,
+                                                           ldu,
+                                                           strideU,
+                                                           V,
+                                                           ldv,
+                                                           strideV,
+                                                           work,
+                                                           lwork,
+                                                           devInfo,
+                                                           hRnrmF,
+                                                           batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnCgesvdaStridedBatched(hipsolverHandle_t      handle,
+                                                   hipsolverEigMode_t     jobz,
+                                                   int                    rank,
+                                                   int                    m,
+                                                   int                    n,
+                                                   const hipFloatComplex* A,
+                                                   int                    lda,
+                                                   long long int          strideA,
+                                                   float*                 S,
+                                                   long long int          strideS,
+                                                   hipFloatComplex*       U,
+                                                   int                    ldu,
+                                                   long long int          strideU,
+                                                   hipFloatComplex*       V,
+                                                   int                    ldv,
+                                                   long long int          strideV,
+                                                   hipFloatComplex*       work,
+                                                   int                    lwork,
+                                                   int*                   devInfo,
+                                                   double*                hRnrmF,
+                                                   int                    batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnCgesvdaStridedBatched((cusolverDnHandle_t)handle,
+                                                           hip2cuda_evect(jobz),
+                                                           rank,
+                                                           m,
+                                                           n,
+                                                           (cuComplex*)A,
+                                                           lda,
+                                                           strideA,
+                                                           S,
+                                                           strideS,
+                                                           (cuComplex*)U,
+                                                           ldu,
+                                                           strideU,
+                                                           (cuComplex*)V,
+                                                           ldv,
+                                                           strideV,
+                                                           (cuComplex*)work,
+                                                           lwork,
+                                                           devInfo,
+                                                           hRnrmF,
+                                                           batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnZgesvdaStridedBatched(hipsolverHandle_t       handle,
+                                                   hipsolverEigMode_t      jobz,
+                                                   int                     rank,
+                                                   int                     m,
+                                                   int                     n,
+                                                   const hipDoubleComplex* A,
+                                                   int                     lda,
+                                                   long long int           strideA,
+                                                   double*                 S,
+                                                   long long int           strideS,
+                                                   hipDoubleComplex*       U,
+                                                   int                     ldu,
+                                                   long long int           strideU,
+                                                   hipDoubleComplex*       V,
+                                                   int                     ldv,
+                                                   long long int           strideV,
+                                                   hipDoubleComplex*       work,
+                                                   int                     lwork,
+                                                   int*                    devInfo,
+                                                   double*                 hRnrmF,
+                                                   int                     batch_count)
+try
+{
+    return cuda2hip_status(cusolverDnZgesvdaStridedBatched((cusolverDnHandle_t)handle,
+                                                           hip2cuda_evect(jobz),
+                                                           rank,
+                                                           m,
+                                                           n,
+                                                           (cuDoubleComplex*)A,
+                                                           lda,
+                                                           strideA,
+                                                           S,
+                                                           strideS,
+                                                           (cuDoubleComplex*)U,
+                                                           ldu,
+                                                           strideU,
+                                                           (cuDoubleComplex*)V,
+                                                           ldv,
+                                                           strideV,
+                                                           (cuDoubleComplex*)work,
+                                                           lwork,
+                                                           devInfo,
+                                                           hRnrmF,
+                                                           batch_count));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
 /******************** GETRF ********************/
 hipsolverStatus_t hipsolverSgetrf_bufferSize(
     hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
