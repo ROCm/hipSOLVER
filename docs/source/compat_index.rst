@@ -13,7 +13,7 @@ method signatures that are consistent with the cusolverDn interface. However, :r
 using the rocSOLVER backend due to differing workspace requirements. Therefore, users interested in achieving the best performance with
 the rocSOLVER backend should consult the :ref:`regular API documentation <library_api>`, and transition from the compatibility API to
 the regular API at the earliest convenience. Please refer to the user guide for additional :ref:`considerations regarding the use of
-the regular API <api_differences>`.
+the compatibility API <compat_api_differences>`.
 
 
 .. toctree::
@@ -23,4 +23,5 @@ the regular API <api_differences>`.
    compat_helperfunc
    compat_auxiliaryfunc
    compat_lapackfunc
+   compat_lapacklike
 

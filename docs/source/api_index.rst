@@ -22,4 +22,5 @@ Users interested in using hipSOLVER without these adjustments, so that the inter
    api_helperfunc
    api_auxiliaryfunc
    api_lapackfunc
+   api_lapacklike
 
