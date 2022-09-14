@@ -193,6 +193,30 @@ void cblas_gesvd(char leftv,
                  W*   E,
                  int* info);
 
+template <typename T, typename W>
+void cblas_gesvdx(hipsolverEigMode_t leftv,
+                  hipsolverEigMode_t rightv,
+                  char               srange,
+                  int                m,
+                  int                n,
+                  T*                 A,
+                  int                lda,
+                  W                  vl,
+                  W                  vu,
+                  int                il,
+                  int                iu,
+                  int*               nsv,
+                  W*                 S,
+                  T*                 U,
+                  int                ldu,
+                  T*                 V,
+                  int                ldv,
+                  T*                 work,
+                  int                lwork,
+                  W*                 rwork,
+                  int*               iwork,
+                  int*               info);
+
 template <typename T>
 void cblas_getrf(int m, int n, T* A, int lda, int* ipiv, int* info);
 

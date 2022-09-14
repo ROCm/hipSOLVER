@@ -20,13 +20,111 @@ the documentation of the corresponding backend libraries.
    :backlinks: top
 
 
+.. _porting:
+
+Porting cuSOLVER applications to hipSOLVER
+============================================
+
+hipSOLVER is designed to make it easy for users of cuSOLVER to port their existing applications to hipSOLVER, and provides two
+separate but interchangeable APIs in order to facilitate a two-stage transition process. Users are encouraged to start with hipSOLVER's
+:ref:`compatibility API <library_compat>`, which uses the `hipsolverDn` prefix and has method signatures that are fully consistent with
+cusolverDn functions. However, the compatibility API may introduce some performance drawbacks, especially when using
+the rocSOLVER backend. So, as a second stage, it is recommended to begin the switch to hipSOLVER's :ref:`regular API <library_api>`,
+which uses the `hipsolver` prefix and introduces minor adjustments to the API in order to get the best performance out of the rocSOLVER
+backend. In most cases, switching to the regular API is as simple as removing `Dn` from the `hipsolverDn` prefix.
+(No matter which API is used, a hipSOLVER application can be executed, without modifications to the code, in systems with cuSOLVER or
+rocSOLVER installed. However, using the regular API ensures the best performance out of both backends).
+
+
+.. _compat_api_differences:
+
+Some considerations when using the compatibility hipSOLVER API
+===============================================================
+
+hipSOLVER's compatibility API is intended as a 1:1 translation of the cuSOLVER API, but not all functionality is equally supported in
+rocSOLVER. Keep in mind the following considerations when using the compatibility API.
+
+
+Different minimum array lengths
+--------------------------------
+
+- Currently, the following methods require larger arrays than the minimum required by cuSOLVER.
+
+  * :ref:`hipsolverDnXgesvdaStridedBatched <compat_gesvda_strided_batched>` requires `U` to be of length `ldu * min(m,n)` at
+    minimum, and `S` to be of length `min(m,n)` at minimum.
+
+
+Unsupported methods
+--------------------
+
+The following methods are provided as part of the compatibility API, but are not currently implemented in rocSOLVER and will
+return `HIPSOLVER_STATUS_NOT_SUPPORTED` if called with the rocSOLVER backend.
+
+  * :ref:`hipsolverDnXgesvdjSetMaxSweeps <compat_gesvdj_set_max_sweeps>`,
+  * :ref:`hipsolverDnXgesvdjSetSortEig <compat_gesvdj_set_sort_eig>`,
+  * :ref:`hipsolverDnXgesvdjSetTolerance <compat_gesvdj_set_tolerance>`,
+  * :ref:`hipsolverDnXgesvdjGetResidual <compat_gesvdj_get_residual>`, and
+  * :ref:`hipsolverDnXgesvdjGetSweeps <compat_gesvdj_get_sweeps>`.
+
+
+Arguments not referenced by rocSOLVER
+--------------------------------------
+
+- Unlike cuSOLVER, rocSOLVER functions do not provide information on invalid arguments in the `info` parameter, though they
+  will provide info on singularities and algorithm convergence. Hence, when using the rocSOLVER backend, `info` will always
+  return a value >= 0. In those cases where a rocSOLVER function does not accept `info` as an argument, hipSOLVER will
+  set it to zero.
+
+- The `niters` argument of :ref:`hipsolverDnXXgels <compat_gels>` and :ref:`hipsolverDnXXgesv <compat_gesv>` is not referenced
+  by the rocSOLVER backend; there is no iterative refinement currently implemented in rocSOLVER.
+
+- The `hRnrmF` argument of :ref:`hipsolverDnXgesvdaStridedBatched <compat_gesvda_strided_batched>` is not referenced by the
+  rocSOLVER backend.
+
+
+.. _porting_issues:
+
+Possible performance implications of the compatibility API
+------------------------------------------------------------
+
+- To calculate the workspace required by function `gesvd` in rocSOLVER, the values of `jobu` and `jobv` are needed, however,
+  the function :ref:`hipsolverDnXgesvd_bufferSize <compat_gesvd_bufferSize>` does not accept these arguments. So, when using
+  the rocSOLVER backend, `hipsolverDnXgesvd_bufferSize` has to calculate internally the workspace for all possible values of `jobu` and `jobv`,
+  and return the maximum.
+
+  (`hipsolverDnXgesvd_bufferSize` is slower than `hipsolverXgesvd_bufferSize`, and its returned workspace size could be slightly larger than
+  what is actually needed).
+
+- To properly use a user-provided workspace, rocSOLVER requires both the allocated pointer and its size. However, the function
+  :ref:`hipsolverDnXgetrf <compat_getrf>` does not accept `lwork` as an argument. In consequence, when using the rocSOLVER backend,
+  `hipsolverDnXgetrf` has to call internally `hipsolverDnXgetrf_bufferSize` to know the size of the workspace.
+
+  (`hipsolverDnXgetrf_bufferSize` will be called twice in practice, once by the user before allocating the workspace, and once
+  by hipSOLVER internally when executing the `hipsolverDnXgetrf` function. `hipsolverDnXgetrf` could be slightly slower than `hipsolverXgetrf`
+  because of the extra call to the bufferSize helper).
+
+- The functions :ref:`hipsolverDnXgetrs <compat_getrs>`, :ref:`hipsolverDnXpotrs <compat_potrs>`, :ref:`hipsolverDnXpotrsBatched <compat_potrs_batched>`, and
+  :ref:`hipsolverDnXpotrfBatched <compat_potrf_batched>` do not accept `work` and `lwork` as arguments. However, this functionality does require a non-zero workspace
+  in rocSOLVER. As a result, when using the rocSOLVER backend, these functions will switch to the automatic workspace management model (see :ref:`here <mem_model>`).
+
+  (Users must keep in mind that even if the compatibility API does not have bufferSize helpers for the mentioned functions, these functions do require
+  workspace when using rocSOLVER, and it will be automatically managed. This may imply device memory reallocations with corresponding overheads).
+
+- The functions :ref:`hipsolverDnXgesvdj <compat_gesvdj>`, :ref:`hipsolverDnXgesvdjBatched <compat_gesvdj_batched>`, and
+  :ref:`hipsolverDnXgesvdaStridedBatched <compat_gesvda_strided_batched>` must apply a transpose operation to `V` in order to match the output of cuSOLVER,
+  requiring an additional function call and extra workspace.
+
+  (If `jobz` is set to `HIPSOLVER_EIG_MODE_VECTOR`, `hipsolverDnXgesvdj` and `hipsolverDnXgesvdjBatched` will be slower and require more workspace
+  than `hipsolverXgesvd`).
+
+
 .. _api_differences:
 
 Some considerations when using the regular hipSOLVER API
 ==========================================================
 
 hipSOLVER's regular API is similar to cuSOLVER; however, due to differences in the implementation and design between
-cuSOLVER and rocSOLVER, some minor adjustements were introduced to ensure the best performance out of both backends.
+cuSOLVER and rocSOLVER, some minor adjustments were introduced to ensure the best performance out of both backends.
 
 
 Different signatures and additional API methods
@@ -73,19 +171,6 @@ Different signatures and additional API methods
   in cuSOLVER do not need workspace).
 
 
-Unsupported methods
---------------------
-
-The following methods are provided as part of the compatibility API, but are not currently implemented in rocSOLVER and will
-return `HIPSOLVER_STATUS_NOT_SUPPORTED` if called with the rocSOLVER backend.
-
-  * :ref:`hipsolverDnXgesvdjSetMaxSweeps <compat_gesvdj_set_max_sweeps>`,
-  * :ref:`hipsolverDnXgesvdjSetSortEig <compat_gesvdj_set_sort_eig>`,
-  * :ref:`hipsolverDnXgesvdjSetTolerance <compat_gesvdj_set_tolerance>`,
-  * :ref:`hipsolverDnXgesvdjGetResidual <compat_gesvdj_get_residual>`, and
-  * :ref:`hipsolverDnXgesvdjGetSweeps <compat_gesvdj_get_sweeps>`.
-
-
 Arguments not referenced by rocSOLVER
 --------------------------------------
 
@@ -129,57 +214,4 @@ vectors can be retrieved using either `B` or `X`.
 .. warning::
     This feature should not be used with the cuSOLVER backend; hipSOLVER does not guarantee a defined behavior when passing
     `X = B` to the mentioned functions in cuSOLVER.
-
-
-.. _porting:
-
-Porting cuSOLVER applications to hipSOLVER
-============================================
-
-hipSOLVER is also designed to make it easy for users of cuSOLVER to port their existing applications to hipSOLVER, and provides two
-separate but interchangeable APIs in order to facilitate a two-stage transition process. Users are encouraged to start with hipSOLVER's
-:ref:`compatibility API <library_compat>`, which uses the `hipsolverDn` prefix and has method signatures that are fully consistent with
-cusolverDn functions. As explained below, however, the compatibility API may introduce some performance drawbacks, especially when using
-the rocSOLVER backend. So, as a second stage, it is recommended to begin the switch to hipSOLVER's :ref:`regular API <library_api>`, which
-uses the `hipsolver` prefix and introduces minor adjustments to the API (see section :ref:`1.3.1 <api_differences>`) in order to get the
-best performance out of the rocSOLVER backend. In most cases, switching to the regular API is as simple as removing `Dn` from the
-`hipsolverDn` prefix.
-
-(No matter which API is used, a hipSOLVER application can be executed, without modifications to the code, in systems with cuSOLVER or
-rocSOLVER installed. However, using the regular API ensures the best performance out of both backends).
-
-
-.. _porting_issues:
-
-Possible performance implications of the compatibility API
-------------------------------------------------------------
-
-- To calculate the workspace required by function `gesvd` in rocSOLVER, the values of `jobu` and `jobv` are needed, however,
-  the function :ref:`hipsolverDnXgesvd_bufferSize <compat_gesvd_bufferSize>` does not accept these arguments. So, when using
-  the rocSOLVER backend, `hipsolverDnXgesvd_bufferSize` has to calculate internally the workspace for all possible values of `jobu` and `jobv`,
-  and return the maximum.
-
-  (`hipsolverDnXgesvd_bufferSize` is slower than `hipsolverXgesvd_bufferSize`, and its returned workspace size could be slightly larger than
-  what is actually needed).
-
-- To properly use a user-provided workspace, rocSOLVER requires both the allocated pointer and its size. However, the function
-  :ref:`hipsolverDnXgetrf <compat_getrf>` does not accept `lwork` as an argument. In consequence, when using the rocSOLVER backend,
-  `hipsolverDnXgetrf` has to call internally `hipsolverDnXgetrf_bufferSize` to know the size of the workspace.
-
-  (`hipsolverDnXgetrf_bufferSize` will be called twice in practice, once by the user before allocating the workspace, and once
-  by hipSOLVER internally when executing the `hipsolverDnXgetrf` function. `hipsolverDnXgetrf` could be slightly slower than `hipsolverXgetrf`
-  because of the extra call to the bufferSize helper).
-
-- The functions :ref:`hipsolverDnXgetrs <compat_getrs>`, :ref:`hipsolverDnXpotrs <compat_potrs>`, :ref:`hipsolverDnXpotrsBatched <compat_potrs_batched>`, and
-  :ref:`hipsolverDnXpotrfBatched <compat_potrf_batched>` do not accept `work` and `lwork` as arguments. However, this functionality does require a non-zero workspace
-  in rocSOLVER. As a result, when using the rocSOLVER backend, these functions will switch to the automatic workspace management model (see :ref:`here <mem_model>`).
-
-  (Users must keep in mind that even if the compatibility API does not have bufferSize helpers for the mentioned functions, these functions do require
-  workspace when using rocSOLVER, and it will be automatically managed. This may imply device memory reallocations with corresponding overheads).
-
-- The functions :ref:`hipsolverDnXgesvdj <compat_gesvdj>` and :ref:`hipsolverDnXgesvdjBatched <compat_gesvdj_batched>` must apply a transpose
-  operation to `V` in order to match the output of cuSOLVER, requiring an additional function call and extra workspace.
-
-  (If `jobz` is set to `HIPSOLVER_EIG_MODE_VECTOR`, `hipsolverDnXgesvdj` and `hipsolverDnXgesvdjBatched` will be slower and require more workspace
-  than `hipsolverXgesvd`).
 
