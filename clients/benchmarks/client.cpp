@@ -210,11 +210,11 @@ try
         //     "                           ")
 
         // stride options
-        // ("strideA",
-        //  value<rocblas_stride>(),
-        //     "Matrix/vector stride parameter.\n"
-        //     "                           Stride for matrices/vectors A.\n"
-        //     "                           ")
+        ("strideA",
+         value<rocblas_stride>(),
+            "Matrix/vector stride parameter.\n"
+            "                           Stride for matrices/vectors A.\n"
+            "                           ")
 
         // ("strideB",
         //  value<rocblas_stride>(),
@@ -246,23 +246,23 @@ try
         //     "                           Stride for vectors tau, taup, and ipiv.\n"
         //     "                           ")
 
-        // ("strideS",
-        //  value<rocblas_stride>(),
-        //     "Matrix/vector stride parameter.\n"
-        //     "                           Stride for matrices/vectors S.\n"
-        //     "                           ")
+        ("strideS",
+         value<rocblas_stride>(),
+            "Matrix/vector stride parameter.\n"
+            "                           Stride for matrices/vectors S.\n"
+            "                           ")
 
-        // ("strideU",
-        //  value<rocblas_stride>(),
-        //     "Matrix/vector stride parameter.\n"
-        //     "                           Stride for matrices/vectors U.\n"
-        //     "                           ")
+        ("strideU",
+         value<rocblas_stride>(),
+            "Matrix/vector stride parameter.\n"
+            "                           Stride for matrices/vectors U.\n"
+            "                           ")
 
-        // ("strideV",
-        //  value<rocblas_stride>(),
-        //     "Matrix/vector stride parameter.\n"
-        //     "                           Stride for matrices/vectors V.\n"
-        //     "                           ")
+        ("strideV",
+         value<rocblas_stride>(),
+            "Matrix/vector stride parameter.\n"
+            "                           Stride for matrices/vectors V.\n"
+            "                           ")
 
         // bdsqr options
         // ("nc",
@@ -313,7 +313,7 @@ try
             "                           Indicates how the right singular vectors are to be calculated and stored.\n"
             "                           ")
 
-        // partial eigenvalue decomposition options
+        // partial eigenvalue/singular value decomposition options
         ("il",
          value<rocblas_int>(),
             "Lower index in ordered subset of eigenvalues.\n"
@@ -331,6 +331,12 @@ try
             "A = all eigenvalues, V = in (vl, vu], I = from the il-th to the iu-th.\n"
             "                           For partial eigenvalue decompositions, it indicates the type of interval in which\n"
             "                           the eigenvalues will be found.\n"
+            "                           ")
+
+        ("rank",
+         value<rocblas_int>(),
+            "The number of singular values to be computed.\n"
+            "                           Used in partial SVD functions.\n"
             "                           ")
 
         ("vl",
@@ -399,8 +405,8 @@ try
 
         ("jobz",
          value<char>()->default_value('N'),
-            "N = none, V = compute eigenvectors of the matrix,\n"
-            "                           Indicates how the eigenvectors are to be calculated and stored.\n"
+            "N = none, V = compute eigenvectors/singular vectors of the matrix,\n"
+            "                           Indicates how the eigenvectors/singular vectors are to be calculated and stored.\n"
             "                           ")
 
         ("side",

@@ -32,6 +32,7 @@
 #include "testing_geqrf.hpp"
 #include "testing_gesv.hpp"
 #include "testing_gesvd.hpp"
+#include "testing_gesvda.hpp"
 #include "testing_gesvdj.hpp"
 #include "testing_getrf.hpp"
 #include "testing_getrs.hpp"
@@ -76,6 +77,7 @@ class hipsolver_dispatcher
             {"geqrf", testing_geqrf<false, false, false, T>},
             {"gesv", testing_gesv<API_NORMAL, false, false, false, T>},
             {"gesvd", testing_gesvd<API_NORMAL, false, false, false, T>},
+            {"gesvda_strided_batched", testing_gesvda<API_COMPAT, false, true, T>},
             {"gesvdj", testing_gesvdj<API_COMPAT, false, false, T>},
             {"gesvdj_batched", testing_gesvdj<API_COMPAT, false, true, T>},
             {"getrf", testing_getrf<API_NORMAL, false, false, false, T>},
