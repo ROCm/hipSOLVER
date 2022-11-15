@@ -86,7 +86,6 @@ target_include_directories( hipsolver-test
   SYSTEM PRIVATE
     $<BUILD_INTERFACE:${CBLAS_INCLUDE_DIRS}>
     $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
-    ${ROCM_PATH}/hsa/include
 )
 
 target_link_libraries( hipsolver-test PRIVATE cblas lapack blas GTest::GTest Threads::Threads roc::hipsolver )
