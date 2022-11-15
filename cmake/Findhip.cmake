@@ -1,4 +1,4 @@
-# Copyright (c) 2016 - 2022 Advanced Micro Devices, Inc. All Rights Reserved.
+# Copyright (C) 2016-2022 Advanced Micro Devices, Inc. All Rights Reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -177,6 +177,7 @@ else()
     find_path(hip_INCLUDE_DIR hip/hip_runtime.h)
     mark_as_advanced(hip_INCLUDE_DIR)
     set(hip_INCLUDE_DIRS "${hip_INCLUDE_DIR}")
+    set(HIP_INCLUDE_DIRS "${hip_INCLUDE_DIR}")
 
     find_package_handle_standard_args(hip
         REQUIRED_VARS
