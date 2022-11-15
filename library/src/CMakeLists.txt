@@ -91,7 +91,7 @@ if( WIN32 )
 endif( )
 
 # Build hipsolver from source on AMD platform
-if( NOT USE_CUDA )
+if( HIP_PLATFORM STREQUAL amd )
   if( NOT TARGET rocblas )
     if( CUSTOM_ROCBLAS )
       set ( ENV{rocblas_DIR} ${CUSTOM_ROCBLAS})
@@ -110,23 +110,20 @@ if( NOT USE_CUDA )
     endif( )
   endif( )
 
-  target_link_libraries( hipsolver PRIVATE roc::rocblas roc::rocsolver hip::host )
+  target_link_libraries( hipsolver
+    PUBLIC
+      hip::host
+    PRIVATE
+      roc::rocblas
+      roc::rocsolver
+  )
 
   if( CUSTOM_TARGET )
     target_link_libraries( hipsolver PRIVATE hip::${CUSTOM_TARGET} )
   endif( )
 
 else( )
-  target_compile_definitions( hipsolver PRIVATE __HIP_PLATFORM_NVCC__ )
-
-  target_link_libraries( hipsolver PRIVATE ${CUDA_cusolver_LIBRARY} )
-
-  # External header includes included as system files
-  target_include_directories( hipsolver
-    SYSTEM PRIVATE
-      $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
-      $<BUILD_INTERFACE:${CUDA_INCLUDE_DIRS}>
-  )
+  target_link_libraries( hipsolver PRIVATE hip::host ${CUDA_cusolver_LIBRARY} )
 endif( )
 
 # Internal header includes
@@ -177,7 +174,7 @@ rocm_install_targets(
     ${CMAKE_BINARY_DIR}/include
 )
 
-if ( NOT USE_CUDA )
+if ( HIP_PLATFORM STREQUAL amd )
   rocm_export_targets(
     TARGETS roc::hipsolver
     DEPENDS PACKAGE hip
@@ -186,7 +183,6 @@ if ( NOT USE_CUDA )
 else( )
   rocm_export_targets(
     TARGETS roc::hipsolver
-    DEPENDS PACKAGE HIP
     NAMESPACE roc::
   )
 endif( )

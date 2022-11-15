@@ -24,8 +24,6 @@
 # This is incremented when the ABI to the library changes
 set( hipsolver_SOVERSION 0.1 )
 
-list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${ROCM_PATH}/lib/cmake/hip /opt/rocm/lib/cmake/hip ${HIP_PATH}/cmake )
-
 # This option only works for make/nmake and the ninja generators, but no reason it shouldn't be on all the time
 # This tells cmake to create a compile_commands.json file that can be used with clang tooling or vim
 set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
@@ -45,12 +43,6 @@ if( BUILD_VERBOSE )
   message( STATUS "\t==>CMAKE_CXX_COMPILER relwithdebinfo flags: " ${CMAKE_CXX_FLAGS_RELWITHDEBINFO} )
   message( STATUS "\t==>CMAKE_EXE_LINKER link flags: " ${CMAKE_EXE_LINKER_FLAGS} )
 endif( )
-
-if( NOT USE_CUDA )
-  find_package( hip REQUIRED PATHS ${ROCM_PATH} /opt/rocm ${HIP_PATH} )
-else()
-  find_package( HIP REQUIRED )
-endif()
 
 # configure a header file to pass the CMake version settings to the source, and package the header files in the output archive
 configure_file( "${CMAKE_CURRENT_SOURCE_DIR}/include/internal/hipsolver-version.h.in"
