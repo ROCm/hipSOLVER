@@ -272,7 +272,7 @@ catch(...)
 }
 
 /******************** GESVDJ PARAMS ********************/
-hipsolverStatus_t hipsolverDnCreateGesvdjInfo(hipsolverGesvdjInfo_t* info)
+hipsolverStatus_t hipsolverCreateGesvdjInfo(hipsolverGesvdjInfo_t* info)
 try
 {
     return cuda2hip_status(cusolverDnCreateGesvdjInfo((gesvdjInfo_t*)info));
@@ -282,7 +282,7 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnDestroyGesvdjInfo(hipsolverGesvdjInfo_t info)
+hipsolverStatus_t hipsolverDestroyGesvdjInfo(hipsolverGesvdjInfo_t info)
 try
 {
     return cuda2hip_status(cusolverDnDestroyGesvdjInfo((gesvdjInfo_t)info));
@@ -292,7 +292,7 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnXgesvdjSetMaxSweeps(hipsolverGesvdjInfo_t info, int max_sweeps)
+hipsolverStatus_t hipsolverXgesvdjSetMaxSweeps(hipsolverGesvdjInfo_t info, int max_sweeps)
 try
 {
     return cuda2hip_status(cusolverDnXgesvdjSetMaxSweeps((gesvdjInfo_t)info, max_sweeps));
@@ -302,7 +302,7 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnXgesvdjSetSortEig(hipsolverGesvdjInfo_t info, int sort_eig)
+hipsolverStatus_t hipsolverXgesvdjSetSortEig(hipsolverGesvdjInfo_t info, int sort_eig)
 try
 {
     return cuda2hip_status(cusolverDnXgesvdjSetSortEig((gesvdjInfo_t)info, sort_eig));
@@ -312,7 +312,7 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnXgesvdjSetTolerance(hipsolverGesvdjInfo_t info, double tolerance)
+hipsolverStatus_t hipsolverXgesvdjSetTolerance(hipsolverGesvdjInfo_t info, double tolerance)
 try
 {
     return cuda2hip_status(cusolverDnXgesvdjSetTolerance((gesvdjInfo_t)info, tolerance));
@@ -322,9 +322,9 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnXgesvdjGetResidual(hipsolverDnHandle_t   handle,
-                                                hipsolverGesvdjInfo_t info,
-                                                double*               residual)
+hipsolverStatus_t hipsolverXgesvdjGetResidual(hipsolverDnHandle_t   handle,
+                                              hipsolverGesvdjInfo_t info,
+                                              double*               residual)
 try
 {
     return cuda2hip_status(
@@ -335,9 +335,9 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnXgesvdjGetSweeps(hipsolverDnHandle_t   handle,
-                                              hipsolverGesvdjInfo_t info,
-                                              int*                  executed_sweeps)
+hipsolverStatus_t hipsolverXgesvdjGetSweeps(hipsolverDnHandle_t   handle,
+                                            hipsolverGesvdjInfo_t info,
+                                            int*                  executed_sweeps)
 try
 {
     return cuda2hip_status(cusolverDnXgesvdjGetSweeps(
@@ -2506,20 +2506,20 @@ catch(...)
 }
 
 /******************** GESVDJ ********************/
-hipsolverStatus_t hipsolverDnSgesvdj_bufferSize(hipsolverDnHandle_t   handle,
-                                                hipsolverEigMode_t    jobz,
-                                                int                   econ,
-                                                int                   m,
-                                                int                   n,
-                                                const float*          A,
-                                                int                   lda,
-                                                const float*          S,
-                                                const float*          U,
-                                                int                   ldu,
-                                                const float*          V,
-                                                int                   ldv,
-                                                int*                  lwork,
-                                                hipsolverGesvdjInfo_t params)
+hipsolverStatus_t hipsolverSgesvdj_bufferSize(hipsolverDnHandle_t   handle,
+                                              hipsolverEigMode_t    jobz,
+                                              int                   econ,
+                                              int                   m,
+                                              int                   n,
+                                              const float*          A,
+                                              int                   lda,
+                                              const float*          S,
+                                              const float*          U,
+                                              int                   ldu,
+                                              const float*          V,
+                                              int                   ldv,
+                                              int*                  lwork,
+                                              hipsolverGesvdjInfo_t params)
 try
 {
     return cuda2hip_status(cusolverDnSgesvdj_bufferSize((cusolverDnHandle_t)handle,
@@ -2542,20 +2542,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnDgesvdj_bufferSize(hipsolverDnHandle_t   handle,
-                                                hipsolverEigMode_t    jobz,
-                                                int                   econ,
-                                                int                   m,
-                                                int                   n,
-                                                const double*         A,
-                                                int                   lda,
-                                                const double*         S,
-                                                const double*         U,
-                                                int                   ldu,
-                                                const double*         V,
-                                                int                   ldv,
-                                                int*                  lwork,
-                                                hipsolverGesvdjInfo_t params)
+hipsolverStatus_t hipsolverDgesvdj_bufferSize(hipsolverDnHandle_t   handle,
+                                              hipsolverEigMode_t    jobz,
+                                              int                   econ,
+                                              int                   m,
+                                              int                   n,
+                                              const double*         A,
+                                              int                   lda,
+                                              const double*         S,
+                                              const double*         U,
+                                              int                   ldu,
+                                              const double*         V,
+                                              int                   ldv,
+                                              int*                  lwork,
+                                              hipsolverGesvdjInfo_t params)
 try
 {
     return cuda2hip_status(cusolverDnDgesvdj_bufferSize((cusolverDnHandle_t)handle,
@@ -2578,20 +2578,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnCgesvdj_bufferSize(hipsolverDnHandle_t    handle,
-                                                hipsolverEigMode_t     jobz,
-                                                int                    econ,
-                                                int                    m,
-                                                int                    n,
-                                                const hipFloatComplex* A,
-                                                int                    lda,
-                                                const float*           S,
-                                                const hipFloatComplex* U,
-                                                int                    ldu,
-                                                const hipFloatComplex* V,
-                                                int                    ldv,
-                                                int*                   lwork,
-                                                hipsolverGesvdjInfo_t  params)
+hipsolverStatus_t hipsolverCgesvdj_bufferSize(hipsolverDnHandle_t    handle,
+                                              hipsolverEigMode_t     jobz,
+                                              int                    econ,
+                                              int                    m,
+                                              int                    n,
+                                              const hipFloatComplex* A,
+                                              int                    lda,
+                                              const float*           S,
+                                              const hipFloatComplex* U,
+                                              int                    ldu,
+                                              const hipFloatComplex* V,
+                                              int                    ldv,
+                                              int*                   lwork,
+                                              hipsolverGesvdjInfo_t  params)
 try
 {
     return cuda2hip_status(cusolverDnCgesvdj_bufferSize((cusolverDnHandle_t)handle,
@@ -2614,20 +2614,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnZgesvdj_bufferSize(hipsolverDnHandle_t     handle,
-                                                hipsolverEigMode_t      jobz,
-                                                int                     econ,
-                                                int                     m,
-                                                int                     n,
-                                                const hipDoubleComplex* A,
-                                                int                     lda,
-                                                const double*           S,
-                                                const hipDoubleComplex* U,
-                                                int                     ldu,
-                                                const hipDoubleComplex* V,
-                                                int                     ldv,
-                                                int*                    lwork,
-                                                hipsolverGesvdjInfo_t   params)
+hipsolverStatus_t hipsolverZgesvdj_bufferSize(hipsolverDnHandle_t     handle,
+                                              hipsolverEigMode_t      jobz,
+                                              int                     econ,
+                                              int                     m,
+                                              int                     n,
+                                              const hipDoubleComplex* A,
+                                              int                     lda,
+                                              const double*           S,
+                                              const hipDoubleComplex* U,
+                                              int                     ldu,
+                                              const hipDoubleComplex* V,
+                                              int                     ldv,
+                                              int*                    lwork,
+                                              hipsolverGesvdjInfo_t   params)
 try
 {
     return cuda2hip_status(cusolverDnZgesvdj_bufferSize((cusolverDnHandle_t)handle,
@@ -2650,22 +2650,22 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnSgesvdj(hipsolverDnHandle_t   handle,
-                                     hipsolverEigMode_t    jobz,
-                                     int                   econ,
-                                     int                   m,
-                                     int                   n,
-                                     float*                A,
-                                     int                   lda,
-                                     float*                S,
-                                     float*                U,
-                                     int                   ldu,
-                                     float*                V,
-                                     int                   ldv,
-                                     float*                work,
-                                     int                   lwork,
-                                     int*                  devInfo,
-                                     hipsolverGesvdjInfo_t params)
+hipsolverStatus_t hipsolverSgesvdj(hipsolverDnHandle_t   handle,
+                                   hipsolverEigMode_t    jobz,
+                                   int                   econ,
+                                   int                   m,
+                                   int                   n,
+                                   float*                A,
+                                   int                   lda,
+                                   float*                S,
+                                   float*                U,
+                                   int                   ldu,
+                                   float*                V,
+                                   int                   ldv,
+                                   float*                work,
+                                   int                   lwork,
+                                   int*                  devInfo,
+                                   hipsolverGesvdjInfo_t params)
 try
 {
     return cuda2hip_status(cusolverDnSgesvdj((cusolverDnHandle_t)handle,
@@ -2690,22 +2690,22 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnDgesvdj(hipsolverDnHandle_t   handle,
-                                     hipsolverEigMode_t    jobz,
-                                     int                   econ,
-                                     int                   m,
-                                     int                   n,
-                                     double*               A,
-                                     int                   lda,
-                                     double*               S,
-                                     double*               U,
-                                     int                   ldu,
-                                     double*               V,
-                                     int                   ldv,
-                                     double*               work,
-                                     int                   lwork,
-                                     int*                  devInfo,
-                                     hipsolverGesvdjInfo_t params)
+hipsolverStatus_t hipsolverDgesvdj(hipsolverDnHandle_t   handle,
+                                   hipsolverEigMode_t    jobz,
+                                   int                   econ,
+                                   int                   m,
+                                   int                   n,
+                                   double*               A,
+                                   int                   lda,
+                                   double*               S,
+                                   double*               U,
+                                   int                   ldu,
+                                   double*               V,
+                                   int                   ldv,
+                                   double*               work,
+                                   int                   lwork,
+                                   int*                  devInfo,
+                                   hipsolverGesvdjInfo_t params)
 try
 {
     return cuda2hip_status(cusolverDnDgesvdj((cusolverDnHandle_t)handle,
@@ -2730,22 +2730,22 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnCgesvdj(hipsolverDnHandle_t   handle,
-                                     hipsolverEigMode_t    jobz,
-                                     int                   econ,
-                                     int                   m,
-                                     int                   n,
-                                     hipFloatComplex*      A,
-                                     int                   lda,
-                                     float*                S,
-                                     hipFloatComplex*      U,
-                                     int                   ldu,
-                                     hipFloatComplex*      V,
-                                     int                   ldv,
-                                     hipFloatComplex*      work,
-                                     int                   lwork,
-                                     int*                  devInfo,
-                                     hipsolverGesvdjInfo_t params)
+hipsolverStatus_t hipsolverCgesvdj(hipsolverDnHandle_t   handle,
+                                   hipsolverEigMode_t    jobz,
+                                   int                   econ,
+                                   int                   m,
+                                   int                   n,
+                                   hipFloatComplex*      A,
+                                   int                   lda,
+                                   float*                S,
+                                   hipFloatComplex*      U,
+                                   int                   ldu,
+                                   hipFloatComplex*      V,
+                                   int                   ldv,
+                                   hipFloatComplex*      work,
+                                   int                   lwork,
+                                   int*                  devInfo,
+                                   hipsolverGesvdjInfo_t params)
 try
 {
     return cuda2hip_status(cusolverDnCgesvdj((cusolverDnHandle_t)handle,
@@ -2770,22 +2770,22 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnZgesvdj(hipsolverDnHandle_t   handle,
-                                     hipsolverEigMode_t    jobz,
-                                     int                   econ,
-                                     int                   m,
-                                     int                   n,
-                                     hipDoubleComplex*     A,
-                                     int                   lda,
-                                     double*               S,
-                                     hipDoubleComplex*     U,
-                                     int                   ldu,
-                                     hipDoubleComplex*     V,
-                                     int                   ldv,
-                                     hipDoubleComplex*     work,
-                                     int                   lwork,
-                                     int*                  devInfo,
-                                     hipsolverGesvdjInfo_t params)
+hipsolverStatus_t hipsolverZgesvdj(hipsolverDnHandle_t   handle,
+                                   hipsolverEigMode_t    jobz,
+                                   int                   econ,
+                                   int                   m,
+                                   int                   n,
+                                   hipDoubleComplex*     A,
+                                   int                   lda,
+                                   double*               S,
+                                   hipDoubleComplex*     U,
+                                   int                   ldu,
+                                   hipDoubleComplex*     V,
+                                   int                   ldv,
+                                   hipDoubleComplex*     work,
+                                   int                   lwork,
+                                   int*                  devInfo,
+                                   hipsolverGesvdjInfo_t params)
 try
 {
     return cuda2hip_status(cusolverDnZgesvdj((cusolverDnHandle_t)handle,
@@ -2811,20 +2811,20 @@ catch(...)
 }
 
 /******************** GESVDJ_BATCHED ********************/
-hipsolverStatus_t hipsolverDnSgesvdjBatched_bufferSize(hipsolverDnHandle_t   handle,
-                                                       hipsolverEigMode_t    jobz,
-                                                       int                   m,
-                                                       int                   n,
-                                                       const float*          A,
-                                                       int                   lda,
-                                                       const float*          S,
-                                                       const float*          U,
-                                                       int                   ldu,
-                                                       const float*          V,
-                                                       int                   ldv,
-                                                       int*                  lwork,
-                                                       hipsolverGesvdjInfo_t params,
-                                                       int                   batch_count)
+hipsolverStatus_t hipsolverSgesvdjBatched_bufferSize(hipsolverDnHandle_t   handle,
+                                                     hipsolverEigMode_t    jobz,
+                                                     int                   m,
+                                                     int                   n,
+                                                     const float*          A,
+                                                     int                   lda,
+                                                     const float*          S,
+                                                     const float*          U,
+                                                     int                   ldu,
+                                                     const float*          V,
+                                                     int                   ldv,
+                                                     int*                  lwork,
+                                                     hipsolverGesvdjInfo_t params,
+                                                     int                   batch_count)
 try
 {
     return cuda2hip_status(cusolverDnSgesvdjBatched_bufferSize((cusolverDnHandle_t)handle,
@@ -2847,20 +2847,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnDgesvdjBatched_bufferSize(hipsolverDnHandle_t   handle,
-                                                       hipsolverEigMode_t    jobz,
-                                                       int                   m,
-                                                       int                   n,
-                                                       const double*         A,
-                                                       int                   lda,
-                                                       const double*         S,
-                                                       const double*         U,
-                                                       int                   ldu,
-                                                       const double*         V,
-                                                       int                   ldv,
-                                                       int*                  lwork,
-                                                       hipsolverGesvdjInfo_t params,
-                                                       int                   batch_count)
+hipsolverStatus_t hipsolverDgesvdjBatched_bufferSize(hipsolverDnHandle_t   handle,
+                                                     hipsolverEigMode_t    jobz,
+                                                     int                   m,
+                                                     int                   n,
+                                                     const double*         A,
+                                                     int                   lda,
+                                                     const double*         S,
+                                                     const double*         U,
+                                                     int                   ldu,
+                                                     const double*         V,
+                                                     int                   ldv,
+                                                     int*                  lwork,
+                                                     hipsolverGesvdjInfo_t params,
+                                                     int                   batch_count)
 try
 {
     return cuda2hip_status(cusolverDnDgesvdjBatched_bufferSize((cusolverDnHandle_t)handle,
@@ -2883,20 +2883,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnCgesvdjBatched_bufferSize(hipsolverDnHandle_t    handle,
-                                                       hipsolverEigMode_t     jobz,
-                                                       int                    m,
-                                                       int                    n,
-                                                       const hipFloatComplex* A,
-                                                       int                    lda,
-                                                       const float*           S,
-                                                       const hipFloatComplex* U,
-                                                       int                    ldu,
-                                                       const hipFloatComplex* V,
-                                                       int                    ldv,
-                                                       int*                   lwork,
-                                                       hipsolverGesvdjInfo_t  params,
-                                                       int                    batch_count)
+hipsolverStatus_t hipsolverCgesvdjBatched_bufferSize(hipsolverDnHandle_t    handle,
+                                                     hipsolverEigMode_t     jobz,
+                                                     int                    m,
+                                                     int                    n,
+                                                     const hipFloatComplex* A,
+                                                     int                    lda,
+                                                     const float*           S,
+                                                     const hipFloatComplex* U,
+                                                     int                    ldu,
+                                                     const hipFloatComplex* V,
+                                                     int                    ldv,
+                                                     int*                   lwork,
+                                                     hipsolverGesvdjInfo_t  params,
+                                                     int                    batch_count)
 try
 {
     return cuda2hip_status(cusolverDnCgesvdjBatched_bufferSize((cusolverDnHandle_t)handle,
@@ -2919,20 +2919,20 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnZgesvdjBatched_bufferSize(hipsolverDnHandle_t     handle,
-                                                       hipsolverEigMode_t      jobz,
-                                                       int                     m,
-                                                       int                     n,
-                                                       const hipDoubleComplex* A,
-                                                       int                     lda,
-                                                       const double*           S,
-                                                       const hipDoubleComplex* U,
-                                                       int                     ldu,
-                                                       const hipDoubleComplex* V,
-                                                       int                     ldv,
-                                                       int*                    lwork,
-                                                       hipsolverGesvdjInfo_t   params,
-                                                       int                     batch_count)
+hipsolverStatus_t hipsolverZgesvdjBatched_bufferSize(hipsolverDnHandle_t     handle,
+                                                     hipsolverEigMode_t      jobz,
+                                                     int                     m,
+                                                     int                     n,
+                                                     const hipDoubleComplex* A,
+                                                     int                     lda,
+                                                     const double*           S,
+                                                     const hipDoubleComplex* U,
+                                                     int                     ldu,
+                                                     const hipDoubleComplex* V,
+                                                     int                     ldv,
+                                                     int*                    lwork,
+                                                     hipsolverGesvdjInfo_t   params,
+                                                     int                     batch_count)
 try
 {
     return cuda2hip_status(cusolverDnZgesvdjBatched_bufferSize((cusolverDnHandle_t)handle,
@@ -2955,22 +2955,22 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnSgesvdjBatched(hipsolverDnHandle_t   handle,
-                                            hipsolverEigMode_t    jobz,
-                                            int                   m,
-                                            int                   n,
-                                            float*                A,
-                                            int                   lda,
-                                            float*                S,
-                                            float*                U,
-                                            int                   ldu,
-                                            float*                V,
-                                            int                   ldv,
-                                            float*                work,
-                                            int                   lwork,
-                                            int*                  devInfo,
-                                            hipsolverGesvdjInfo_t params,
-                                            int                   batch_count)
+hipsolverStatus_t hipsolverSgesvdjBatched(hipsolverDnHandle_t   handle,
+                                          hipsolverEigMode_t    jobz,
+                                          int                   m,
+                                          int                   n,
+                                          float*                A,
+                                          int                   lda,
+                                          float*                S,
+                                          float*                U,
+                                          int                   ldu,
+                                          float*                V,
+                                          int                   ldv,
+                                          float*                work,
+                                          int                   lwork,
+                                          int*                  devInfo,
+                                          hipsolverGesvdjInfo_t params,
+                                          int                   batch_count)
 try
 {
     return cuda2hip_status(cusolverDnSgesvdjBatched((cusolverDnHandle_t)handle,
@@ -2995,22 +2995,22 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnDgesvdjBatched(hipsolverDnHandle_t   handle,
-                                            hipsolverEigMode_t    jobz,
-                                            int                   m,
-                                            int                   n,
-                                            double*               A,
-                                            int                   lda,
-                                            double*               S,
-                                            double*               U,
-                                            int                   ldu,
-                                            double*               V,
-                                            int                   ldv,
-                                            double*               work,
-                                            int                   lwork,
-                                            int*                  devInfo,
-                                            hipsolverGesvdjInfo_t params,
-                                            int                   batch_count)
+hipsolverStatus_t hipsolverDgesvdjBatched(hipsolverDnHandle_t   handle,
+                                          hipsolverEigMode_t    jobz,
+                                          int                   m,
+                                          int                   n,
+                                          double*               A,
+                                          int                   lda,
+                                          double*               S,
+                                          double*               U,
+                                          int                   ldu,
+                                          double*               V,
+                                          int                   ldv,
+                                          double*               work,
+                                          int                   lwork,
+                                          int*                  devInfo,
+                                          hipsolverGesvdjInfo_t params,
+                                          int                   batch_count)
 try
 {
     return cuda2hip_status(cusolverDnDgesvdjBatched((cusolverDnHandle_t)handle,
@@ -3035,22 +3035,22 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnCgesvdjBatched(hipsolverDnHandle_t   handle,
-                                            hipsolverEigMode_t    jobz,
-                                            int                   m,
-                                            int                   n,
-                                            hipFloatComplex*      A,
-                                            int                   lda,
-                                            float*                S,
-                                            hipFloatComplex*      U,
-                                            int                   ldu,
-                                            hipFloatComplex*      V,
-                                            int                   ldv,
-                                            hipFloatComplex*      work,
-                                            int                   lwork,
-                                            int*                  devInfo,
-                                            hipsolverGesvdjInfo_t params,
-                                            int                   batch_count)
+hipsolverStatus_t hipsolverCgesvdjBatched(hipsolverDnHandle_t   handle,
+                                          hipsolverEigMode_t    jobz,
+                                          int                   m,
+                                          int                   n,
+                                          hipFloatComplex*      A,
+                                          int                   lda,
+                                          float*                S,
+                                          hipFloatComplex*      U,
+                                          int                   ldu,
+                                          hipFloatComplex*      V,
+                                          int                   ldv,
+                                          hipFloatComplex*      work,
+                                          int                   lwork,
+                                          int*                  devInfo,
+                                          hipsolverGesvdjInfo_t params,
+                                          int                   batch_count)
 try
 {
     return cuda2hip_status(cusolverDnCgesvdjBatched((cusolverDnHandle_t)handle,
@@ -3075,22 +3075,22 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnZgesvdjBatched(hipsolverDnHandle_t   handle,
-                                            hipsolverEigMode_t    jobz,
-                                            int                   m,
-                                            int                   n,
-                                            hipDoubleComplex*     A,
-                                            int                   lda,
-                                            double*               S,
-                                            hipDoubleComplex*     U,
-                                            int                   ldu,
-                                            hipDoubleComplex*     V,
-                                            int                   ldv,
-                                            hipDoubleComplex*     work,
-                                            int                   lwork,
-                                            int*                  devInfo,
-                                            hipsolverGesvdjInfo_t params,
-                                            int                   batch_count)
+hipsolverStatus_t hipsolverZgesvdjBatched(hipsolverDnHandle_t   handle,
+                                          hipsolverEigMode_t    jobz,
+                                          int                   m,
+                                          int                   n,
+                                          hipDoubleComplex*     A,
+                                          int                   lda,
+                                          double*               S,
+                                          hipDoubleComplex*     U,
+                                          int                   ldu,
+                                          hipDoubleComplex*     V,
+                                          int                   ldv,
+                                          hipDoubleComplex*     work,
+                                          int                   lwork,
+                                          int*                  devInfo,
+                                          hipsolverGesvdjInfo_t params,
+                                          int                   batch_count)
 try
 {
     return cuda2hip_status(cusolverDnZgesvdjBatched((cusolverDnHandle_t)handle,
