@@ -538,9 +538,9 @@ pushd .
 
   # cuda
   if [[ "${build_cuda}" == true ]]; then
-    cmake_common_options+=("-DUSE_CUDA=ON")
+    platform=nvidia
   else
-    cmake_common_options+=("-DUSE_CUDA=OFF")
+    platform=amd
   fi
 
   # clients
@@ -584,14 +584,14 @@ fi
 
   # Build library
   if [[ "${build_relocatable}" == true ]]; then
-    CXX=${compiler} ${cmake_executable} ${cmake_common_options[@]} ${cmake_client_options[@]} -DCPACK_SET_DESTDIR=OFF -DCMAKE_INSTALL_PREFIX="${rocm_path}" \
+    HIP_PLATFORM=${platform} CXX=${compiler} ${cmake_executable} ${cmake_common_options[@]} ${cmake_client_options[@]} -DCPACK_SET_DESTDIR=OFF -DCMAKE_INSTALL_PREFIX="${rocm_path}" \
     -DCMAKE_PREFIX_PATH="${rocm_path};${rocm_path}/hip;$(pwd)/../deps/deps-install;${cuda_path};${cmake_prefix_path}" \
     -DCMAKE_SHARED_LINKER_FLAGS="${rocm_rpath}" \
     -DCMAKE_EXE_LINKER_FLAGS=" -Wl,--enable-new-dtags -Wl,--rpath,${rocm_path}/lib:${rocm_path}/lib64" \
     -DROCM_DISABLE_LDCONFIG=ON \
     -DROCM_PATH="${rocm_path}" ../..
   else
-    CXX=${compiler} ${cmake_executable} ${cmake_common_options[@]} ${cmake_client_options[@]} -DCPACK_SET_DESTDIR=OFF -DCMAKE_PREFIX_PATH="$(pwd)/../deps/deps-install;${cmake_prefix_path}" -DROCM_PATH=${rocm_path} ../..
+    HIP_PLATFORM=${platform} CXX=${compiler} ${cmake_executable} ${cmake_common_options[@]} ${cmake_client_options[@]} -DCPACK_SET_DESTDIR=OFF -DCMAKE_PREFIX_PATH="$(pwd)/../deps/deps-install;${cmake_prefix_path}" -DROCM_PATH=${rocm_path} ../..
   fi
   check_exit_code "$?"
 

@@ -48,10 +48,9 @@ target_include_directories( hipsolver-bench
 target_include_directories( hipsolver-bench
   SYSTEM PRIVATE
     $<BUILD_INTERFACE:${CBLAS_INCLUDE_DIRS}>
-    $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
 )
 
-target_link_libraries( hipsolver-bench PRIVATE cblas lapack blas roc::hipsolver )
+target_link_libraries( hipsolver-bench PRIVATE cblas lapack blas roc::hipsolver hip::host )
 if( UNIX )
   target_link_libraries( hipsolver-bench PRIVATE hipsolver_fortran_client )
 endif( )
@@ -65,9 +64,7 @@ add_armor_flags( hipsolver-bench "${ARMOR_LEVEL}" )
 # need mf16c flag for float->half convertion
 target_compile_options( hipsolver-bench PRIVATE -mf16c)
 
-if( NOT USE_CUDA )
-  target_link_libraries( hipsolver-bench PRIVATE hip::host )
-
+if( HIP_PLATFORM STREQUAL amd )
   if( CUSTOM_TARGET )
     target_link_libraries( hipsolver-bench PRIVATE hip::${CUSTOM_TARGET} )
   endif( )
@@ -77,14 +74,7 @@ if( NOT USE_CUDA )
     target_link_libraries( hipsolver-bench PRIVATE -lpthread -lm )
   endif()
 else( )
-  target_compile_definitions( hipsolver-bench PRIVATE __HIP_PLATFORM_NVCC__ )
-
-  target_include_directories( hipsolver-bench
-    PRIVATE
-      $<BUILD_INTERFACE:${CUDA_INCLUDE_DIRS}>
-  )
-
-  target_link_libraries( hipsolver-bench PRIVATE ${CUDA_LIBRARIES} Threads::Threads )
+  target_link_libraries( hipsolver-bench PRIVATE Threads::Threads )
 endif( )
 
 set_target_properties( hipsolver-bench PROPERTIES DEBUG_POSTFIX "-d" CXX_EXTENSIONS NO )

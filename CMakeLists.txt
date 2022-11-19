@@ -199,7 +199,7 @@ if( BUILD_CLIENTS_SAMPLES OR BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
 endif( )
 
 # Package specific CPACK vars
-if( NOT USE_CUDA )
+if( HIP_PLATFORM STREQUAL amd )
   rocm_package_add_dependencies(DEPENDS "rocblas >= 2.47.0" "rocsolver >= 3.21.0")
 endif( )
 
@@ -224,7 +224,7 @@ endif()
 set( CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION "\${CPACK_PACKAGING_INSTALL_PREFIX}" )
 
 # Give hipsolver compiled for CUDA backend a different name
-if( NOT USE_CUDA )
+if( HIP_PLATFORM STREQUAL amd )
     set( package_name hipsolver )
 else( )
     set( package_name hipsolver-alt )

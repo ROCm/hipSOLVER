@@ -85,11 +85,10 @@ target_compile_definitions( hipsolver-test PRIVATE GOOGLE_TEST )
 target_include_directories( hipsolver-test
   SYSTEM PRIVATE
     $<BUILD_INTERFACE:${CBLAS_INCLUDE_DIRS}>
-    $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
     ${ROCM_PATH}/hsa/include
 )
 
-target_link_libraries( hipsolver-test PRIVATE cblas lapack blas GTest::GTest Threads::Threads roc::hipsolver )
+target_link_libraries( hipsolver-test PRIVATE cblas lapack blas GTest::GTest Threads::Threads roc::hipsolver hip::host )
 if( UNIX )
   target_link_libraries( hipsolver-test PRIVATE hipsolver_fortran_client )
 endif( )
@@ -101,9 +100,7 @@ target_link_libraries(hipsolver-test PRIVATE
 # need mf16c flag for float->half convertion
 target_compile_options( hipsolver-test PRIVATE -mf16c )
 
-if( NOT USE_CUDA )
-  target_link_libraries( hipsolver-test PRIVATE hip::host )
-
+if( HIP_PLATFORM STREQUAL amd )
   if( CUSTOM_TARGET )
     target_link_libraries( hipsolver-test PRIVATE hip::${CUSTOM_TARGET} )
   endif( )
@@ -113,14 +110,7 @@ if( NOT USE_CUDA )
     target_link_libraries( hipsolver-test PRIVATE -lpthread -lm )
   endif()
 else( )
-  target_compile_definitions( hipsolver-test PRIVATE __HIP_PLATFORM_NVCC__ )
-
-  target_include_directories( hipsolver-test
-    PRIVATE
-      $<BUILD_INTERFACE:${CUDA_INCLUDE_DIRS}>
-  )
-
-  target_link_libraries( hipsolver-test PRIVATE ${CUDA_LIBRARIES} Threads::Threads )
+  target_link_libraries( hipsolver-test PRIVATE Threads::Threads )
 endif( )
 
 set_target_properties( hipsolver-test PROPERTIES DEBUG_POSTFIX "-d" CXX_EXTENSIONS NO )
