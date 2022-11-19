@@ -36,6 +36,7 @@ function display_help()
   echo "    [-g|--debug] -DCMAKE_BUILD_TYPE=Debug (default is =Release)"
   echo "    [-k|--relwithdebinfo] -DCMAKE_BUILD_TYPE=RelWithDebInfo."
   echo "    [-r]--relocatable] Create a package to support relocatable ROCm"
+  echo "    [--platform] Build library for amd or nvidia platform"
   echo "    [--cuda|--use-cuda] Build library for cuda backend"
   echo "    [--cudapath] Set specific path to custom built cuda"
   echo "    [--[no-]hip-clang] Whether to build library with hip-clang"
@@ -154,7 +155,7 @@ install_packages( )
   local library_dependencies_fedora=( "make" "cmake" "gcc-c++" "libcxx-devel" "rpm-build" )
   local library_dependencies_sles=( "make" "cmake" "gcc-c++" "libcxxtools9" "rpm-build" )
 
-  if [[ "${build_cuda}" == true ]]; then
+  if [[ "${build_platform}" == nvidia ]]; then
     # Ideally, this could be cuda-cublas-dev, but the package name has a version number in it
     library_dependencies_ubuntu+=( "cuda" )
     library_dependencies_centos+=( "" ) # how to install cuda on centos?
@@ -320,7 +321,7 @@ install_package=false
 install_dependencies=false
 install_prefix=hipsolver-install
 build_clients=false
-build_cuda=false
+build_platform=$(hipconfig --platform)
 build_hip_clang=true
 build_release=true
 build_relocatable=false
@@ -343,7 +344,7 @@ declare -a cmake_client_options
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,address-sanitizer,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,platform:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,address-sanitizer,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -393,8 +394,13 @@ while true; do
     --compiler)
         compiler=${2}
         shift 2 ;;
+    --platform)
+        build_platform=${2}
+        export HIP_PLATFORM="${build_platform}"
+        shift ;;
     --cuda|--use-cuda)
-        build_cuda=true
+        build_platform=nvidia
+        export HIP_PLATFORM="${build_platform}"
         shift ;;
     --cudapath)
         cuda_path=${2}
@@ -515,7 +521,7 @@ pushd .
   # #################################################
 
   if [[ "${build_static}" == true ]]; then
-    if [[ "${build_cuda}" == true ]]; then
+    if [[ "${build_platform}" == nvidia ]]; then
       printf "Static library not supported for CUDA backend.\n"
       exit 1
     fi
@@ -534,13 +540,6 @@ pushd .
   else
     mkdir -p ${build_dir}/debug/clients && cd ${build_dir}/debug
     cmake_common_options+=("-DCMAKE_BUILD_TYPE=Debug")
-  fi
-
-  # cuda
-  if [[ "${build_cuda}" == true ]]; then
-    platform=nvidia
-  else
-    platform=amd
   fi
 
   # clients
@@ -584,14 +583,14 @@ fi
 
   # Build library
   if [[ "${build_relocatable}" == true ]]; then
-    HIP_PLATFORM=${platform} CXX=${compiler} ${cmake_executable} ${cmake_common_options[@]} ${cmake_client_options[@]} -DCPACK_SET_DESTDIR=OFF -DCMAKE_INSTALL_PREFIX="${rocm_path}" \
+    CXX=${compiler} ${cmake_executable} ${cmake_common_options[@]} ${cmake_client_options[@]} -DCPACK_SET_DESTDIR=OFF -DCMAKE_INSTALL_PREFIX="${rocm_path}" \
     -DCMAKE_PREFIX_PATH="${rocm_path};${rocm_path}/hip;$(pwd)/../deps/deps-install;${cuda_path};${cmake_prefix_path}" \
     -DCMAKE_SHARED_LINKER_FLAGS="${rocm_rpath}" \
     -DCMAKE_EXE_LINKER_FLAGS=" -Wl,--enable-new-dtags -Wl,--rpath,${rocm_path}/lib:${rocm_path}/lib64" \
     -DROCM_DISABLE_LDCONFIG=ON \
     -DROCM_PATH="${rocm_path}" ../..
   else
-    HIP_PLATFORM=${platform} CXX=${compiler} ${cmake_executable} ${cmake_common_options[@]} ${cmake_client_options[@]} -DCPACK_SET_DESTDIR=OFF -DCMAKE_PREFIX_PATH="$(pwd)/../deps/deps-install;${cmake_prefix_path}" -DROCM_PATH=${rocm_path} ../..
+    CXX=${compiler} ${cmake_executable} ${cmake_common_options[@]} ${cmake_client_options[@]} -DCPACK_SET_DESTDIR=OFF -DCMAKE_PREFIX_PATH="$(pwd)/../deps/deps-install;${cmake_prefix_path}" -DROCM_PATH=${rocm_path} ../..
   fi
   check_exit_code "$?"
 
