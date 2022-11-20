@@ -87,7 +87,7 @@ target_include_directories( hipsolver-test
     $<BUILD_INTERFACE:${CBLAS_INCLUDE_DIRS}>
 )
 
-target_link_libraries( hipsolver-test PRIVATE cblas lapack blas GTest::GTest Threads::Threads roc::hipsolver hip::host )
+target_link_libraries( hipsolver-test PRIVATE cblas lapack blas GTest::GTest roc::hipsolver hip::host GTest::GTest Threads::Threads )
 if( UNIX )
   target_link_libraries( hipsolver-test PRIVATE hipsolver_fortran_client )
 endif( )
@@ -106,10 +106,8 @@ if( HIP_PLATFORM STREQUAL amd )
 
   if( CMAKE_CXX_COMPILER MATCHES ".*/hipcc$" )
     # hip-clang needs specific flag to turn on pthread and m
-    target_link_libraries( hipsolver-test PRIVATE -lpthread -lm )
+    target_link_libraries( hipsolver-test PRIVATE -lm )
   endif()
-else( )
-  target_link_libraries( hipsolver-test PRIVATE Threads::Threads )
 endif( )
 
 set_target_properties( hipsolver-test PROPERTIES DEBUG_POSTFIX "-d" CXX_EXTENSIONS NO )
