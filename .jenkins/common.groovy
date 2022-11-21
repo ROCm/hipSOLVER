@@ -22,7 +22,7 @@ def runCompileCommand(platform, project, jobName, boolean sameOrg=false)
                 cd ${project.paths.project_build_prefix}
                 ${getDependenciesCommand}
                 ${centos}
-                VERBOSE=1 LD_LIBRARY_PATH=/opt/rocm/lib ${project.paths.build_command} ${debug}
+                LD_LIBRARY_PATH=/opt/rocm/lib ${project.paths.build_command} ${debug}
                 """
     platform.runCommand(this, command)
 }
