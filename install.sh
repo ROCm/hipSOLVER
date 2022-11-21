@@ -36,8 +36,9 @@ function display_help()
   echo "    [-g|--debug] -DCMAKE_BUILD_TYPE=Debug (default is =Release)"
   echo "    [-k|--relwithdebinfo] -DCMAKE_BUILD_TYPE=RelWithDebInfo."
   echo "    [-r]--relocatable] Create a package to support relocatable ROCm"
-  echo "    [--platform] Build library for amd or nvidia platform"
-  echo "    [--cuda|--use-cuda] Build library for cuda backend"
+  echo "    [--cuda|--use-cuda] Build library for cuda backend (deprecated)"
+  echo "        The target HIP platform is determined by `hipconfig --platform`."
+  echo "        To explicitly specify a platform, set the `HIP_PLATFORM` environment variable."
   echo "    [--cudapath] Set specific path to custom built cuda"
   echo "    [--[no-]hip-clang] Whether to build library with hip-clang"
   echo "    [--compiler] Specify host compiler"
@@ -344,7 +345,7 @@ declare -a cmake_client_options
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,platform:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,address-sanitizer,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,address-sanitizer,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -394,10 +395,6 @@ while true; do
     --compiler)
         compiler=${2}
         shift 2 ;;
-    --platform)
-        build_platform=${2}
-        export HIP_PLATFORM="${build_platform}"
-        shift ;;
     --cuda|--use-cuda)
         build_platform=nvidia
         export HIP_PLATFORM="${build_platform}"
