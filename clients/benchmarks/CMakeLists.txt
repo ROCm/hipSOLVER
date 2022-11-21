@@ -20,6 +20,9 @@
 #
 # ########################################################################
 
+set( THREADS_PREFER_PTHREAD_FLAG ON )
+find_package( Threads REQUIRED )
+
 # Linking lapack library requires fortran flags
 find_package( cblas REQUIRED CONFIG )
 
@@ -45,9 +48,10 @@ target_include_directories( hipsolver-bench
 target_include_directories( hipsolver-bench
   SYSTEM PRIVATE
     $<BUILD_INTERFACE:${CBLAS_INCLUDE_DIRS}>
+    $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
 )
 
-target_link_libraries( hipsolver-bench PRIVATE cblas lapack blas roc::hipsolver hip::host )
+target_link_libraries( hipsolver-bench PRIVATE cblas lapack blas roc::hipsolver )
 if( UNIX )
   target_link_libraries( hipsolver-bench PRIVATE hipsolver_fortran_client )
 endif( )
@@ -62,6 +66,8 @@ add_armor_flags( hipsolver-bench "${ARMOR_LEVEL}" )
 target_compile_options( hipsolver-bench PRIVATE -mf16c)
 
 if( HIP_PLATFORM STREQUAL amd )
+  target_link_libraries( hipsolver-bench PRIVATE hip::host )
+
   if( CUSTOM_TARGET )
     target_link_libraries( hipsolver-bench PRIVATE hip::${CUSTOM_TARGET} )
   endif( )
@@ -70,6 +76,15 @@ if( HIP_PLATFORM STREQUAL amd )
     # hip-clang needs specific flag to turn on pthread and m
     target_link_libraries( hipsolver-bench PRIVATE -lpthread -lm )
   endif()
+else( )
+  target_compile_definitions( hipsolver-bench PRIVATE __HIP_PLATFORM_NVCC__ )
+
+  target_include_directories( hipsolver-bench
+    PRIVATE
+      $<BUILD_INTERFACE:${CUDA_INCLUDE_DIRS}>
+  )
+
+  target_link_libraries( hipsolver-bench PRIVATE ${CUDA_LIBRARIES} Threads::Threads )
 endif( )
 
 set_target_properties( hipsolver-bench PROPERTIES DEBUG_POSTFIX "-d" CXX_EXTENSIONS NO )

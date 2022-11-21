@@ -102,20 +102,23 @@ if( HIP_PLATFORM STREQUAL amd )
     endif( )
   endif( )
 
-  target_link_libraries( hipsolver
-    PUBLIC
-      hip::host
-    PRIVATE
-      roc::rocblas
-      roc::rocsolver
-  )
+  target_link_libraries( hipsolver PRIVATE roc::rocblas roc::rocsolver hip::host )
 
   if( CUSTOM_TARGET )
     target_link_libraries( hipsolver PRIVATE hip::${CUSTOM_TARGET} )
   endif( )
 
 else( )
-  target_link_libraries( hipsolver PRIVATE hip::host ${CUDA_cusolver_LIBRARY} )
+  target_compile_definitions( hipsolver PRIVATE __HIP_PLATFORM_NVCC__ )
+
+  target_link_libraries( hipsolver PRIVATE ${CUDA_cusolver_LIBRARY} )
+
+  # External header includes included as system files
+  target_include_directories( hipsolver
+    SYSTEM PRIVATE
+      $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
+      $<BUILD_INTERFACE:${CUDA_INCLUDE_DIRS}>
+  )
 endif( )
 
 # Internal header includes

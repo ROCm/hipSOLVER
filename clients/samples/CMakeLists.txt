@@ -39,16 +39,34 @@ endif( )
 
 foreach( exe example-c-basic;example-cpp-basic; )
 
+  # External header includes included as SYSTEM files
+  target_include_directories( ${exe}
+    SYSTEM PRIVATE
+      $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
+  )
+
   target_include_directories( ${exe} PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include> )
 
   target_compile_options( ${exe} PRIVATE -mf16c)
 
-  target_link_libraries( ${exe} PRIVATE roc::hipsolver hip::host )
+  target_link_libraries( ${exe} PRIVATE roc::hipsolver )
 
   if( HIP_PLATFORM STREQUAL amd )
+    target_link_libraries( ${exe} PRIVATE hip::host )
+
     if( CUSTOM_TARGET )
       target_link_libraries( ${exe} PRIVATE hip::${CUSTOM_TARGET} )
     endif( )
+
+  else( )
+    target_compile_definitions( ${exe} PRIVATE __HIP_PLATFORM_NVCC__ )
+
+    target_include_directories( ${exe}
+      PRIVATE
+        $<BUILD_INTERFACE:${CUDA_INCLUDE_DIRS}>
+    )
+
+    target_link_libraries( ${exe} PRIVATE ${CUDA_LIBRARIES} )
   endif( )
 
   set_target_properties(${exe} PROPERTIES LINKER_LANGUAGE CXX)
