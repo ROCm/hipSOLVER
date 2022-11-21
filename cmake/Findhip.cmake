@@ -189,6 +189,8 @@ else()
             HIP_VERSION
         )
 
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
     find_package(CUDA REQUIRED)
 
     if(NOT TARGET hip::host)
@@ -197,7 +199,7 @@ else()
             INTERFACE_COMPILE_DEFINITIONS "__HIP_PLATFORM_NVCC__=1;__HIP_PLATFORM_NVIDIA__=1"
             INTERFACE_INCLUDE_DIRECTORIES "${hip_INCLUDE_DIRS};${CUDA_INCLUDE_DIRS}"
             INTERFACE_SYSTEM_INCLUDE_DIRECTORIES "${hip_INCLUDE_DIRS};${CUDA_INCLUDE_DIRS}"
-            INTERFACE_LINK_LIBRARIES "${CUDA_LIBRARIES}"
+            INTERFACE_LINK_LIBRARIES "${CUDA_LIBRARIES};Threads::Threads"
         )
     endif()
 endif()

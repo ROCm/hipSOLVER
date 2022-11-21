@@ -20,9 +20,6 @@
 #
 # ########################################################################
 
-set( THREADS_PREFER_PTHREAD_FLAG ON )
-find_package( Threads REQUIRED )
-
 # Linking lapack library requires fortran flags
 find_package( cblas REQUIRED CONFIG )
 
@@ -50,7 +47,7 @@ target_include_directories( hipsolver-bench
     $<BUILD_INTERFACE:${CBLAS_INCLUDE_DIRS}>
 )
 
-target_link_libraries( hipsolver-bench PRIVATE cblas lapack blas roc::hipsolver hip::host Threads::Threads )
+target_link_libraries( hipsolver-bench PRIVATE cblas lapack blas roc::hipsolver hip::host )
 if( UNIX )
   target_link_libraries( hipsolver-bench PRIVATE hipsolver_fortran_client )
 endif( )
@@ -71,7 +68,7 @@ if( HIP_PLATFORM STREQUAL amd )
 
   if( UNIX AND CMAKE_CXX_COMPILER MATCHES ".*/hipcc$" )
     # hip-clang needs specific flag to turn on pthread and m
-    target_link_libraries( hipsolver-bench PRIVATE -lm )
+    target_link_libraries( hipsolver-bench PRIVATE -lpthread -lm )
   endif()
 endif( )
 
