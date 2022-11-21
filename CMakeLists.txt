@@ -126,7 +126,6 @@ endif( )
 set( ARMOR_LEVEL "${DEFAULT_ARMOR_LEVEL}" CACHE STRING "Enables increasingly expensive runtime correctness checks" )
 include( armor-config )
 
-# HIP headers required of all clients; clients use HIP to allocate device memory
 if(DEFINED USE_CUDA)
   if(USE_CUDA)
     set(ENV{HIP_PLATFORM} nvidia)
