@@ -448,11 +448,6 @@ if [[ "${build_relocatable}" == true ]]; then
     if ! [ -z ${ROCM_PATH+x} ]; then
         rocm_path=${ROCM_PATH}
     fi
-
-    rocm_rpath=" -Wl,--enable-new-dtags -Wl,--rpath,/opt/rocm/lib:/opt/rocm/lib64"
-    if ! [ -z ${ROCM_RPATH+x} ]; then
-        rocm_rpath=" -Wl,--enable-new-dtags -Wl,--rpath,${ROCM_RPATH}"
-    fi
 fi
 
 build_dir=./build
@@ -586,9 +581,9 @@ fi
   if [[ "${build_relocatable}" == true ]]; then
     CXX=${compiler} ${cmake_executable} ${cmake_common_options[@]} ${cmake_client_options[@]} -DCPACK_SET_DESTDIR=OFF -DCMAKE_INSTALL_PREFIX="${rocm_path}" \
     -DCMAKE_PREFIX_PATH="${rocm_path};${rocm_path}/hip;$(pwd)/../deps/deps-install;${cuda_path};${cmake_prefix_path}" \
-    -DCMAKE_SHARED_LINKER_FLAGS="${rocm_rpath}" \
-    -DCMAKE_EXE_LINKER_FLAGS=" -Wl,--enable-new-dtags -Wl,--rpath,${rocm_path}/lib:${rocm_path}/lib64" \
     -DROCM_DISABLE_LDCONFIG=ON \
+    -DCMAKE_SKIP_INSTALL_RPATH=TRUE \
+    -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=FALSE \
     -DROCM_PATH="${rocm_path}" ../..
   else
     CXX=${compiler} ${cmake_executable} ${cmake_common_options[@]} ${cmake_client_options[@]} -DCPACK_SET_DESTDIR=OFF -DCMAKE_PREFIX_PATH="$(pwd)/../deps/deps-install;${cmake_prefix_path}" -DROCM_PATH=${rocm_path} ../..
