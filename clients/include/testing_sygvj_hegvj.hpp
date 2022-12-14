@@ -452,7 +452,6 @@ void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
 {
     constexpr bool COMPLEX = is_complex<T>;
     using S                = decltype(std::real(T{}));
-    S atol                 = (abstol <= 0) ? get_epsilon<S>() : abstol;
 
     int lrwork, ltwork;
     if(!COMPLEX)
@@ -536,7 +535,7 @@ void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
 
     // Also check validity of residual
     for(rocblas_int b = 0; b < bc; ++b)
-        if(hResidualRes[b][0] < 0 || hResidualRes[b][0] > atol)
+        if(hResidualRes[b][0] < 0)
             *max_err += 1;
 
     // Also check validity of sweeps

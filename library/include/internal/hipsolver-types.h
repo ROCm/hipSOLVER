@@ -13,6 +13,7 @@
 
 typedef void* hipsolverHandle_t;
 
+typedef void* hipsolverGesvdjInfo_t;
 typedef void* hipsolverSyevjInfo_t;
 
 typedef enum

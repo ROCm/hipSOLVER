@@ -20,8 +20,6 @@
  ********************************************************************************/
 typedef hipsolverHandle_t hipsolverDnHandle_t;
 
-typedef void* hipsolverGesvdjInfo_t;
-
 typedef enum
 {
     HIPSOLVER_EIG_RANGE_ALL = 221,

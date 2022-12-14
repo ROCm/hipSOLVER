@@ -75,6 +75,7 @@ const vector<vector<int>> opt_range = {
 //                                              {0, 1, 0, 1, 0},
 //                                              {1, 0, 0, 0, 0}};
 
+template <typename T>
 Arguments gesvdj_setup_arguments(gesvdj_tuple tup, bool STRIDED)
 {
     vector<int> size = std::get<0>(tup);
@@ -87,12 +88,6 @@ Arguments gesvdj_setup_arguments(gesvdj_tuple tup, bool STRIDED)
     rocblas_int n = size[1];
     arg.set<rocblas_int>("m", m);
     arg.set<rocblas_int>("n", n);
-
-    // // fast algorithm
-    // if(size[2] == 0)
-    //     arg.set<char>("fast_alg", 'I');
-    // else
-    //     arg.set<char>("fast_alg", 'O');
 
     // leading dimensions
     arg.set<rocblas_int>("lda", m + opt[0] * 10);
@@ -107,6 +102,10 @@ Arguments gesvdj_setup_arguments(gesvdj_tuple tup, bool STRIDED)
 
     if(!STRIDED)
         arg.set<rocblas_int>("econ", opt[4]);
+
+    arg.set<double>("tolerance", 2 * get_epsilon<T>());
+    arg.set<rocblas_int>("max_sweeps", 100);
+    arg.set<rocblas_int>("sort_eig", 1);
 
     // only testing standard use case/defaults for strides
 
@@ -126,7 +125,7 @@ protected:
     template <bool BATCHED, bool STRIDED, typename T>
     void run_tests()
     {
-        Arguments arg = gesvdj_setup_arguments(GetParam(), STRIDED);
+        Arguments arg = gesvdj_setup_arguments<T>(GetParam(), STRIDED);
 
         if(arg.peek<rocblas_int>("m") == 1 && arg.peek<rocblas_int>("n") == 1
            && arg.peek<char>("jobz") == 'N' && (STRIDED || arg.peek<rocblas_int>("econ") == 0))
@@ -137,58 +136,110 @@ protected:
     }
 };
 
-class GESVDJ_COMPAT : public GESVDJ_BASE<API_COMPAT>
+class GESVDJ : public GESVDJ_BASE<API_NORMAL>
+{
+};
+
+class GESVDJ_FORTRAN : public GESVDJ_BASE<API_FORTRAN>
 {
 };
 
 // non-batch tests
 
-TEST_P(GESVDJ_COMPAT, __float)
+TEST_P(GESVDJ, __float)
 {
     run_tests<false, false, float>();
 }
 
-TEST_P(GESVDJ_COMPAT, __double)
+TEST_P(GESVDJ, __double)
 {
     run_tests<false, false, double>();
 }
 
-TEST_P(GESVDJ_COMPAT, __float_complex)
+TEST_P(GESVDJ, __float_complex)
 {
     run_tests<false, false, rocblas_float_complex>();
 }
 
-TEST_P(GESVDJ_COMPAT, __double_complex)
+TEST_P(GESVDJ, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
+TEST_P(GESVDJ_FORTRAN, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(GESVDJ_FORTRAN, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(GESVDJ_FORTRAN, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(GESVDJ_FORTRAN, __double_complex)
 {
     run_tests<false, false, rocblas_double_complex>();
 }
 
 // strided_batched tests
 
-TEST_P(GESVDJ_COMPAT, strided_batched__float)
+TEST_P(GESVDJ, strided_batched__float)
 {
     run_tests<false, true, float>();
 }
 
-TEST_P(GESVDJ_COMPAT, strided_batched__double)
+TEST_P(GESVDJ, strided_batched__double)
 {
     run_tests<false, true, double>();
 }
 
-TEST_P(GESVDJ_COMPAT, strided_batched__float_complex)
+TEST_P(GESVDJ, strided_batched__float_complex)
 {
     run_tests<false, true, rocblas_float_complex>();
 }
 
-TEST_P(GESVDJ_COMPAT, strided_batched__double_complex)
+TEST_P(GESVDJ, strided_batched__double_complex)
+{
+    run_tests<false, true, rocblas_double_complex>();
+}
+
+TEST_P(GESVDJ_FORTRAN, strided_batched__float)
+{
+    run_tests<false, true, float>();
+}
+
+TEST_P(GESVDJ_FORTRAN, strided_batched__double)
+{
+    run_tests<false, true, double>();
+}
+
+TEST_P(GESVDJ_FORTRAN, strided_batched__float_complex)
+{
+    run_tests<false, true, rocblas_float_complex>();
+}
+
+TEST_P(GESVDJ_FORTRAN, strided_batched__double_complex)
 {
     run_tests<false, true, rocblas_double_complex>();
 }
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          GESVDJ_COMPAT,
+//                          GESVDJ,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         GESVDJ_COMPAT,
+                         GESVDJ,
+                         Combine(ValuesIn(size_range), ValuesIn(opt_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GESVDJ_FORTRAN,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         GESVDJ_FORTRAN,
                          Combine(ValuesIn(size_range), ValuesIn(opt_range)));
