@@ -8,6 +8,7 @@ LAPACK-like Functions
 Other Lapack-like routines provided by hipSOLVER. These are divided into the following subcategories:
 
 * :ref:`likeeigens`. Eigenproblems for symmetric matrices.
+* :ref:`likesvds`. Singular values and related problems for general matrices.
 
 
 
@@ -115,4 +116,63 @@ hipsolver<type>hegvj()
 .. doxygenfunction:: hipsolverZhegvj
    :outline:
 .. doxygenfunction:: hipsolverChegvj
+
+
+
+.. _likesvds:
+
+Singular value decomposition
+================================
+
+.. contents:: List of Lapack-like SVD related functions
+   :local:
+   :backlinks: top
+
+.. _gesvdj_bufferSize:
+
+hipsolver<type>gesvdj_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZgesvdj_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverCgesvdj_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDgesvdj_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverSgesvdj_bufferSize
+
+.. _gesvdj_batched_bufferSize:
+
+hipsolver<type>gesvdjBatched_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZgesvdjBatched_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverCgesvdjBatched_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverDgesvdjBatched_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverSgesvdjBatched_bufferSize
+
+.. _gesvdj:
+
+hipsolver<type>gesvdj()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZgesvdj
+   :outline:
+.. doxygenfunction:: hipsolverCgesvdj
+   :outline:
+.. doxygenfunction:: hipsolverDgesvdj
+   :outline:
+.. doxygenfunction:: hipsolverSgesvdj
+
+.. _gesvdj_batched:
+
+hipsolver<type>gesvdjBatched()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZgesvdjBatched
+   :outline:
+.. doxygenfunction:: hipsolverCgesvdjBatched
+   :outline:
+.. doxygenfunction:: hipsolverDgesvdjBatched
+   :outline:
+.. doxygenfunction:: hipsolverSgesvdjBatched
 

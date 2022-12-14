@@ -2795,6 +2795,18 @@ inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
 {
     switch(api2marshal(API, STRIDED))
     {
+    case C_NORMAL:
+        return hipsolverSgesvdj_bufferSize(
+            handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, lwork, params);
+    case C_NORMAL_ALT:
+        return hipsolverSgesvdjBatched_bufferSize(
+            handle, jobz, m, n, A, lda, S, U, ldu, V, ldv, lwork, params, bc);
+    case FORTRAN_NORMAL:
+        return hipsolverSgesvdj_bufferSizeFortran(
+            handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, lwork, params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverSgesvdjBatched_bufferSizeFortran(
+            handle, jobz, m, n, A, lda, S, U, ldu, V, ldv, lwork, params, bc);
     case COMPAT_NORMAL:
         return hipsolverDnSgesvdj_bufferSize(
             handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, lwork, params);
@@ -2826,6 +2838,18 @@ inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
 {
     switch(api2marshal(API, STRIDED))
     {
+    case C_NORMAL:
+        return hipsolverDgesvdj_bufferSize(
+            handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, lwork, params);
+    case C_NORMAL_ALT:
+        return hipsolverDgesvdjBatched_bufferSize(
+            handle, jobz, m, n, A, lda, S, U, ldu, V, ldv, lwork, params, bc);
+    case FORTRAN_NORMAL:
+        return hipsolverDgesvdj_bufferSizeFortran(
+            handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, lwork, params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverDgesvdjBatched_bufferSizeFortran(
+            handle, jobz, m, n, A, lda, S, U, ldu, V, ldv, lwork, params, bc);
     case COMPAT_NORMAL:
         return hipsolverDnDgesvdj_bufferSize(
             handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, lwork, params);
@@ -2857,6 +2881,66 @@ inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t             API,
 {
     switch(api2marshal(API, STRIDED))
     {
+    case C_NORMAL:
+        return hipsolverCgesvdj_bufferSize(handle,
+                                           jobz,
+                                           econ,
+                                           m,
+                                           n,
+                                           (hipFloatComplex*)A,
+                                           lda,
+                                           S,
+                                           (hipFloatComplex*)U,
+                                           ldu,
+                                           (hipFloatComplex*)V,
+                                           ldv,
+                                           lwork,
+                                           params);
+    case C_NORMAL_ALT:
+        return hipsolverCgesvdjBatched_bufferSize(handle,
+                                                  jobz,
+                                                  m,
+                                                  n,
+                                                  (hipFloatComplex*)A,
+                                                  lda,
+                                                  S,
+                                                  (hipFloatComplex*)U,
+                                                  ldu,
+                                                  (hipFloatComplex*)V,
+                                                  ldv,
+                                                  lwork,
+                                                  params,
+                                                  bc);
+    case FORTRAN_NORMAL:
+        return hipsolverCgesvdj_bufferSizeFortran(handle,
+                                                  jobz,
+                                                  econ,
+                                                  m,
+                                                  n,
+                                                  (hipFloatComplex*)A,
+                                                  lda,
+                                                  S,
+                                                  (hipFloatComplex*)U,
+                                                  ldu,
+                                                  (hipFloatComplex*)V,
+                                                  ldv,
+                                                  lwork,
+                                                  params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverCgesvdjBatched_bufferSizeFortran(handle,
+                                                         jobz,
+                                                         m,
+                                                         n,
+                                                         (hipFloatComplex*)A,
+                                                         lda,
+                                                         S,
+                                                         (hipFloatComplex*)U,
+                                                         ldu,
+                                                         (hipFloatComplex*)V,
+                                                         ldv,
+                                                         lwork,
+                                                         params,
+                                                         bc);
     case COMPAT_NORMAL:
         return hipsolverDnCgesvdj_bufferSize(handle,
                                              jobz,
@@ -2912,6 +2996,66 @@ inline hipsolverStatus_t hipsolver_gesvdj_bufferSize(testAPI_t               API
 {
     switch(api2marshal(API, STRIDED))
     {
+    case C_NORMAL:
+        return hipsolverZgesvdj_bufferSize(handle,
+                                           jobz,
+                                           econ,
+                                           m,
+                                           n,
+                                           (hipDoubleComplex*)A,
+                                           lda,
+                                           S,
+                                           (hipDoubleComplex*)U,
+                                           ldu,
+                                           (hipDoubleComplex*)V,
+                                           ldv,
+                                           lwork,
+                                           params);
+    case C_NORMAL_ALT:
+        return hipsolverZgesvdjBatched_bufferSize(handle,
+                                                  jobz,
+                                                  m,
+                                                  n,
+                                                  (hipDoubleComplex*)A,
+                                                  lda,
+                                                  S,
+                                                  (hipDoubleComplex*)U,
+                                                  ldu,
+                                                  (hipDoubleComplex*)V,
+                                                  ldv,
+                                                  lwork,
+                                                  params,
+                                                  bc);
+    case FORTRAN_NORMAL:
+        return hipsolverZgesvdj_bufferSizeFortran(handle,
+                                                  jobz,
+                                                  econ,
+                                                  m,
+                                                  n,
+                                                  (hipDoubleComplex*)A,
+                                                  lda,
+                                                  S,
+                                                  (hipDoubleComplex*)U,
+                                                  ldu,
+                                                  (hipDoubleComplex*)V,
+                                                  ldv,
+                                                  lwork,
+                                                  params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverZgesvdjBatched_bufferSizeFortran(handle,
+                                                         jobz,
+                                                         m,
+                                                         n,
+                                                         (hipDoubleComplex*)A,
+                                                         lda,
+                                                         S,
+                                                         (hipDoubleComplex*)U,
+                                                         ldu,
+                                                         (hipDoubleComplex*)V,
+                                                         ldv,
+                                                         lwork,
+                                                         params,
+                                                         bc);
     case COMPAT_NORMAL:
         return hipsolverDnZgesvdj_bufferSize(handle,
                                              jobz,
@@ -2973,6 +3117,18 @@ inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t             API,
 {
     switch(api2marshal(API, STRIDED))
     {
+    case C_NORMAL:
+        return hipsolverSgesvdj(
+            handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params);
+    case C_NORMAL_ALT:
+        return hipsolverSgesvdjBatched(
+            handle, jobz, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params, bc);
+    case FORTRAN_NORMAL:
+        return hipsolverSgesvdjFortran(
+            handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverSgesvdjBatchedFortran(
+            handle, jobz, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params, bc);
     case COMPAT_NORMAL:
         return hipsolverDnSgesvdj(
             handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params);
@@ -3010,6 +3166,18 @@ inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t             API,
 {
     switch(api2marshal(API, STRIDED))
     {
+    case C_NORMAL:
+        return hipsolverDgesvdj(
+            handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params);
+    case C_NORMAL_ALT:
+        return hipsolverDgesvdjBatched(
+            handle, jobz, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params, bc);
+    case FORTRAN_NORMAL:
+        return hipsolverDgesvdjFortran(
+            handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverDgesvdjBatchedFortran(
+            handle, jobz, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params, bc);
     case COMPAT_NORMAL:
         return hipsolverDnDgesvdj(
             handle, jobz, econ, m, n, A, lda, S, U, ldu, V, ldv, work, lwork, info, params);
@@ -3047,6 +3215,74 @@ inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t             API,
 {
     switch(api2marshal(API, STRIDED))
     {
+    case C_NORMAL:
+        return hipsolverCgesvdj(handle,
+                                jobz,
+                                econ,
+                                m,
+                                n,
+                                (hipFloatComplex*)A,
+                                lda,
+                                S,
+                                (hipFloatComplex*)U,
+                                ldu,
+                                (hipFloatComplex*)V,
+                                ldv,
+                                (hipFloatComplex*)work,
+                                lwork,
+                                info,
+                                params);
+    case C_NORMAL_ALT:
+        return hipsolverCgesvdjBatched(handle,
+                                       jobz,
+                                       m,
+                                       n,
+                                       (hipFloatComplex*)A,
+                                       lda,
+                                       S,
+                                       (hipFloatComplex*)U,
+                                       ldu,
+                                       (hipFloatComplex*)V,
+                                       ldv,
+                                       (hipFloatComplex*)work,
+                                       lwork,
+                                       info,
+                                       params,
+                                       bc);
+    case FORTRAN_NORMAL:
+        return hipsolverCgesvdjFortran(handle,
+                                       jobz,
+                                       econ,
+                                       m,
+                                       n,
+                                       (hipFloatComplex*)A,
+                                       lda,
+                                       S,
+                                       (hipFloatComplex*)U,
+                                       ldu,
+                                       (hipFloatComplex*)V,
+                                       ldv,
+                                       (hipFloatComplex*)work,
+                                       lwork,
+                                       info,
+                                       params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverCgesvdjBatchedFortran(handle,
+                                              jobz,
+                                              m,
+                                              n,
+                                              (hipFloatComplex*)A,
+                                              lda,
+                                              S,
+                                              (hipFloatComplex*)U,
+                                              ldu,
+                                              (hipFloatComplex*)V,
+                                              ldv,
+                                              (hipFloatComplex*)work,
+                                              lwork,
+                                              info,
+                                              params,
+                                              bc);
     case COMPAT_NORMAL:
         return hipsolverDnCgesvdj(handle,
                                   jobz,
@@ -3112,6 +3348,74 @@ inline hipsolverStatus_t hipsolver_gesvdj(testAPI_t               API,
 {
     switch(api2marshal(API, STRIDED))
     {
+    case C_NORMAL:
+        return hipsolverZgesvdj(handle,
+                                jobz,
+                                econ,
+                                m,
+                                n,
+                                (hipDoubleComplex*)A,
+                                lda,
+                                S,
+                                (hipDoubleComplex*)U,
+                                ldu,
+                                (hipDoubleComplex*)V,
+                                ldv,
+                                (hipDoubleComplex*)work,
+                                lwork,
+                                info,
+                                params);
+    case C_NORMAL_ALT:
+        return hipsolverZgesvdjBatched(handle,
+                                       jobz,
+                                       m,
+                                       n,
+                                       (hipDoubleComplex*)A,
+                                       lda,
+                                       S,
+                                       (hipDoubleComplex*)U,
+                                       ldu,
+                                       (hipDoubleComplex*)V,
+                                       ldv,
+                                       (hipDoubleComplex*)work,
+                                       lwork,
+                                       info,
+                                       params,
+                                       bc);
+    case FORTRAN_NORMAL:
+        return hipsolverZgesvdjFortran(handle,
+                                       jobz,
+                                       econ,
+                                       m,
+                                       n,
+                                       (hipDoubleComplex*)A,
+                                       lda,
+                                       S,
+                                       (hipDoubleComplex*)U,
+                                       ldu,
+                                       (hipDoubleComplex*)V,
+                                       ldv,
+                                       (hipDoubleComplex*)work,
+                                       lwork,
+                                       info,
+                                       params);
+    case FORTRAN_NORMAL_ALT:
+        return hipsolverZgesvdjBatchedFortran(handle,
+                                              jobz,
+                                              m,
+                                              n,
+                                              (hipDoubleComplex*)A,
+                                              lda,
+                                              S,
+                                              (hipDoubleComplex*)U,
+                                              ldu,
+                                              (hipDoubleComplex*)V,
+                                              ldv,
+                                              (hipDoubleComplex*)work,
+                                              lwork,
+                                              info,
+                                              params,
+                                              bc);
     case COMPAT_NORMAL:
         return hipsolverDnZgesvdj(handle,
                                   jobz,

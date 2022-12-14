@@ -425,6 +425,7 @@ template <testAPI_t API,
           typename Wh,
           typename Th,
           typename Uh,
+          typename Vh,
           typename Ih>
 void gesvdj_getError(const hipsolverHandle_t handle,
                      hipsolverEigMode_t      jobz,
@@ -446,6 +447,9 @@ void gesvdj_getError(const hipsolverHandle_t handle,
                      const int               lwork,
                      Id&                     dinfo,
                      hipsolverGesvdjInfo_t   params,
+                     const double            abstol,
+                     const int               max_sweeps,
+                     const int               sort_eig,
                      const int               bc,
                      Wh&                     hA,
                      Th&                     hS,
@@ -454,6 +458,8 @@ void gesvdj_getError(const hipsolverHandle_t handle,
                      Uh&                     Vres,
                      Ih&                     hinfo,
                      Ih&                     hinfoRes,
+                     Vh&                     hResidualRes,
+                     Ih&                     hSweepsRes,
                      double*                 max_err,
                      double*                 max_errv)
 {
@@ -501,6 +507,9 @@ void gesvdj_getError(const hipsolverHandle_t handle,
         CHECK_HIP_ERROR(Vres.transfer_from(dV));
     }
 
+    hipsolverXgesvdjGetResidual(handle, params, hResidualRes.data());
+    hipsolverXgesvdjGetSweeps(handle, params, hSweepsRes.data());
+
     // CPU lapack
     // Only singular values needed
     for(int b = 0; b < bc; ++b)
@@ -526,17 +535,31 @@ void gesvdj_getError(const hipsolverHandle_t handle,
         if(hinfo[b][0] != hinfoRes[b][0])
             *max_err += 1;
 
+    if(!STRIDED)
+    {
+        // Also check validity of residual
+        for(rocblas_int b = 0; b < bc; ++b)
+            if(hResidualRes[b][0] < 0)
+                *max_err += 1;
+
+        // Also check validity of sweeps
+        for(rocblas_int b = 0; b < bc; ++b)
+            if(hSweepsRes[b][0] < 0 || hSweepsRes[b][0] > max_sweeps)
+                *max_err += 1;
+    }
+
     // (We expect the used input matrices to always converge. Testing
     // implicitly the equivalent non-converged matrix is very complicated and it boils
     // down to essentially run the algorithm again and until convergence is achieved).
 
-    double err;
-    *max_errv = 0;
+    double err = 0;
+    *max_errv  = 0;
 
     for(int b = 0; b < bc; ++b)
     {
         // error is ||hS - hSres||
-        err      = norm_error('F', 1, min(m, n), 1, hS[b], hSres[b]);
+        if(sort_eig)
+            err = norm_error('F', 1, min(m, n), 1, hS[b], hSres[b]);
         *max_err = err > *max_err ? err : *max_err;
 
         // Check the singular vectors if required
@@ -728,6 +751,13 @@ void testing_gesvdj(Arguments& argus)
     int                         stU   = ldu * (econ ? min(m, n) : m);
     int                         stV   = ldv * (econ ? min(m, n) : n);
 
+    double      abstol     = argus.get<double>("tolerance", 2 * get_epsilon<T>());
+    rocblas_int max_sweeps = argus.get<int>("max_sweeps", 100);
+    rocblas_int sort_eig   = argus.get<int>("sort_eig", 1);
+    hipsolverXgesvdjSetTolerance(params, abstol);
+    hipsolverXgesvdjSetMaxSweeps(params, max_sweeps);
+    hipsolverXgesvdjSetSortEig(params, sort_eig);
+
     hipsolverEigMode_t jobz      = char2hipsolver_evect(jobzC);
     int                bc        = argus.batch_count;
     int                hot_calls = argus.iters;
@@ -857,14 +887,16 @@ void testing_gesvdj(Arguments& argus)
 
     // memory allocations (all cases)
     // host
-    host_strided_batch_vector<S>   hS(size_S, 1, stS, bc);
-    host_strided_batch_vector<T>   hV(size_V, 1, stV, bc);
-    host_strided_batch_vector<T>   hU(size_U, 1, stU, bc);
-    host_strided_batch_vector<int> hinfo(1, 1, 1, bc);
-    host_strided_batch_vector<int> hinfoRes(1, 1, 1, bc);
-    host_strided_batch_vector<S>   hSres(size_Sres, 1, stS, bc);
-    host_strided_batch_vector<T>   Vres(size_Vres, 1, stVres, bc);
-    host_strided_batch_vector<T>   Ures(size_Ures, 1, stUres, bc);
+    host_strided_batch_vector<double> hResidualRes(1, 1, 1, bc);
+    host_strided_batch_vector<int>    hSweepsRes(1, 1, 1, bc);
+    host_strided_batch_vector<S>      hS(size_S, 1, stS, bc);
+    host_strided_batch_vector<T>      hV(size_V, 1, stV, bc);
+    host_strided_batch_vector<T>      hU(size_U, 1, stU, bc);
+    host_strided_batch_vector<int>    hinfo(1, 1, 1, bc);
+    host_strided_batch_vector<int>    hinfoRes(1, 1, 1, bc);
+    host_strided_batch_vector<S>      hSres(size_Sres, 1, stS, bc);
+    host_strided_batch_vector<T>      Vres(size_Vres, 1, stVres, bc);
+    host_strided_batch_vector<T>      Ures(size_Ures, 1, stUres, bc);
     // device
     device_strided_batch_vector<S>   dS(size_S, 1, stS, bc);
     device_strided_batch_vector<T>   dV(size_V, 1, stV, bc);
@@ -912,6 +944,9 @@ void testing_gesvdj(Arguments& argus)
         //                                      size_W,
         //                                      dinfo,
         //                                      params,
+        //                                      abstol,
+        //                                      max_sweeps,
+        //                                      sort_eig,
         //                                      bc,
         //                                      hA,
         //                                      hS,
@@ -920,6 +955,8 @@ void testing_gesvdj(Arguments& argus)
         //                                      Vres,
         //                                      hinfo,
         //                                      hinfoRes,
+        //                                      hResidualRes,
+        //                                      hSweepsRes,
         //                                      &max_error,
         //                                      &max_errorv);
         // }
@@ -991,6 +1028,9 @@ void testing_gesvdj(Arguments& argus)
                                              size_W,
                                              dinfo,
                                              params,
+                                             abstol,
+                                             max_sweeps,
+                                             sort_eig,
                                              bc,
                                              hA,
                                              hS,
@@ -999,6 +1039,8 @@ void testing_gesvdj(Arguments& argus)
                                              Vres,
                                              hinfo,
                                              hinfoRes,
+                                             hResidualRes,
+                                             hSweepsRes,
                                              &max_error,
                                              &max_errorv);
         }
@@ -1071,18 +1113,53 @@ void testing_gesvdj(Arguments& argus)
                                        "strideU",
                                        "ldv",
                                        "strideV",
+                                       "tolerance",
+                                       "max_sweeps",
+                                       "sort_eig",
                                        "batch_c");
-                rocsolver_bench_output(jobz, econ, m, n, lda, stS, ldu, stU, ldv, stV, bc);
+                rocsolver_bench_output(jobz,
+                                       econ,
+                                       m,
+                                       n,
+                                       lda,
+                                       stS,
+                                       ldu,
+                                       stU,
+                                       ldv,
+                                       stV,
+                                       abstol,
+                                       max_sweeps,
+                                       sort_eig,
+                                       bc);
             }
             else if(STRIDED)
             {
-                rocsolver_bench_output("jobz", "m", "n", "lda", "ldu", "ldv", "batch_c");
-                rocsolver_bench_output(jobz, m, n, lda, ldu, ldv, bc);
+                rocsolver_bench_output("jobz",
+                                       "m",
+                                       "n",
+                                       "lda",
+                                       "ldu",
+                                       "ldv",
+                                       "tolerance",
+                                       "max_sweeps",
+                                       "sort_eig",
+                                       "batch_c");
+                rocsolver_bench_output(jobz, m, n, lda, ldu, ldv, abstol, max_sweeps, sort_eig, bc);
             }
             else
             {
-                rocsolver_bench_output("jobz", "econ", "m", "n", "lda", "ldu", "ldv");
-                rocsolver_bench_output(jobz, econ, m, n, lda, ldu, ldv);
+                rocsolver_bench_output("jobz",
+                                       "econ",
+                                       "m",
+                                       "n",
+                                       "lda",
+                                       "ldu",
+                                       "ldv",
+                                       "tolerance",
+                                       "max_sweeps",
+                                       "sort_eig");
+                rocsolver_bench_output(
+                    jobz, econ, m, n, lda, ldu, ldv, abstol, max_sweeps, sort_eig);
             }
             std::cerr << "\n============================================\n";
             std::cerr << "Results:\n";

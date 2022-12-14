@@ -9,6 +9,7 @@ into two categories:
 
 * :ref:`initialize` functions. Used to initialize and cleanup the library handle.
 * :ref:`stream` functions. Provide functionality to manipulate streams.
+* :ref:`gesvdj_info` functions. Provide functionality to manipulate gesvdj parameters.
 * :ref:`syevj_info` functions. Provide functionality to manipulate syevj parameters.
 
 
@@ -47,6 +48,55 @@ hipsolverSetStream()
 hipsolverGetStream()
 ---------------------------------
 .. doxygenfunction:: hipsolverGetStream
+
+
+
+.. _gesvdj_info:
+
+Gesvdj parameter manipulation
+===============================
+
+.. contents:: List of gesvdj parameter functions
+   :local:
+   :backlinks: top
+
+hipsolverCreateGesvdjInfo()
+---------------------------------
+.. doxygenfunction:: hipsolverCreateGesvdjInfo
+
+hipsolverDestroyGesvdjInfo()
+---------------------------------
+.. doxygenfunction:: hipsolverDestroyGesvdjInfo
+
+.. _gesvdj_set_max_sweeps:
+
+hipsolverXgesvdjSetMaxSweeps()
+---------------------------------
+.. doxygenfunction:: hipsolverXgesvdjSetMaxSweeps
+
+.. _gesvdj_set_sort_eig:
+
+hipsolverXgesvdjSetSortEig()
+---------------------------------
+.. doxygenfunction:: hipsolverXgesvdjSetSortEig
+
+.. _gesvdj_set_tolerance:
+
+hipsolverXgesvdjSetTolerance()
+---------------------------------
+.. doxygenfunction:: hipsolverXgesvdjSetTolerance
+
+.. _gesvdj_get_residual:
+
+hipsolverXgesvdjGetResidual()
+---------------------------------
+.. doxygenfunction:: hipsolverXgesvdjGetResidual
+
+.. _gesvdj_get_sweeps:
+
+hipsolverXgesvdjGetSweeps()
+---------------------------------
+.. doxygenfunction:: hipsolverXgesvdjGetSweeps
 
 
 

@@ -4,6 +4,14 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ## (Unreleased) hipSOLVER
 ### Added
+- Added functions
+  - gesvdj
+    - hipsolverSgesvdj_bufferSize, hipsolverDgesvdj_bufferSize, hipsolverCgesvdj_bufferSize, hipsolverZgesvdj_bufferSize
+    - hipsolverSgesvdj, hipsolverDgesvdj, hipsolverCgesvdj, hipsolverZgesvdj
+  - gesvdjBatched
+    - hipsolverSgesvdjBatched_bufferSize, hipsolverDgesvdjBatched_bufferSize, hipsolverCgesvdjBatched_bufferSize, hipsolverZgesvdjBatched_bufferSize
+    - hipsolverSgesvdjBatched, hipsolverDgesvdjBatched, hipsolverCgesvdjBatched, hipsolverZgesvdjBatched
+
 ### Optimized
 ### Changed
 ### Deprecated
