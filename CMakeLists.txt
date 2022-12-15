@@ -92,15 +92,9 @@ include( ROCMHeaderWrapper )
 set ( VERSION_STRING "1.7.0" )
 rocm_setup_version( VERSION ${VERSION_STRING} )
 
-if( NOT DEFINED ENV{HIP_PATH})
-    set( HIP_PATH "/opt/rocm/hip" )
-else( )
-    set (HIP_PATH $ENV{HIP_PATH} )
-endif( )
-
 # Append our library helper cmake path and the cmake path for hip (for convenience)
 # Users may override HIP path by specifying their own in CMAKE_MODULE_PATH
-list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ROCM_PATH}/lib/cmake/hip ${HIP_PATH}/cmake )
+list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake )
 
 # NOTE:  workaround until hip cmake modules fixes symlink logic in their config files; remove when fixed
 list( APPEND CMAKE_PREFIX_PATH /opt/rocm /opt/rocm/llvm /opt/rocm/hip )
@@ -132,22 +126,16 @@ endif( )
 set( ARMOR_LEVEL "${DEFAULT_ARMOR_LEVEL}" CACHE STRING "Enables increasingly expensive runtime correctness checks" )
 include( armor-config )
 
-# Find CUDA if the user wants a CUDA version.
-option(USE_CUDA "Look for CUDA and use that as a backend if found" OFF)
-if (USE_CUDA)
-    find_package( CUDA REQUIRED )
+if(DEFINED USE_CUDA)
+  if(USE_CUDA)
+    set(ENV{HIP_PLATFORM} nvidia)
+    message(DEPRECATION "USE_CUDA is deprecated (use HIP_PLATFORM=nvidia)")
+  else()
+    set(ENV{HIP_PLATFORM} amd)
+    message(DEPRECATION "USE_CUDA is deprecated (use HIP_PLATFORM=amd)")
+  endif()
 endif()
-
-# Hip headers required of all clients; clients use hip to allocate device memory
-if( USE_CUDA)
-    find_package( HIP MODULE REQUIRED )
-else( )
-    find_package( hip REQUIRED CONFIG PATHS ${HIP_PATH} ${ROCM_PATH} /opt/rocm )
-endif( )
-
-if( USE_CUDA )
-    list( APPEND HIP_INCLUDE_DIRS "${HIP_ROOT_DIR}/include" )
-endif( )
+find_package(hip REQUIRED)
 
 # FOR OPTIONAL CODE COVERAGE
 option(BUILD_CODE_COVERAGE "Build hipSOLVER with code coverage enabled" OFF)
@@ -210,7 +198,7 @@ if( BUILD_CLIENTS_SAMPLES OR BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
 endif( )
 
 # Package specific CPACK vars
-if( NOT USE_CUDA )
+if( HIP_PLATFORM STREQUAL amd )
   rocm_package_add_dependencies(DEPENDS "rocblas >= 2.47.0" "rocsolver >= 3.21.0")
 endif( )
 
@@ -235,7 +223,7 @@ endif()
 set( CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION "\${CPACK_PACKAGING_INSTALL_PREFIX}" )
 
 # Give hipsolver compiled for CUDA backend a different name
-if( NOT USE_CUDA )
+if( HIP_PLATFORM STREQUAL amd )
     set( package_name hipsolver )
 else( )
     set( package_name hipsolver-alt )

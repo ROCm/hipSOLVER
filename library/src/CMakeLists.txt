@@ -40,19 +40,11 @@ endfunction( )
 # ########################################################################
 prepend_path( ".." hipsolver_headers_public relative_hipsolver_headers_public )
 
-if( NOT USE_CUDA )
-  set( hipsolver_source
-    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_compat.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
-  )
-else( )
-  set( hipsolver_source
-    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_compat.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
-  )
-endif( )
+set( hipsolver_source
+  "${CMAKE_CURRENT_SOURCE_DIR}/${HIP_PLATFORM}_detail/hipsolver.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/${HIP_PLATFORM}_detail/hipsolver_compat.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
+)
 
 set (hipsolver_f90_source
   hipsolver_module.f90
@@ -91,7 +83,7 @@ if( WIN32 )
 endif( )
 
 # Build hipsolver from source on AMD platform
-if( NOT USE_CUDA )
+if( HIP_PLATFORM STREQUAL amd )
   if( NOT TARGET rocblas )
     if( CUSTOM_ROCBLAS )
       set ( ENV{rocblas_DIR} ${CUSTOM_ROCBLAS})
@@ -177,7 +169,7 @@ rocm_install_targets(
     ${CMAKE_BINARY_DIR}/include
 )
 
-if ( NOT USE_CUDA )
+if ( HIP_PLATFORM STREQUAL amd )
   rocm_export_targets(
     TARGETS roc::hipsolver
     DEPENDS PACKAGE hip
@@ -186,7 +178,6 @@ if ( NOT USE_CUDA )
 else( )
   rocm_export_targets(
     TARGETS roc::hipsolver
-    DEPENDS PACKAGE HIP
     NAMESPACE roc::
   )
 endif( )

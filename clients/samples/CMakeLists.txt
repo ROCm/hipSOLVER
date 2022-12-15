@@ -51,7 +51,7 @@ foreach( exe example-c-basic;example-cpp-basic; )
 
   target_link_libraries( ${exe} PRIVATE roc::hipsolver )
 
-  if( NOT USE_CUDA )
+  if( HIP_PLATFORM STREQUAL amd )
     target_link_libraries( ${exe} PRIVATE hip::host )
 
     if( CUSTOM_TARGET )

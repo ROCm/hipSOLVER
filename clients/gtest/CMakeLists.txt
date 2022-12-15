@@ -100,7 +100,7 @@ target_link_libraries(hipsolver-test PRIVATE
 # need mf16c flag for float->half convertion
 target_compile_options( hipsolver-test PRIVATE -mf16c )
 
-if( NOT USE_CUDA )
+if( HIP_PLATFORM STREQUAL amd )
   target_link_libraries( hipsolver-test PRIVATE hip::host )
 
   if( CUSTOM_TARGET )
