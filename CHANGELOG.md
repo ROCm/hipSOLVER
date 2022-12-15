@@ -2,7 +2,7 @@
 
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
-## (Unreleased) hipSOLVER
+## (Unreleased) hipSOLVER 1.7.0
 ### Added
 - Added functions
   - gesvdj
@@ -12,16 +12,8 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
     - hipsolverSgesvdjBatched_bufferSize, hipsolverDgesvdjBatched_bufferSize, hipsolverCgesvdjBatched_bufferSize, hipsolverZgesvdjBatched_bufferSize
     - hipsolverSgesvdjBatched, hipsolverDgesvdjBatched, hipsolverCgesvdjBatched, hipsolverZgesvdjBatched
 
-### Optimized
-### Changed
-### Deprecated
-### Removed
-### Fixed
-### Known Issues
-### Security
 
-
-## (Unreleased) hipSOLVER 1.6.0
+## hipSOLVER 1.6.0 for ROCm 5.4.0
 ### Added
 - Added compatibility-only functions
   - gesvdaStridedBatched
