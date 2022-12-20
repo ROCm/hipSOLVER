@@ -168,7 +168,7 @@ TEST_P(HEGVD_FORTRAN, __double_complex)
 //                          SYGVD,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
-INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+INSTANTIATE_TEST_SUITE_P(known_bug,
                          SYGVD,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
 
@@ -176,7 +176,7 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 //                          HEGVD,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
-INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+INSTANTIATE_TEST_SUITE_P(known_bug,
                          HEGVD,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
 
@@ -184,7 +184,7 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 //                          SYGVD_FORTRAN,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
-INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+INSTANTIATE_TEST_SUITE_P(known_bug,
                          SYGVD_FORTRAN,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
 
@@ -192,6 +192,6 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 //                          HEGVD_FORTRAN,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
-INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+INSTANTIATE_TEST_SUITE_P(known_bug,
                          HEGVD_FORTRAN,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
