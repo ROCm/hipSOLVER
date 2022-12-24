@@ -159,19 +159,19 @@ TEST_P(HEEVD_FORTRAN, __double_complex)
 //                          SYEVD,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
-INSTANTIATE_TEST_SUITE_P(known_bug, SYEVD, Combine(ValuesIn(size_range), ValuesIn(op_range)));
+INSTANTIATE_TEST_SUITE_P(checkin_lapack, SYEVD, Combine(ValuesIn(size_range), ValuesIn(op_range)));
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          HEEVD,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
-INSTANTIATE_TEST_SUITE_P(known_bug, HEEVD, Combine(ValuesIn(size_range), ValuesIn(op_range)));
+INSTANTIATE_TEST_SUITE_P(checkin_lapack, HEEVD, Combine(ValuesIn(size_range), ValuesIn(op_range)));
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          SYEVD_FORTRAN,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
-INSTANTIATE_TEST_SUITE_P(known_bug,
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          SYEVD_FORTRAN,
                          Combine(ValuesIn(size_range), ValuesIn(op_range)));
 
@@ -179,6 +179,6 @@ INSTANTIATE_TEST_SUITE_P(known_bug,
 //                          HEEVD_FORTRAN,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
-INSTANTIATE_TEST_SUITE_P(known_bug,
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          HEEVD_FORTRAN,
                          Combine(ValuesIn(size_range), ValuesIn(op_range)));
