@@ -341,7 +341,7 @@ void syevd_heevd_getError(const hipsolverHandle_t   handle,
     *max_err = 0;
     for(int b = 0; b < bc; ++b)
     {
-        EXPECT_EQ(hinfo[b][0], hInfoRes[b][0]) << "where b = " << b;
+        EXPECT_EQ(hinfo[b][0], hinfoRes[b][0]) << "where b = " << b;
         if(hinfo[b][0] != hinfoRes[b][0])
             *max_err += 1;
     }
