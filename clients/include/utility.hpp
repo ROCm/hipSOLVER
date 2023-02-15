@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -90,6 +90,24 @@ inline void hipsolver_expect_status(hipsolverStatus_t status, hipsolverStatus_t 
 #define EXPECT_ROCBLAS_STATUS(status, expected) hipsolver_expect_status(status, expected)
 #define CHECK_ROCBLAS_ERROR(status) hipsolver_expect_status(status, HIPSOLVER_STATUS_SUCCESS)
 
+// The info provided to EXPECT macros is used in hipsolver-test, but
+// in hipsolver-bench, the information is just discarded.
+struct hipsolver_info_discarder
+{
+    template <typename T>
+    hipsolver_info_discarder& operator<<(T&&)
+    {
+        return *this;
+    }
+};
+
+#define EXPECT_EQ(v1, v2) hipsolver_info_discarder()
+#define EXPECT_NE(v1, v2) hipsolver_info_discarder()
+#define EXPECT_LT(v1, v2) hipsolver_info_discarder()
+#define EXPECT_LE(v1, v2) hipsolver_info_discarder()
+#define EXPECT_GT(v1, v2) hipsolver_info_discarder()
+#define EXPECT_GE(v1, v2) hipsolver_info_discarder()
+
 #endif
 
 #ifdef __cplusplus
@@ -111,10 +129,10 @@ public:
         hipsolverDestroy(m_handle);
     }
 
-    hipsolver_local_handle(const hipsolver_local_handle&) = delete;
-    hipsolver_local_handle(hipsolver_local_handle&&)      = delete;
+    hipsolver_local_handle(const hipsolver_local_handle&)            = delete;
+    hipsolver_local_handle(hipsolver_local_handle&&)                 = delete;
     hipsolver_local_handle& operator=(const hipsolver_local_handle&) = delete;
-    hipsolver_local_handle& operator=(hipsolver_local_handle&&) = delete;
+    hipsolver_local_handle& operator=(hipsolver_local_handle&&)      = delete;
 
     // Allow hipsolver_local_handle to be used anywhere hipsolverHandle_t is expected
     operator hipsolverHandle_t&()
@@ -144,10 +162,10 @@ public:
         hipsolverDnDestroyGesvdjInfo(m_info);
     }
 
-    hipsolver_local_gesvdj_info(const hipsolver_local_gesvdj_info&) = delete;
-    hipsolver_local_gesvdj_info(hipsolver_local_gesvdj_info&&)      = delete;
+    hipsolver_local_gesvdj_info(const hipsolver_local_gesvdj_info&)            = delete;
+    hipsolver_local_gesvdj_info(hipsolver_local_gesvdj_info&&)                 = delete;
     hipsolver_local_gesvdj_info& operator=(const hipsolver_local_gesvdj_info&) = delete;
-    hipsolver_local_gesvdj_info& operator=(hipsolver_local_gesvdj_info&&) = delete;
+    hipsolver_local_gesvdj_info& operator=(hipsolver_local_gesvdj_info&&)      = delete;
 
     // Allow hipsolver_local_gesvdj_info to be used anywhere hipsolverGesvdjInfo_t is expected
     operator hipsolverGesvdjInfo_t&()
@@ -177,10 +195,10 @@ public:
         hipsolverDnDestroySyevjInfo(m_info);
     }
 
-    hipsolver_local_syevj_info(const hipsolver_local_syevj_info&) = delete;
-    hipsolver_local_syevj_info(hipsolver_local_syevj_info&&)      = delete;
+    hipsolver_local_syevj_info(const hipsolver_local_syevj_info&)            = delete;
+    hipsolver_local_syevj_info(hipsolver_local_syevj_info&&)                 = delete;
     hipsolver_local_syevj_info& operator=(const hipsolver_local_syevj_info&) = delete;
-    hipsolver_local_syevj_info& operator=(hipsolver_local_syevj_info&&) = delete;
+    hipsolver_local_syevj_info& operator=(hipsolver_local_syevj_info&&)      = delete;
 
     // Allow hipsolver_local_syevj_info to be used anywhere hipsolverSyevjInfo_t is expected
     operator hipsolverSyevjInfo_t&()

@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -514,8 +514,11 @@ void sytrd_hetrd_getError(const hipsolverHandle_t   handle,
     // check info
     err = 0;
     for(int b = 0; b < bc; ++b)
+    {
+        EXPECT_EQ(hInfoRes[b][0], 0) << "where b = " << b;
         if(hInfoRes[b][0] != 0)
             err++;
+    }
     *max_err += err;
 }
 

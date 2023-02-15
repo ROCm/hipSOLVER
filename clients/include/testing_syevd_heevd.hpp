@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2021-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2021-2023 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -340,8 +340,11 @@ void syevd_heevd_getError(const hipsolverHandle_t   handle,
     // Check info for non-convergence
     *max_err = 0;
     for(int b = 0; b < bc; ++b)
+    {
+        EXPECT_EQ(hinfo[b][0], hInfoRes[b][0]) << "where b = " << b;
         if(hinfo[b][0] != hinfoRes[b][0])
             *max_err += 1;
+    }
 
     // (We expect the used input matrices to always converge. Testing
     // implicitly the equivalent non-converged matrix is very complicated and it boils
