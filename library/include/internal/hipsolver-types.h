@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc.
+ * Copyright (C) 2020-2023 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 /*! \file
@@ -30,6 +30,7 @@ typedef enum
     HIPSOLVER_STATUS_HANDLE_IS_NULLPTR = 9, // hipSOLVER handle is null pointer
     HIPSOLVER_STATUS_INVALID_ENUM      = 10, // unsupported enum value was passed to function
     HIPSOLVER_STATUS_UNKNOWN           = 11, // back-end returned an unsupported status code
+    HIPSOLVER_STATUS_ZERO_PIVOT        = 12,
 } hipsolverStatus_t;
 
 // set the values of enum constants to be the same as those used in cblas
