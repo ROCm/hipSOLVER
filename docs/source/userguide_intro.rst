@@ -24,9 +24,9 @@ significant overhead. However, its main purpose is portability, so when performa
 to the given architecture is recommended.
 
 Another purpose of hipSOLVER is to facilitate the translation of cuSOLVER applications to
-`AMD's open source ROCm platform <https://rocmdocs.amd.com/en/latest/index.html>`_ ecosystem. To that end, hipSOLVER also includes a
-:ref:`compatibility API <library_compat>` with method signatures that match exactly those of cuSOLVER. For more details see the
-section :ref:`usage_label`.
+`AMD's open source ROCm platform <https://rocmdocs.amd.com/en/latest/index.html>`_ ecosystem. To that end, hipSOLVER also includes
+:ref:`hipsolverDn <library_compat>` and :ref:`hipsolverRf <library_refactor>` compatibility APIs with method signatures that match exactly those
+of cuSOLVER. For more details see the section :ref:`usage_label`.
 
 
 Currently implemented functionality
@@ -200,4 +200,11 @@ Partial SVD has been implemented in rocSOLVER, but at present it does not use an
 
     :ref:`hipsolverDnXgesvdaStridedBatched_bufferSize <compat_gesvda_strided_batched_bufferSize>`, x, x, x, x
     :ref:`hipsolverDnXgesvdaStridedBatched <compat_gesvda_strided_batched>`, x, x, x, x
+
+Refactorization routines
+------------------------------
+
+Refactorization routines for sparse matrices are in the very earliest stages of development. At present, they are not exposed as part of
+rocSOLVER's public API and are subject to change. Refer to the :ref:`hipsolverRf compatibility API <library_refactor>` for a full listing
+of supported functions.
 

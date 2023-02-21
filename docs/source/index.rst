@@ -19,11 +19,11 @@ agreement between the parties or in AMD's Standard Terms and Conditions of Sale.
 
 **Contents**
 
-hipSOLVER's documentation consists of 3 main chapters. The User Guide is the starting point for new
+hipSOLVER's documentation consists of the following main chapters. The User Guide is the starting point for new
 users of the library, and a basic reference for current users. For a list of currently implemented
 routines in the regular API, see the hipSOLVER API chapter. As explained in the User Guide, hipSOLVER
-also has an API that is fully compatible with cuSOLVER, described in the hipSOLVER Compatibility
-API document.
+also has compatibility APIs that are fully compatible with cuSOLVER, described in the hipSOLVER Compatibility
+API chapters.
 
 .. toctree::
    :maxdepth: 1
@@ -32,4 +32,5 @@ API document.
    userguide_index
    api_index
    compat_index
+   refactor_index
 

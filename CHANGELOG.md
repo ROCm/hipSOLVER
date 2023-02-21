@@ -4,6 +4,8 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ## (Unreleased) hipSOLVER
 ### Added
+- Added compatibility API with hipsolverRf prefix
+
 ### Optimized
 ### Changed
 ### Deprecated

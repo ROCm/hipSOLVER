@@ -26,23 +26,27 @@ Porting cuSOLVER applications to hipSOLVER
 ============================================
 
 hipSOLVER is designed to make it easy for users of cuSOLVER to port their existing applications to hipSOLVER, and provides two
-separate but interchangeable APIs in order to facilitate a two-stage transition process. Users are encouraged to start with hipSOLVER's
-:ref:`compatibility API <library_compat>`, which uses the `hipsolverDn` prefix and has method signatures that are fully consistent with
-cusolverDn functions. However, the compatibility API may introduce some performance drawbacks, especially when using
-the rocSOLVER backend. So, as a second stage, it is recommended to begin the switch to hipSOLVER's :ref:`regular API <library_api>`,
-which uses the `hipsolver` prefix and introduces minor adjustments to the API in order to get the best performance out of the rocSOLVER
-backend. In most cases, switching to the regular API is as simple as removing `Dn` from the `hipsolverDn` prefix.
-(No matter which API is used, a hipSOLVER application can be executed, without modifications to the code, in systems with cuSOLVER or
-rocSOLVER installed. However, using the regular API ensures the best performance out of both backends).
+separate but interchangeable API patterns in order to facilitate a two-stage transition process. Users are encouraged to start with
+hipSOLVER's compatibility APIs, which use the :ref:`hipsolverDn <library_compat>` and :ref:`hipsolverRf <library_refactor>` prefixes
+and have method signatures that are fully consistent with cuSOLVER functions.
+
+However, the compatibility APIs may introduce some performance drawbacks, especially when using the rocSOLVER backend. So, as a second
+stage, it is recommended to begin the switch to hipSOLVER's :ref:`regular API <library_api>`, which uses the `hipsolver` prefix and
+introduces minor adjustments to the API in order to get the best performance out of the rocSOLVER backend. In most cases, switching to
+the regular API is as simple as removing `Dn` from the `hipsolverDn` prefix (methods with the `hipsolverRf` prefix are not currently
+supported by the regular API).
+
+No matter which API is used, a hipSOLVER application can be executed, without modifications to the code, in systems with cuSOLVER or
+rocSOLVER installed. However, using the regular API ensures the best performance out of both backends.
 
 
 .. _compat_api_differences:
 
-Some considerations when using the compatibility hipSOLVER API
+Some considerations when using the hipsolverDn API
 ===============================================================
 
-hipSOLVER's compatibility API is intended as a 1:1 translation of the cuSOLVER API, but not all functionality is equally supported in
-rocSOLVER. Keep in mind the following considerations when using the compatibility API.
+The hipsolverDn API is intended as a 1:1 translation of the cusolverDn API, but not all functionality is equally supported in
+rocSOLVER. Keep in mind the following considerations when using this compatibility API.
 
 
 Different minimum array lengths
