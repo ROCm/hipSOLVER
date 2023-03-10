@@ -42,6 +42,196 @@
 
 extern "C" {
 
+/******************** HANDLE ********************/
+struct hipsolverRfHandle
+{
+    hipsolverRfResetValuesFastMode_t fast_mode;
+    hipsolverRfMatrixFormat_t        matrix_format;
+    hipsolverRfUnitDiagonal_t        diag_format;
+    hipsolverRfNumericBoostReport_t  numeric_boost;
+
+    hipsolverRfFactorization_t   fact_alg;
+    hipsolverRfTriangularSolve_t solve_alg;
+
+    rocblas_handle   handle;
+    rocsolver_rfinfo rfinfo;
+
+    rocblas_int n, nnzA, nnzL, nnzU, nnzLU, batch_count;
+    double      effective_zero;
+    double      boost_val;
+
+    rocblas_int* dPtrA;
+    rocblas_int* dIndA;
+    double*      dValA;
+
+    rocblas_int *dPtrL, *hPtrL;
+    rocblas_int *dIndL, *hIndL;
+    double *     dValL, *hValL;
+
+    rocblas_int *dPtrU, *hPtrU;
+    rocblas_int *dIndU, *hIndU;
+    double *     dValU, *hValU;
+
+    rocblas_int *dPtrLU, *hPtrLU;
+    rocblas_int *dIndLU, *hIndLU;
+    double *     dValLU, *hValLU;
+
+    rocblas_int* dP;
+    rocblas_int* dQ;
+
+    uint8_t *d_buffer, *h_buffer;
+
+    // Constructor
+    explicit hipsolverRfHandle()
+        : fast_mode(HIPSOLVERRF_RESET_VALUES_FAST_MODE_OFF)
+        , matrix_format(HIPSOLVERRF_MATRIX_FORMAT_CSR)
+        , diag_format(HIPSOLVERRF_UNIT_DIAGONAL_STORED_L)
+        , numeric_boost(HIPSOLVERRF_NUMERIC_BOOST_NOT_USED)
+        , fact_alg(HIPSOLVERRF_FACTORIZATION_ALG0)
+        , solve_alg(HIPSOLVERRF_TRIANGULAR_SOLVE_ALG1)
+        , n(0)
+        , nnzA(0)
+        , nnzL(0)
+        , nnzU(0)
+        , nnzLU(0)
+        , batch_count(0)
+        , effective_zero(0.0)
+        , boost_val(0.0)
+        , d_buffer(nullptr)
+        , h_buffer(nullptr)
+    {
+    }
+
+    // Allocate device memory
+    hipsolverStatus_t malloc_device(int n, int nnzA, int nnzL, int nnzU)
+    {
+        if(this->n != n || this->nnzA != nnzA || this->nnzL != nnzL || this->nnzU != nnzU)
+        {
+            int nnzLU = nnzL - n + nnzU;
+
+            if(this->h_buffer)
+            {
+                free(this->h_buffer);
+                this->h_buffer = nullptr;
+            }
+
+            if(this->d_buffer)
+            {
+                if(hipFree(this->d_buffer) != hipSuccess)
+                    return HIPSOLVER_STATUS_INTERNAL_ERROR;
+                this->d_buffer = nullptr;
+            }
+
+            size_t size_dPtrA = sizeof(rocblas_int) * n;
+            size_t size_dIndA = sizeof(rocblas_int) * nnzA;
+            size_t size_dValA = sizeof(double) * nnzA;
+
+            size_t size_dPtrL = sizeof(rocblas_int) * n;
+            size_t size_dIndL = sizeof(rocblas_int) * nnzL;
+            size_t size_dValL = sizeof(double) * nnzL;
+
+            size_t size_dPtrU = sizeof(rocblas_int) * n;
+            size_t size_dIndU = sizeof(rocblas_int) * nnzU;
+            size_t size_dValU = sizeof(double) * nnzU;
+
+            size_t size_dPtrLU = sizeof(rocblas_int) * n;
+            size_t size_dIndLU = sizeof(rocblas_int) * nnzLU;
+            size_t size_dValLU = sizeof(double) * nnzLU;
+
+            size_t size_dP = sizeof(rocblas_int) * n;
+            size_t size_dQ = sizeof(rocblas_int) * n;
+
+            size_t size_buffer = size_dPtrA + size_dIndA + size_dValA + size_dPtrL + size_dIndL
+                                 + size_dValL + size_dPtrU + size_dIndU + size_dValU + size_dPtrLU
+                                 + size_dIndLU + size_dValLU + size_dP + size_dQ;
+
+            if(hipMalloc(&this->d_buffer, size_buffer) != hipSuccess)
+                return HIPSOLVER_STATUS_ALLOC_FAILED;
+
+            uint8_t* temp_buf;
+            this->dPtrA  = (rocblas_int*)(temp_buf = this->d_buffer);
+            this->dIndA  = (rocblas_int*)(temp_buf += size_dPtrA);
+            this->dValA  = (double*)(temp_buf += size_dIndA);
+            this->dPtrL  = (rocblas_int*)(temp_buf += size_dValA);
+            this->dIndL  = (rocblas_int*)(temp_buf += size_dPtrL);
+            this->dValL  = (double*)(temp_buf += size_dIndL);
+            this->dPtrU  = (rocblas_int*)(temp_buf += size_dValL);
+            this->dIndU  = (rocblas_int*)(temp_buf += size_dPtrU);
+            this->dValU  = (double*)(temp_buf += size_dIndU);
+            this->dPtrLU = (rocblas_int*)(temp_buf += size_dValU);
+            this->dIndLU = (rocblas_int*)(temp_buf += size_dPtrLU);
+            this->dValLU = (double*)(temp_buf += size_dIndLU);
+            this->dP     = (rocblas_int*)(temp_buf += size_dValLU);
+            this->dQ     = (rocblas_int*)(temp_buf += size_dP);
+
+            this->n     = n;
+            this->nnzA  = nnzA;
+            this->nnzL  = nnzL;
+            this->nnzU  = nnzU;
+            this->nnzLU = nnzLU;
+        }
+
+        return HIPSOLVER_STATUS_SUCCESS;
+    }
+
+    // Allocate host memory
+    hipsolverStatus_t malloc_host()
+    {
+        if(!this->h_buffer)
+        {
+            size_t size_hPtrL = sizeof(rocblas_int) * n;
+            size_t size_hIndL = sizeof(rocblas_int) * nnzL;
+            size_t size_hValL = sizeof(double) * nnzL;
+
+            size_t size_hPtrU = sizeof(rocblas_int) * n;
+            size_t size_hIndU = sizeof(rocblas_int) * nnzU;
+            size_t size_hValU = sizeof(double) * nnzU;
+
+            size_t size_hPtrLU = sizeof(rocblas_int) * n;
+            size_t size_hIndLU = sizeof(rocblas_int) * nnzLU;
+            size_t size_hValLU = sizeof(double) * nnzLU;
+
+            size_t size_buffer = std::max(size_hPtrL + size_hIndL + size_hValL + size_hPtrU
+                                              + size_hIndU + size_hValU,
+                                          size_hPtrLU + size_hIndLU + size_hValLU);
+
+            this->h_buffer = (uint8_t*)malloc(size_buffer);
+            if(!this->h_buffer)
+                return HIPSOLVER_STATUS_ALLOC_FAILED;
+
+            uint8_t* temp_buf;
+            this->hPtrL = (rocblas_int*)(temp_buf = this->h_buffer);
+            this->hIndL = (rocblas_int*)(temp_buf += size_hPtrL);
+            this->hValL = (double*)(temp_buf += size_hIndL);
+            this->hPtrU = (rocblas_int*)(temp_buf += size_hValL);
+            this->hIndU = (rocblas_int*)(temp_buf += size_hPtrU);
+            this->hValU = (double*)(temp_buf += size_hIndU);
+
+            this->hPtrLU = (rocblas_int*)(temp_buf = this->h_buffer);
+            this->hIndLU = (rocblas_int*)(temp_buf += size_hPtrLU);
+            this->hValLU = (double*)(temp_buf += size_hIndLU);
+        }
+
+        return HIPSOLVER_STATUS_SUCCESS;
+    }
+
+    // Free memory
+    void free_all()
+    {
+        if(this->h_buffer)
+        {
+            free(this->h_buffer);
+            this->h_buffer = nullptr;
+        }
+
+        if(this->d_buffer)
+        {
+            hipFree(this->d_buffer);
+            this->d_buffer = nullptr;
+        }
+    }
+};
+
 hipsolverStatus_t hipsolverRfCreate(hipsolverRfHandle_t* handle)
 try
 {
@@ -62,7 +252,7 @@ catch(...)
     return exception2hip_status();
 }
 
-// non-batched routines
+/******************** NON-BATCHED ********************/
 hipsolverStatus_t hipsolverRfSetupDevice(int                 n,
                                          int                 nnzA,
                                          int*                csrRowPtrA,
@@ -311,7 +501,7 @@ catch(...)
     return exception2hip_status();
 }
 
-// batched routines
+/******************** BATCHED ********************/
 hipsolverStatus_t hipsolverRfBatchSetupHost(int                 batchSize,
                                             int                 n,
                                             int                 nnzA,

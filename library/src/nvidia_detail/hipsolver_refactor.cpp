@@ -34,6 +34,7 @@
 
 extern "C" {
 
+/******************** HANDLE ********************/
 hipsolverStatus_t hipsolverRfCreate(hipsolverRfHandle_t* handle)
 try
 {
@@ -54,7 +55,7 @@ catch(...)
     return exception2hip_status();
 }
 
-// non-batched routines
+/******************** NON-BATCHED ********************/
 hipsolverStatus_t hipsolverRfSetupDevice(int                 n,
                                          int                 nnzA,
                                          int*                csrRowPtrA,
@@ -382,7 +383,7 @@ catch(...)
     return exception2hip_status();
 }
 
-// batched routines
+/******************** BATCHED ********************/
 hipsolverStatus_t hipsolverRfBatchSetupHost(int                 batchSize,
                                             int                 n,
                                             int                 nnzA,
