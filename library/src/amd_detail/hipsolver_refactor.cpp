@@ -235,7 +235,27 @@ struct hipsolverRfHandle
 hipsolverStatus_t hipsolverRfCreate(hipsolverRfHandle_t* handle)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverRfHandle* rf = new hipsolverRfHandle;
+    rocblas_status     status;
+
+    if((status = rocblas_create_handle(&rf->handle)) != rocblas_status_success)
+    {
+        delete rf;
+        return rocblas2hip_status(status);
+    }
+
+    if((status = rocsolver_rfinfo_create(&rf->rfinfo, rf->handle)) != rocblas_status_success)
+    {
+        rocblas_destroy_handle(rf->handle);
+        delete rf;
+        return rocblas2hip_status(status);
+    }
+
+    handle = (hipsolverRfHandle_t*)rf;
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -245,7 +265,16 @@ catch(...)
 hipsolverStatus_t hipsolverRfDestroy(hipsolverRfHandle_t handle)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    rf->free_all();
+    rocsolver_rfinfo_destroy(rf->rfinfo);
+    rocblas_destroy_handle(rf->handle);
+    delete rf;
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -271,7 +300,44 @@ hipsolverStatus_t hipsolverRfSetupDevice(int                 n,
                                          hipsolverRfHandle_t handle)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+    if(!csrRowPtrA || !csrColIndA || !csrValA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!csrRowPtrL || !csrColIndL || !csrValL)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!csrRowPtrU || !csrColIndU || !csrValU)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!P || !Q)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    CHECK_HIPSOLVER_ERROR(rf->malloc_device(n, nnzA, nnzL, nnzU));
+
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->dPtrA, csrRowPtrA, sizeof(rocblas_int) * n, hipMemcpyDeviceToDevice));
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->dIndA, csrColIndA, sizeof(rocblas_int) * nnzA, hipMemcpyDeviceToDevice));
+    CHECK_HIP_ERROR(hipMemcpy(rf->dValA, csrValA, sizeof(double) * nnzA, hipMemcpyDeviceToDevice));
+
+    CHECK_ROCBLAS_ERROR(rocsolver_dcsrrf_sumlu(rf->handle,
+                                               n,
+                                               nnzL,
+                                               csrRowPtrL,
+                                               csrColIndL,
+                                               csrValL,
+                                               nnzU,
+                                               csrRowPtrU,
+                                               csrColIndU,
+                                               csrValU,
+                                               rf->dPtrLU,
+                                               rf->dIndLU,
+                                               rf->dValLU));
+
+    CHECK_HIP_ERROR(hipMemcpy(rf->dP, P, sizeof(rocblas_int) * n, hipMemcpyDeviceToDevice));
+    CHECK_HIP_ERROR(hipMemcpy(rf->dQ, Q, sizeof(rocblas_int) * n, hipMemcpyDeviceToDevice));
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -280,23 +346,72 @@ catch(...)
 
 hipsolverStatus_t hipsolverRfSetupHost(int                 n,
                                        int                 nnzA,
-                                       int*                h_csrRowPtrA,
-                                       int*                h_csrColIndA,
-                                       double*             h_csrValA,
+                                       int*                csrRowPtrA,
+                                       int*                csrColIndA,
+                                       double*             csrValA,
                                        int                 nnzL,
-                                       int*                h_csrRowPtrL,
-                                       int*                h_csrColIndL,
-                                       double*             h_csrValL,
+                                       int*                csrRowPtrL,
+                                       int*                csrColIndL,
+                                       double*             csrValL,
                                        int                 nnzU,
-                                       int*                h_csrRowPtrU,
-                                       int*                h_csrColIndU,
-                                       double*             h_csrValU,
-                                       int*                h_P,
-                                       int*                h_Q,
+                                       int*                csrRowPtrU,
+                                       int*                csrColIndU,
+                                       double*             csrValU,
+                                       int*                P,
+                                       int*                Q,
                                        hipsolverRfHandle_t handle)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+    if(!csrRowPtrA || !csrColIndA || !csrValA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!csrRowPtrL || !csrColIndL || !csrValL)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!csrRowPtrU || !csrColIndU || !csrValU)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!P || !Q)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    CHECK_HIPSOLVER_ERROR(rf->malloc_device(n, nnzA, nnzL, nnzU));
+
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->dPtrA, csrRowPtrA, sizeof(rocblas_int) * n, hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->dIndA, csrColIndA, sizeof(rocblas_int) * nnzA, hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(hipMemcpy(rf->dValA, csrValA, sizeof(double) * nnzA, hipMemcpyHostToDevice));
+
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->dPtrL, csrRowPtrL, sizeof(rocblas_int) * n, hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->dIndL, csrColIndL, sizeof(rocblas_int) * nnzL, hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(hipMemcpy(rf->dValL, csrValL, sizeof(double) * nnzL, hipMemcpyHostToDevice));
+
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->dPtrU, csrRowPtrU, sizeof(rocblas_int) * n, hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->dIndU, csrColIndU, sizeof(rocblas_int) * nnzU, hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(hipMemcpy(rf->dValU, csrValU, sizeof(double) * nnzU, hipMemcpyHostToDevice));
+
+    CHECK_ROCBLAS_ERROR(rocsolver_dcsrrf_sumlu(rf->handle,
+                                               n,
+                                               nnzL,
+                                               rf->dPtrL,
+                                               rf->dIndL,
+                                               rf->dValL,
+                                               nnzU,
+                                               rf->dPtrU,
+                                               rf->dIndU,
+                                               rf->dValU,
+                                               rf->dPtrLU,
+                                               rf->dIndLU,
+                                               rf->dValLU));
+
+    CHECK_HIP_ERROR(hipMemcpy(rf->dP, P, sizeof(rocblas_int) * n, hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(hipMemcpy(rf->dQ, Q, sizeof(rocblas_int) * n, hipMemcpyHostToDevice));
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -307,7 +422,21 @@ hipsolverStatus_t hipsolverRfAccessBundledFactorsDevice(
     hipsolverRfHandle_t handle, int* nnzM, int** Mp, int** Mi, double** Mx)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+    if(!nnzM || !Mp || !Mi || !Mx)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    if(!rf->d_buffer)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+
+    *nnzM = rf->nnzLU;
+    *Mp   = rf->dPtrLU;
+    *Mi   = rf->dIndLU;
+    *Mx   = rf->dValLU;
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -317,7 +446,26 @@ catch(...)
 hipsolverStatus_t hipsolverRfAnalyze(hipsolverRfHandle_t handle)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    if(!rf->d_buffer)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+
+    return rocblas2hip_status(rocsolver_dcsrrf_analysis(rf->handle,
+                                                        rf->n,
+                                                        rf->nnzA,
+                                                        rf->dPtrA,
+                                                        rf->dIndA,
+                                                        rf->dValA,
+                                                        rf->nnzLU,
+                                                        rf->dPtrLU,
+                                                        rf->dIndLU,
+                                                        rf->dValLU,
+                                                        rf->dP,
+                                                        rf->dQ,
+                                                        rf->rfinfo));
 }
 catch(...)
 {
@@ -328,7 +476,29 @@ hipsolverStatus_t hipsolverRfExtractBundledFactorsHost(
     hipsolverRfHandle_t handle, int* h_nnzM, int** h_Mp, int** h_Mi, double** h_Mx)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+    if(!h_nnzM || !h_Mp || !h_Mi || !h_Mx)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    if(!rf->d_buffer)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+    CHECK_HIPSOLVER_ERROR(rf->malloc_host());
+
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->hPtrLU, rf->dPtrLU, sizeof(rocblas_int) * rf->n, hipMemcpyDeviceToHost));
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->hIndLU, rf->dIndLU, sizeof(rocblas_int) * rf->nnzLU, hipMemcpyDeviceToHost));
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->hValLU, rf->dValLU, sizeof(double) * rf->nnzLU, hipMemcpyDeviceToHost));
+
+    *h_nnzM = rf->nnzLU;
+    *h_Mp   = rf->hPtrLU;
+    *h_Mi   = rf->hIndLU;
+    *h_Mx   = rf->hValLU;
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -346,7 +516,56 @@ hipsolverStatus_t hipsolverRfExtractSplitFactorsHost(hipsolverRfHandle_t handle,
                                                      double**            h_Ux)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+    if(!h_nnzL || !h_Lp || !h_Li || !h_Lx)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!h_nnzU || !h_Up || !h_Ui || !h_Ux)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    if(!rf->d_buffer)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+    CHECK_HIPSOLVER_ERROR(rf->malloc_host());
+
+    CHECK_ROCBLAS_ERROR(rocsolver_dcsrrf_splitlu(rf->handle,
+                                                 rf->n,
+                                                 rf->nnzLU,
+                                                 rf->dPtrLU,
+                                                 rf->dIndLU,
+                                                 rf->dValLU,
+                                                 rf->dPtrL,
+                                                 rf->dIndL,
+                                                 rf->dValL,
+                                                 rf->dPtrU,
+                                                 rf->dIndU,
+                                                 rf->dValU));
+
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->hPtrL, rf->dPtrL, sizeof(rocblas_int) * rf->n, hipMemcpyDeviceToHost));
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->hIndL, rf->dIndL, sizeof(rocblas_int) * rf->nnzL, hipMemcpyDeviceToHost));
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->hValL, rf->dValL, sizeof(double) * rf->nnzL, hipMemcpyDeviceToHost));
+
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->hPtrU, rf->dPtrU, sizeof(rocblas_int) * rf->n, hipMemcpyDeviceToHost));
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->hIndU, rf->dIndU, sizeof(rocblas_int) * rf->nnzU, hipMemcpyDeviceToHost));
+    CHECK_HIP_ERROR(
+        hipMemcpy(rf->hValU, rf->dValU, sizeof(double) * rf->nnzU, hipMemcpyDeviceToHost));
+
+    *h_nnzL = rf->nnzL;
+    *h_Lp   = rf->hPtrL;
+    *h_Li   = rf->hIndL;
+    *h_Lx   = rf->hValL;
+
+    *h_nnzU = rf->nnzU;
+    *h_Up   = rf->hPtrU;
+    *h_Ui   = rf->hIndU;
+    *h_Ux   = rf->hValU;
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -358,7 +577,18 @@ hipsolverStatus_t hipsolverRfGet_Algs(hipsolverRfHandle_t           handle,
                                       hipsolverRfTriangularSolve_t* solve_alg)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+    if(!fact_alg)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!solve_alg)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    *fact_alg             = rf->fact_alg;
+    *solve_alg            = rf->solve_alg;
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -370,7 +600,18 @@ hipsolverStatus_t hipsolverRfGetMatrixFormat(hipsolverRfHandle_t        handle,
                                              hipsolverRfUnitDiagonal_t* diag)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+    if(!format)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!diag)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    *format               = rf->matrix_format;
+    *diag                 = rf->diag_format;
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -381,7 +622,15 @@ hipsolverStatus_t hipsolverRfGetNumericBoostReport(hipsolverRfHandle_t          
                                                    hipsolverRfNumericBoostReport_t* report)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+    if(!report)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    *report               = rf->numeric_boost;
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -392,7 +641,18 @@ hipsolverStatus_t
     hipsolverRfGetNumericProperties(hipsolverRfHandle_t handle, double* zero, double* boost)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+    if(!zero)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!boost)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    *zero                 = rf->effective_zero;
+    *boost                = rf->boost_val;
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -403,7 +663,15 @@ hipsolverStatus_t hipsolverRfGetResetValuesFastMode(hipsolverRfHandle_t         
                                                     hipsolverRfResetValuesFastMode_t* fastMode)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+    if(!fastMode)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    *fastMode             = rf->fast_mode;
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -413,7 +681,26 @@ catch(...)
 hipsolverStatus_t hipsolverRfRefactor(hipsolverRfHandle_t handle)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    if(!rf->d_buffer)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+
+    return rocblas2hip_status(rocsolver_dcsrrf_refactlu(rf->handle,
+                                                        rf->n,
+                                                        rf->nnzA,
+                                                        rf->dPtrA,
+                                                        rf->dIndA,
+                                                        rf->dValA,
+                                                        rf->nnzLU,
+                                                        rf->dPtrLU,
+                                                        rf->dIndLU,
+                                                        rf->dValLU,
+                                                        rf->dP,
+                                                        rf->dQ,
+                                                        rf->rfinfo));
 }
 catch(...)
 {
@@ -430,7 +717,24 @@ hipsolverStatus_t hipsolverRfResetValues(int                 n,
                                          hipsolverRfHandle_t handle)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+    if(!csrRowPtrA || !csrColIndA || !csrValA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!P || !Q)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    if(rf->n != n)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(rf->nnzA != nnzA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!rf->d_buffer)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+
+    CHECK_HIP_ERROR(hipMemcpy(rf->dValA, csrValA, sizeof(double) * nnzA, hipMemcpyDeviceToDevice));
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -494,7 +798,25 @@ hipsolverStatus_t hipsolverRfSolve(hipsolverRfHandle_t handle,
                                    int                 ldxf)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+
+    hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
+    if(!rf->d_buffer)
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+
+    return rocblas2hip_status(rocsolver_dcsrrf_solve(rf->handle,
+                                                     rf->n,
+                                                     nrhs,
+                                                     rf->nnzLU,
+                                                     rf->dPtrLU,
+                                                     rf->dIndLU,
+                                                     rf->dValLU,
+                                                     P,
+                                                     Q,
+                                                     rf->rfinfo,
+                                                     XF,
+                                                     ldxf));
 }
 catch(...)
 {
