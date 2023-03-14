@@ -122,19 +122,19 @@ struct hipsolverRfHandle
                 this->d_buffer = nullptr;
             }
 
-            size_t size_dPtrA = sizeof(rocblas_int) * n;
+            size_t size_dPtrA = sizeof(rocblas_int) * (n + 1);
             size_t size_dIndA = sizeof(rocblas_int) * nnzA;
             size_t size_dValA = sizeof(double) * nnzA;
 
-            size_t size_dPtrL = sizeof(rocblas_int) * n;
+            size_t size_dPtrL = sizeof(rocblas_int) * (n + 1);
             size_t size_dIndL = sizeof(rocblas_int) * nnzL;
             size_t size_dValL = sizeof(double) * nnzL;
 
-            size_t size_dPtrU = sizeof(rocblas_int) * n;
+            size_t size_dPtrU = sizeof(rocblas_int) * (n + 1);
             size_t size_dIndU = sizeof(rocblas_int) * nnzU;
             size_t size_dValU = sizeof(double) * nnzU;
 
-            size_t size_dPtrLU = sizeof(rocblas_int) * n;
+            size_t size_dPtrLU = sizeof(rocblas_int) * (n + 1);
             size_t size_dIndLU = sizeof(rocblas_int) * nnzLU;
             size_t size_dValLU = sizeof(double) * nnzLU;
 
@@ -179,15 +179,15 @@ struct hipsolverRfHandle
     {
         if(!this->h_buffer)
         {
-            size_t size_hPtrL = sizeof(rocblas_int) * n;
+            size_t size_hPtrL = sizeof(rocblas_int) * (n + 1);
             size_t size_hIndL = sizeof(rocblas_int) * nnzL;
             size_t size_hValL = sizeof(double) * nnzL;
 
-            size_t size_hPtrU = sizeof(rocblas_int) * n;
+            size_t size_hPtrU = sizeof(rocblas_int) * (n + 1);
             size_t size_hIndU = sizeof(rocblas_int) * nnzU;
             size_t size_hValU = sizeof(double) * nnzU;
 
-            size_t size_hPtrLU = sizeof(rocblas_int) * n;
+            size_t size_hPtrLU = sizeof(rocblas_int) * (n + 1);
             size_t size_hIndLU = sizeof(rocblas_int) * nnzLU;
             size_t size_hValLU = sizeof(double) * nnzLU;
 
@@ -315,7 +315,7 @@ try
     CHECK_HIPSOLVER_ERROR(rf->malloc_device(n, nnzA, nnzL, nnzU));
 
     CHECK_HIP_ERROR(
-        hipMemcpy(rf->dPtrA, csrRowPtrA, sizeof(rocblas_int) * n, hipMemcpyDeviceToDevice));
+        hipMemcpy(rf->dPtrA, csrRowPtrA, sizeof(rocblas_int) * (n + 1), hipMemcpyDeviceToDevice));
     CHECK_HIP_ERROR(
         hipMemcpy(rf->dIndA, csrColIndA, sizeof(rocblas_int) * nnzA, hipMemcpyDeviceToDevice));
     CHECK_HIP_ERROR(hipMemcpy(rf->dValA, csrValA, sizeof(double) * nnzA, hipMemcpyDeviceToDevice));
@@ -377,19 +377,19 @@ try
     CHECK_HIPSOLVER_ERROR(rf->malloc_device(n, nnzA, nnzL, nnzU));
 
     CHECK_HIP_ERROR(
-        hipMemcpy(rf->dPtrA, csrRowPtrA, sizeof(rocblas_int) * n, hipMemcpyHostToDevice));
+        hipMemcpy(rf->dPtrA, csrRowPtrA, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
     CHECK_HIP_ERROR(
         hipMemcpy(rf->dIndA, csrColIndA, sizeof(rocblas_int) * nnzA, hipMemcpyHostToDevice));
     CHECK_HIP_ERROR(hipMemcpy(rf->dValA, csrValA, sizeof(double) * nnzA, hipMemcpyHostToDevice));
 
     CHECK_HIP_ERROR(
-        hipMemcpy(rf->dPtrL, csrRowPtrL, sizeof(rocblas_int) * n, hipMemcpyHostToDevice));
+        hipMemcpy(rf->dPtrL, csrRowPtrL, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
     CHECK_HIP_ERROR(
         hipMemcpy(rf->dIndL, csrColIndL, sizeof(rocblas_int) * nnzL, hipMemcpyHostToDevice));
     CHECK_HIP_ERROR(hipMemcpy(rf->dValL, csrValL, sizeof(double) * nnzL, hipMemcpyHostToDevice));
 
     CHECK_HIP_ERROR(
-        hipMemcpy(rf->dPtrU, csrRowPtrU, sizeof(rocblas_int) * n, hipMemcpyHostToDevice));
+        hipMemcpy(rf->dPtrU, csrRowPtrU, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
     CHECK_HIP_ERROR(
         hipMemcpy(rf->dIndU, csrColIndU, sizeof(rocblas_int) * nnzU, hipMemcpyHostToDevice));
     CHECK_HIP_ERROR(hipMemcpy(rf->dValU, csrValU, sizeof(double) * nnzU, hipMemcpyHostToDevice));
@@ -486,8 +486,8 @@ try
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
     CHECK_HIPSOLVER_ERROR(rf->malloc_host());
 
-    CHECK_HIP_ERROR(
-        hipMemcpy(rf->hPtrLU, rf->dPtrLU, sizeof(rocblas_int) * rf->n, hipMemcpyDeviceToHost));
+    CHECK_HIP_ERROR(hipMemcpy(
+        rf->hPtrLU, rf->dPtrLU, sizeof(rocblas_int) * (rf->n + 1), hipMemcpyDeviceToHost));
     CHECK_HIP_ERROR(
         hipMemcpy(rf->hIndLU, rf->dIndLU, sizeof(rocblas_int) * rf->nnzLU, hipMemcpyDeviceToHost));
     CHECK_HIP_ERROR(
@@ -542,14 +542,14 @@ try
                                                  rf->dValU));
 
     CHECK_HIP_ERROR(
-        hipMemcpy(rf->hPtrL, rf->dPtrL, sizeof(rocblas_int) * rf->n, hipMemcpyDeviceToHost));
+        hipMemcpy(rf->hPtrL, rf->dPtrL, sizeof(rocblas_int) * (rf->n + 1), hipMemcpyDeviceToHost));
     CHECK_HIP_ERROR(
         hipMemcpy(rf->hIndL, rf->dIndL, sizeof(rocblas_int) * rf->nnzL, hipMemcpyDeviceToHost));
     CHECK_HIP_ERROR(
         hipMemcpy(rf->hValL, rf->dValL, sizeof(double) * rf->nnzL, hipMemcpyDeviceToHost));
 
     CHECK_HIP_ERROR(
-        hipMemcpy(rf->hPtrU, rf->dPtrU, sizeof(rocblas_int) * rf->n, hipMemcpyDeviceToHost));
+        hipMemcpy(rf->hPtrU, rf->dPtrU, sizeof(rocblas_int) * (rf->n + 1), hipMemcpyDeviceToHost));
     CHECK_HIP_ERROR(
         hipMemcpy(rf->hIndU, rf->dIndU, sizeof(rocblas_int) * rf->nnzU, hipMemcpyDeviceToHost));
     CHECK_HIP_ERROR(
