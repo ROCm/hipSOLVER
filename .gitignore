@@ -31,11 +31,15 @@
 # Editors
 .vscode
 
-# build-in-source directory
-build/
-docBin/
-
 # emacs temporary/backup files
 .\#*
 \#*\#
 *~
+
+# documentation artifacts
+_build/
+_images/
+_static/
+_templates/
+_toc.yml
+docBin/
