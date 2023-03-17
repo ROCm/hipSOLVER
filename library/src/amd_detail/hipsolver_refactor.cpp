@@ -247,7 +247,7 @@ try
         return rocblas2hip_status(status);
     }
 
-    if((status = rocsolver_rfinfo_create(&rf->rfinfo, rf->handle)) != rocblas_status_success)
+    if((status = rocsolver_create_rfinfo(&rf->rfinfo, rf->handle)) != rocblas_status_success)
     {
         rocblas_destroy_handle(rf->handle);
         delete rf;
@@ -270,7 +270,7 @@ try
 
     hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
     rf->free_all();
-    rocsolver_rfinfo_destroy(rf->rfinfo);
+    rocsolver_destroy_rfinfo(rf->rfinfo);
     rocblas_destroy_handle(rf->handle);
     delete rf;
 
