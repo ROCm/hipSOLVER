@@ -12,9 +12,6 @@ For more details on how to use the API methods, see the code samples on
 `hipSOLVER's github page <https://github.com/ROCmSoftwarePlatform/hipSOLVER/tree/develop/clients/samples>`_, or
 the documentation of the corresponding backend libraries.
 
-.. toctree::
-   :maxdepth: 4
-
 .. contents:: Table of contents
    :local:
    :backlinks: top
