@@ -4,6 +4,25 @@ root: index
 subtrees:
   - numbered: False
     entries:
-    - file: userguide/userguide_index
-    - file: api/api_index
-    - file: compat/compat_index
+    - file: userguide/index
+      subtrees:
+      - entries:
+        - file: userguide/intro
+        - file: userguide/install
+        - file: userguide/useage
+    - file: api/index
+      subtrees:
+      - entries:
+        - file: api/types
+        - file: api/helpers
+        - file: api/auxiliary
+        - file: api/lapack
+        - file: api/lapacklike
+    - file: compat-api/index
+      subtrees:
+      - entries:
+        - file: compat-api/types
+        - file: compat-api/helpers
+        - file: compat-api/auxiliary
+        - file: compat-api/lapack
+        - file: compat-api/lapacklike
