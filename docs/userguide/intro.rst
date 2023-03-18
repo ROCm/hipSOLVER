@@ -3,9 +3,6 @@
 Introduction
 *************
 
-.. toctree::
-   :maxdepth: 4
-
 .. contents:: Table of contents
    :local:
    :backlinks: top
@@ -23,8 +20,8 @@ backend libraries are supported by hipSOLVER: NVIDIA's `cuSOLVER library <https:
 Currently implemented functionality
 ====================================
 
-As with rocSOLVER, the hipSOLVER library remains in active development. New features are being
-continuously added, with new functionality documented at each `release of the ROCm platform <https://rocmdocs.amd.com/en/latest/Current_Release_Notes/Current-Release-Notes.html>`_.
+The hipSOLVER library remains in active development. New features are being continuously added, with new functionality documented at each
+release of the ROCm platform.
 
 The following tables summarize the wrapper functions that are implemented for the different supported precisions in hipSOLVER's latest release.
 
