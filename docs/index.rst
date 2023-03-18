@@ -10,5 +10,3 @@ users of the library, and a basic reference for current users. For a list of cur
 routines in the regular API, see the hipSOLVER API chapter. As explained in the User Guide, hipSOLVER
 also has an API that is fully compatible with cuSOLVER, described in the hipSOLVER Compatibility
 API document.
-
-.. tableofcontents::
