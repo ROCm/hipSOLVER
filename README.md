@@ -5,6 +5,18 @@ hipSOLVER is a LAPACK marshalling library, with multiple supported backends.  It
 
 For a detailed description of the hipSOLVER library, its implemented routines, the installation process and user guide, see the [hipSOLVER documentation](https://hipsolver.readthedocs.io/en/latest/).
 
+### How to build documentation
+
+Run the steps below to build documentation locally.
+
+```
+cd docs
+
+pip3 install -r .sphinx/requirements.txt
+
+python3 -m sphinx -T -E -b html -d _build/doctrees -D language=en . _build/html
+```
+
 ## Quickstart Build
 
 To download the hipSOLVER source code, clone this repository with the command:

@@ -1,0 +1,28 @@
+# Anywhere {branch} is used, the branch name will be substituted.
+# These comments will also be removed.
+root: index
+subtrees:
+  - numbered: False
+    entries:
+    - file: userguide/index
+      subtrees:
+      - entries:
+        - file: userguide/intro
+        - file: userguide/install
+        - file: userguide/usage
+    - file: api/index
+      subtrees:
+      - entries:
+        - file: api/types
+        - file: api/helpers
+        - file: api/auxiliary
+        - file: api/lapack
+        - file: api/lapacklike
+    - file: compat-api/index
+      subtrees:
+      - entries:
+        - file: compat-api/types
+        - file: compat-api/helpers
+        - file: compat-api/auxiliary
+        - file: compat-api/lapack
+        - file: compat-api/lapacklike
