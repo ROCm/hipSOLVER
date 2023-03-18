@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (C) 2022 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2022-2023 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -50,10 +50,13 @@ function display_help()
   echo "    [--static] Create static library instead of shared library"
   echo "    [--codecoverage] Build with code coverage profiling enabled, excluding release mode."
   echo "    [--address-sanitizer] Build with address sanitizer enabled. Uses hipcc to compile"
+  echo "    [--docs] (experimental) Pass this flag to build the documentation from source."
   echo "    [--cmake-arg] Forward the given argument to CMake when configuring the build"
   echo "    [--rm-legacy-include-dir] Remove legacy include dir Packaging added for file/folder reorg backward compatibility."
 }
 
+# Find project root directory
+main=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 # This function is helpful for dockerfiles that do not have sudo installed, but the default user is root
 # true is a system command that completes successfully, function returns success
@@ -324,6 +327,7 @@ build_cuda=false
 build_hip_clang=true
 build_release=true
 build_relocatable=false
+build_docs=false
 cmake_prefix_path=/opt/rocm
 cuda_path=/usr/local/cuda
 rocm_path=/opt/rocm
@@ -343,7 +347,7 @@ declare -a cmake_client_options
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,address-sanitizer,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,docs,address-sanitizer,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -403,6 +407,9 @@ while true; do
     --static)
         build_static=true
         shift ;;
+    --docs)
+        build_docs=true
+        shift ;;
     --address-sanitizer)
         build_address_sanitizer=true
         compiler=hipcc
@@ -457,7 +464,9 @@ printf "\033[32mCreating project build directory in: \033[33m${build_dir}\033[0m
 # prep
 # #################################################
 # ensure a clean build environment
-if [[ "${build_release}" == true ]]; then
+if [[ "${build_docs}" == true ]]; then
+  rm -rf -- "${build_dir}/html"
+elif [[ "${build_release}" == true ]]; then
   rm -rf ${build_dir}/release
 elif [[ "${build_release_debug}" == true ]]; then
   rm -rf ${build_dir}/release-debug
@@ -508,6 +517,24 @@ pushd .
   # #################################################
   # configure & build
   # #################################################
+
+mkdir -p "$build_dir"
+
+# build documentation
+if [[ "${build_docs}" == true ]]; then
+  set -eu
+  container_name="build_$(head -c 10 /dev/urandom | base32)"
+
+  docs_build_command='cp -r /mnt/hipsolver /home/docs/ && cd /home/docs/hipsolver/docs && python3 -m sphinx -T -E -b html -d _build/doctrees -D language=en . ../build/html'
+  docker build -t hipsolver:docs -f "$main/docs/Dockerfile" "$main/docs"
+  docker run -v "$main:/mnt/hipsolver:ro" --name "$container_name" hipsolver:docs /bin/sh -c "$docs_build_command"
+  docker cp "$container_name:/home/docs/hipsolver/build/html" "$main/build/html"
+  absolute_build_dir=$(make_absolute_path "$build_dir")
+  set +x
+  echo 'Documentation Built:'
+  echo "HTML: file://$absolute_build_dir/html/index.html"
+  exit
+fi
 
   if [[ "${build_static}" == true ]]; then
     if [[ "${build_cuda}" == true ]]; then
