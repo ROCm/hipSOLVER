@@ -11,10 +11,4 @@ routines in the regular API, see the hipSOLVER API chapter. As explained in the 
 also has an API that is fully compatible with cuSOLVER, described in the hipSOLVER Compatibility
 API document.
 
-.. toctree::
-   :maxdepth: 1
-   :numbered: 3
-
-   userguide_index
-   api_index
-   compat_index
+.. tableofcontents::
