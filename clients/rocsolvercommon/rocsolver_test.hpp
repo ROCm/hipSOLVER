@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2018-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2018-2023 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,9 @@
 #include <iomanip>
 #include <limits>
 #include <sstream>
+
+// Location of the sparse data directory for the re-factorization tests
+#define SPARSEDATA_DIR "/home/talderso/dev/hipSOLVER/clients/sparsedata"
 
 template <typename T>
 constexpr double get_epsilon()

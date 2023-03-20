@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2022 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ endif( )
 
 find_package( GTest REQUIRED )
 
-set(hipsolver_test_source
+set(hipsolverDn_test_source
   hipsolver_gtest_main.cpp
   getrs_gtest.cpp
   getrf_gtest.cpp
@@ -58,13 +58,17 @@ set(hipsolver_test_source
   ormtr_unmtr_gtest.cpp
 )
 
+set(hipsolverRf_test_source
+  csrrf_refactlu_gtest.cpp
+)
+
 set( hipsolver_test_common
   ../common/lapack_host_reference.cpp
   ../common/hipsolver_datatype2string.cpp
   ../common/utility.cpp
 )
 
-add_executable( hipsolver-test ${hipsolver_test_source} ${hipsolver_test_common} )
+add_executable( hipsolver-test ${hipsolverDn_test_source} ${hipsolverRf_test_source} ${hipsolver_test_common} )
 if( UNIX )
   target_sources( hipsolver-test PRIVATE ${hipsolver_f90_source} )
 endif( )
