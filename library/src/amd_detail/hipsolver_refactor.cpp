@@ -254,7 +254,7 @@ try
         return rocblas2hip_status(status);
     }
 
-    handle = (hipsolverRfHandle_t*)rf;
+    *handle = rf;
     return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
