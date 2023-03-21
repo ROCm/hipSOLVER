@@ -301,7 +301,7 @@ hipsolverStatus_t hipsolverRfSetupDevice(int                 n,
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(!csrRowPtrA || !csrColIndA || !csrValA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!csrRowPtrL || !csrColIndL || !csrValL)
@@ -363,7 +363,7 @@ hipsolverStatus_t hipsolverRfSetupHost(int                 n,
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(!csrRowPtrA || !csrColIndA || !csrValA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!csrRowPtrL || !csrColIndL || !csrValL)
@@ -423,7 +423,7 @@ hipsolverStatus_t hipsolverRfAccessBundledFactorsDevice(
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(!nnzM || !Mp || !Mi || !Mx)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
@@ -447,7 +447,7 @@ hipsolverStatus_t hipsolverRfAnalyze(hipsolverRfHandle_t handle)
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
     if(!rf->d_buffer)
@@ -477,7 +477,7 @@ hipsolverStatus_t hipsolverRfExtractBundledFactorsHost(
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(!h_nnzM || !h_Mp || !h_Mi || !h_Mx)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
@@ -517,7 +517,7 @@ hipsolverStatus_t hipsolverRfExtractSplitFactorsHost(hipsolverRfHandle_t handle,
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(!h_nnzL || !h_Lp || !h_Li || !h_Lx)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!h_nnzU || !h_Up || !h_Ui || !h_Ux)
@@ -578,7 +578,7 @@ hipsolverStatus_t hipsolverRfGet_Algs(hipsolverRfHandle_t           handle,
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(!fact_alg)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!solve_alg)
@@ -601,7 +601,7 @@ hipsolverStatus_t hipsolverRfGetMatrixFormat(hipsolverRfHandle_t        handle,
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(!format)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!diag)
@@ -623,7 +623,7 @@ hipsolverStatus_t hipsolverRfGetNumericBoostReport(hipsolverRfHandle_t          
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(!report)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
@@ -642,7 +642,7 @@ hipsolverStatus_t
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(!zero)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!boost)
@@ -664,7 +664,7 @@ hipsolverStatus_t hipsolverRfGetResetValuesFastMode(hipsolverRfHandle_t         
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(!fastMode)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
@@ -682,7 +682,7 @@ hipsolverStatus_t hipsolverRfRefactor(hipsolverRfHandle_t handle)
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
     if(!rf->d_buffer)
@@ -718,7 +718,7 @@ hipsolverStatus_t hipsolverRfResetValues(int                 n,
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(!csrRowPtrA || !csrColIndA || !csrValA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!P || !Q)
@@ -799,7 +799,7 @@ hipsolverStatus_t hipsolverRfSolve(hipsolverRfHandle_t handle,
 try
 {
     if(!handle)
-        return HIPSOLVER_STATUS_HANDLE_IS_NULLPTR;
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     hipsolverRfHandle* rf = (hipsolverRfHandle*)handle;
     if(!rf->d_buffer)
@@ -812,8 +812,8 @@ try
                                                      rf->dPtrLU,
                                                      rf->dIndLU,
                                                      rf->dValLU,
-                                                     P,
-                                                     Q,
+                                                     rf->dP,
+                                                     rf->dQ,
                                                      rf->rfinfo,
                                                      XF,
                                                      ldxf));
