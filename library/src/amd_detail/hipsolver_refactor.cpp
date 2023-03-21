@@ -191,23 +191,21 @@ struct hipsolverRfHandle
             size_t size_hIndLU = sizeof(rocblas_int) * nnzLU;
             size_t size_hValLU = sizeof(double) * nnzLU;
 
-            size_t size_buffer = std::max(size_hPtrL + size_hIndL + size_hValL + size_hPtrU
-                                              + size_hIndU + size_hValU,
-                                          size_hPtrLU + size_hIndLU + size_hValLU);
+            size_t size_buffer = size_hPtrL + size_hIndL + size_hValL + size_hPtrU + size_hIndU
+                                 + size_hValU + size_hPtrLU + size_hIndLU + size_hValLU;
 
             this->h_buffer = (uint8_t*)malloc(size_buffer);
             if(!this->h_buffer)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
 
             uint8_t* temp_buf;
-            this->hPtrL = (rocblas_int*)(temp_buf = this->h_buffer);
-            this->hIndL = (rocblas_int*)(temp_buf += size_hPtrL);
-            this->hValL = (double*)(temp_buf += size_hIndL);
-            this->hPtrU = (rocblas_int*)(temp_buf += size_hValL);
-            this->hIndU = (rocblas_int*)(temp_buf += size_hPtrU);
-            this->hValU = (double*)(temp_buf += size_hIndU);
-
-            this->hPtrLU = (rocblas_int*)(temp_buf = this->h_buffer);
+            this->hPtrL  = (rocblas_int*)(temp_buf = this->h_buffer);
+            this->hIndL  = (rocblas_int*)(temp_buf += size_hPtrL);
+            this->hValL  = (double*)(temp_buf += size_hIndL);
+            this->hPtrU  = (rocblas_int*)(temp_buf += size_hValL);
+            this->hIndU  = (rocblas_int*)(temp_buf += size_hPtrU);
+            this->hValU  = (double*)(temp_buf += size_hIndU);
+            this->hPtrLU = (rocblas_int*)(temp_buf += size_hValU);
             this->hIndLU = (rocblas_int*)(temp_buf += size_hPtrLU);
             this->hValLU = (double*)(temp_buf += size_hIndLU);
         }
