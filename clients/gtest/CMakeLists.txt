@@ -60,6 +60,7 @@ set(hipsolverDn_test_source
 
 set(hipsolverRf_test_source
   csrrf_refactlu_gtest.cpp
+  csrrf_solve_gtest.cpp
 )
 
 set( hipsolver_test_common
