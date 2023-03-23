@@ -477,10 +477,8 @@ inline void
     int v;
 
     if(mat == NULL)
-    {
-        printf("\nError: Could not open file %s with test data...\n", filename);
-        return;
-    }
+        throw std::invalid_argument(std::string("Error: Could not open file ") + filename
+                                    + " with test data...");
 
     for(int j = 0; j < n; ++j)
     {
@@ -502,10 +500,8 @@ inline void read_last(const std::string filenameS, int* A)
     int v;
 
     if(mat == NULL)
-    {
-        printf("\nError: Could not open file %s with test data...\n", filename);
-        return;
-    }
+        throw std::invalid_argument(std::string("Error: Could not open file ") + filename
+                                    + " with test data...");
 
     while(fscanf(mat, "%d", &v) == 1)
     {
@@ -525,10 +521,8 @@ inline void
     float v;
 
     if(mat == NULL)
-    {
-        printf("\nError: Could not open file %s with test data...\n", filename);
-        return;
-    }
+        throw std::invalid_argument(std::string("Error: Could not open file ") + filename
+                                    + " with test data...");
 
     for(int j = 0; j < n; ++j)
     {
@@ -553,10 +547,8 @@ inline void
     double v;
 
     if(mat == NULL)
-    {
-        printf("\nError: Could not open file %s with test data...\n", filename);
-        return;
-    }
+        throw std::invalid_argument(std::string("Error: Could not open file ") + filename
+                                    + " with test data...");
 
     for(int j = 0; j < n; ++j)
     {
