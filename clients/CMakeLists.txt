@@ -47,43 +47,69 @@ list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake )
 
 include( build-options )
 
+# Linking lapack library requires fortran flags
+set( THREADS_PREFER_PTHREAD_FLAG ON )
+find_package( Threads REQUIRED )
+find_package( cblas REQUIRED CONFIG )
+
+if( NOT TARGET hipsolver )
+  find_package( hipsolver REQUIRED CONFIG PATHS ${ROCM_PATH}/hipsolver /opt/rocm/hipsolver )
+endif( )
+
 if( UNIX )
   set(hipsolver_f90_source_clients
     include/hipsolver_fortran.f90
   )
 endif( )
 
-if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS OR BUILD_CLIENTS_SAMPLES )
+if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
   if( UNIX )
     add_library(hipsolver_fortran_client STATIC ${hipsolver_f90_source_clients})
     add_dependencies(hipsolver_fortran_client hipsolver_fortran)
     include_directories(${CMAKE_BINARY_DIR}/include/hipsolver)
     include_directories(${CMAKE_BINARY_DIR}/include/hipsolver/internal)
   endif( )
-endif( )
 
-if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
+  add_library(clients-common INTERFACE)
+  target_include_directories(clients-common INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+  )
+  target_link_libraries(clients-common INTERFACE
+    $<$<PLATFORM_ID:Linux>:stdc++fs>
+  )
+  set(common_source_files
+    common/hipsolver_datatype2string.cpp
+    common/lapack_host_reference.cpp
+    common/utility.cpp
+  )
+
+  prepend_path("${CMAKE_CURRENT_SOURCE_DIR}/" common_source_files common_source_paths)
+  target_sources(clients-common INTERFACE ${common_source_paths})
+
   # Copy and point to sparse test data
-  file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/sparsedata/
-       DESTINATION ${PROJECT_BINARY_DIR}/sparsedata/)
-  install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/sparsedata/
-          DESTINATION ${CMAKE_INSTALL_DATADIR}/rocsolver/test
-          COMPONENT tests)
+  file(COPY
+    ${CMAKE_CURRENT_SOURCE_DIR}/sparsedata/
+    DESTINATION ${PROJECT_BINARY_DIR}/sparsedata/
+  )
+  install(DIRECTORY
+    ${CMAKE_CURRENT_SOURCE_DIR}/sparsedata/
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/rocsolver/test
+    COMPONENT tests
+  )
 
   target_compile_definitions(hipsolver-common INTERFACE
-                            -DSPARSEDATA_DIR="${PROJECT_BINARY_DIR}/sparsedata/"
-                            -DSPARSEDATA_INSTALLDIR="${CMAKE_INSTALL_FULL_DATADIR}/rocsolver/test/")
+    -DSPARSEDATA_DIR="${PROJECT_BINARY_DIR}/sparsedata/"
+    -DSPARSEDATA_INSTALLDIR="${CMAKE_INSTALL_FULL_DATADIR}/rocsolver/test/"
+  )
 
-  target_link_libraries(hipsolver-common INTERFACE
-                        $<$<PLATFORM_ID:Linux>:stdc++fs>)
-endif( )
+  if( BUILD_CLIENTS_TESTS )
+    add_subdirectory( gtest )
+  endif( )
 
-if( BUILD_CLIENTS_TESTS )
-  add_subdirectory( gtest )
-endif( )
-
-if( BUILD_CLIENTS_BENCHMARKS )
-  add_subdirectory( benchmarks )
+  if( BUILD_CLIENTS_BENCHMARKS )
+    add_subdirectory( benchmarks )
+  endif( )
 endif( )
 
 if( BUILD_CLIENTS_SAMPLES )
