@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2022 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -60,6 +60,22 @@ if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS OR BUILD_CLIENTS_SAMPLES )
     include_directories(${CMAKE_BINARY_DIR}/include/hipsolver)
     include_directories(${CMAKE_BINARY_DIR}/include/hipsolver/internal)
   endif( )
+endif( )
+
+if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
+  # Copy and point to sparse test data
+  file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/sparsedata/
+       DESTINATION ${PROJECT_BINARY_DIR}/sparsedata/)
+  install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/sparsedata/
+          DESTINATION ${CMAKE_INSTALL_DATADIR}/rocsolver/test
+          COMPONENT tests)
+
+  target_compile_definitions(hipsolver-common INTERFACE
+                            -DSPARSEDATA_DIR="${PROJECT_BINARY_DIR}/sparsedata/"
+                            -DSPARSEDATA_INSTALLDIR="${CMAKE_INSTALL_FULL_DATADIR}/rocsolver/test/")
+
+  target_link_libraries(hipsolver-common INTERFACE
+                        $<$<PLATFORM_ID:Linux>:stdc++fs>)
 endif( )
 
 if( BUILD_CLIENTS_TESTS )

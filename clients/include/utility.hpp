@@ -34,7 +34,15 @@
 #include <random>
 #include <type_traits>
 #include <vector>
-#endif
+
+#if __has_include(<filesystem>)
+#include <filesystem>
+namespace fs = std::filesystem;
+#else
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#endif // filesystem
+#endif // __cplusplus
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -466,6 +474,16 @@ void print_matrix(T* CPU_result, T* GPU_result, int m, int n, int lda)
 
 /* ============================================================================================ */
 /*  read matrix or values from file */
+
+inline fs::path get_sparse_data_dir()
+{
+    fs::path option1(SPARSEDATA_DIR);
+    if(fs::exists(option1))
+        return option1.string();
+
+    fs::path option2(SPARSEDATA_INSTALLDIR);
+    return option2.string();
+}
 
 // integers:
 inline void

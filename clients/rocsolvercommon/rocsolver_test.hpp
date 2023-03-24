@@ -28,9 +28,6 @@
 #include <limits>
 #include <sstream>
 
-// Location of the sparse data directory for the re-factorization tests
-#define SPARSEDATA_DIR "/home/talderso/dev/hipSOLVER/clients/sparsedata"
-
 template <typename T>
 constexpr double get_epsilon()
 {

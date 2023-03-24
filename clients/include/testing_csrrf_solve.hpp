@@ -93,54 +93,57 @@ void csrrf_solve_initData(hipsolverRfHandle_t handle,
                           Uh&                 hpivQ,
                           Th&                 hB,
                           Th&                 hX,
-                          const std::string   testcase,
+                          const fs::path      testcase,
                           bool                test = true)
 {
     if(CPU)
     {
-        std::string file;
+        fs::path    file;
+        std::string filename;
 
         // read-in A
-        file = testcase + "ptrA";
+        file = testcase / "ptrA";
         read_matrix(file, 1, n + 1, hptrA.data(), 1);
-        file = testcase + "indA";
+        file = testcase / "indA";
         read_matrix(file, 1, nnzA, hindA.data(), 1);
-        file = testcase + "valA";
+        file = testcase / "valA";
         read_matrix(file, 1, nnzA, hvalA.data(), 1);
 
         // read-in L
-        file = testcase + "ptrL";
+        file = testcase / "ptrL";
         read_matrix(file, 1, n + 1, hptrL.data(), 1);
-        file = testcase + "indL";
+        file = testcase / "indL";
         read_matrix(file, 1, nnzL, hindL.data(), 1);
-        file = testcase + "valL";
+        file = testcase / "valL";
         read_matrix(file, 1, nnzL, hvalL.data(), 1);
 
         // read-in U
-        file = testcase + "ptrU";
+        file = testcase / "ptrU";
         read_matrix(file, 1, n + 1, hptrU.data(), 1);
-        file = testcase + "indU";
+        file = testcase / "indU";
         read_matrix(file, 1, nnzU, hindU.data(), 1);
-        file = testcase + "valU";
+        file = testcase / "valU";
         read_matrix(file, 1, nnzU, hvalU.data(), 1);
 
         // read-in P
-        file = testcase + "P";
+        file = testcase / "P";
         read_matrix(file, 1, n, hpivP.data(), 1);
 
         // read-in Q
-        file = testcase + "Q";
+        file = testcase / "Q";
         read_matrix(file, 1, n, hpivQ.data(), 1);
 
         // read-in B
-        file = testcase + "B_" + std::to_string(nrhs);
+        filename = std::string("B_") + std::to_string(nrhs);
+        file     = testcase / filename;
         read_matrix(file, n, nrhs, hB.data(), ldb);
 
         // get results (matrix X) if validation is required
         if(test)
         {
             // read-in X
-            file = testcase + "X_" + std::to_string(nrhs);
+            filename = std::string("X_") + std::to_string(nrhs);
+            file     = testcase / filename;
             read_matrix(file, n, nrhs, hX.data(), ldb);
         }
     }
@@ -198,7 +201,7 @@ void csrrf_solve_getError(hipsolverRfHandle_t handle,
                           Th&                 hX,
                           Th&                 hXres,
                           double*             max_err,
-                          const std::string   testcase)
+                          const fs::path      testcase)
 {
     // input data initialization
     csrrf_solve_initData<true, true, T>(handle,
@@ -308,7 +311,7 @@ void csrrf_solve_getPerfData(hipsolverRfHandle_t handle,
                              double*             cpu_time_used,
                              const int           hot_calls,
                              const bool          perf,
-                             const std::string   testcase)
+                             const fs::path      testcase)
 {
     *cpu_time_used = nan(""); // no timing on cpu-lapack execution
     *gpu_time_used = nan(""); // no timing on gpu-lapack execution
@@ -377,18 +380,18 @@ void testing_csrrf_solve(Arguments& argus)
     }
 
     // read/set corresponding nnzL and nnzU
-    int         nnzL, nnzU;
-    std::string testcase;
+    int      nnzL, nnzU;
+    fs::path testcase;
     if(n > 0)
     {
-        testcase = std::string(SPARSEDATA_DIR) + "/mat_" + std::to_string(n) + "_"
-                   + std::to_string(nnzA) + "/";
-        std::string file;
+        fs::path    file;
+        std::string folder = std::string("mat_") + std::to_string(n) + "_" + std::to_string(nnzA);
+        testcase           = get_sparse_data_dir() / folder;
 
-        file = testcase + "ptrL";
+        file = testcase / "ptrL";
         read_last(file, &nnzL);
 
-        file = testcase + "ptrU";
+        file = testcase / "ptrU";
         read_last(file, &nnzU);
     }
 
