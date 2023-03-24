@@ -49,6 +49,8 @@ hipsolverRfSetupHost()
 -----------------------------------------
 .. doxygenfunction:: hipsolverRfSetupHost
 
+.. _refactor_batch_setup_host:
+
 hipsolverRfBatchSetupHost()
 -----------------------------------------
 .. doxygenfunction:: hipsolverRfBatchSetupHost
@@ -57,6 +59,8 @@ hipsolverRfAnalyze()
 -----------------------------------------
 .. doxygenfunction:: hipsolverRfAnalyze
 
+.. _refactor_batch_analyze:
+
 hipsolverRfBatchAnalyze()
 -----------------------------------------
 .. doxygenfunction:: hipsolverRfBatchAnalyze
@@ -64,6 +68,8 @@ hipsolverRfBatchAnalyze()
 hipsolverRfResetValues()
 -----------------------------------------
 .. doxygenfunction:: hipsolverRfResetValues
+
+.. _refactor_batch_reset_values:
 
 hipsolverRfBatchResetValues()
 -----------------------------------------
@@ -91,6 +97,8 @@ hipsolverRfExtractBundledFactorsHost()
 hipsolverRfExtractSplitFactorsHost()
 -----------------------------------------
 .. doxygenfunction:: hipsolverRfExtractSplitFactorsHost
+
+.. _refactor_batch_zero_pivot:
 
 hipsolverRfBatchZeroPivot()
 -----------------------------------------
@@ -127,17 +135,25 @@ hipsolverRfGetResetValuesFastMode()
 -----------------------------------------
 .. doxygenfunction:: hipsolverRfGetResetValuesFastMode
 
+.. _refactor_set_algs:
+
 hipsolverRfSetAlgs()
 -----------------------------------------
 .. doxygenfunction:: hipsolverRfSetAlgs
+
+.. _refactor_set_matrix_format:
 
 hipsolverRfSetMatrixFormat()
 -----------------------------------------
 .. doxygenfunction:: hipsolverRfSetMatrixFormat
 
+.. _refactor_set_numeric_properties:
+
 hipsolverRfSetNumericProperties()
 -----------------------------------------
 .. doxygenfunction:: hipsolverRfSetNumericProperties
+
+.. _refactor_set_reset_values_fast_mode:
 
 hipsolverRfSetResetValuesFastMode()
 -----------------------------------------

@@ -102,6 +102,37 @@ Possible performance implications of the compatibility API
   cuSOLVER, requiring an additional function call and extra workspace.
 
 
+.. _refactor_api_differences:
+
+Some considerations when using the hipsolverRf API
+===============================================================
+
+The hipsolverRf API is intended as a 1:1 translation of the cusolverRf API, but not all functionality is equally supported in
+rocSOLVER. Keep in mind the following considerations when using this compatibility API.
+
+
+Unsupported methods
+--------------------
+
+- Batched refactorization methods are currently unsupported with the rocSOLVER backend and will return a `HIPSOLVER_STATUS_NOT_SUPPORTED`
+  status code.
+
+  * :ref:`hipsolverRfBatchSetupHost <refactor_batch_setup_host>`
+  * :ref:`hipsolverRfBatchAnalyze <refactor_batch_analyze>`
+  * :ref:`hipsolverRfBatchResetValues <refactor_batch_reset_values>`
+  * :ref:`hipsolverRfBatchZeroPivot <refactor_batch_zero_pivot>`
+  * :ref:`hipsolverRfBatchRefactor <refactor_batch_refactor>`
+  * :ref:`hipsolverRfBatchSolve <refactor_batch_solve>`
+
+- Parameter setting methods are currently unsupported with the rocSOLVER backend and will return a `HIPSOLVER_STATUS_NOT_SUPPORTED`
+  status code.
+
+  * :ref:`hipsolverRfSetAlgs <refactor_set_algs>`
+  * :ref:`hipsolverRfSetMatrixFormat <refactor_set_matrix_format>`
+  * :ref:`hipsolverRfSetNumericProperties <refactor_set_numeric_properties>`
+  * :ref:`hipsolverRfSetResetValuesFastMode <refactor_set_reset_values_fast_mode>`
+
+
 .. _api_differences:
 
 Some considerations when using the regular hipSOLVER API

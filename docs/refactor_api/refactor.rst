@@ -26,6 +26,8 @@ hipsolverRfRefactor()
 ---------------------------------------------------
 .. doxygenfunction:: hipsolverRfRefactor
 
+.. _refactor_batch_refactor:
+
 hipsolverRfBatchRefactor()
 ---------------------------------------------------
 .. doxygenfunction:: hipsolverRfBatchRefactor
@@ -44,6 +46,8 @@ Linear-systems solvers
 hipsolverRfSolve()
 ---------------------------------------------------
 .. doxygenfunction:: hipsolverRfSolve
+
+.. _refactor_batch_solve:
 
 hipsolverRfBatchSolve()
 ---------------------------------------------------
