@@ -94,13 +94,13 @@ if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
   )
   install(DIRECTORY
     ${CMAKE_CURRENT_SOURCE_DIR}/sparsedata/
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/rocsolver/test
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/hipsolver/test
     COMPONENT tests
   )
 
-  target_compile_definitions(hipsolver-common INTERFACE
+  target_compile_definitions(clients-common INTERFACE
     -DSPARSEDATA_DIR="${PROJECT_BINARY_DIR}/sparsedata/"
-    -DSPARSEDATA_INSTALLDIR="${CMAKE_INSTALL_FULL_DATADIR}/rocsolver/test/"
+    -DSPARSEDATA_INSTALLDIR="${CMAKE_INSTALL_FULL_DATADIR}/hipsolver/test/"
   )
 
   if( BUILD_CLIENTS_TESTS )
