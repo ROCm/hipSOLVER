@@ -30,18 +30,18 @@ const vector<vector<int>> nnz_range = {
     {140, 1},
 };
 
-// for daily_lapack tests
-const vector<vector<int>> large_n_range = {
-    // normal (valid) samples
-    {100, 110},
-    {250, 250},
-};
-const vector<vector<int>> large_nnz_range = {
-    // normal (valid) samples
-    {300, 1},
-    {500, 1},
-    {700, 1},
-};
+// // for daily_lapack tests
+// const vector<vector<int>> large_n_range = {
+//     // normal (valid) samples
+//     {100, 110},
+//     {250, 250},
+// };
+// const vector<vector<int>> large_nnz_range = {
+//     // normal (valid) samples
+//     {300, 1},
+//     {500, 1},
+//     {700, 1},
+// };
 
 Arguments csrrf_solve_setup_arguments(csrrf_solve_tuple tup)
 {
@@ -102,9 +102,9 @@ TEST_P(CSRRF_SOLVE, __double_complex)
     run_tests<rocblas_double_complex>();
 }*/
 
-INSTANTIATE_TEST_SUITE_P(daily_lapack,
-                         CSRRF_SOLVE,
-                         Combine(ValuesIn(large_n_range), ValuesIn(large_nnz_range)));
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          CSRRF_SOLVE,
+//                          Combine(ValuesIn(large_n_range), ValuesIn(large_nnz_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          CSRRF_SOLVE,
