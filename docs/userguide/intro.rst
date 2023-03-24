@@ -3,9 +3,6 @@
 Introduction
 *************
 
-.. toctree::
-   :maxdepth: 4
-
 .. contents:: Table of contents
    :local:
    :backlinks: top
@@ -33,7 +30,7 @@ Currently implemented functionality
 ====================================
 
 The hipSOLVER library remains in active development. New features are being continuously added, with new functionality documented at each
-`release of the ROCm platform <https://rocmdocs.amd.com/en/latest/Current_Release_Notes/Current-Release-Notes.html>`_.
+release of the ROCm platform.
 
 The following tables summarize the wrapper functions that are implemented in the regular API for the different supported precisions in
 hipSOLVER's latest release. Most of these functions have a corresponding version in the compatibility API, where applicable.

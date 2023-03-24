@@ -12,11 +12,5 @@ For ease of porting from existing cuSOLVER applications to hipSOLVER, functions 
 method signatures that are consistent with the cusolverRf interface. At present, equivalent functions have not been added to hipSOLVER's
 regular API.
 
-
-.. toctree::
-   :maxdepth: 5
-
-   refactor_types
-   refactor_helperfunc
-   refactor_refactorfunc
+.. tableofcontents::
 
