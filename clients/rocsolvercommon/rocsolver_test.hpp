@@ -28,6 +28,14 @@
 #include <limits>
 #include <sstream>
 
+#if __has_include(<filesystem>)
+#include <filesystem>
+namespace fs = std::filesystem;
+#else
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#endif
+
 template <typename T>
 constexpr double get_epsilon()
 {
@@ -142,3 +150,15 @@ inline void rocsolver_bench_output(T arg, Ts... args)
 // {
 //     return os << x.data;
 // }
+
+// location of the sparse data directory for the re-factorization tests
+
+inline fs::path get_sparse_data_dir()
+{
+    fs::path option1(SPARSEDATA_DIR);
+    if(fs::exists(option1))
+        return option1.string();
+
+    fs::path option2(SPARSEDATA_INSTALLDIR);
+    return option2.string();
+}
