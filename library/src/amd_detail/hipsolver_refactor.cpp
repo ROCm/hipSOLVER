@@ -453,6 +453,7 @@ try
 
     return rocblas2hip_status(rocsolver_dcsrrf_analysis(rf->handle,
                                                         rf->n,
+                                                        1,
                                                         rf->nnzA,
                                                         rf->dPtrA,
                                                         rf->dIndA,
@@ -463,6 +464,9 @@ try
                                                         rf->dValLU,
                                                         rf->dP,
                                                         rf->dQ,
+                                                        // pass dummy values for B
+                                                        rf->dValA,
+                                                        rf->n,
                                                         rf->rfinfo));
 }
 catch(...)
@@ -812,9 +816,9 @@ try
                                                      rf->dValLU,
                                                      rf->dP,
                                                      rf->dQ,
-                                                     rf->rfinfo,
                                                      XF,
-                                                     ldxf));
+                                                     ldxf,
+                                                     rf->rfinfo));
 }
 catch(...)
 {
