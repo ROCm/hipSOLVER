@@ -3,7 +3,7 @@
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
 
-## (Unreleased) hipSOLVER 1.8.0
+## hipSOLVER 1.8.0 for ROCm 5.6.0
 
 
 ## hipSOLVER 1.7.0 for ROCm 5.5.0
