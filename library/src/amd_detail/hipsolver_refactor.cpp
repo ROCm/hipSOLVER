@@ -141,6 +141,19 @@ struct hipsolverRfHandle
             size_t size_dP = sizeof(rocblas_int) * n;
             size_t size_dQ = sizeof(rocblas_int) * n;
 
+            // 128 byte alignment
+            size_dPtrL  = ((size_dPtrL - 1) / 128 + 1) * 128;
+            size_dIndL  = ((size_dIndL - 1) / 128 + 1) * 128;
+            size_dValL  = ((size_dValL - 1) / 128 + 1) * 128;
+            size_dPtrU  = ((size_dPtrU - 1) / 128 + 1) * 128;
+            size_dIndU  = ((size_dIndU - 1) / 128 + 1) * 128;
+            size_dValU  = ((size_dValU - 1) / 128 + 1) * 128;
+            size_dPtrLU = ((size_dPtrLU - 1) / 128 + 1) * 128;
+            size_dIndLU = ((size_dIndLU - 1) / 128 + 1) * 128;
+            size_dValLU = ((size_dValLU - 1) / 128 + 1) * 128;
+            size_dP     = ((size_dP - 1) / 128 + 1) * 128;
+            size_dQ     = ((size_dQ - 1) / 128 + 1) * 128;
+
             size_t size_buffer = size_dPtrA + size_dIndA + size_dValA + size_dPtrL + size_dIndL
                                  + size_dValL + size_dPtrU + size_dIndU + size_dValU + size_dPtrLU
                                  + size_dIndLU + size_dValLU + size_dP + size_dQ;
@@ -150,19 +163,22 @@ struct hipsolverRfHandle
 
             uint8_t* temp_buf;
             this->dPtrA  = (rocblas_int*)(temp_buf = this->d_buffer);
-            this->dIndA  = (rocblas_int*)(temp_buf += size_dPtrA);
-            this->dValA  = (double*)(temp_buf += size_dIndA);
-            this->dPtrL  = (rocblas_int*)(temp_buf += size_dValA);
-            this->dIndL  = (rocblas_int*)(temp_buf += size_dPtrL);
-            this->dValL  = (double*)(temp_buf += size_dIndL);
-            this->dPtrU  = (rocblas_int*)(temp_buf += size_dValL);
-            this->dIndU  = (rocblas_int*)(temp_buf += size_dPtrU);
-            this->dValU  = (double*)(temp_buf += size_dIndU);
-            this->dPtrLU = (rocblas_int*)(temp_buf += size_dValU);
-            this->dIndLU = (rocblas_int*)(temp_buf += size_dPtrLU);
-            this->dValLU = (double*)(temp_buf += size_dIndLU);
-            this->dP     = (rocblas_int*)(temp_buf += size_dValLU);
-            this->dQ     = (rocblas_int*)(temp_buf += size_dP);
+            this->dPtrL  = (rocblas_int*)(temp_buf += size_dPtrA);
+            this->dPtrU  = (rocblas_int*)(temp_buf += size_dPtrL);
+            this->dPtrLU = (rocblas_int*)(temp_buf += size_dPtrU);
+
+            this->dIndA  = (rocblas_int*)(temp_buf += size_dPtrLU);
+            this->dIndL  = (rocblas_int*)(temp_buf += size_dIndA);
+            this->dIndU  = (rocblas_int*)(temp_buf += size_dIndL);
+            this->dIndLU = (rocblas_int*)(temp_buf += size_dIndU);
+
+            this->dP = (rocblas_int*)(temp_buf += size_dIndLU);
+            this->dQ = (rocblas_int*)(temp_buf += size_dP);
+
+            this->dValA  = (double*)(temp_buf += size_dQ);
+            this->dValL  = (double*)(temp_buf += size_dValA);
+            this->dValU  = (double*)(temp_buf += size_dValL);
+            this->dValLU = (double*)(temp_buf += size_dValU);
 
             this->n     = n;
             this->nnzA  = nnzA;
@@ -191,6 +207,17 @@ struct hipsolverRfHandle
             size_t size_hIndLU = sizeof(rocblas_int) * nnzLU;
             size_t size_hValLU = sizeof(double) * nnzLU;
 
+            // 128 byte alignment
+            size_hPtrL  = ((size_hPtrL - 1) / 128 + 1) * 128;
+            size_hIndL  = ((size_hIndL - 1) / 128 + 1) * 128;
+            size_hValL  = ((size_hValL - 1) / 128 + 1) * 128;
+            size_hPtrU  = ((size_hPtrU - 1) / 128 + 1) * 128;
+            size_hIndU  = ((size_hIndU - 1) / 128 + 1) * 128;
+            size_hValU  = ((size_hValU - 1) / 128 + 1) * 128;
+            size_hPtrLU = ((size_hPtrLU - 1) / 128 + 1) * 128;
+            size_hIndLU = ((size_hIndLU - 1) / 128 + 1) * 128;
+            size_hValLU = ((size_hValLU - 1) / 128 + 1) * 128;
+
             size_t size_buffer = size_hPtrL + size_hIndL + size_hValL + size_hPtrU + size_hIndU
                                  + size_hValU + size_hPtrLU + size_hIndLU + size_hValLU;
 
@@ -200,14 +227,16 @@ struct hipsolverRfHandle
 
             uint8_t* temp_buf;
             this->hPtrL  = (rocblas_int*)(temp_buf = this->h_buffer);
-            this->hIndL  = (rocblas_int*)(temp_buf += size_hPtrL);
-            this->hValL  = (double*)(temp_buf += size_hIndL);
-            this->hPtrU  = (rocblas_int*)(temp_buf += size_hValL);
-            this->hIndU  = (rocblas_int*)(temp_buf += size_hPtrU);
-            this->hValU  = (double*)(temp_buf += size_hIndU);
-            this->hPtrLU = (rocblas_int*)(temp_buf += size_hValU);
-            this->hIndLU = (rocblas_int*)(temp_buf += size_hPtrLU);
-            this->hValLU = (double*)(temp_buf += size_hIndLU);
+            this->hPtrU  = (rocblas_int*)(temp_buf += size_hPtrL);
+            this->hPtrLU = (rocblas_int*)(temp_buf += size_hPtrU);
+
+            this->hIndL  = (rocblas_int*)(temp_buf += size_hPtrLU);
+            this->hIndU  = (rocblas_int*)(temp_buf += size_hIndL);
+            this->hIndLU = (rocblas_int*)(temp_buf += size_hIndU);
+
+            this->hValL  = (double*)(temp_buf += size_hIndLU);
+            this->hValU  = (double*)(temp_buf += size_hValL);
+            this->hValLU = (double*)(temp_buf += size_hValU);
         }
 
         return HIPSOLVER_STATUS_SUCCESS;
