@@ -53,7 +53,7 @@ find_package( Threads REQUIRED )
 find_package( cblas REQUIRED CONFIG )
 
 if( NOT TARGET hipsolver )
-  find_package( hipsolver REQUIRED CONFIG PATHS ${ROCM_PATH}/hipsolver /opt/rocm/hipsolver )
+  find_package( hipsolver REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm )
 endif( )
 
 if( UNIX )

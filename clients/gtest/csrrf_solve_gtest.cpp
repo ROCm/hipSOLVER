@@ -16,7 +16,7 @@ typedef std::tuple<vector<int>, vector<int>> csrrf_solve_tuple;
 
 // each nnz_range vector is {nnzT, nrhs}
 
-// case when n = 0 and nnz = 10 also execute the bad arguments test
+// case when n = 20 and nnz = 60 also execute the bad arguments test
 // (null handle, null pointers and invalid values)
 
 // for checkin_lapack tests
@@ -72,7 +72,7 @@ protected:
     {
         Arguments arg = csrrf_solve_setup_arguments(GetParam());
 
-        if(arg.peek<rocblas_int>("n") == 0 && arg.peek<rocblas_int>("nnzT") == 10)
+        if(arg.peek<rocblas_int>("n") == 20 && arg.peek<rocblas_int>("nnzA") == 60)
             testing_csrrf_solve_bad_arg<T>();
 
         arg.batch_count = 1;

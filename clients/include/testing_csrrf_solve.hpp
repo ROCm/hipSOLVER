@@ -16,10 +16,14 @@ void csrrf_solve_checkBadArgs(hipsolverRfHandle_t handle,
                               T                   valT,
                               int*                pivP,
                               int*                pivQ,
+                              T                   work,
+                              const int           ldw,
                               T                   B,
                               const int           ldb)
 {
-    // N/A
+    // handle
+    EXPECT_ROCBLAS_STATUS(hipsolverRfSolve(nullptr, pivP, pivQ, nrhs, work, ldw, B, ldb),
+                          HIPSOLVER_STATUS_NOT_INITIALIZED);
 }
 
 template <typename T>
@@ -46,6 +50,11 @@ void testing_csrrf_solve_bad_arg()
     CHECK_HIP_ERROR(pivQ.memcheck());
     CHECK_HIP_ERROR(B.memcheck());
 
+    int                            size_W = n * nrhs;
+    device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
+    if(size_W)
+        CHECK_HIP_ERROR(dWork.memcheck());
+
     // check bad arguments
     csrrf_solve_checkBadArgs(handle,
                              n,
@@ -56,6 +65,8 @@ void testing_csrrf_solve_bad_arg()
                              valT.data(),
                              pivP.data(),
                              pivQ.data(),
+                             dWork.data(),
+                             n,
                              B.data(),
                              ldb);
 }

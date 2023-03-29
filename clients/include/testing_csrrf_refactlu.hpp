@@ -39,7 +39,8 @@ void csrrf_refactlu_checkBadArgs(hipsolverRfHandle_t handle,
                                  int*                pivP,
                                  int*                pivQ)
 {
-    // N/A
+    // handle
+    EXPECT_ROCBLAS_STATUS(hipsolverRfRefactor(nullptr), HIPSOLVER_STATUS_NOT_INITIALIZED);
 }
 
 template <typename T>
