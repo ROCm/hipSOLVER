@@ -105,6 +105,9 @@ struct hipsolverRfHandle
     // Allocate device memory
     hipsolverStatus_t malloc_device(int n, int nnzA, int nnzL, int nnzU)
     {
+        if(n < 0 || nnzA < 0 || nnzL < 0 || nnzU < 0)
+            return HIPSOLVER_STATUS_INVALID_VALUE;
+
         if(this->n != n || this->nnzA != nnzA || this->nnzL != nnzL || this->nnzU != nnzU)
         {
             int nnzLU = nnzL - n + nnzU;
