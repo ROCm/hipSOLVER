@@ -40,8 +40,8 @@ if( UNIX )
   enable_language( Fortran )
 endif( )
 
-# We use C++14 features, this will add compile option: -std=c++14
-set( CMAKE_CXX_STANDARD 14 )
+# We use C++17 features, this will add compile option: -std=c++17
+set( CMAKE_CXX_STANDARD 17 )
 
 list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake )
 
