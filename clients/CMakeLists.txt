@@ -98,11 +98,6 @@ if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
     COMPONENT tests
   )
 
-  target_compile_definitions(clients-common INTERFACE
-    -DSPARSEDATA_DIR="${PROJECT_BINARY_DIR}/sparsedata/"
-    -DSPARSEDATA_INSTALLDIR="${CMAKE_INSTALL_FULL_DATADIR}/hipsolver/test/"
-  )
-
   if( BUILD_CLIENTS_TESTS )
     add_subdirectory( gtest )
   endif( )

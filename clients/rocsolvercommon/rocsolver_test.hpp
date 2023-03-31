@@ -24,6 +24,7 @@
 #pragma once
 
 #include <cstdarg>
+#include <cstdlib>
 #include <iomanip>
 #include <limits>
 #include <sstream>
@@ -155,10 +156,27 @@ inline void rocsolver_bench_output(T arg, Ts... args)
 
 inline fs::path get_sparse_data_dir()
 {
-    fs::path option1(SPARSEDATA_DIR);
-    if(fs::exists(option1))
-        return option1.string();
+    // first check an environment variable
+    if(const char* datadir = std::getenv("HIPSOLVER_TEST_DATA"))
+        return fs::path{datadir};
 
-    fs::path option2(SPARSEDATA_INSTALLDIR);
-    return option2.string();
+    fs::path p         = fs::current_path();
+    fs::path p_parent  = p.parent_path();
+    fs::path installed = p.root_directory() / "opt" / "rocm" / "share" / "hipsolver" / "test";
+
+    // check relative to the current directory and relative to each parent
+    while(p != p_parent)
+    {
+        fs::path candidate = p / "clients" / "sparsedata";
+        if(fs::exists(candidate))
+            return candidate;
+        p        = p_parent;
+        p_parent = p.parent_path();
+    }
+
+    // check relative to default install path
+    if(fs::exists(installed))
+        return installed;
+
+    return fs::current_path();
 }
