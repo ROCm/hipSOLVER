@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -177,6 +177,7 @@ void orgtr_ungtr_getError(const hipsolverHandle_t   handle,
     *max_err = norm_error('F', n, n, lda, hA[0], hARes[0]);
 
     // check info
+    EXPECT_EQ(hInfo[0][0], hInfoRes[0][0]);
     if(hInfo[0][0] != hInfoRes[0][0])
         *max_err++;
 }

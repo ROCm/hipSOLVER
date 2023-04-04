@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -272,16 +272,22 @@ void sytrf_getError(const hipsolverHandle_t   handle,
         // also check pivoting (count the number of incorrect pivots)
         err = 0;
         for(int i = 0; i < n; ++i)
+        {
+            EXPECT_EQ(hIpiv[b][i], hIpivRes[b][i]) << "where b = " << b << ", i = " << i;
             if(hIpiv[b][i] != hIpivRes[b][i])
                 err++;
+        }
         *max_err = err > *max_err ? err : *max_err;
     }
 
     // also check info
     err = 0;
     for(int b = 0; b < bc; ++b)
+    {
+        EXPECT_EQ(hInfo[b][0], hInfoRes[b][0]) << "where b = " << b;
         if(hInfo[b][0] != hInfoRes[b][0])
             err++;
+    }
     *max_err += err;
 }
 
