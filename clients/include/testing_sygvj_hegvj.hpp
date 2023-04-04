@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -530,18 +530,28 @@ void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
     // check info for non-convergence and/or positive-definiteness
     *max_err = 0;
     for(int b = 0; b < bc; ++b)
+    {
+        EXPECT_EQ(hInfo[b][0], hInfoRes[b][0]) << "where b = " << b;
         if(hInfo[b][0] != hInfoRes[b][0])
             *max_err += 1;
+    }
 
     // Also check validity of residual
     for(rocblas_int b = 0; b < bc; ++b)
+    {
+        EXPECT_GE(hResidualRes[b][0], 0) << "where b = " << b;
         if(hResidualRes[b][0] < 0)
             *max_err += 1;
+    }
 
     // Also check validity of sweeps
     for(rocblas_int b = 0; b < bc; ++b)
+    {
+        EXPECT_GE(hSweepsRes[b][0], 0) << "where b = " << b;
+        EXPECT_LE(hSweepsRes[b][0], max_sweeps) << "where b = " << b;
         if(hSweepsRes[b][0] < 0 || hSweepsRes[b][0] > max_sweeps)
             *max_err += 1;
+    }
 
     double err;
 
