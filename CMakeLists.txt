@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2022 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +22,8 @@
 
 cmake_minimum_required( VERSION 3.7 )
 
-# We use C++14 features, this will add compile option: -std=c++14
-set( CMAKE_CXX_STANDARD 14 )
+# We use C++17 features, this will add compile option: -std=c++17
+set( CMAKE_CXX_STANDARD 17 )
 
 # Consider removing this in the future
 # This should appear before the project command, because it does not use FORCE
@@ -112,6 +112,9 @@ option( BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON )
 option(BUILD_ADDRESS_SANITIZER "Build with address sanitizer enabled" OFF)
 
 add_library(hipsolver-common INTERFACE)
+target_compile_options(hipsolver-common INTERFACE
+  -Wno-unused-result # TODO: address [[nodiscard]] warnings
+)
 if(BUILD_ADDRESS_SANITIZER)
   target_compile_options(hipsolver-common INTERFACE
     -fsanitize=address
