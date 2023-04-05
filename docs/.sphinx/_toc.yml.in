@@ -26,3 +26,9 @@ subtrees:
         - file: compat-api/auxiliary
         - file: compat-api/lapack
         - file: compat-api/lapacklike
+    - file: refactor-api/index
+      subtrees:
+      - entries:
+        - file: refactor-api/types
+        - file: refactor-api/helpers
+        - file: refactor-api/refactor
