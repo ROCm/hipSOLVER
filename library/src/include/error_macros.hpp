@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2022-2023 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,4 +39,12 @@
         rocblas_status _status = (STATUS);      \
         if(_status != rocblas_status_success)   \
             return rocblas2hip_status(_status); \
+    } while(0)
+
+#define CHECK_HIP_ERROR(STATUS)                     \
+    do                                              \
+    {                                               \
+        hipError_t _status = (STATUS);              \
+        if(_status != hipSuccess)                   \
+            return HIPSOLVER_STATUS_INTERNAL_ERROR; \
     } while(0)
