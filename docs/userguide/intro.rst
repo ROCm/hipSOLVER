@@ -21,9 +21,9 @@ significant overhead. However, its main purpose is portability, so when performa
 to the given architecture is recommended.
 
 Another purpose of hipSOLVER is to facilitate the translation of cuSOLVER applications to
-`AMD's open source ROCm platform <https://rocmdocs.amd.com/en/latest/index.html>`_ ecosystem. To that end, hipSOLVER also includes a
-:ref:`compatibility API <library_compat>` with method signatures that match exactly those of cuSOLVER. For more details see the
-section :ref:`usage_label`.
+`AMD's open source ROCm platform <https://rocmdocs.amd.com/en/latest/index.html>`_ ecosystem. To that end, hipSOLVER also includes
+:ref:`hipsolverDn <library_compat>` and :ref:`hipsolverRf <library_refactor>` compatibility APIs with method signatures that match exactly those
+of cuSOLVER. For more details see the section :ref:`usage_label`.
 
 
 Currently implemented functionality
@@ -166,9 +166,10 @@ LAPACK-like functions
 Compatibility-only functions
 ====================================
 
-The following tables summarize the wrapper functions that have not been implemented in rocSOLVER, but can be computed with an equivalent function
-that uses a different algorithmic approach. These functions are provided as part of the compatibility API only, pending their implementation
-in rocSOLVER.
+The following tables summarize the wrapper functions that are provided only in the compatibility APIs.
+These wrappers are supported in rocSOLVER but either by equivalent functions
+that use different algorithmic approaches, or by functionality that is not fully exposed in the public API. 
+For these reasons, at present, the corresponding wrappers are not provided in the regular hipSOLVER API.
 
 Partial eigensolver functions
 ------------------------------
@@ -197,4 +198,12 @@ Partial SVD has been implemented in rocSOLVER, but at present it does not use an
 
     :ref:`hipsolverDnXgesvdaStridedBatched_bufferSize <compat_gesvda_strided_batched_bufferSize>`, x, x, x, x
     :ref:`hipsolverDnXgesvdaStridedBatched <compat_gesvda_strided_batched>`, x, x, x, x
+
+Refactorization routines
+------------------------------
+
+Refactorization routines and direct solvers for sparse matrices are in the very earliest stages of development. 
+At present, some of the functionality is not exposed as part of
+rocSOLVER's public API and is subject to change. Refer to the :ref:`hipsolverRf compatibility API <library_refactor>` for a full listing
+of supported functions.
 

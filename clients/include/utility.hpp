@@ -28,6 +28,7 @@
 #ifdef __cplusplus
 #include "complex.hpp"
 #include "hipsolver_datatype2string.hpp"
+#include <cassert>
 #include <cmath>
 #include <immintrin.h>
 #include <random>
@@ -129,10 +130,10 @@ public:
         hipsolverDestroy(m_handle);
     }
 
-    hipsolver_local_handle(const hipsolver_local_handle&) = delete;
-    hipsolver_local_handle(hipsolver_local_handle&&)      = delete;
+    hipsolver_local_handle(const hipsolver_local_handle&)            = delete;
+    hipsolver_local_handle(hipsolver_local_handle&&)                 = delete;
     hipsolver_local_handle& operator=(const hipsolver_local_handle&) = delete;
-    hipsolver_local_handle& operator=(hipsolver_local_handle&&) = delete;
+    hipsolver_local_handle& operator=(hipsolver_local_handle&&)      = delete;
 
     // Allow hipsolver_local_handle to be used anywhere hipsolverHandle_t is expected
     operator hipsolverHandle_t&()
@@ -140,6 +141,36 @@ public:
         return m_handle;
     }
     operator const hipsolverHandle_t&() const
+    {
+        return m_handle;
+    }
+};
+
+class hipsolverRf_local_handle
+{
+    hipsolverRfHandle_t m_handle;
+
+public:
+    hipsolverRf_local_handle()
+    {
+        hipsolverRfCreate(&m_handle);
+    }
+    ~hipsolverRf_local_handle()
+    {
+        hipsolverRfDestroy(m_handle);
+    }
+
+    hipsolverRf_local_handle(const hipsolverRf_local_handle&)            = delete;
+    hipsolverRf_local_handle(hipsolverRf_local_handle&&)                 = delete;
+    hipsolverRf_local_handle& operator=(const hipsolverRf_local_handle&) = delete;
+    hipsolverRf_local_handle& operator=(hipsolverRf_local_handle&&)      = delete;
+
+    // Allow hipsolverRf_local_handle to be used anywhere hipsolverRfHandle_t is expected
+    operator hipsolverRfHandle_t&()
+    {
+        return m_handle;
+    }
+    operator const hipsolverRfHandle_t&() const
     {
         return m_handle;
     }
@@ -162,10 +193,10 @@ public:
         hipsolverDnDestroyGesvdjInfo(m_info);
     }
 
-    hipsolver_local_gesvdj_info(const hipsolver_local_gesvdj_info&) = delete;
-    hipsolver_local_gesvdj_info(hipsolver_local_gesvdj_info&&)      = delete;
+    hipsolver_local_gesvdj_info(const hipsolver_local_gesvdj_info&)            = delete;
+    hipsolver_local_gesvdj_info(hipsolver_local_gesvdj_info&&)                 = delete;
     hipsolver_local_gesvdj_info& operator=(const hipsolver_local_gesvdj_info&) = delete;
-    hipsolver_local_gesvdj_info& operator=(hipsolver_local_gesvdj_info&&) = delete;
+    hipsolver_local_gesvdj_info& operator=(hipsolver_local_gesvdj_info&&)      = delete;
 
     // Allow hipsolver_local_gesvdj_info to be used anywhere hipsolverGesvdjInfo_t is expected
     operator hipsolverGesvdjInfo_t&()
@@ -195,10 +226,10 @@ public:
         hipsolverDnDestroySyevjInfo(m_info);
     }
 
-    hipsolver_local_syevj_info(const hipsolver_local_syevj_info&) = delete;
-    hipsolver_local_syevj_info(hipsolver_local_syevj_info&&)      = delete;
+    hipsolver_local_syevj_info(const hipsolver_local_syevj_info&)            = delete;
+    hipsolver_local_syevj_info(hipsolver_local_syevj_info&&)                 = delete;
     hipsolver_local_syevj_info& operator=(const hipsolver_local_syevj_info&) = delete;
-    hipsolver_local_syevj_info& operator=(hipsolver_local_syevj_info&&) = delete;
+    hipsolver_local_syevj_info& operator=(hipsolver_local_syevj_info&&)      = delete;
 
     // Allow hipsolver_local_syevj_info to be used anywhere hipsolverSyevjInfo_t is expected
     operator hipsolverSyevjInfo_t&()
@@ -449,6 +480,105 @@ void print_matrix(T* CPU_result, T* GPU_result, int m, int n, int lda)
                    double(CPU_result[i + j * lda].imag()),
                    double(GPU_result[i + j * lda].real()),
                    double(GPU_result[i + j * lda].imag()));
+}
+
+/* ============================================================================================ */
+/*  read matrix or values from file */
+
+// integers:
+inline void
+    read_matrix(const std::string filenameS, const int m, const int n, int* A, const int lda)
+{
+    const char* filename = filenameS.c_str();
+    FILE*       mat;
+    mat = fopen(filename, "r");
+    int v;
+
+    if(mat == NULL)
+        throw std::invalid_argument(std::string("Error: Could not open file ") + filename
+                                    + " with test data...");
+
+    for(int j = 0; j < n; ++j)
+    {
+        for(int i = 0; i < m; ++i)
+        {
+            int read = fscanf(mat, "%d", &v);
+            assert(read == 1);
+            A[i + j * lda] = v;
+        }
+    }
+
+    fclose(mat);
+}
+inline void read_last(const std::string filenameS, int* A)
+{
+    const char* filename = filenameS.c_str();
+    FILE*       mat;
+    mat = fopen(filename, "r");
+    int v;
+
+    if(mat == NULL)
+        throw std::invalid_argument(std::string("Error: Could not open file ") + filename
+                                    + " with test data...");
+
+    while(fscanf(mat, "%d", &v) == 1)
+    {
+        // do nothing
+    }
+
+    *A = v;
+}
+
+// singles:
+inline void
+    read_matrix(const std::string filenameS, const int m, const int n, float* A, const int lda)
+{
+    const char* filename = filenameS.c_str();
+    FILE*       mat;
+    mat = fopen(filename, "r");
+    float v;
+
+    if(mat == NULL)
+        throw std::invalid_argument(std::string("Error: Could not open file ") + filename
+                                    + " with test data...");
+
+    for(int j = 0; j < n; ++j)
+    {
+        for(int i = 0; i < m; ++i)
+        {
+            int read = fscanf(mat, "%g", &v);
+            assert(read == 1);
+            A[i + j * lda] = v;
+        }
+    }
+
+    fclose(mat);
+}
+
+// doubles:
+inline void
+    read_matrix(const std::string filenameS, const int m, const int n, double* A, const int lda)
+{
+    const char* filename = filenameS.c_str();
+    FILE*       mat;
+    mat = fopen(filename, "r");
+    double v;
+
+    if(mat == NULL)
+        throw std::invalid_argument(std::string("Error: Could not open file ") + filename
+                                    + " with test data...");
+
+    for(int j = 0; j < n; ++j)
+    {
+        for(int i = 0; i < m; ++i)
+        {
+            int read = fscanf(mat, "%lg", &v);
+            assert(read == 1);
+            A[i + j * lda] = v;
+        }
+    }
+
+    fclose(mat);
 }
 
 /* =============================================================================================== */

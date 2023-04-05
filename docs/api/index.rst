@@ -1,8 +1,8 @@
 .. _library_api:
 
-########################################
-hipSOLVER API
-########################################
+##############################################
+hipSOLVER API (Dense LAPACK)
+##############################################
 
 Currently, this API document only provides the method signatures for the wrapper functions that are currently implemented in hipSOLVER.
 For a complete description of the functions' behavior and arguments, see the corresponding backends' documentation

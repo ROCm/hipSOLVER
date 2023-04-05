@@ -14,7 +14,9 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ### Security
 
 
-## (Unreleased) hipSOLVER 1.8.0
+## hipSOLVER 1.8.0 for ROCm 5.6.0
+### Added
+- Added compatibility API with hipsolverRf prefix
 
 
 ## hipSOLVER 1.7.0 for ROCm 5.5.0
