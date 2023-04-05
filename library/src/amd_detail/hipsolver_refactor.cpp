@@ -79,7 +79,7 @@ struct hipsolverRfHandle
     rocblas_int* dP;
     rocblas_int* dQ;
 
-    uint8_t *d_buffer, *h_buffer;
+    char *d_buffer, *h_buffer;
 
     // Constructor
     explicit hipsolverRfHandle()
@@ -164,7 +164,7 @@ struct hipsolverRfHandle
             if(hipMalloc(&this->d_buffer, size_buffer) != hipSuccess)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
 
-            uint8_t* temp_buf;
+            char* temp_buf;
             this->dPtrA  = (rocblas_int*)(temp_buf = this->d_buffer);
             this->dPtrL  = (rocblas_int*)(temp_buf += size_dPtrA);
             this->dPtrU  = (rocblas_int*)(temp_buf += size_dPtrL);
@@ -224,11 +224,11 @@ struct hipsolverRfHandle
             size_t size_buffer = size_hPtrL + size_hIndL + size_hValL + size_hPtrU + size_hIndU
                                  + size_hValU + size_hPtrLU + size_hIndLU + size_hValLU;
 
-            this->h_buffer = (uint8_t*)malloc(size_buffer);
+            this->h_buffer = (char*)malloc(size_buffer);
             if(!this->h_buffer)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
 
-            uint8_t* temp_buf;
+            char* temp_buf;
             this->hPtrL  = (rocblas_int*)(temp_buf = this->h_buffer);
             this->hPtrU  = (rocblas_int*)(temp_buf += size_hPtrL);
             this->hPtrLU = (rocblas_int*)(temp_buf += size_hPtrU);
