@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc.
+ * Copyright (C) 2020-2023 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 // HIP = Heterogeneous-compute Interface for Portability
@@ -28,5 +28,9 @@
  * result in degraded rocSOLVER performance.
  */
 #include "internal/hipsolver-compat.h"
+
+/* Defines functions and types with the hipsolverRf prefix. APIs match those from cuSOLVER.
+ */
+#include "internal/hipsolver-refactor.h"
 
 #endif // HIPSOLVER_H
