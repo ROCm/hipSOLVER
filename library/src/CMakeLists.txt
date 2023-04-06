@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2022 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -42,14 +42,18 @@ prepend_path( ".." hipsolver_headers_public relative_hipsolver_headers_public )
 
 if( NOT USE_CUDA )
   set( hipsolver_source
+    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_conversions.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_compat.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_refactor.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
   )
 else( )
   set( hipsolver_source
+    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_conversions.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_compat.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_refactor.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
   )
 endif( )

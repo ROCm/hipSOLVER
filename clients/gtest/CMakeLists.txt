@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2022 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,16 +20,9 @@
 #
 # ########################################################################
 
-# Linking lapack library requires fortran flags
-find_package( cblas REQUIRED CONFIG )
-
-if( NOT TARGET hipsolver )
-  find_package( hipsolver REQUIRED CONFIG PATHS /opt/rocm/hipsolver )
-endif( )
-
 find_package( GTest REQUIRED )
 
-set(hipsolver_test_source
+set(hipsolverDn_test_source
   hipsolver_gtest_main.cpp
   getrs_gtest.cpp
   getrf_gtest.cpp
@@ -58,13 +51,12 @@ set(hipsolver_test_source
   ormtr_unmtr_gtest.cpp
 )
 
-set( hipsolver_test_common
-  ../common/lapack_host_reference.cpp
-  ../common/hipsolver_datatype2string.cpp
-  ../common/utility.cpp
+set(hipsolverRf_test_source
+  csrrf_refactlu_gtest.cpp
+  csrrf_solve_gtest.cpp
 )
 
-add_executable( hipsolver-test ${hipsolver_test_source} ${hipsolver_test_common} )
+add_executable( hipsolver-test ${hipsolverDn_test_source} ${hipsolverRf_test_source} )
 if( UNIX )
   target_sources( hipsolver-test PRIVATE ${hipsolver_f90_source} )
 endif( )
@@ -73,9 +65,6 @@ target_include_directories( hipsolver-test
   PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
 )
-
-set( THREADS_PREFER_PTHREAD_FLAG ON )
-find_package( Threads REQUIRED )
 
 add_armor_flags( hipsolver-test "${ARMOR_LEVEL}" )
 
@@ -88,14 +77,19 @@ target_include_directories( hipsolver-test
     $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
 )
 
-target_link_libraries( hipsolver-test PRIVATE cblas lapack blas GTest::GTest Threads::Threads roc::hipsolver )
+target_link_libraries( hipsolver-test PRIVATE
+  cblas
+  lapack
+  blas
+  hipsolver-common
+  clients-common
+  GTest::GTest
+  Threads::Threads
+  roc::hipsolver
+)
 if( UNIX )
   target_link_libraries( hipsolver-test PRIVATE hipsolver_fortran_client )
 endif( )
-
-target_link_libraries(hipsolver-test PRIVATE
-  $<BUILD_INTERFACE:hipsolver-common>
-)
 
 # need mf16c flag for float->half convertion
 target_compile_options( hipsolver-test PRIVATE -mf16c )

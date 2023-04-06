@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2022 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -40,12 +40,21 @@ if( UNIX )
   enable_language( Fortran )
 endif( )
 
-# We use C++14 features, this will add compile option: -std=c++14
-set( CMAKE_CXX_STANDARD 14 )
+# We use C++17 features, this will add compile option: -std=c++17
+set( CMAKE_CXX_STANDARD 17 )
 
 list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake )
 
 include( build-options )
+
+# Linking lapack library requires fortran flags
+set( THREADS_PREFER_PTHREAD_FLAG ON )
+find_package( Threads REQUIRED )
+find_package( cblas REQUIRED CONFIG )
+
+if( NOT TARGET hipsolver )
+  find_package( hipsolver REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm )
+endif( )
 
 if( UNIX )
   set(hipsolver_f90_source_clients
@@ -53,21 +62,49 @@ if( UNIX )
   )
 endif( )
 
-if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS OR BUILD_CLIENTS_SAMPLES )
+if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
   if( UNIX )
     add_library(hipsolver_fortran_client STATIC ${hipsolver_f90_source_clients})
     add_dependencies(hipsolver_fortran_client hipsolver_fortran)
     include_directories(${CMAKE_BINARY_DIR}/include/hipsolver)
     include_directories(${CMAKE_BINARY_DIR}/include/hipsolver/internal)
   endif( )
-endif( )
 
-if( BUILD_CLIENTS_TESTS )
-  add_subdirectory( gtest )
-endif( )
+  add_library(clients-common INTERFACE)
+  target_include_directories(clients-common INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+  )
+  target_link_libraries(clients-common INTERFACE
+    $<$<PLATFORM_ID:Linux>:stdc++fs>
+  )
+  set(common_source_files
+    common/hipsolver_datatype2string.cpp
+    common/lapack_host_reference.cpp
+    common/utility.cpp
+  )
 
-if( BUILD_CLIENTS_BENCHMARKS )
-  add_subdirectory( benchmarks )
+  prepend_path("${CMAKE_CURRENT_SOURCE_DIR}/" common_source_files common_source_paths)
+  target_sources(clients-common INTERFACE ${common_source_paths})
+
+  # Copy and point to sparse test data
+  file(COPY
+    ${CMAKE_CURRENT_SOURCE_DIR}/sparsedata/
+    DESTINATION ${PROJECT_BINARY_DIR}/sparsedata/
+  )
+  install(DIRECTORY
+    ${CMAKE_CURRENT_SOURCE_DIR}/sparsedata/
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/hipsolver/test
+    COMPONENT tests
+  )
+
+  if( BUILD_CLIENTS_TESTS )
+    add_subdirectory( gtest )
+  endif( )
+
+  if( BUILD_CLIENTS_BENCHMARKS )
+    add_subdirectory( benchmarks )
+  endif( )
 endif( )
 
 if( BUILD_CLIENTS_SAMPLES )
