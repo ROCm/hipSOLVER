@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2022 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,23 +20,7 @@
 #
 # ########################################################################
 
-set( THREADS_PREFER_PTHREAD_FLAG ON )
-find_package( Threads REQUIRED )
-
-# Linking lapack library requires fortran flags
-find_package( cblas REQUIRED CONFIG )
-
-if( NOT TARGET hipsolver )
-  find_package( hipsolver REQUIRED CONFIG PATHS /opt/rocm/hipsolver )
-endif( )
-
-set(hipsolver_benchmark_common
-  ../common/lapack_host_reference.cpp
-  ../common/hipsolver_datatype2string.cpp
-  ../common/utility.cpp
-)
-
-add_executable( hipsolver-bench client.cpp ${hipsolver_benchmark_common} )
+add_executable( hipsolver-bench client.cpp )
 
 # Internal header includes
 target_include_directories( hipsolver-bench
@@ -51,14 +35,17 @@ target_include_directories( hipsolver-bench
     $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
 )
 
-target_link_libraries( hipsolver-bench PRIVATE cblas lapack blas roc::hipsolver )
+target_link_libraries( hipsolver-bench PRIVATE
+  cblas
+  lapack
+  blas
+  hipsolver-common
+  clients-common
+  roc::hipsolver
+)
 if( UNIX )
   target_link_libraries( hipsolver-bench PRIVATE hipsolver_fortran_client )
 endif( )
-
-target_link_libraries(hipsolver-bench PRIVATE
-  $<BUILD_INTERFACE:hipsolver-common>
-)
 
 add_armor_flags( hipsolver-bench "${ARMOR_LEVEL}" )
 

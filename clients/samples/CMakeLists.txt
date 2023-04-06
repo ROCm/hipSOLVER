@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2022 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,13 +29,6 @@ set_source_files_properties(example_basic.c PROPERTIES COMPILE_FLAGS "-xc -std=c
 
 # Test for C++11 compatibility in one of the samples
 set_property(TARGET example-cpp-basic PROPERTY CXX_STANDARD 11)
-
-if( NOT TARGET hipsolver )
-  find_package( hipsolver CONFIG PATHS ${ROCM_PATH}/hipsolver )
-  if( NOT hipsolver_FOUND )
-    message( FATAL_ERROR "hipSOLVER is a required dependency and is not found; try adding hipSOLVER path to CMAKE_PREFIX_PATH")
-  endif( )
-endif( )
 
 foreach( exe example-c-basic;example-cpp-basic; )
 
