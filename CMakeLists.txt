@@ -214,7 +214,7 @@ endif( )
 
 # Package specific CPACK vars
 if( NOT USE_CUDA )
-  rocm_package_add_dependencies(DEPENDS "rocblas >= 4.0.0" "rocsolver >= 3.23.0")
+  rocm_package_add_dependencies(DEPENDS "rocblas >= 3.1.0" "rocsolver >= 3.23.0")
 endif( )
 
 set( CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.md" )
