@@ -126,39 +126,39 @@ void csrrf_refactlu_initData(hipsolverRfHandle_t handle,
 
         // read-in A
         file = testcase / "ptrA";
-        read_matrix(file, 1, n + 1, hptrA.data(), 1);
+        read_matrix(file.string(), 1, n + 1, hptrA.data(), 1);
         file = testcase / "indA";
-        read_matrix(file, 1, nnzA, hindA.data(), 1);
+        read_matrix(file.string(), 1, nnzA, hindA.data(), 1);
         file = testcase / "valA";
-        read_matrix(file, 1, nnzA, hvalA.data(), 1);
+        read_matrix(file.string(), 1, nnzA, hvalA.data(), 1);
 
         // read-in L
         file = testcase / "ptrL";
-        read_matrix(file, 1, n + 1, hptrL.data(), 1);
+        read_matrix(file.string(), 1, n + 1, hptrL.data(), 1);
         file = testcase / "indL";
-        read_matrix(file, 1, nnzL, hindL.data(), 1);
+        read_matrix(file.string(), 1, nnzL, hindL.data(), 1);
         file = testcase / "valL";
-        read_matrix(file, 1, nnzL, hvalL.data(), 1);
+        read_matrix(file.string(), 1, nnzL, hvalL.data(), 1);
 
         // read-in U
         file = testcase / "ptrU";
-        read_matrix(file, 1, n + 1, hptrU.data(), 1);
+        read_matrix(file.string(), 1, n + 1, hptrU.data(), 1);
         file = testcase / "indU";
-        read_matrix(file, 1, nnzU, hindU.data(), 1);
+        read_matrix(file.string(), 1, nnzU, hindU.data(), 1);
         file = testcase / "valU";
-        read_matrix(file, 1, nnzU, hvalU.data(), 1);
+        read_matrix(file.string(), 1, nnzU, hvalU.data(), 1);
 
         // read-in T
         file = testcase / "valT";
-        read_matrix(file, 1, nnzT, hvalT.data(), 1);
+        read_matrix(file.string(), 1, nnzT, hvalT.data(), 1);
 
         // read-in P
         file = testcase / "P";
-        read_matrix(file, 1, n, hpivP.data(), 1);
+        read_matrix(file.string(), 1, n, hpivP.data(), 1);
 
         // read-in Q
         file = testcase / "Q";
-        read_matrix(file, 1, n, hpivQ.data(), 1);
+        read_matrix(file.string(), 1, n, hpivQ.data(), 1);
     }
 
     if(GPU)
@@ -426,10 +426,10 @@ void testing_csrrf_refactlu(Arguments& argus)
         testcase           = get_sparse_data_dir() / folder;
 
         file = testcase / "ptrL";
-        read_last(file, &nnzL);
+        read_last(file.string(), &nnzL);
 
         file = testcase / "ptrU";
-        read_last(file, &nnzU);
+        read_last(file.string(), &nnzU);
     }
 
     // determine sizes
