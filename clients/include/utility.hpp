@@ -131,8 +131,11 @@ public:
     }
 
     hipsolver_local_handle(const hipsolver_local_handle&) = delete;
-    hipsolver_local_handle(hipsolver_local_handle&&)      = delete;
+
+    hipsolver_local_handle(hipsolver_local_handle&&) = delete;
+
     hipsolver_local_handle& operator=(const hipsolver_local_handle&) = delete;
+
     hipsolver_local_handle& operator=(hipsolver_local_handle&&) = delete;
 
     // Allow hipsolver_local_handle to be used anywhere hipsolverHandle_t is expected
@@ -161,8 +164,11 @@ public:
     }
 
     hipsolverRf_local_handle(const hipsolverRf_local_handle&) = delete;
-    hipsolverRf_local_handle(hipsolverRf_local_handle&&)      = delete;
+
+    hipsolverRf_local_handle(hipsolverRf_local_handle&&) = delete;
+
     hipsolverRf_local_handle& operator=(const hipsolverRf_local_handle&) = delete;
+
     hipsolverRf_local_handle& operator=(hipsolverRf_local_handle&&) = delete;
 
     // Allow hipsolverRf_local_handle to be used anywhere hipsolverRfHandle_t is expected
@@ -194,8 +200,11 @@ public:
     }
 
     hipsolver_local_gesvdj_info(const hipsolver_local_gesvdj_info&) = delete;
-    hipsolver_local_gesvdj_info(hipsolver_local_gesvdj_info&&)      = delete;
+
+    hipsolver_local_gesvdj_info(hipsolver_local_gesvdj_info&&) = delete;
+
     hipsolver_local_gesvdj_info& operator=(const hipsolver_local_gesvdj_info&) = delete;
+
     hipsolver_local_gesvdj_info& operator=(hipsolver_local_gesvdj_info&&) = delete;
 
     // Allow hipsolver_local_gesvdj_info to be used anywhere hipsolverGesvdjInfo_t is expected
@@ -227,8 +236,11 @@ public:
     }
 
     hipsolver_local_syevj_info(const hipsolver_local_syevj_info&) = delete;
-    hipsolver_local_syevj_info(hipsolver_local_syevj_info&&)      = delete;
+
+    hipsolver_local_syevj_info(hipsolver_local_syevj_info&&) = delete;
+
     hipsolver_local_syevj_info& operator=(const hipsolver_local_syevj_info&) = delete;
+
     hipsolver_local_syevj_info& operator=(hipsolver_local_syevj_info&&) = delete;
 
     // Allow hipsolver_local_syevj_info to be used anywhere hipsolverSyevjInfo_t is expected
@@ -590,13 +602,6 @@ inline void
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/* ============================================================================================ */
-/*  device query and print out their ID and name */
-int query_device_property();
-
-/*  set current device to device_id */
-void set_device(int device_id);
 
 /* ============================================================================================ */
 /*  timing: HIP only provides very limited timers function clock() and not general;
