@@ -29,6 +29,8 @@
 #include <limits>
 #include <sstream>
 
+#include "../rocblascommon/clients_utility.hpp"
+
 #if __has_include(<filesystem>)
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -160,9 +162,10 @@ inline fs::path get_sparse_data_dir()
     if(const char* datadir = std::getenv("HIPSOLVER_TEST_DATA"))
         return fs::path{datadir};
 
-    fs::path p         = fs::current_path();
-    fs::path p_parent  = p.parent_path();
-    fs::path installed = p.root_directory() / "opt" / "rocm" / "share" / "hipsolver" / "test";
+    fs::path p            = fs::current_path();
+    fs::path p_parent     = p.parent_path();
+    fs::path installed    = p.root_directory() / "opt" / "rocm" / "share" / "hipsolver" / "test";
+    fs::path exe_relative = fs::path(hipsolver_exepath()) / ".." / "share" / "hipsolver" / "test";
 
     // check relative to the current directory and relative to each parent
     while(p != p_parent)
@@ -173,6 +176,10 @@ inline fs::path get_sparse_data_dir()
         p        = p_parent;
         p_parent = p.parent_path();
     }
+
+    // check relative to the running executable
+    if(fs::exists(exe_relative))
+        return exe_relative;
 
     // check relative to default install path
     if(fs::exists(installed))
