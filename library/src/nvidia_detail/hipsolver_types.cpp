@@ -24,6 +24,18 @@
 #include "hipsolver_types.hpp"
 #include "hipsolver_conversions.hpp"
 
+/******************** GESVDJ PARAMS ********************/
+hipsolverGesvdjInfo::hipsolverGesvdjInfo() {}
+
+hipsolverStatus_t hipsolverGesvdjInfo::setup()
+{
+    return cuda2hip_status(cusolverDnCreateGesvdjInfo(&info));
+}
+hipsolverStatus_t hipsolverGesvdjInfo::teardown()
+{
+    return cuda2hip_status(cusolverDnDestroyGesvdjInfo(info));
+}
+
 /******************** SYEVJ PARAMS ********************/
 hipsolverSyevjInfo::hipsolverSyevjInfo() {}
 

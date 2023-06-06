@@ -27,6 +27,26 @@
 #include <cusolverDn.h>
 #include <cusolverRf.h>
 
+struct hipsolverGesvdjInfo
+{
+    gesvdjInfo_t info;
+
+    // Constructor
+    hipsolverGesvdjInfo();
+
+    hipsolverGesvdjInfo(const hipsolverGesvdjInfo&) = delete;
+
+    hipsolverGesvdjInfo(hipsolverGesvdjInfo&&) = delete;
+
+    hipsolverGesvdjInfo& operator=(const hipsolverGesvdjInfo&) = delete;
+
+    hipsolverGesvdjInfo& operator=(hipsolverGesvdjInfo&&) = delete;
+
+    // Allocate resources
+    hipsolverStatus_t setup();
+    hipsolverStatus_t teardown();
+};
+
 struct hipsolverSyevjInfo
 {
     syevjInfo_t info;

@@ -27,6 +27,35 @@
 #include "rocblas/rocblas.h"
 #include "rocsolver/rocsolver.h"
 
+struct hipsolverGesvdjInfo
+{
+    int     capacity;
+    int     batch_count;
+    int*    n_sweeps;
+    double* residual;
+
+    int    max_sweeps;
+    double tolerance;
+    bool   is_batched, is_float, sort_eig;
+
+    char* d_buffer;
+
+    // Constructor
+    hipsolverGesvdjInfo();
+
+    hipsolverGesvdjInfo(const hipsolverGesvdjInfo&) = delete;
+
+    hipsolverGesvdjInfo(hipsolverGesvdjInfo&&) = delete;
+
+    hipsolverGesvdjInfo& operator=(const hipsolverGesvdjInfo&) = delete;
+
+    hipsolverGesvdjInfo& operator=(hipsolverGesvdjInfo&&) = delete;
+
+    // Allocate resources
+    hipsolverStatus_t setup(int bc);
+    hipsolverStatus_t teardown();
+};
+
 struct hipsolverSyevjInfo
 {
     int     capacity;

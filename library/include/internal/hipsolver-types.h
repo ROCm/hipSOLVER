@@ -13,8 +13,8 @@
 
 typedef void* hipsolverHandle_t;
 
-typedef void*                      hipsolverGesvdjInfo_t;
-typedef struct hipsolverSyevjInfo* hipsolverSyevjInfo_t;
+typedef struct hipsolverGesvdjInfo* hipsolverGesvdjInfo_t;
+typedef struct hipsolverSyevjInfo*  hipsolverSyevjInfo_t;
 
 typedef enum
 {

@@ -24,6 +24,58 @@
 #include "hipsolver_types.hpp"
 #include "hipsolver_conversions.hpp"
 
+/******************** GESVDJ PARAMS ********************/
+hipsolverGesvdjInfo::hipsolverGesvdjInfo()
+    : capacity(0)
+    , batch_count(0)
+    , n_sweeps(nullptr)
+    , residual(nullptr)
+    , max_sweeps(100)
+    , tolerance(0)
+    , is_batched(false)
+    , is_float(false)
+    , sort_eig(true)
+    , d_buffer(nullptr)
+{
+}
+
+hipsolverStatus_t hipsolverGesvdjInfo::setup(int bc)
+{
+    if(capacity < bc)
+    {
+        if(capacity > 0)
+        {
+            if(hipFree(d_buffer) != hipSuccess)
+                return HIPSOLVER_STATUS_INTERNAL_ERROR;
+        }
+
+        if(hipMalloc(&d_buffer, sizeof(int) * bc + sizeof(double) * bc) != hipSuccess)
+        {
+            capacity = 0;
+            return HIPSOLVER_STATUS_ALLOC_FAILED;
+        }
+
+        n_sweeps    = (int*)d_buffer;
+        residual    = (double*)(n_sweeps + bc);
+        capacity    = bc;
+        batch_count = bc;
+    }
+
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+
+hipsolverStatus_t hipsolverGesvdjInfo::teardown()
+{
+    if(capacity > 0)
+    {
+        capacity = 0;
+        if(hipFree(d_buffer) != hipSuccess)
+            return HIPSOLVER_STATUS_INTERNAL_ERROR;
+    }
+
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+
 /******************** SYEVJ PARAMS ********************/
 hipsolverSyevjInfo::hipsolverSyevjInfo()
     : capacity(0)

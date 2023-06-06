@@ -535,67 +535,6 @@ catch(...)
 }
 
 /******************** GESVDJ PARAMS ********************/
-struct hipsolverGesvdjInfo
-{
-    int     capacity;
-    int     batch_count;
-    int*    n_sweeps;
-    double* residual;
-
-    int    max_sweeps;
-    double tolerance;
-    bool   is_batched, is_float, sort_eig;
-
-    // Constructor
-    explicit hipsolverGesvdjInfo()
-        : capacity(0)
-        , batch_count(0)
-        , n_sweeps(nullptr)
-        , residual(nullptr)
-        , max_sweeps(100)
-        , tolerance(0)
-        , is_batched(false)
-        , is_float(false)
-        , sort_eig(true)
-    {
-    }
-
-    // Allocate device memory
-    hipsolverStatus_t malloc(int bc)
-    {
-        if(capacity < bc)
-        {
-            if(capacity > 0)
-            {
-                if(hipFree(n_sweeps) != hipSuccess)
-                    return HIPSOLVER_STATUS_INTERNAL_ERROR;
-            }
-
-            if(hipMalloc(&n_sweeps, sizeof(int) * bc + sizeof(double) * bc) != hipSuccess)
-            {
-                capacity = 0;
-                return HIPSOLVER_STATUS_ALLOC_FAILED;
-            }
-
-            residual    = (double*)(n_sweeps + bc);
-            capacity    = bc;
-            batch_count = bc;
-        }
-
-        return HIPSOLVER_STATUS_SUCCESS;
-    }
-
-    // Free device memory
-    void free()
-    {
-        if(capacity > 0)
-        {
-            hipFree(n_sweeps);
-            capacity = 0;
-        }
-    }
-};
-
 hipsolverStatus_t hipsolverCreateGesvdjInfo(hipsolverGesvdjInfo_t* info)
 try
 {
@@ -617,11 +556,10 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    params->free();
-    delete params;
+    hipsolverStatus_t result = info->teardown();
+    delete info;
 
-    return HIPSOLVER_STATUS_SUCCESS;
+    return result;
 }
 catch(...)
 {
@@ -636,8 +574,7 @@ try
     if(max_sweeps <= 0)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    params->max_sweeps          = max_sweeps;
+    info->max_sweeps = max_sweeps;
 
     return HIPSOLVER_STATUS_SUCCESS;
 }
@@ -652,8 +589,7 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    params->sort_eig            = sort_eig;
+    info->sort_eig = sort_eig;
 
     return HIPSOLVER_STATUS_SUCCESS;
 }
@@ -668,8 +604,7 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    params->tolerance           = tolerance;
+    info->tolerance = tolerance;
 
     return HIPSOLVER_STATUS_SUCCESS;
 }
@@ -690,23 +625,21 @@ try
     if(!residual)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    if(params->is_batched)
+    if(info->is_batched)
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    if(params->capacity <= 0)
+    if(info->capacity <= 0)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
-    if(params->is_float)
+    if(info->is_float)
     {
         float result;
-        if(hipMemcpy(&result, params->residual, sizeof(float), hipMemcpyDeviceToHost) != hipSuccess)
+        if(hipMemcpy(&result, info->residual, sizeof(float), hipMemcpyDeviceToHost) != hipSuccess)
             return HIPSOLVER_STATUS_INTERNAL_ERROR;
         *residual = result;
     }
     else
     {
-        if(hipMemcpy(residual, params->residual, sizeof(double), hipMemcpyDeviceToHost)
-           != hipSuccess)
+        if(hipMemcpy(residual, info->residual, sizeof(double), hipMemcpyDeviceToHost) != hipSuccess)
             return HIPSOLVER_STATUS_INTERNAL_ERROR;
     }
 
@@ -729,14 +662,12 @@ try
     if(!executed_sweeps)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    if(params->is_batched)
+    if(info->is_batched)
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    if(params->capacity <= 0)
+    if(info->capacity <= 0)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
-    if(hipMemcpy(executed_sweeps, params->n_sweeps, sizeof(int), hipMemcpyDeviceToHost)
-       != hipSuccess)
+    if(hipMemcpy(executed_sweeps, info->n_sweeps, sizeof(int), hipMemcpyDeviceToHost) != hipSuccess)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     return HIPSOLVER_STATUS_SUCCESS;
@@ -4247,8 +4178,7 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    *lwork                      = 0;
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4260,9 +4190,9 @@ try
                                                         n,
                                                         nullptr,
                                                         lda,
-                                                        params->tolerance,
+                                                        info->tolerance,
                                                         nullptr,
-                                                        params->max_sweeps,
+                                                        info->max_sweeps,
                                                         nullptr,
                                                         nullptr,
                                                         nullptr,
@@ -4313,8 +4243,7 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    *lwork                      = 0;
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4326,9 +4255,9 @@ try
                                                         n,
                                                         nullptr,
                                                         lda,
-                                                        params->tolerance,
+                                                        info->tolerance,
                                                         nullptr,
-                                                        params->max_sweeps,
+                                                        info->max_sweeps,
                                                         nullptr,
                                                         nullptr,
                                                         nullptr,
@@ -4379,8 +4308,7 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    *lwork                      = 0;
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4392,9 +4320,9 @@ try
                                                         n,
                                                         nullptr,
                                                         lda,
-                                                        params->tolerance,
+                                                        info->tolerance,
                                                         nullptr,
-                                                        params->max_sweeps,
+                                                        info->max_sweeps,
                                                         nullptr,
                                                         nullptr,
                                                         nullptr,
@@ -4445,8 +4373,7 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    *lwork                      = 0;
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4458,9 +4385,9 @@ try
                                                         n,
                                                         nullptr,
                                                         lda,
-                                                        params->tolerance,
+                                                        info->tolerance,
                                                         nullptr,
-                                                        params->max_sweeps,
+                                                        info->max_sweeps,
                                                         nullptr,
                                                         nullptr,
                                                         nullptr,
@@ -4521,10 +4448,9 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    CHECK_HIPSOLVER_ERROR(params->malloc(1));
-    params->is_batched = false;
-    params->is_float   = true;
+    CHECK_HIPSOLVER_ERROR(info->setup(1));
+    info->is_batched = false;
+    info->is_float   = true;
 
     // perform computation
     return rocblas2hip_status(rocsolver_sgesvdj_notransv((rocblas_handle)handle,
@@ -4534,10 +4460,10 @@ try
                                                          n,
                                                          A,
                                                          lda,
-                                                         params->tolerance,
-                                                         (float*)params->residual,
-                                                         params->max_sweeps,
-                                                         params->n_sweeps,
+                                                         info->tolerance,
+                                                         (float*)info->residual,
+                                                         info->max_sweeps,
+                                                         info->n_sweeps,
                                                          S,
                                                          U,
                                                          ldu,
@@ -4583,10 +4509,9 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    CHECK_HIPSOLVER_ERROR(params->malloc(1));
-    params->is_batched = false;
-    params->is_float   = false;
+    CHECK_HIPSOLVER_ERROR(info->setup(1));
+    info->is_batched = false;
+    info->is_float   = false;
 
     // perform computation
     return rocblas2hip_status(rocsolver_dgesvdj_notransv((rocblas_handle)handle,
@@ -4596,10 +4521,10 @@ try
                                                          n,
                                                          A,
                                                          lda,
-                                                         params->tolerance,
-                                                         params->residual,
-                                                         params->max_sweeps,
-                                                         params->n_sweeps,
+                                                         info->tolerance,
+                                                         info->residual,
+                                                         info->max_sweeps,
+                                                         info->n_sweeps,
                                                          S,
                                                          U,
                                                          ldu,
@@ -4645,10 +4570,9 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    CHECK_HIPSOLVER_ERROR(params->malloc(1));
-    params->is_batched = false;
-    params->is_float   = true;
+    CHECK_HIPSOLVER_ERROR(info->setup(1));
+    info->is_batched = false;
+    info->is_float   = true;
 
     // perform computation
     return rocblas2hip_status(rocsolver_cgesvdj_notransv((rocblas_handle)handle,
@@ -4658,10 +4582,10 @@ try
                                                          n,
                                                          (rocblas_float_complex*)A,
                                                          lda,
-                                                         params->tolerance,
-                                                         (float*)params->residual,
-                                                         params->max_sweeps,
-                                                         params->n_sweeps,
+                                                         info->tolerance,
+                                                         (float*)info->residual,
+                                                         info->max_sweeps,
+                                                         info->n_sweeps,
                                                          S,
                                                          (rocblas_float_complex*)U,
                                                          ldu,
@@ -4707,10 +4631,9 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    CHECK_HIPSOLVER_ERROR(params->malloc(1));
-    params->is_batched = false;
-    params->is_float   = false;
+    CHECK_HIPSOLVER_ERROR(info->setup(1));
+    info->is_batched = false;
+    info->is_float   = false;
 
     // perform computation
     return rocblas2hip_status(rocsolver_zgesvdj_notransv((rocblas_handle)handle,
@@ -4720,10 +4643,10 @@ try
                                                          n,
                                                          (rocblas_double_complex*)A,
                                                          lda,
-                                                         params->tolerance,
-                                                         params->residual,
-                                                         params->max_sweeps,
-                                                         params->n_sweeps,
+                                                         info->tolerance,
+                                                         info->residual,
+                                                         info->max_sweeps,
+                                                         info->n_sweeps,
                                                          S,
                                                          (rocblas_double_complex*)U,
                                                          ldu,
@@ -4760,8 +4683,7 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    *lwork                      = 0;
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4774,9 +4696,9 @@ try
                                                    nullptr,
                                                    lda,
                                                    lda * n,
-                                                   params->tolerance,
+                                                   info->tolerance,
                                                    nullptr,
-                                                   params->max_sweeps,
+                                                   info->max_sweeps,
                                                    nullptr,
                                                    nullptr,
                                                    min(m, n),
@@ -4831,8 +4753,7 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    *lwork                      = 0;
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4845,9 +4766,9 @@ try
                                                    nullptr,
                                                    lda,
                                                    lda * n,
-                                                   params->tolerance,
+                                                   info->tolerance,
                                                    nullptr,
-                                                   params->max_sweeps,
+                                                   info->max_sweeps,
                                                    nullptr,
                                                    nullptr,
                                                    min(m, n),
@@ -4902,8 +4823,7 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    *lwork                      = 0;
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4916,9 +4836,9 @@ try
                                                    nullptr,
                                                    lda,
                                                    lda * n,
-                                                   params->tolerance,
+                                                   info->tolerance,
                                                    nullptr,
-                                                   params->max_sweeps,
+                                                   info->max_sweeps,
                                                    nullptr,
                                                    nullptr,
                                                    min(m, n),
@@ -4973,8 +4893,7 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    *lwork                      = 0;
+    *lwork = 0;
     size_t sz;
 
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4987,9 +4906,9 @@ try
                                                    nullptr,
                                                    lda,
                                                    lda * n,
-                                                   params->tolerance,
+                                                   info->tolerance,
                                                    nullptr,
-                                                   params->max_sweeps,
+                                                   info->max_sweeps,
                                                    nullptr,
                                                    nullptr,
                                                    min(m, n),
@@ -5066,10 +4985,9 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    CHECK_HIPSOLVER_ERROR(params->malloc(batch_count));
-    params->is_batched = true;
-    params->is_float   = true;
+    CHECK_HIPSOLVER_ERROR(info->setup(batch_count));
+    info->is_batched = true;
+    info->is_float   = true;
 
     // perform computation
     return rocblas2hip_status(
@@ -5081,10 +4999,10 @@ try
                                                    A,
                                                    lda,
                                                    lda * n,
-                                                   params->tolerance,
-                                                   (float*)params->residual,
-                                                   params->max_sweeps,
-                                                   params->n_sweeps,
+                                                   info->tolerance,
+                                                   (float*)info->residual,
+                                                   info->max_sweeps,
+                                                   info->n_sweeps,
                                                    S,
                                                    min(m, n),
                                                    U,
@@ -5146,10 +5064,9 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    CHECK_HIPSOLVER_ERROR(params->malloc(batch_count));
-    params->is_batched = true;
-    params->is_float   = false;
+    CHECK_HIPSOLVER_ERROR(info->setup(batch_count));
+    info->is_batched = true;
+    info->is_float   = false;
 
     // perform computation
     return rocblas2hip_status(
@@ -5161,10 +5078,10 @@ try
                                                    A,
                                                    lda,
                                                    lda * n,
-                                                   params->tolerance,
-                                                   params->residual,
-                                                   params->max_sweeps,
-                                                   params->n_sweeps,
+                                                   info->tolerance,
+                                                   info->residual,
+                                                   info->max_sweeps,
+                                                   info->n_sweeps,
                                                    S,
                                                    min(m, n),
                                                    U,
@@ -5226,10 +5143,9 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    CHECK_HIPSOLVER_ERROR(params->malloc(batch_count));
-    params->is_batched = true;
-    params->is_float   = true;
+    CHECK_HIPSOLVER_ERROR(info->setup(batch_count));
+    info->is_batched = true;
+    info->is_float   = true;
 
     // perform computation
     return rocblas2hip_status(
@@ -5241,10 +5157,10 @@ try
                                                    (rocblas_float_complex*)A,
                                                    lda,
                                                    lda * n,
-                                                   params->tolerance,
-                                                   (float*)params->residual,
-                                                   params->max_sweeps,
-                                                   params->n_sweeps,
+                                                   info->tolerance,
+                                                   (float*)info->residual,
+                                                   info->max_sweeps,
+                                                   info->n_sweeps,
                                                    S,
                                                    min(m, n),
                                                    (rocblas_float_complex*)U,
@@ -5306,10 +5222,9 @@ try
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
     }
 
-    hipsolverGesvdjInfo* params = (hipsolverGesvdjInfo*)info;
-    CHECK_HIPSOLVER_ERROR(params->malloc(batch_count));
-    params->is_batched = true;
-    params->is_float   = false;
+    CHECK_HIPSOLVER_ERROR(info->setup(batch_count));
+    info->is_batched = true;
+    info->is_float   = false;
 
     // perform computation
     return rocblas2hip_status(
@@ -5321,10 +5236,10 @@ try
                                                    (rocblas_double_complex*)A,
                                                    lda,
                                                    lda * n,
-                                                   params->tolerance,
-                                                   params->residual,
-                                                   params->max_sweeps,
-                                                   params->n_sweeps,
+                                                   info->tolerance,
+                                                   info->residual,
+                                                   info->max_sweeps,
+                                                   info->n_sweeps,
                                                    S,
                                                    min(m, n),
                                                    (rocblas_double_complex*)U,
