@@ -29,6 +29,7 @@
 #include "exceptions.hpp"
 #include "hipsolver.h"
 #include "hipsolver_conversions.hpp"
+#include "hipsolver_types.hpp"
 
 #include <cusolverRf.h>
 

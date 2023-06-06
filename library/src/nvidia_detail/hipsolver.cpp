@@ -28,6 +28,7 @@
 #include "hipsolver.h"
 #include "exceptions.hpp"
 #include "hipsolver_conversions.hpp"
+#include "hipsolver_types.hpp"
 
 #include <cusolverDn.h>
 
@@ -155,7 +156,16 @@ catch(...)
 hipsolverStatus_t hipsolverCreateSyevjInfo(hipsolverSyevjInfo_t* info)
 try
 {
-    return cuda2hip_status(cusolverDnCreateSyevjInfo((syevjInfo_t*)info));
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *info                    = new hipsolverSyevjInfo;
+    hipsolverStatus_t result = (*info)->setup();
+
+    if(result != HIPSOLVER_STATUS_SUCCESS)
+        delete *info;
+
+    return result;
 }
 catch(...)
 {
@@ -165,7 +175,13 @@ catch(...)
 hipsolverStatus_t hipsolverDestroySyevjInfo(hipsolverSyevjInfo_t info)
 try
 {
-    return cuda2hip_status(cusolverDnDestroySyevjInfo((syevjInfo_t)info));
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverStatus_t result = info->teardown();
+    delete info;
+
+    return result;
 }
 catch(...)
 {
@@ -175,7 +191,10 @@ catch(...)
 hipsolverStatus_t hipsolverXsyevjSetMaxSweeps(hipsolverSyevjInfo_t info, int max_sweeps)
 try
 {
-    return cuda2hip_status(cusolverDnXsyevjSetMaxSweeps((syevjInfo_t)info, max_sweeps));
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return cuda2hip_status(cusolverDnXsyevjSetMaxSweeps(info->info, max_sweeps));
 }
 catch(...)
 {
@@ -185,7 +204,10 @@ catch(...)
 hipsolverStatus_t hipsolverXsyevjSetSortEig(hipsolverSyevjInfo_t info, int sort_eig)
 try
 {
-    return cuda2hip_status(cusolverDnXsyevjSetSortEig((syevjInfo_t)info, sort_eig));
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return cuda2hip_status(cusolverDnXsyevjSetSortEig(info->info, sort_eig));
 }
 catch(...)
 {
@@ -195,7 +217,10 @@ catch(...)
 hipsolverStatus_t hipsolverXsyevjSetTolerance(hipsolverSyevjInfo_t info, double tolerance)
 try
 {
-    return cuda2hip_status(cusolverDnXsyevjSetTolerance((syevjInfo_t)info, tolerance));
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return cuda2hip_status(cusolverDnXsyevjSetTolerance(info->info, tolerance));
 }
 catch(...)
 {
@@ -207,8 +232,11 @@ hipsolverStatus_t hipsolverXsyevjGetResidual(hipsolverDnHandle_t  handle,
                                              double*              residual)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(
-        cusolverDnXsyevjGetResidual((cusolverDnHandle_t)handle, (syevjInfo_t)info, residual));
+        cusolverDnXsyevjGetResidual((cusolverDnHandle_t)handle, info->info, residual));
 }
 catch(...)
 {
@@ -220,8 +248,11 @@ hipsolverStatus_t hipsolverXsyevjGetSweeps(hipsolverDnHandle_t  handle,
                                            int*                 executed_sweeps)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(
-        cusolverDnXsyevjGetSweeps((cusolverDnHandle_t)handle, (syevjInfo_t)info, executed_sweeps));
+        cusolverDnXsyevjGetSweeps((cusolverDnHandle_t)handle, info->info, executed_sweeps));
 }
 catch(...)
 {
@@ -4963,9 +4994,12 @@ hipsolverStatus_t hipsolverSsyevj_bufferSize(hipsolverDnHandle_t  handle,
                                              int                  lda,
                                              float*               W,
                                              int*                 lwork,
-                                             hipsolverSyevjInfo_t params)
+                                             hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnSsyevj_bufferSize((cusolverDnHandle_t)handle,
                                                        hip2cuda_evect(jobz),
                                                        hip2cuda_fill(uplo),
@@ -4974,7 +5008,7 @@ try
                                                        lda,
                                                        W,
                                                        lwork,
-                                                       (syevjInfo_t)params));
+                                                       info->info));
 }
 catch(...)
 {
@@ -4989,9 +5023,12 @@ hipsolverStatus_t hipsolverDsyevj_bufferSize(hipsolverDnHandle_t  handle,
                                              int                  lda,
                                              double*              W,
                                              int*                 lwork,
-                                             hipsolverSyevjInfo_t params)
+                                             hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnDsyevj_bufferSize((cusolverDnHandle_t)handle,
                                                        hip2cuda_evect(jobz),
                                                        hip2cuda_fill(uplo),
@@ -5000,7 +5037,7 @@ try
                                                        lda,
                                                        W,
                                                        lwork,
-                                                       (syevjInfo_t)params));
+                                                       info->info));
 }
 catch(...)
 {
@@ -5015,9 +5052,12 @@ hipsolverStatus_t hipsolverCheevj_bufferSize(hipsolverDnHandle_t  handle,
                                              int                  lda,
                                              float*               W,
                                              int*                 lwork,
-                                             hipsolverSyevjInfo_t params)
+                                             hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnCheevj_bufferSize((cusolverDnHandle_t)handle,
                                                        hip2cuda_evect(jobz),
                                                        hip2cuda_fill(uplo),
@@ -5026,7 +5066,7 @@ try
                                                        lda,
                                                        W,
                                                        lwork,
-                                                       (syevjInfo_t)params));
+                                                       info->info));
 }
 catch(...)
 {
@@ -5041,9 +5081,12 @@ hipsolverStatus_t hipsolverZheevj_bufferSize(hipsolverDnHandle_t  handle,
                                              int                  lda,
                                              double*              W,
                                              int*                 lwork,
-                                             hipsolverSyevjInfo_t params)
+                                             hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnZheevj_bufferSize((cusolverDnHandle_t)handle,
                                                        hip2cuda_evect(jobz),
                                                        hip2cuda_fill(uplo),
@@ -5052,7 +5095,7 @@ try
                                                        lda,
                                                        W,
                                                        lwork,
-                                                       (syevjInfo_t)params));
+                                                       info->info));
 }
 catch(...)
 {
@@ -5069,9 +5112,12 @@ hipsolverStatus_t hipsolverSsyevj(hipsolverDnHandle_t  handle,
                                   float*               work,
                                   int                  lwork,
                                   int*                 devInfo,
-                                  hipsolverSyevjInfo_t params)
+                                  hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnSsyevj((cusolverDnHandle_t)handle,
                                             hip2cuda_evect(jobz),
                                             hip2cuda_fill(uplo),
@@ -5082,7 +5128,7 @@ try
                                             work,
                                             lwork,
                                             devInfo,
-                                            (syevjInfo_t)params));
+                                            info->info));
 }
 catch(...)
 {
@@ -5099,9 +5145,12 @@ hipsolverStatus_t hipsolverDsyevj(hipsolverDnHandle_t  handle,
                                   double*              work,
                                   int                  lwork,
                                   int*                 devInfo,
-                                  hipsolverSyevjInfo_t params)
+                                  hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnDsyevj((cusolverDnHandle_t)handle,
                                             hip2cuda_evect(jobz),
                                             hip2cuda_fill(uplo),
@@ -5112,7 +5161,7 @@ try
                                             work,
                                             lwork,
                                             devInfo,
-                                            (syevjInfo_t)params));
+                                            info->info));
 }
 catch(...)
 {
@@ -5129,9 +5178,12 @@ hipsolverStatus_t hipsolverCheevj(hipsolverDnHandle_t  handle,
                                   hipFloatComplex*     work,
                                   int                  lwork,
                                   int*                 devInfo,
-                                  hipsolverSyevjInfo_t params)
+                                  hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnCheevj((cusolverDnHandle_t)handle,
                                             hip2cuda_evect(jobz),
                                             hip2cuda_fill(uplo),
@@ -5142,7 +5194,7 @@ try
                                             (cuComplex*)work,
                                             lwork,
                                             devInfo,
-                                            (syevjInfo_t)params));
+                                            info->info));
 }
 catch(...)
 {
@@ -5159,9 +5211,12 @@ hipsolverStatus_t hipsolverZheevj(hipsolverDnHandle_t  handle,
                                   hipDoubleComplex*    work,
                                   int                  lwork,
                                   int*                 devInfo,
-                                  hipsolverSyevjInfo_t params)
+                                  hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnZheevj((cusolverDnHandle_t)handle,
                                             hip2cuda_evect(jobz),
                                             hip2cuda_fill(uplo),
@@ -5172,7 +5227,7 @@ try
                                             (cuDoubleComplex*)work,
                                             lwork,
                                             devInfo,
-                                            (syevjInfo_t)params));
+                                            info->info));
 }
 catch(...)
 {
@@ -5188,10 +5243,13 @@ hipsolverStatus_t hipsolverSsyevjBatched_bufferSize(hipsolverDnHandle_t  handle,
                                                     int                  lda,
                                                     float*               W,
                                                     int*                 lwork,
-                                                    hipsolverSyevjInfo_t params,
+                                                    hipsolverSyevjInfo_t info,
                                                     int                  batch_count)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnSsyevjBatched_bufferSize((cusolverDnHandle_t)handle,
                                                               hip2cuda_evect(jobz),
                                                               hip2cuda_fill(uplo),
@@ -5200,7 +5258,7 @@ try
                                                               lda,
                                                               W,
                                                               lwork,
-                                                              (syevjInfo_t)params,
+                                                              info->info,
                                                               batch_count));
 }
 catch(...)
@@ -5216,10 +5274,13 @@ hipsolverStatus_t hipsolverDsyevjBatched_bufferSize(hipsolverDnHandle_t  handle,
                                                     int                  lda,
                                                     double*              W,
                                                     int*                 lwork,
-                                                    hipsolverSyevjInfo_t params,
+                                                    hipsolverSyevjInfo_t info,
                                                     int                  batch_count)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnDsyevjBatched_bufferSize((cusolverDnHandle_t)handle,
                                                               hip2cuda_evect(jobz),
                                                               hip2cuda_fill(uplo),
@@ -5228,7 +5289,7 @@ try
                                                               lda,
                                                               W,
                                                               lwork,
-                                                              (syevjInfo_t)params,
+                                                              info->info,
                                                               batch_count));
 }
 catch(...)
@@ -5244,10 +5305,13 @@ hipsolverStatus_t hipsolverCheevjBatched_bufferSize(hipsolverDnHandle_t  handle,
                                                     int                  lda,
                                                     float*               W,
                                                     int*                 lwork,
-                                                    hipsolverSyevjInfo_t params,
+                                                    hipsolverSyevjInfo_t info,
                                                     int                  batch_count)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnCheevjBatched_bufferSize((cusolverDnHandle_t)handle,
                                                               hip2cuda_evect(jobz),
                                                               hip2cuda_fill(uplo),
@@ -5256,7 +5320,7 @@ try
                                                               lda,
                                                               W,
                                                               lwork,
-                                                              (syevjInfo_t)params,
+                                                              info->info,
                                                               batch_count));
 }
 catch(...)
@@ -5272,10 +5336,13 @@ hipsolverStatus_t hipsolverZheevjBatched_bufferSize(hipsolverDnHandle_t  handle,
                                                     int                  lda,
                                                     double*              W,
                                                     int*                 lwork,
-                                                    hipsolverSyevjInfo_t params,
+                                                    hipsolverSyevjInfo_t info,
                                                     int                  batch_count)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnZheevjBatched_bufferSize((cusolverDnHandle_t)handle,
                                                               hip2cuda_evect(jobz),
                                                               hip2cuda_fill(uplo),
@@ -5284,7 +5351,7 @@ try
                                                               lda,
                                                               W,
                                                               lwork,
-                                                              (syevjInfo_t)params,
+                                                              info->info,
                                                               batch_count));
 }
 catch(...)
@@ -5302,10 +5369,13 @@ hipsolverStatus_t hipsolverSsyevjBatched(hipsolverDnHandle_t  handle,
                                          float*               work,
                                          int                  lwork,
                                          int*                 devInfo,
-                                         hipsolverSyevjInfo_t params,
+                                         hipsolverSyevjInfo_t info,
                                          int                  batch_count)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnSsyevjBatched((cusolverDnHandle_t)handle,
                                                    hip2cuda_evect(jobz),
                                                    hip2cuda_fill(uplo),
@@ -5316,7 +5386,7 @@ try
                                                    work,
                                                    lwork,
                                                    devInfo,
-                                                   (syevjInfo_t)params,
+                                                   info->info,
                                                    batch_count));
 }
 catch(...)
@@ -5334,10 +5404,13 @@ hipsolverStatus_t hipsolverDsyevjBatched(hipsolverDnHandle_t  handle,
                                          double*              work,
                                          int                  lwork,
                                          int*                 devInfo,
-                                         hipsolverSyevjInfo_t params,
+                                         hipsolverSyevjInfo_t info,
                                          int                  batch_count)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnDsyevjBatched((cusolverDnHandle_t)handle,
                                                    hip2cuda_evect(jobz),
                                                    hip2cuda_fill(uplo),
@@ -5348,7 +5421,7 @@ try
                                                    work,
                                                    lwork,
                                                    devInfo,
-                                                   (syevjInfo_t)params,
+                                                   info->info,
                                                    batch_count));
 }
 catch(...)
@@ -5366,10 +5439,13 @@ hipsolverStatus_t hipsolverCheevjBatched(hipsolverDnHandle_t  handle,
                                          hipFloatComplex*     work,
                                          int                  lwork,
                                          int*                 devInfo,
-                                         hipsolverSyevjInfo_t params,
+                                         hipsolverSyevjInfo_t info,
                                          int                  batch_count)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnCheevjBatched((cusolverDnHandle_t)handle,
                                                    hip2cuda_evect(jobz),
                                                    hip2cuda_fill(uplo),
@@ -5380,7 +5456,7 @@ try
                                                    (cuComplex*)work,
                                                    lwork,
                                                    devInfo,
-                                                   (syevjInfo_t)params,
+                                                   info->info,
                                                    batch_count));
 }
 catch(...)
@@ -5398,10 +5474,13 @@ hipsolverStatus_t hipsolverZheevjBatched(hipsolverDnHandle_t  handle,
                                          hipDoubleComplex*    work,
                                          int                  lwork,
                                          int*                 devInfo,
-                                         hipsolverSyevjInfo_t params,
+                                         hipsolverSyevjInfo_t info,
                                          int                  batch_count)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnZheevjBatched((cusolverDnHandle_t)handle,
                                                    hip2cuda_evect(jobz),
                                                    hip2cuda_fill(uplo),
@@ -5412,7 +5491,7 @@ try
                                                    (cuDoubleComplex*)work,
                                                    lwork,
                                                    devInfo,
-                                                   (syevjInfo_t)params,
+                                                   info->info,
                                                    batch_count));
 }
 catch(...)
@@ -6042,9 +6121,12 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvj_bufferSize(hipsolverHandle_t 
                                                               int                  ldb,
                                                               float*               W,
                                                               int*                 lwork,
-                                                              hipsolverSyevjInfo_t params)
+                                                              hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnSsygvj_bufferSize((cusolverDnHandle_t)handle,
                                                        hip2cuda_eform(itype),
                                                        hip2cuda_evect(jobz),
@@ -6056,7 +6138,7 @@ try
                                                        ldb,
                                                        W,
                                                        lwork,
-                                                       (syevjInfo_t)params));
+                                                       info->info));
 }
 catch(...)
 {
@@ -6074,9 +6156,12 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvj_bufferSize(hipsolverHandle_t 
                                                               int                  ldb,
                                                               double*              W,
                                                               int*                 lwork,
-                                                              hipsolverSyevjInfo_t params)
+                                                              hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnDsygvj_bufferSize((cusolverDnHandle_t)handle,
                                                        hip2cuda_eform(itype),
                                                        hip2cuda_evect(jobz),
@@ -6088,7 +6173,7 @@ try
                                                        ldb,
                                                        W,
                                                        lwork,
-                                                       (syevjInfo_t)params));
+                                                       info->info));
 }
 catch(...)
 {
@@ -6106,9 +6191,12 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvj_bufferSize(hipsolverHandle_t 
                                                               int                  ldb,
                                                               float*               W,
                                                               int*                 lwork,
-                                                              hipsolverSyevjInfo_t params)
+                                                              hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnChegvj_bufferSize((cusolverDnHandle_t)handle,
                                                        hip2cuda_eform(itype),
                                                        hip2cuda_evect(jobz),
@@ -6120,7 +6208,7 @@ try
                                                        ldb,
                                                        W,
                                                        lwork,
-                                                       (syevjInfo_t)params));
+                                                       info->info));
 }
 catch(...)
 {
@@ -6138,9 +6226,12 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvj_bufferSize(hipsolverHandle_t 
                                                               int                  ldb,
                                                               double*              W,
                                                               int*                 lwork,
-                                                              hipsolverSyevjInfo_t params)
+                                                              hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnZhegvj_bufferSize((cusolverDnHandle_t)handle,
                                                        hip2cuda_eform(itype),
                                                        hip2cuda_evect(jobz),
@@ -6152,7 +6243,7 @@ try
                                                        ldb,
                                                        W,
                                                        lwork,
-                                                       (syevjInfo_t)params));
+                                                       info->info));
 }
 catch(...)
 {
@@ -6172,9 +6263,12 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSsygvj(hipsolverHandle_t    handle,
                                                    float*               work,
                                                    int                  lwork,
                                                    int*                 devInfo,
-                                                   hipsolverSyevjInfo_t params)
+                                                   hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnSsygvj((cusolverDnHandle_t)handle,
                                             hip2cuda_eform(itype),
                                             hip2cuda_evect(jobz),
@@ -6188,7 +6282,7 @@ try
                                             work,
                                             lwork,
                                             devInfo,
-                                            (syevjInfo_t)params));
+                                            info->info));
 }
 catch(...)
 {
@@ -6208,9 +6302,12 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDsygvj(hipsolverHandle_t    handle,
                                                    double*              work,
                                                    int                  lwork,
                                                    int*                 devInfo,
-                                                   hipsolverSyevjInfo_t params)
+                                                   hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnDsygvj((cusolverDnHandle_t)handle,
                                             hip2cuda_eform(itype),
                                             hip2cuda_evect(jobz),
@@ -6224,7 +6321,7 @@ try
                                             work,
                                             lwork,
                                             devInfo,
-                                            (syevjInfo_t)params));
+                                            info->info));
 }
 catch(...)
 {
@@ -6244,9 +6341,12 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverChegvj(hipsolverHandle_t    handle,
                                                    hipFloatComplex*     work,
                                                    int                  lwork,
                                                    int*                 devInfo,
-                                                   hipsolverSyevjInfo_t params)
+                                                   hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnChegvj((cusolverDnHandle_t)handle,
                                             hip2cuda_eform(itype),
                                             hip2cuda_evect(jobz),
@@ -6260,7 +6360,7 @@ try
                                             (cuComplex*)work,
                                             lwork,
                                             devInfo,
-                                            (syevjInfo_t)params));
+                                            info->info));
 }
 catch(...)
 {
@@ -6280,9 +6380,12 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverZhegvj(hipsolverHandle_t    handle,
                                                    hipDoubleComplex*    work,
                                                    int                  lwork,
                                                    int*                 devInfo,
-                                                   hipsolverSyevjInfo_t params)
+                                                   hipsolverSyevjInfo_t info)
 try
 {
+    if(!info)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnZhegvj((cusolverDnHandle_t)handle,
                                             hip2cuda_eform(itype),
                                             hip2cuda_evect(jobz),
@@ -6296,7 +6399,7 @@ try
                                             (cuDoubleComplex*)work,
                                             lwork,
                                             devInfo,
-                                            (syevjInfo_t)params));
+                                            info->info));
 }
 catch(...)
 {

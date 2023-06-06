@@ -30,6 +30,7 @@
 #include "exceptions.hpp"
 #include "hipsolver.h"
 #include "hipsolver_conversions.hpp"
+#include "hipsolver_types.hpp"
 
 #include "rocblas/internal/rocblas_device_malloc.hpp"
 #include "rocblas/rocblas.h"

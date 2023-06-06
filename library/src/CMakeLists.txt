@@ -43,6 +43,7 @@ prepend_path( ".." hipsolver_headers_public relative_hipsolver_headers_public )
 if( NOT USE_CUDA )
   set( hipsolver_source
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_conversions.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_types.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_compat.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_refactor.cpp"
@@ -51,6 +52,7 @@ if( NOT USE_CUDA )
 else( )
   set( hipsolver_source
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_conversions.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_types.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_compat.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_refactor.cpp"
