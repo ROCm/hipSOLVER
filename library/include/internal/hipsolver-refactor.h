@@ -7,7 +7,7 @@
 
 #include "hipsolver-types.h"
 
-typedef void* hipsolverRfHandle_t;
+typedef struct hipsolverRfHandle* hipsolverRfHandle_t;
 
 #ifdef __cplusplus
 extern "C" {

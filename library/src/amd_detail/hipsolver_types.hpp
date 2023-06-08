@@ -27,6 +27,64 @@
 #include "rocblas/rocblas.h"
 #include "rocsolver/rocsolver.h"
 
+struct hipsolverRfHandle
+{
+    hipsolverRfResetValuesFastMode_t fast_mode;
+    hipsolverRfMatrixFormat_t        matrix_format;
+    hipsolverRfUnitDiagonal_t        diag_format;
+    hipsolverRfNumericBoostReport_t  numeric_boost;
+
+    hipsolverRfFactorization_t   fact_alg;
+    hipsolverRfTriangularSolve_t solve_alg;
+
+    rocblas_handle   handle;
+    rocsolver_rfinfo rfinfo;
+
+    rocblas_int n, nnzA, nnzL, nnzU, nnzLU, batch_count;
+    double      effective_zero;
+    double      boost_val;
+
+    rocblas_int* dPtrA;
+    rocblas_int* dIndA;
+    double*      dValA;
+
+    rocblas_int *dPtrL, *hPtrL;
+    rocblas_int *dIndL, *hIndL;
+    double *     dValL, *hValL;
+
+    rocblas_int *dPtrU, *hPtrU;
+    rocblas_int *dIndU, *hIndU;
+    double *     dValU, *hValU;
+
+    rocblas_int *dPtrLU, *hPtrLU;
+    rocblas_int *dIndLU, *hIndLU;
+    double *     dValLU, *hValLU;
+
+    rocblas_int* dP;
+    rocblas_int* dQ;
+
+    char *d_buffer, *h_buffer;
+
+    // Constructor
+    explicit hipsolverRfHandle();
+
+    hipsolverRfHandle(const hipsolverRfHandle&) = delete;
+
+    hipsolverRfHandle(hipsolverRfHandle&&) = delete;
+
+    hipsolverRfHandle& operator=(const hipsolverRfHandle&) = delete;
+
+    hipsolverRfHandle& operator=(hipsolverRfHandle&&) = delete;
+
+    // Allocate resources
+    hipsolverStatus_t setup();
+    hipsolverStatus_t teardown();
+
+    hipsolverStatus_t malloc_device(int n, int nnzA, int nnzL, int nnzU);
+    hipsolverStatus_t malloc_host();
+    hipsolverStatus_t free_mem();
+};
+
 struct hipsolverGesvdjInfo
 {
     int     capacity;

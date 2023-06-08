@@ -24,6 +24,18 @@
 #include "hipsolver_types.hpp"
 #include "hipsolver_conversions.hpp"
 
+/******************** RF HANDLE ********************/
+hipsolverRfHandle::hipsolverRfHandle() {}
+
+hipsolverStatus_t hipsolverRfHandle::setup()
+{
+    return cuda2hip_status(cusolverRfCreate(&handle));
+}
+hipsolverStatus_t hipsolverRfHandle::teardown()
+{
+    return cuda2hip_status(cusolverRfDestroy(handle));
+}
+
 /******************** GESVDJ PARAMS ********************/
 hipsolverGesvdjInfo::hipsolverGesvdjInfo() {}
 
