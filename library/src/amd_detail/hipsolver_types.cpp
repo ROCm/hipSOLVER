@@ -24,6 +24,21 @@
 #include "hipsolver_types.hpp"
 #include "hipsolver_conversions.hpp"
 
+/******************** DN HANDLE ********************/
+hipsolverHandle::hipsolverHandle()
+    : handle(nullptr)
+{
+}
+
+hipsolverStatus_t hipsolverHandle::setup()
+{
+    return rocblas2hip_status(rocblas_create_handle(&handle));
+}
+hipsolverStatus_t hipsolverHandle::teardown()
+{
+    return rocblas2hip_status(rocblas_destroy_handle(handle));
+}
+
 /******************** RF HANDLE ********************/
 hipsolverRfHandle::hipsolverRfHandle()
     : fast_mode(HIPSOLVERRF_RESET_VALUES_FAST_MODE_OFF)

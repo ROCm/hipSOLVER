@@ -27,6 +27,26 @@
 #include "rocblas/rocblas.h"
 #include "rocsolver/rocsolver.h"
 
+struct hipsolverHandle
+{
+    rocblas_handle handle;
+
+    // Constructor
+    hipsolverHandle();
+
+    hipsolverHandle(const hipsolverHandle&) = delete;
+
+    hipsolverHandle(hipsolverHandle&&) = delete;
+
+    hipsolverHandle& operator=(const hipsolverHandle&) = delete;
+
+    hipsolverHandle& operator=(hipsolverHandle&&) = delete;
+
+    // Allocate resources
+    hipsolverStatus_t setup();
+    hipsolverStatus_t teardown();
+};
+
 struct hipsolverRfHandle
 {
     hipsolverRfResetValuesFastMode_t fast_mode;

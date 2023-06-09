@@ -27,6 +27,26 @@
 #include <cusolverDn.h>
 #include <cusolverRf.h>
 
+struct hipsolverHandle
+{
+    cusolverDnHandle_t handle;
+
+    // Constructor
+    hipsolverHandle();
+
+    hipsolverHandle(const hipsolverHandle&) = delete;
+
+    hipsolverHandle(hipsolverHandle&&) = delete;
+
+    hipsolverHandle& operator=(const hipsolverHandle&) = delete;
+
+    hipsolverHandle& operator=(hipsolverHandle&&) = delete;
+
+    // Allocate resources
+    hipsolverStatus_t setup();
+    hipsolverStatus_t teardown();
+};
+
 struct hipsolverRfHandle
 {
     cusolverRfHandle_t handle;

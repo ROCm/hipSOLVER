@@ -11,7 +11,7 @@
 
 #include <hip/hip_complex.h>
 
-typedef void* hipsolverHandle_t;
+typedef struct hipsolverHandle* hipsolverHandle_t;
 
 typedef struct hipsolverGesvdjInfo* hipsolverGesvdjInfo_t;
 typedef struct hipsolverSyevjInfo*  hipsolverSyevjInfo_t;

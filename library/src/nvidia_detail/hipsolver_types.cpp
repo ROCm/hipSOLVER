@@ -24,6 +24,18 @@
 #include "hipsolver_types.hpp"
 #include "hipsolver_conversions.hpp"
 
+/******************** DN HANDLE ********************/
+hipsolverHandle::hipsolverHandle() {}
+
+hipsolverStatus_t hipsolverHandle::setup()
+{
+    return cuda2hip_status(cusolverDnCreate(&handle));
+}
+hipsolverStatus_t hipsolverHandle::teardown()
+{
+    return cuda2hip_status(cusolverDnDestroy(handle));
+}
+
 /******************** RF HANDLE ********************/
 hipsolverRfHandle::hipsolverRfHandle() {}
 
