@@ -79,6 +79,7 @@ if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
     $<$<PLATFORM_ID:Linux>:stdc++fs>
   )
   set(common_source_files
+    common/clients_utility.cpp
     common/hipsolver_datatype2string.cpp
     common/lapack_host_reference.cpp
     common/utility.cpp

@@ -586,13 +586,6 @@ extern "C" {
 #endif
 
 /* ============================================================================================ */
-/*  device query and print out their ID and name */
-int query_device_property();
-
-/*  set current device to device_id */
-void set_device(int device_id);
-
-/* ============================================================================================ */
 /*  timing: HIP only provides very limited timers function clock() and not general;
             hipsolver sync CPU and device and use more accurate CPU timer*/
 
