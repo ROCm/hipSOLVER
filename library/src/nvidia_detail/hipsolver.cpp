@@ -45,7 +45,10 @@ try
     hipsolverStatus_t result = (*handle)->setup();
 
     if(result != HIPSOLVER_STATUS_SUCCESS)
+    {
         delete *handle;
+        *handle = nullptr;
+    }
 
     return result;
 }
@@ -107,7 +110,10 @@ try
     hipsolverStatus_t result = (*info)->setup();
 
     if(result != HIPSOLVER_STATUS_SUCCESS)
+    {
         delete *info;
+        *info = nullptr;
+    }
 
     return result;
 }
@@ -212,7 +218,10 @@ try
     hipsolverStatus_t result = (*info)->setup();
 
     if(result != HIPSOLVER_STATUS_SUCCESS)
+    {
         delete *info;
+        *info = nullptr;
+    }
 
     return result;
 }

@@ -54,7 +54,10 @@ try
     hipsolverStatus_t result = (*handle)->setup();
 
     if(result != HIPSOLVER_STATUS_SUCCESS)
+    {
         delete *handle;
+        *handle = nullptr;
+    }
 
     return result;
 }
