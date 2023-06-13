@@ -7,6 +7,8 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ### Added
 ### Optimized
 ### Changed
+- hipsolverHandle_t, hipsolverRfHandle_t, hipsolverGesvdjInfo_t, and hipsolverSyevjInfo_t are now opaque types instead of void pointers.
+
 ### Deprecated
 ### Removed
 ### Fixed
