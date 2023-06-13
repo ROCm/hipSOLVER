@@ -39,10 +39,8 @@ void csrrf_refactlu_checkBadArgs(hipsolverRfHandle_t handle,
                                  int*                pivP,
                                  int*                pivQ)
 {
-#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // handle
     EXPECT_ROCBLAS_STATUS(hipsolverRfRefactor(nullptr), HIPSOLVER_STATUS_NOT_INITIALIZED);
-#endif
 }
 
 template <typename T>

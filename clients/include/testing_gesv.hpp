@@ -46,7 +46,6 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
                        U                       dInfo,
                        const int               bc)
 {
-#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // handle
     EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
                                          false,
@@ -74,6 +73,7 @@ void gesv_checkBadArgs(const hipsolverHandle_t handle,
     // values
     // N/A
 
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // pointers
     EXPECT_ROCBLAS_STATUS(hipsolver_gesv(API,
                                          false,
