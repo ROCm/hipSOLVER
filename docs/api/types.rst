@@ -19,6 +19,12 @@ hipsolverHandle_t
 --------------------
 .. doxygentypedef:: hipsolverHandle_t
 
+.. _gesvdjinfo_t:
+
+hipsolverGesvdjInfo_t
+----------------------
+.. doxygentypedef:: hipsolverGesvdjInfo_t
+
 .. _syevjinfo_t:
 
 hipsolverSyevjInfo_t

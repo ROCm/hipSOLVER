@@ -20,7 +20,7 @@ hipsolverDnHandle_t
 
 hipsolverGesvdjInfo_t
 ----------------------
-.. doxygentypedef:: hipsolverGesvdjInfo_t
+See :ref:`hipsolverGesvdjInfo_t <gesvdjinfo_t>`.
 
 hipsolverSyevjInfo_t
 --------------------
