@@ -33,25 +33,37 @@ typedef enum
     HIPSOLVER_STATUS_ZERO_PIVOT        = 12,
 } hipsolverStatus_t;
 
-// set the values of enum constants to be the same as those used in cblas
-typedef enum
-{
-    HIPSOLVER_OP_N = 111,
-    HIPSOLVER_OP_T = 112,
-    HIPSOLVER_OP_C = 113,
-} hipsolverOperation_t;
+#ifndef HIPBLAS_SHARED_ENUMS
+#define HIPBLAS_SHARED_ENUMS
 
 typedef enum
 {
-    HIPSOLVER_FILL_MODE_UPPER = 121,
-    HIPSOLVER_FILL_MODE_LOWER = 122,
-} hipsolverFillMode_t;
+    HIPBLAS_OP_N = 111,
+    HIPBLAS_OP_T = 112,
+    HIPBLAS_OP_C = 113,
+} hipblasOperation_t;
 
 typedef enum
 {
-    HIPSOLVER_SIDE_LEFT  = 141,
-    HIPSOLVER_SIDE_RIGHT = 142,
-} hipsolverSideMode_t;
+    HIPBLAS_FILL_MODE_UPPER = 121,
+    HIPBLAS_FILL_MODE_LOWER = 122,
+    HIPBLAS_FILL_MODE_FULL  = 123,
+} hipblasFillMode_t;
+
+typedef enum
+{
+    HIPBLAS_DIAG_NON_UNIT = 131,
+    HIPBLAS_DIAG_UNIT     = 132,
+} hipblasDiagType_t;
+
+typedef enum
+{
+    HIPBLAS_SIDE_LEFT  = 141,
+    HIPBLAS_SIDE_RIGHT = 142,
+    HIPBLAS_SIDE_BOTH  = 143,
+} hipblasSideMode_t;
+
+#endif // HIPBLAS_SHARED_ENUMS
 
 typedef enum
 {
@@ -65,5 +77,39 @@ typedef enum
     HIPSOLVER_EIG_TYPE_2 = 212,
     HIPSOLVER_EIG_TYPE_3 = 213,
 } hipsolverEigType_t;
+
+// Aliases for hipBLAS enums
+typedef hipblasOperation_t hipsolverOperation_t;
+#define HIPSOLVER_OP_N HIPBLAS_OP_N
+#define HIPSOLVER_OP_T HIPBLAS_OP_T
+#define HIPSOLVER_OP_C HIPBLAS_OP_C
+
+typedef hipblasFillMode_t hipsolverFillMode_t;
+#define HIPSOLVER_FILL_MODE_UPPER HIPBLAS_FILL_MODE_UPPER
+#define HIPSOLVER_FILL_MODE_LOWER HIPBLAS_FILL_MODE_LOWER
+
+typedef hipblasSideMode_t hipsolverSideMode_t;
+#define HIPSOLVER_SIDE_LEFT HIPBLAS_SIDE_LEFT
+#define HIPSOLVER_SIDE_RIGHT HIPBLAS_SIDE_RIGHT
+
+// Ensure hipBLAS enums have expected values
+#if __cplusplus >= 201103L
+
+static_assert(HIPBLAS_OP_N == 111);
+static_assert(HIPBLAS_OP_T == 112);
+static_assert(HIPBLAS_OP_C == 113);
+
+static_assert(HIPBLAS_FILL_MODE_UPPER == 121);
+static_assert(HIPBLAS_FILL_MODE_LOWER == 122);
+static_assert(HIPBLAS_FILL_MODE_FULL == 123);
+
+static_assert(HIPBLAS_DIAG_NON_UNIT == 131);
+static_assert(HIPBLAS_DIAG_UNIT == 132);
+
+static_assert(HIPBLAS_SIDE_LEFT == 141);
+static_assert(HIPBLAS_SIDE_RIGHT == 142);
+static_assert(HIPBLAS_SIDE_BOTH == 143);
+
+#endif // __cplusplus
 
 #endif // HIPSOLVER_TYPES_H
