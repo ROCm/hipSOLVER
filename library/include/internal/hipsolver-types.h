@@ -79,15 +79,25 @@ typedef enum
 } hipsolverEigType_t;
 
 // Aliases for hipBLAS enums
+
+/*! \brief Alias of hipblasOperation_t. HIPSOLVER_OP_N, HIPSOLVER_OP_T, and HIPSOLVER_OP_C
+ *  are provided as equivalents to HIPBLAS_OP_N, HIPBLAS_OP_T, and HIPBLAS_OP_C.
+ ********************************************************************************/
 typedef hipblasOperation_t hipsolverOperation_t;
 #define HIPSOLVER_OP_N HIPBLAS_OP_N
 #define HIPSOLVER_OP_T HIPBLAS_OP_T
 #define HIPSOLVER_OP_C HIPBLAS_OP_C
 
+/*! \brief Alias of hipblasFillMode_t. HIPSOLVER_FILL_MODE_UPPER and HIPSOLVER_FILL_MODE_LOWER
+ *  are provided as equivalents to HIPBLAS_FILL_MODE_UPPER and HIPBLAS_FILL_MODE_LOWER.
+ ********************************************************************************/
 typedef hipblasFillMode_t hipsolverFillMode_t;
 #define HIPSOLVER_FILL_MODE_UPPER HIPBLAS_FILL_MODE_UPPER
 #define HIPSOLVER_FILL_MODE_LOWER HIPBLAS_FILL_MODE_LOWER
 
+/*! \brief Alias of hipblasSideMode_t. HIPSOLVER_SIDE_LEFT and HIPSOLVER_SIDE_RIGHT
+ *  are provided as equivalents to HIPBLAS_SIDE_LEFT and HIPBLAS_SIDE_RIGHT.
+ ********************************************************************************/
 typedef hipblasSideMode_t hipsolverSideMode_t;
 #define HIPSOLVER_SIDE_LEFT HIPBLAS_SIDE_LEFT
 #define HIPSOLVER_SIDE_RIGHT HIPBLAS_SIDE_RIGHT

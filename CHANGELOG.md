@@ -6,6 +6,8 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ### Added
 ### Optimized
 ### Changed
+- Types hipsolverOperation_t, hipsolverFillMode_t, and hipsolverSideMode_t are now aliases of hipblasOperation_t, hipblasFillMode_t, and hipblasSideMode_t.
+
 ### Deprecated
 ### Removed
 ### Fixed
