@@ -971,7 +971,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1008,7 +1008,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1045,7 +1045,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1082,7 +1082,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1253,7 +1253,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1283,7 +1283,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1319,7 +1319,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1355,7 +1355,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1523,7 +1523,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1558,7 +1558,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1593,7 +1593,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1628,7 +1628,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1797,7 +1797,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1846,7 +1846,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1895,7 +1895,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -1944,7 +1944,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -2170,7 +2170,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -2219,7 +2219,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -2268,7 +2268,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -2317,7 +2317,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -2532,7 +2532,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -2561,7 +2561,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -2590,7 +2590,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -2619,7 +2619,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -2801,7 +2801,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -2855,7 +2855,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -2909,7 +2909,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -2963,7 +2963,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -3213,7 +3213,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -3243,7 +3243,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -3273,7 +3273,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -3303,7 +3303,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -3465,7 +3465,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -3513,7 +3513,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -3561,7 +3561,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -3609,7 +3609,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -3829,7 +3829,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -3880,7 +3880,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -3931,7 +3931,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -3982,7 +3982,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -5432,7 +5432,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -5526,7 +5526,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -5620,7 +5620,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -5714,7 +5714,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -6410,7 +6410,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -6441,7 +6441,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -6472,7 +6472,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -6503,7 +6503,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -6671,7 +6671,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -6716,7 +6716,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -6761,7 +6761,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -6806,7 +6806,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -6990,7 +6990,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7020,7 +7020,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7054,7 +7054,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7088,7 +7088,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7240,7 +7240,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7275,7 +7275,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7310,7 +7310,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7345,7 +7345,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7498,7 +7498,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7528,7 +7528,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7562,7 +7562,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7596,7 +7596,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7750,7 +7750,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7787,7 +7787,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7824,7 +7824,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -7861,7 +7861,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -8040,7 +8040,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -8085,7 +8085,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -8130,7 +8130,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -8175,7 +8175,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -8365,7 +8365,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -8416,7 +8416,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -8467,7 +8467,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -8518,7 +8518,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -8776,7 +8776,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -8832,7 +8832,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -8888,7 +8888,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -8944,7 +8944,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -10048,7 +10048,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -10105,7 +10105,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -10162,7 +10162,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -10219,7 +10219,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -10507,7 +10507,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -10569,7 +10569,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -10631,7 +10631,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -10693,7 +10693,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -11477,7 +11477,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -11520,7 +11520,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -11563,7 +11563,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -11606,7 +11606,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -11783,7 +11783,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -11813,7 +11813,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -11843,7 +11843,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;
@@ -11873,7 +11873,7 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(lwork == nullptr)
+    if(!lwork)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     *lwork = 0;

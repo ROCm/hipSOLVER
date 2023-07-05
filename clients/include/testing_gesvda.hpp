@@ -48,7 +48,6 @@ void gesvda_checkBadArgs(const hipsolverHandle_t handle,
                          double*                 hRnrmF,
                          const int               bc)
 {
-#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // handle
     EXPECT_ROCBLAS_STATUS(hipsolver_gesvda(API,
                                            STRIDED,
@@ -101,6 +100,7 @@ void gesvda_checkBadArgs(const hipsolverHandle_t handle,
                                            bc),
                           HIPSOLVER_STATUS_INVALID_ENUM);
 
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // pointers
     EXPECT_ROCBLAS_STATUS(hipsolver_gesvda(API,
                                            STRIDED,
