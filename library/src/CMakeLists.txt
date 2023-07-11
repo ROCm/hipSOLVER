@@ -46,6 +46,7 @@ if( NOT USE_CUDA )
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_compat.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_refactor.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_sparse.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
   )
 else( )
@@ -54,6 +55,7 @@ else( )
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_compat.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_refactor.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_sparse.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
   )
 endif( )
