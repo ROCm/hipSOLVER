@@ -24,14 +24,14 @@ Porting cuSOLVER applications to hipSOLVER
 
 hipSOLVER is designed to make it easy for users of cuSOLVER to port their existing applications to hipSOLVER, and provides two
 separate but interchangeable API patterns in order to facilitate a two-stage transition process. Users are encouraged to start with
-hipSOLVER's compatibility APIs, which use the :ref:`hipsolverDn <library_compat>` and :ref:`hipsolverRf <library_refactor>` prefixes
-and have method signatures that are fully consistent with cuSOLVER functions.
+hipSOLVER's compatibility APIs, which use the :ref:`hipsolverDn <library_compat>`, :ref:`hipsolverSp <library_sparse>`, and
+:ref:`hipsolverRf <library_refactor>` prefixes and have method signatures that are fully consistent with cuSOLVER functions.
 
 However, the compatibility APIs may introduce some performance drawbacks, especially when using the rocSOLVER backend. So, as a second
 stage, it is recommended to begin the switch to hipSOLVER's :ref:`regular API <library_api>`, which uses the `hipsolver` prefix and
 introduces minor adjustments to the API in order to get the best performance out of the rocSOLVER backend. In most cases, switching to
-the regular API is as simple as removing `Dn` from the `hipsolverDn` prefix (methods with the `hipsolverRf` prefix are not currently
-supported by the regular API).
+the regular API is as simple as removing `Dn` from the `hipsolverDn` prefix (methods with the `hipsolverSp` and `hipsolverRf` prefixes
+are not currently supported by the regular API).
 
 No matter which API is used, a hipSOLVER application can be executed, without modifications to the code, in systems with cuSOLVER or
 rocSOLVER installed. However, using the regular API ensures the best performance out of both backends.
@@ -40,11 +40,10 @@ rocSOLVER installed. However, using the regular API ensures the best performance
 .. _compat_api_differences:
 
 Some considerations when using the hipsolverDn API
-===============================================================
+====================================================
 
 The hipsolverDn API is intended as a 1:1 translation of the cusolverDn API, but not all functionality is equally supported in
 rocSOLVER. Keep in mind the following considerations when using this compatibility API.
-
 
 Different minimum array lengths
 --------------------------------
@@ -53,7 +52,6 @@ Different minimum array lengths
 
   * :ref:`hipsolverDnXgesvdaStridedBatched <compat_gesvda_strided_batched>` requires `U` to be of length `ldu * min(m,n)` at
     minimum, and `S` to be of length `min(m,n)` at minimum.
-
 
 Arguments not referenced by rocSOLVER
 --------------------------------------
@@ -69,11 +67,10 @@ Arguments not referenced by rocSOLVER
 - The `hRnrmF` argument of :ref:`hipsolverDnXgesvdaStridedBatched <compat_gesvda_strided_batched>` is not referenced by the
   rocSOLVER backend.
 
+.. _compat_performance:
 
-.. _porting_issues:
-
-Possible performance implications of the compatibility API
-------------------------------------------------------------
+Performance implications of the hipsolverDn API
+------------------------------------------------
 
 - To calculate the workspace required by function `gesvd` in rocSOLVER, the values of `jobu` and `jobv` are needed, however,
   the function :ref:`hipsolverDnXgesvd_bufferSize <compat_gesvd_bufferSize>` does not accept these arguments. So, when using
@@ -102,14 +99,22 @@ Possible performance implications of the compatibility API
   cuSOLVER, requiring an additional function call and extra workspace.
 
 
+.. _sparse_api_differences:
+
+Some considerations when using the hipsolverSp API
+====================================================
+
+The hipsolverSp API is intended as a 1:1 translation of the cusolverSp API, but not all functionality is equally supported in
+rocSOLVER. Keep in mind the following considerations when using this compatibility API.
+
+
 .. _refactor_api_differences:
 
 Some considerations when using the hipsolverRf API
-===============================================================
+====================================================
 
 The hipsolverRf API is intended as a 1:1 translation of the cusolverRf API, but not all functionality is equally supported in
 rocSOLVER. Keep in mind the following considerations when using this compatibility API.
-
 
 Unsupported methods
 --------------------
@@ -140,7 +145,6 @@ Some considerations when using the regular hipSOLVER API
 
 hipSOLVER's regular API is similar to cuSOLVER; however, due to differences in the implementation and design between
 cuSOLVER and rocSOLVER, some minor adjustments were introduced to ensure the best performance out of both backends.
-
 
 Different signatures and additional API methods
 ------------------------------------------------
@@ -185,7 +189,6 @@ Different signatures and additional API methods
   (These methods return `lwork = 0` when using the cuSOLVER backend, as the corresponding functions
   in cuSOLVER do not need workspace).
 
-
 Arguments not referenced by rocSOLVER
 --------------------------------------
 
@@ -196,7 +199,6 @@ Arguments not referenced by rocSOLVER
 
 - The `niters` argument of :ref:`hipsolverXXgels <gels>` and :ref:`hipsolverXXgesv <gesv>` is not referenced by the rocSOLVER
   backend; there is no iterative refinement currently implemented in rocSOLVER.
-
 
 .. _mem_model:
 
@@ -214,7 +216,6 @@ user-provided and automatically allocated workspaces.
 .. warning::
     This feature should not be used with the cuSOLVER backend; hipSOLVER does not guarantee a defined behavior when passing
     a null workspace to cuSOLVER functions that require one.
-
 
 Using rocSOLVER's in-place functions
 --------------------------------------
