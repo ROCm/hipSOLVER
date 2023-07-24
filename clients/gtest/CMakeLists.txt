@@ -21,6 +21,7 @@
 # ########################################################################
 
 find_package( GTest REQUIRED )
+find_package( hipblas )
 
 set(hipsolverDn_test_source
   hipsolver_gtest_main.cpp
@@ -87,6 +88,10 @@ target_link_libraries( hipsolver-test PRIVATE
   Threads::Threads
   roc::hipsolver
 )
+if( hipblas_FOUND )
+  target_link_libraries( hipsolver-test PRIVATE roc::hipblas )
+  target_sources( hipsolver-test PRIVATE hipblas_include1_gtest.cpp hipblas_include2_gtest.cpp )
+endif( )
 if( UNIX )
   target_link_libraries( hipsolver-test PRIVATE hipsolver_fortran_client )
 endif( )
