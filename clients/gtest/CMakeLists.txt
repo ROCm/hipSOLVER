@@ -33,6 +33,15 @@ if( BUILD_HIPBLAS_TESTS )
   endif( )
 endif( )
 
+if( NOT TARGET hipsparse )
+  if( CUSTOM_HIPSPARSE )
+    set ( ENV{hipsparse_DIR} ${CUSTOM_HIPSPARSE})
+    find_package( hipsparse CONFIG NO_CMAKE_PATH )
+  else( )
+    find_package( hipsparse CONFIG PATHS ${ROCM_PATH} /opt/rocm )
+  endif( )
+endif( )
+
 set(hipsolverDn_test_source
   hipsolver_gtest_main.cpp
   getrs_gtest.cpp
@@ -62,15 +71,16 @@ set(hipsolverDn_test_source
   ormtr_unmtr_gtest.cpp
 )
 
+set(hipsolverSp_test_source
+  csrlsvchol_gtest.cpp
+)
+
 set(hipsolverRf_test_source
   csrrf_refactlu_gtest.cpp
   csrrf_solve_gtest.cpp
 )
 
 add_executable( hipsolver-test ${hipsolverDn_test_source} ${hipsolverRf_test_source} )
-if( UNIX )
-  target_sources( hipsolver-test PRIVATE ${hipsolver_f90_source} )
-endif( )
 
 target_include_directories( hipsolver-test
   PRIVATE
@@ -102,8 +112,13 @@ if( BUILD_HIPBLAS_TESTS )
   target_link_libraries( hipsolver-test PRIVATE roc::hipblas )
   target_sources( hipsolver-test PRIVATE hipblas_include1_gtest.cpp hipblas_include2_gtest.cpp )
 endif( )
+if( hipsparse_FOUND )
+  target_link_libraries( hipsolver-test PRIVATE roc::hipsparse )
+  target_sources( hipsolver-test PRIVATE ${hipsolverSp_test_source} )
+endif( )
 if( UNIX )
   target_link_libraries( hipsolver-test PRIVATE hipsolver_fortran_client )
+  target_sources( hipsolver-test PRIVATE ${hipsolver_f90_source} )
 endif( )
 
 # need mf16c flag for float->half convertion

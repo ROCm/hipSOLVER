@@ -48,6 +48,7 @@ function display_help()
   echo "    [--hipblas-path] Set specific path to custom built hipblas"
   echo "    [-s|--rocsolver] Set specific rocsolver version"
   echo "    [--rocsolver-path] Set specific path to custom built rocsolver"
+  echo "    [--hipsparse-path] Set specific path to custom built hipsparse"
   echo "    [--static] Create static library instead of shared library"
   echo "    [--codecoverage] Build with code coverage profiling enabled, excluding release mode."
   echo "    [--address-sanitizer] Build with address sanitizer enabled. Uses hipcc to compile"
@@ -348,7 +349,7 @@ declare -a cmake_client_options
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,custom-target:,docs,address-sanitizer,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,hipsparse-path:,custom-target:,docs,address-sanitizer,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -442,6 +443,9 @@ while true; do
     --rocsolver-path)
         rocsolver_path=${2}
         shift 2 ;;
+    --hipsparse-path)
+        hipsparse_path=${2}
+        shift 2 ;;
     --prefix)
         install_prefix=${2}
         shift 2 ;;
@@ -492,6 +496,9 @@ if [[ -n "${hipblas_path+x}" ]]; then
 fi
 if [[ -n "${rocsolver_path+x}" ]]; then
   rocsolver_path="$(make_absolute_path "${rocsolver_path}")"
+fi
+if [[ -n "${hipsparse_path+x}" ]]; then
+  hipsparse_path="$(make_absolute_path "${hipsparse_path}")"
 fi
 
 # Default cmake executable is called cmake
@@ -599,6 +606,11 @@ fi
   # custom rocsolver
   if [[ ${rocsolver_path+foo} ]]; then
     cmake_common_options+=("-DCUSTOM_ROCSOLVER=${rocsolver_path}")
+  fi
+
+  # custom hipsparse
+  if [[ ${hipsparse_path+foo} ]]; then
+    cmake_common_options+=("-DCUSTOM_HIPSPARSE=${hipsparse_path}")
   fi
 
   # code coverage

@@ -182,6 +182,39 @@ public:
     }
 };
 
+class hipsolverSp_local_handle
+{
+    hipsolverSpHandle_t m_handle;
+
+public:
+    hipsolverSp_local_handle()
+    {
+        hipsolverSpCreate(&m_handle);
+    }
+    ~hipsolverSp_local_handle()
+    {
+        hipsolverSpDestroy(m_handle);
+    }
+
+    hipsolverSp_local_handle(const hipsolverSp_local_handle&) = delete;
+
+    hipsolverSp_local_handle(hipsolverSp_local_handle&&) = delete;
+
+    hipsolverSp_local_handle& operator=(const hipsolverSp_local_handle&) = delete;
+
+    hipsolverSp_local_handle& operator=(hipsolverSp_local_handle&&) = delete;
+
+    // Allow hipsolverSp_local_handle to be used anywhere hipsolverSpHandle_t is expected
+    operator hipsolverSpHandle_t&()
+    {
+        return m_handle;
+    }
+    operator const hipsolverSpHandle_t&() const
+    {
+        return m_handle;
+    }
+};
+
 /* ============================================================================================
  */
 /*! \brief  local gesvdj params which is automatically created and destroyed  */
