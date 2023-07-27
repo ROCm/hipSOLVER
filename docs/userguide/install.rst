@@ -66,6 +66,7 @@ The hipSOLVER samples have no external dependencies, but our unit test and bench
 1. `lapack <https://github.com/Reference-LAPACK/lapack-release>`_ (lapack itself brings a dependency on a fortran compiler)
 2. `googletest <https://github.com/google/googletest>`_
 3. `hipBLAS <https://github.com/ROCmSoftwarePlatform/hipBLAS>`_ (optional)
+4. `hipSPARSE <https://github.com/ROCmSoftwarePlatform/hipSPARSE>`_ (optional)
 
 Unfortunately, many distros do not provide a googletest package with pre-compiled libraries, and the
 lapack packages do not have the necessary cmake config files for cmake to configure linking the cblas library. hipSOLVER provides a cmake script that builds
@@ -79,12 +80,13 @@ the ``CMAKE_PREFIX_PATH`` definition. The following is a sequence of steps to bu
     cmake -DBUILD_BOOST=OFF <HIPSOLVER_SOURCE_PATH>/deps   #assuming boost is installed through package manager as above
     make -j$(nproc) install
 
-hipBLAS, an optional dependency, can be installed similarly to hipSOLVER. For example, hipBLAS's install script can be invoked to build and install the
-library via:
+hipBLAS and hipSPARSE, both optional dependencies, can be installed similarly to hipSOLVER. For example, the install scripts for hipBLAS and hipSPARSE can each
+be invoked to build and install the respective library via:
 
 * ``./install.sh -i``
 
-More details can be found in the `hipBLAS documentation <https://hipblas.readthedocs.io/en/latest/install.html>`_.
+More details can be found in the `hipBLAS documentation <https://hipblas.readthedocs.io/en/latest/install.html>`_ and the `hipSPARSE documentation
+<https://github.com/ROCmSoftwarePlatform/hipSPARSE/wiki/Build>`_.
 
 Library and clients
 --------------------
