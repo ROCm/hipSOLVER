@@ -17,7 +17,7 @@ def runCI =
 
     //customize for project
     prj.paths.build_command = buildCommand
-    prj.libraryDependencies = []
+    prj.libraryDependencies = ['hipBLAS']
     prj.defaults.ccache = true
 
     // Define test architectures, optional rocm version argument is available
