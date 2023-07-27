@@ -4,6 +4,8 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ## (Unreleased) hipSOLVER
 ### Added
+- Added hipBLAS as an optional dependency to hipsolver-test. Some tests will only be run if built with hipBLAS installed on the system.
+
 ### Optimized
 ### Changed
 - Types hipsolverOperation_t, hipsolverFillMode_t, and hipsolverSideMode_t are now aliases of hipblasOperation_t, hipblasFillMode_t, and hipblasSideMode_t.

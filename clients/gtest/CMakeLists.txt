@@ -21,7 +21,7 @@
 # ########################################################################
 
 find_package( GTest REQUIRED )
-find_package( hipblas )
+find_package( hipblas CONFIG PATHS ${ROCM_PATH} /opt/rocm )
 
 set(hipsolverDn_test_source
   hipsolver_gtest_main.cpp
