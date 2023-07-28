@@ -21,7 +21,15 @@
 # ########################################################################
 
 find_package( GTest REQUIRED )
-find_package( hipblas CONFIG PATHS ${ROCM_PATH} /opt/rocm )
+
+if( NOT TARGET hipblas )
+  if( CUSTOM_HIPBLAS )
+    set ( ENV{hipblas_DIR} ${CUSTOM_HIPBLAS})
+    find_package( hipblas CONFIG NO_CMAKE_PATH )
+  else( )
+    find_package( hipblas CONFIG PATHS ${ROCM_PATH} /opt/rocm )
+  endif( )
+endif( )
 
 set(hipsolverDn_test_source
   hipsolver_gtest_main.cpp
