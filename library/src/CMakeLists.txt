@@ -122,6 +122,15 @@ if( NOT USE_CUDA )
     target_link_libraries( hipsolver PRIVATE hip::${CUSTOM_TARGET} )
   endif( )
 
+  # Find and link SuiteSparse
+  find_library( SUITESPARSECONFIG_LIB suitesparseconfig )
+  find_library( CHOLMOD_LIB cholmod )
+  target_link_libraries( hipsolver PRIVATE ${SUITESPARSECONFIG_LIB} ${CHOLMOD_LIB} )
+  target_include_directories( hipsolver
+    SYSTEM PRIVATE
+    $<BUILD_INTERFACE:/usr/include/suitesparse/>
+  )
+
 else( )
   target_compile_definitions( hipsolver PRIVATE __HIP_PLATFORM_NVCC__ )
 

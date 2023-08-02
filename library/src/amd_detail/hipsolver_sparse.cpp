@@ -31,6 +31,7 @@
 #include "hipsolver.h"
 #include "hipsolver_conversions.hpp"
 
+#include "cholmod.h"
 #include "rocblas/internal/rocblas_device_malloc.hpp"
 #include "rocblas/rocblas.h"
 #include "rocsolver/rocsolver.h"
@@ -46,6 +47,8 @@ extern "C" {
 struct hipsolverSpHandle
 {
     rocblas_handle handle;
+
+    cholmod_common c_handle;
 };
 
 hipsolverStatus_t hipsolverSpCreate(hipsolverSpHandle_t* handle)
@@ -61,6 +64,14 @@ try
     {
         delete sp;
         return rocblas2hip_status(status);
+    }
+
+    int ret;
+    if((ret = cholmod_start(&sp->c_handle)) != true)
+    {
+        rocblas_destroy_handle(sp->handle);
+        delete sp;
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
     }
 
     *handle = sp;
@@ -79,6 +90,7 @@ try
 
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     rocblas_destroy_handle(sp->handle);
+    cholmod_finish(&sp->c_handle);
     delete sp;
 
     return HIPSOLVER_STATUS_SUCCESS;
@@ -201,7 +213,105 @@ hipsolverStatus_t hipsolverSpScsrlsvcholHost(hipsolverSpHandle_t       handle,
                                              int*                      singularity)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(n < 0 || nnzA < 0)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!csrRowPtr || !csrColInd || !csrVal || !descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!b || !x || !singularity)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(reorder < 0 || reorder > 3)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
+    *singularity          = -1;
+
+    sp->c_handle.nmethods = 1;
+    switch(reorder)
+    {
+    case 1:
+    case 2:
+        sp->c_handle.method[0].ordering = CHOLMOD_AMD;
+        break;
+    case 3:
+        sp->c_handle.method[0].ordering = CHOLMOD_METIS;
+        break;
+    default:
+        sp->c_handle.method[0].ordering = CHOLMOD_NATURAL;
+    }
+
+    // set up A
+    int count_A = std::min(nnzA, csrRowPtr[n]);
+
+    double* dblVal = (double*)malloc(sizeof(double) * nnzA);
+    for(int i = 0; i < count_A; i++)
+        dblVal[i] = csrVal[i];
+
+    cholmod_sparse c_A;
+    c_A.nrow = c_A.ncol = n;
+    c_A.nzmax           = nnzA;
+    c_A.p               = (void*)csrRowPtr;
+    c_A.i               = (void*)csrColInd;
+    c_A.x               = (void*)dblVal;
+    c_A.stype           = -1;
+    c_A.itype           = CHOLMOD_INT;
+    c_A.xtype           = CHOLMOD_REAL;
+    c_A.dtype           = CHOLMOD_DOUBLE;
+    c_A.packed          = true;
+
+    if(tolerance > 0)
+        cholmod_drop(tolerance, &c_A, &sp->c_handle);
+
+    // factorize A
+    cholmod_factor* c_L    = cholmod_analyze(&c_A, &sp->c_handle);
+    int             status = cholmod_factorize(&c_A, c_L, &sp->c_handle);
+    free(dblVal);
+    if(status != true)
+    {
+        cholmod_free_factor(&c_L, &sp->c_handle);
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+    }
+    if(sp->c_handle.status == CHOLMOD_NOT_POSDEF)
+    {
+        *singularity = c_L->minor;
+        cholmod_free_factor(&c_L, &sp->c_handle);
+        return HIPSOLVER_STATUS_SUCCESS;
+    }
+
+    // set up B
+    double* dblB = (double*)malloc(sizeof(double) * n);
+    for(int i = 0; i < n; i++)
+        dblB[i] = b[i];
+
+    cholmod_dense c_b;
+    c_b.nrow = c_b.nzmax = c_b.d = n;
+    c_b.ncol                     = 1;
+    c_b.x                        = (void*)dblB;
+    c_b.xtype                    = CHOLMOD_REAL;
+    c_b.dtype                    = CHOLMOD_DOUBLE;
+
+    // solve for x
+    cholmod_dense* c_x = cholmod_solve(CHOLMOD_A, c_L, &c_b, &sp->c_handle);
+    free(dblB);
+
+    // copy back results
+    count_A = std::min(nnzA, ((int*)c_L->p)[n]);
+    memcpy((void*)csrRowPtr, c_L->p, sizeof(int) * (n + 1));
+    memcpy((void*)csrColInd, c_L->i, sizeof(int) * count_A);
+
+    dblVal = static_cast<double*>(c_L->x);
+    dblB   = static_cast<double*>(c_x->x);
+    for(int i = 0; i < count_A; i++)
+        ((float*)csrVal)[i] = (float)dblVal[i];
+    for(int i = 0; i < n; i++)
+        x[i] = (float)dblB[i];
+
+    // free resources
+    cholmod_free_factor(&c_L, &sp->c_handle);
+    cholmod_free_dense(&c_x, &sp->c_handle);
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -222,7 +332,88 @@ hipsolverStatus_t hipsolverSpDcsrlsvcholHost(hipsolverSpHandle_t       handle,
                                              int*                      singularity)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(n < 0 || nnzA < 0)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!csrRowPtr || !csrColInd || !csrVal || !descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!b || !x || !singularity)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(reorder < 0 || reorder > 3)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
+    *singularity          = -1;
+
+    switch(reorder)
+    {
+    case 1:
+    case 2:
+        sp->c_handle.method[0].ordering = CHOLMOD_AMD;
+        break;
+    case 3:
+        sp->c_handle.method[0].ordering = CHOLMOD_METIS;
+        break;
+    default:
+        sp->c_handle.method[0].ordering = CHOLMOD_NATURAL;
+    }
+
+    // set up A
+    int            count_A = std::min(nnzA, csrRowPtr[n]);
+    cholmod_sparse c_A;
+    c_A.nrow = c_A.ncol = n;
+    c_A.nzmax           = nnzA;
+    c_A.p               = (void*)csrRowPtr;
+    c_A.i               = (void*)csrColInd;
+    c_A.x               = (void*)csrVal;
+    c_A.stype           = -1;
+    c_A.itype           = CHOLMOD_INT;
+    c_A.xtype           = CHOLMOD_REAL;
+    c_A.dtype           = CHOLMOD_DOUBLE;
+    c_A.packed          = true;
+
+    if(tolerance > 0)
+        cholmod_drop(tolerance, &c_A, &sp->c_handle);
+
+    // factorize A
+    cholmod_factor* c_L    = cholmod_analyze(&c_A, &sp->c_handle);
+    int             status = cholmod_factorize(&c_A, c_L, &sp->c_handle);
+    if(status != true)
+    {
+        cholmod_free_factor(&c_L, &sp->c_handle);
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+    }
+    if(sp->c_handle.status == CHOLMOD_NOT_POSDEF)
+    {
+        *singularity = c_L->minor;
+        cholmod_free_factor(&c_L, &sp->c_handle);
+        return HIPSOLVER_STATUS_SUCCESS;
+    }
+
+    // set up B
+    cholmod_dense c_b;
+    c_b.nrow = c_b.nzmax = c_b.d = n;
+    c_b.ncol                     = 1;
+    c_b.x                        = (void*)b;
+    c_b.xtype                    = CHOLMOD_REAL;
+    c_b.dtype                    = CHOLMOD_DOUBLE;
+
+    // solve for x
+    cholmod_dense* c_x = cholmod_solve(CHOLMOD_A, c_L, &c_b, &sp->c_handle);
+
+    // copy back results
+    count_A = std::min(nnzA, ((int*)c_L->p)[n]);
+    memcpy((void*)csrRowPtr, c_L->p, sizeof(int) * (n + 1));
+    memcpy((void*)csrColInd, c_L->i, sizeof(int) * count_A);
+    memcpy((void*)csrVal, c_L->x, sizeof(double) * count_A);
+    memcpy((void*)x, c_x->x, sizeof(double) * n);
+
+    // free resources
+    cholmod_free_factor(&c_L, &sp->c_handle);
+    cholmod_free_dense(&c_x, &sp->c_handle);
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {

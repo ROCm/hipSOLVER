@@ -527,6 +527,32 @@ void print_matrix(T* CPU_result, T* GPU_result, int m, int n, int lda)
                    double(GPU_result[i + j * lda].imag()));
 }
 
+/*! \brief  Debugging purpose, print out sparse matrix, not valid in complex number  */
+template <typename T, std::enable_if_t<!is_complex<T>, int> = 0>
+void print_sparse_matrix(int m, int n, int* csrRowPtr, int* csrColInd, T* csrVal)
+{
+    printf("%d by %d matrix\n", m, n);
+
+    int idx = 0;
+    for(int i = 0; i < m; i++)
+    {
+        printf("    ");
+        for(int j = 0; j < n; j++)
+        {
+            if(idx < csrRowPtr[i + 1] && j == csrColInd[idx])
+            {
+                printf("%.8g, ", csrVal[idx]);
+                idx++;
+            }
+            else
+                printf("0, ");
+        }
+        printf("\n");
+    }
+
+    printf("\n");
+}
+
 /* ============================================================================================ */
 /*  read matrix or values from file */
 

@@ -137,6 +137,18 @@ install_dnf_packages( )
   done
 }
 
+# Take an array of packages as input, and install those packages with 'zypper' if they are not already installed
+install_zypper_packages( )
+{
+  package_dependencies=("$@")
+  for package in "${package_dependencies[@]}"; do
+    if [[ $(rpm -q ${package} &> /dev/null; echo $? ) -ne 0 ]]; then
+      printf "\033[32mInstalling \033[33m${package}\033[32m from distro package manager\033[0m\n"
+      elevate_if_not_root zypper -n --no-gpg-checks install ${package}
+    fi
+  done
+}
+
 # Take an array of packages as input, and delegate the work to the appropriate distro installer
 # prereq: ${ID} must be defined before calling
 # prereq: ${build_clients} must be defined before calling
@@ -164,57 +176,66 @@ install_packages( )
     library_dependencies_ubuntu+=( "cuda" )
     library_dependencies_centos+=( "" ) # how to install cuda on centos?
     library_dependencies_fedora+=( "" ) # how to install cuda on fedora?
-  elif [[ "${build_hip_clang}" == false ]]; then
-    # Custom rocm-dev installation
-    if [[ -z ${custom_rocm_dev+foo} ]]; then
-      # Install base rocm-dev package unless -v/--rocm-dev flag is passed
-      library_dependencies_ubuntu+=( "rocm-dev" )
-      library_dependencies_centos+=( "rocm-dev" )
-      library_dependencies_fedora+=( "rocm-dev" )
-      library_dependencies_sles+=( "rocm-dev" )
-    else
-      # Install rocm-specific rocm-dev package
-      library_dependencies_ubuntu+=( "${custom_rocm_dev}" )
-      library_dependencies_centos+=( "${custom_rocm_dev}" )
-      library_dependencies_fedora+=( "${custom_rocm_dev}" )
-      library_dependencies_sles+=( "${custom_rocm_dev}" )
-    fi
 
-    # Custom rocblas installation
-    # Do not install rocblas if --rocblas_path flag is set,
-    # as we will be building against our own rocblas intead.
-    if [[ -z ${rocblas_path+foo} ]]; then
-      if [[ -z ${custom_rocblas+foo} ]]; then
-        # Install base rocblas package unless -b/--rocblas flag is passed
-        library_dependencies_ubuntu+=( "rocblas" )
-        library_dependencies_centos+=( "rocblas" )
-        library_dependencies_fedora+=( "rocblas" )
-        library_dependencies_sles+=( "rocblas" )
+  else
+    library_dependencies_ubuntu+=( "libsuitesparse-dev" )
+    library_dependencies_centos+=( "suitesparse-devel" )
+    library_dependencies_centos8+=( "suitesparse-devel" )
+    library_dependencies_fedora+=( "suitesparse-devel" )
+    library_dependencies_sles+=( "suitesparse-devel" )
+
+    if [[ "${build_hip_clang}" == false ]]; then
+      # Custom rocm-dev installation
+      if [[ -z ${custom_rocm_dev+foo} ]]; then
+        # Install base rocm-dev package unless -v/--rocm-dev flag is passed
+        library_dependencies_ubuntu+=( "rocm-dev" )
+        library_dependencies_centos+=( "rocm-dev" )
+        library_dependencies_fedora+=( "rocm-dev" )
+        library_dependencies_sles+=( "rocm-dev" )
       else
-        # Install rocm-specific rocblas package
-        library_dependencies_ubuntu+=( "${custom_rocblas}" )
-        library_dependencies_centos+=( "${custom_rocblas}" )
-        library_dependencies_fedora+=( "${custom_rocblas}" )
-        library_dependencies_sles+=( "${custom_rocblas}" )
+        # Install rocm-specific rocm-dev package
+        library_dependencies_ubuntu+=( "${custom_rocm_dev}" )
+        library_dependencies_centos+=( "${custom_rocm_dev}" )
+        library_dependencies_fedora+=( "${custom_rocm_dev}" )
+        library_dependencies_sles+=( "${custom_rocm_dev}" )
       fi
-    fi
 
-    # Custom rocsolver installation
-    # Do not install rocsolver if --rocsolver_path flag is set,
-    # as we will be building against our own rocsolver intead.
-    if [[ -z ${rocsolver_path+foo} ]]; then
-      if [[ -z ${custom_rocsolver+foo} ]]; then
-        # Install base rocsolver package unless -s/--rocsolver flag is passed
-        library_dependencies_ubuntu+=( "rocsolver" )
-        library_dependencies_centos+=( "rocsolver" )
-        library_dependencies_fedora+=( "rocsolver" )
-        library_dependencies_sles+=( "rocsolver" )
-      else
-        # Install rocm-specific rocsolver package
-        library_dependencies_ubuntu+=( "${custom_rocsolver}" )
-        library_dependencies_centos+=( "${custom_rocsolver}" )
-        library_dependencies_fedora+=( "${custom_rocsolver}" )
-        library_dependencies_sles+=( "${custom_rocsolver}" )
+      # Custom rocblas installation
+      # Do not install rocblas if --rocblas_path flag is set,
+      # as we will be building against our own rocblas intead.
+      if [[ -z ${rocblas_path+foo} ]]; then
+        if [[ -z ${custom_rocblas+foo} ]]; then
+          # Install base rocblas package unless -b/--rocblas flag is passed
+          library_dependencies_ubuntu+=( "rocblas" )
+          library_dependencies_centos+=( "rocblas" )
+          library_dependencies_fedora+=( "rocblas" )
+          library_dependencies_sles+=( "rocblas" )
+        else
+          # Install rocm-specific rocblas package
+          library_dependencies_ubuntu+=( "${custom_rocblas}" )
+          library_dependencies_centos+=( "${custom_rocblas}" )
+          library_dependencies_fedora+=( "${custom_rocblas}" )
+          library_dependencies_sles+=( "${custom_rocblas}" )
+        fi
+      fi
+
+      # Custom rocsolver installation
+      # Do not install rocsolver if --rocsolver_path flag is set,
+      # as we will be building against our own rocsolver intead.
+      if [[ -z ${rocsolver_path+foo} ]]; then
+        if [[ -z ${custom_rocsolver+foo} ]]; then
+          # Install base rocsolver package unless -s/--rocsolver flag is passed
+          library_dependencies_ubuntu+=( "rocsolver" )
+          library_dependencies_centos+=( "rocsolver" )
+          library_dependencies_fedora+=( "rocsolver" )
+          library_dependencies_sles+=( "rocsolver" )
+        else
+          # Install rocm-specific rocsolver package
+          library_dependencies_ubuntu+=( "${custom_rocsolver}" )
+          library_dependencies_centos+=( "${custom_rocsolver}" )
+          library_dependencies_fedora+=( "${custom_rocsolver}" )
+          library_dependencies_sles+=( "${custom_rocsolver}" )
+        fi
       fi
     fi
   fi
@@ -274,18 +295,6 @@ install_packages( )
       exit 2
       ;;
   esac
-}
-
-# Take an array of packages as input, and install those packages with 'zypper' if they are not already installed
-install_zypper_packages( )
-{
-  package_dependencies=("$@")
-  for package in "${package_dependencies[@]}"; do
-    if [[ $(rpm -q ${package} &> /dev/null; echo $? ) -ne 0 ]]; then
-      printf "\033[32mInstalling \033[33m${package}\033[32m from distro package manager\033[0m\n"
-      elevate_if_not_root zypper -n --no-gpg-checks install ${package}
-    fi
-  done
 }
 
 # given a relative path, returns the absolute path
