@@ -118,7 +118,7 @@ inline hipsolverStatus_t hipsolver_csrlsvchol(bool                      HOST,
             handle, n, nnz, descrA, csrVal, csrRowPtr, csrColInd, b, tol, reorder, x, singularity);
 }
 
-inline hipsolverStatus_t hipsolver_csrlsvchol(bool                      HOST,
+/*inline hipsolverStatus_t hipsolver_csrlsvchol(bool                      HOST,
                                               hipsolverSpHandle_t       handle,
                                               int                       n,
                                               int                       nnz,
@@ -200,5 +200,5 @@ inline hipsolverStatus_t hipsolver_csrlsvchol(bool                          HOST
                                           reorder,
                                           (hipDoubleComplex*)x,
                                           singularity);
-}
+}*/
 /********************************************************/

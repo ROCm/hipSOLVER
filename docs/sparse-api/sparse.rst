@@ -25,10 +25,6 @@ Combined factorization and linear-system solvers
 
 hipsolverSp<type>csrlsvchol()
 ---------------------------------------------------
-.. doxygenfunction:: hipsolverSpZcsrlsvchol
-   :outline:
-.. doxygenfunction:: hipsolverSpCcsrlsvchol
-   :outline:
 .. doxygenfunction:: hipsolverSpDcsrlsvchol
    :outline:
 .. doxygenfunction:: hipsolverSpScsrlsvchol
@@ -37,10 +33,6 @@ hipsolverSp<type>csrlsvchol()
 
 hipsolverSp<type>csrlsvcholHost()
 ---------------------------------------------------
-.. doxygenfunction:: hipsolverSpZcsrlsvcholHost
-   :outline:
-.. doxygenfunction:: hipsolverSpCcsrlsvcholHost
-   :outline:
 .. doxygenfunction:: hipsolverSpDcsrlsvcholHost
    :outline:
 .. doxygenfunction:: hipsolverSpScsrlsvcholHost

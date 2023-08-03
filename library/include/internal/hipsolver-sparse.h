@@ -49,32 +49,6 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpDcsrlsvchol(hipsolverSpHandle_t   
                                                           double*                   x,
                                                           int*                      singularity);
 
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpCcsrlsvchol(hipsolverSpHandle_t       handle,
-                                                          int                       n,
-                                                          int                       nnzA,
-                                                          const hipsparseMatDescr_t descrA,
-                                                          const hipFloatComplex*    csrVal,
-                                                          const int*                csrRowPtr,
-                                                          const int*                csrColInd,
-                                                          const hipFloatComplex*    b,
-                                                          float                     tolerance,
-                                                          int                       reorder,
-                                                          hipFloatComplex*          x,
-                                                          int*                      singularity);
-
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpZcsrlsvchol(hipsolverSpHandle_t       handle,
-                                                          int                       n,
-                                                          int                       nnzA,
-                                                          const hipsparseMatDescr_t descrA,
-                                                          const hipDoubleComplex*   csrVal,
-                                                          const int*                csrRowPtr,
-                                                          const int*                csrColInd,
-                                                          const hipDoubleComplex*   b,
-                                                          double                    tolerance,
-                                                          int                       reorder,
-                                                          hipDoubleComplex*         x,
-                                                          int*                      singularity);
-
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpScsrlsvcholHost(hipsolverSpHandle_t       handle,
                                                               int                       n,
                                                               int                       nnzA,
@@ -99,32 +73,6 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpDcsrlsvcholHost(hipsolverSpHandle_
                                                               double                    tolerance,
                                                               int                       reorder,
                                                               double*                   x,
-                                                              int* singularity);
-
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpCcsrlsvcholHost(hipsolverSpHandle_t       handle,
-                                                              int                       n,
-                                                              int                       nnzA,
-                                                              const hipsparseMatDescr_t descrA,
-                                                              const hipFloatComplex*    csrVal,
-                                                              const int*                csrRowPtr,
-                                                              const int*                csrColInd,
-                                                              const hipFloatComplex*    b,
-                                                              float                     tolerance,
-                                                              int                       reorder,
-                                                              hipFloatComplex*          x,
-                                                              int* singularity);
-
-HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpZcsrlsvcholHost(hipsolverSpHandle_t       handle,
-                                                              int                       n,
-                                                              int                       nnzA,
-                                                              const hipsparseMatDescr_t descrA,
-                                                              const hipDoubleComplex*   csrVal,
-                                                              const int*                csrRowPtr,
-                                                              const int*                csrColInd,
-                                                              const hipDoubleComplex*   b,
-                                                              double                    tolerance,
-                                                              int                       reorder,
-                                                              hipDoubleComplex*         x,
                                                               int* singularity);
 
 #ifdef __cplusplus

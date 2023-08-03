@@ -145,7 +145,7 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverSpCcsrlsvchol(hipsolverSpHandle_t       handle,
+/*hipsolverStatus_t hipsolverSpCcsrlsvchol(hipsolverSpHandle_t       handle,
                                          int                       n,
                                          int                       nnzA,
                                          const hipsparseMatDescr_t descrA,
@@ -185,7 +185,7 @@ try
 catch(...)
 {
     return exception2hip_status();
-}
+}*/
 
 hipsolverStatus_t hipsolverSpScsrlsvcholHost(hipsolverSpHandle_t       handle,
                                              int                       n,
@@ -229,7 +229,7 @@ catch(...)
     return exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverSpCcsrlsvcholHost(hipsolverSpHandle_t       handle,
+/*hipsolverStatus_t hipsolverSpCcsrlsvcholHost(hipsolverSpHandle_t       handle,
                                              int                       n,
                                              int                       nnzA,
                                              const hipsparseMatDescr_t descrA,
@@ -269,6 +269,6 @@ try
 catch(...)
 {
     return exception2hip_status();
-}
+}*/
 
 } //extern C

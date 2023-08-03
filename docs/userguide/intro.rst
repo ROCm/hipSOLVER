@@ -207,8 +207,8 @@ Sparse matrix routines and direct solvers for sparse matrices are in the very ea
 .. csv-table:: Combined factorization and linear-system solvers
     :header: "Function", "single", "double", "single complex", "double complex"
 
-    :ref:`hipsolverSpXcsrlsvcholHost <sparse_csrlsvcholHost>`, x, x, x, x
-    :ref:`hipsolverSpXcsrlsvchol <sparse_csrlsvchol>`, x, x, x, x
+    :ref:`hipsolverSpXcsrlsvcholHost <sparse_csrlsvcholHost>`, x, x, ,
+    :ref:`hipsolverSpXcsrlsvchol <sparse_csrlsvchol>`, x, x, ,
 
 Refactorization routines
 ------------------------------
