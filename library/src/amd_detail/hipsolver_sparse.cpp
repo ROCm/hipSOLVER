@@ -129,7 +129,93 @@ hipsolverStatus_t hipsolverSpScsrlsvchol(hipsolverSpHandle_t       handle,
                                          int*                      singularity)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(n < 0 || nnzA < 0)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!csrRowPtr || !csrColInd || !csrVal || !descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!b || !x || !singularity)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(reorder < 0 || reorder > 3)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
+    *singularity          = -1;
+
+    switch(reorder)
+    {
+    case 1:
+    case 2:
+        sp->c_handle.method[0].ordering = CHOLMOD_AMD;
+        break;
+    case 3:
+        sp->c_handle.method[0].ordering = CHOLMOD_METIS;
+        break;
+    default:
+        sp->c_handle.method[0].ordering = CHOLMOD_NATURAL;
+    }
+
+    // set up A
+    cholmod_sparse* c_A
+        = cholmod_allocate_sparse(n, n, nnzA, true, true, -1, CHOLMOD_REAL, &sp->c_handle);
+    CHECK_HIP_ERROR(
+        hipMemcpy(c_A->p, csrRowPtr, sizeof(rocblas_int) * (n + 1), hipMemcpyDeviceToHost));
+
+    int count_A = std::min(nnzA, ((int*)c_A->p)[n]);
+    CHECK_HIP_ERROR(
+        hipMemcpy(c_A->i, csrColInd, sizeof(rocblas_int) * count_A, hipMemcpyDeviceToHost));
+
+    float* sngVal = (float*)malloc(sizeof(float) * nnzA);
+    CHECK_HIP_ERROR(hipMemcpy(sngVal, csrVal, sizeof(float) * count_A, hipMemcpyDeviceToHost));
+
+    double* dblVal = static_cast<double*>(c_A->x);
+    for(int i = 0; i < count_A; i++)
+        dblVal[i] = sngVal[i];
+
+    if(tolerance > 0)
+        cholmod_drop(tolerance, c_A, &sp->c_handle);
+
+    // factorize A
+    cholmod_factor* c_L    = cholmod_analyze(c_A, &sp->c_handle);
+    int             status = cholmod_factorize(c_A, c_L, &sp->c_handle);
+    if(status != true)
+    {
+        free(sngVal);
+        cholmod_free_sparse(&c_A, &sp->c_handle);
+        cholmod_free_factor(&c_L, &sp->c_handle);
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+    }
+    if(sp->c_handle.status == CHOLMOD_NOT_POSDEF)
+    {
+        *singularity = c_L->minor;
+        free(sngVal);
+        cholmod_free_sparse(&c_A, &sp->c_handle);
+        cholmod_free_factor(&c_L, &sp->c_handle);
+        return HIPSOLVER_STATUS_SUCCESS;
+    }
+
+    // copy back results
+    count_A = std::min(nnzA, ((int*)c_L->p)[n]);
+    CHECK_HIP_ERROR(
+        hipMemcpy((void*)csrRowPtr, c_L->p, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(
+        hipMemcpy((void*)csrColInd, c_L->i, sizeof(rocblas_int) * count_A, hipMemcpyHostToDevice));
+
+    dblVal = static_cast<double*>(c_L->x);
+    for(int i = 0; i < count_A; i++)
+        sngVal[i] = (float)dblVal[i];
+    CHECK_HIP_ERROR(
+        hipMemcpy((void*)csrVal, sngVal, sizeof(float) * count_A, hipMemcpyHostToDevice));
+
+    // free resources
+    free(sngVal);
+    cholmod_free_sparse(&c_A, &sp->c_handle);
+    cholmod_free_factor(&c_L, &sp->c_handle);
+
+    // TODO: Call solve on GPU
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
@@ -150,7 +236,80 @@ hipsolverStatus_t hipsolverSpDcsrlsvchol(hipsolverSpHandle_t       handle,
                                          int*                      singularity)
 try
 {
-    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(n < 0 || nnzA < 0)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!csrRowPtr || !csrColInd || !csrVal || !descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!b || !x || !singularity)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(reorder < 0 || reorder > 3)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
+    *singularity          = -1;
+
+    switch(reorder)
+    {
+    case 1:
+    case 2:
+        sp->c_handle.method[0].ordering = CHOLMOD_AMD;
+        break;
+    case 3:
+        sp->c_handle.method[0].ordering = CHOLMOD_METIS;
+        break;
+    default:
+        sp->c_handle.method[0].ordering = CHOLMOD_NATURAL;
+    }
+
+    // set up A
+    cholmod_sparse* c_A
+        = cholmod_allocate_sparse(n, n, nnzA, true, true, -1, CHOLMOD_REAL, &sp->c_handle);
+    CHECK_HIP_ERROR(
+        hipMemcpy(c_A->p, csrRowPtr, sizeof(rocblas_int) * (n + 1), hipMemcpyDeviceToHost));
+
+    int count_A = std::min(nnzA, ((int*)c_A->p)[n]);
+    CHECK_HIP_ERROR(
+        hipMemcpy(c_A->i, csrColInd, sizeof(rocblas_int) * count_A, hipMemcpyDeviceToHost));
+    CHECK_HIP_ERROR(hipMemcpy(c_A->x, csrVal, sizeof(double) * count_A, hipMemcpyDeviceToHost));
+
+    if(tolerance > 0)
+        cholmod_drop(tolerance, c_A, &sp->c_handle);
+
+    // factorize A
+    cholmod_factor* c_L    = cholmod_analyze(c_A, &sp->c_handle);
+    int             status = cholmod_factorize(c_A, c_L, &sp->c_handle);
+    if(status != true)
+    {
+        cholmod_free_sparse(&c_A, &sp->c_handle);
+        cholmod_free_factor(&c_L, &sp->c_handle);
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+    }
+    if(sp->c_handle.status == CHOLMOD_NOT_POSDEF)
+    {
+        *singularity = c_L->minor;
+        cholmod_free_sparse(&c_A, &sp->c_handle);
+        cholmod_free_factor(&c_L, &sp->c_handle);
+        return HIPSOLVER_STATUS_SUCCESS;
+    }
+
+    // copy back results
+    count_A = std::min(nnzA, ((int*)c_L->p)[n]);
+    CHECK_HIP_ERROR(
+        hipMemcpy((void*)csrRowPtr, c_L->p, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(
+        hipMemcpy((void*)csrColInd, c_L->i, sizeof(rocblas_int) * count_A, hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(
+        hipMemcpy((void*)csrVal, c_L->x, sizeof(double) * count_A, hipMemcpyHostToDevice));
+
+    // free resources
+    cholmod_free_sparse(&c_A, &sp->c_handle);
+    cholmod_free_factor(&c_L, &sp->c_handle);
+
+    // TODO: Call solve on GPU
+
+    return HIPSOLVER_STATUS_SUCCESS;
 }
 catch(...)
 {
