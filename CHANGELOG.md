@@ -9,8 +9,10 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
   - csrlsvchol
     - hipsolverSpScsrlsvcholHost, hipsolverSpDcsrlsvcholHost
     - hipsolverSpScsrlsvchol, hipsolverSpDcsrlsvchol
+- Added rocSPARSE and SuiteSparse as optional dependencies to hipSOLVER (rocSOLVER backend only). Use the `BUILD_WITH_SPARSE` CMake option to enable
+  functionality for the hipsolverSp API (on by default).
 - Added hipBLAS as an optional dependency to hipsolver-test. Use the `BUILD_HIPBLAS_TESTS` CMake option to test compatibility between hipSOLVER and hipBLAS.
-- Added hipSPARSE as an optional dependency to hipsolver-test. Tests for hipsolverSp will only be run if built with hipSPARSE installed on the system.
+- Added hipSPARSE as an optional dependency to hipsolver-test. Use the `BUILD_WITH_SPARSE` CMake option to enable tests of the hipsolverSp API (on by default).
 
 ### Optimized
 ### Changed

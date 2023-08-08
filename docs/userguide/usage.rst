@@ -107,6 +107,34 @@ Some considerations when using the hipsolverSp API
 The hipsolverSp API is intended as a 1:1 translation of the cusolverSp API, but not all functionality is equally supported in
 rocSOLVER. Keep in mind the following considerations when using this compatibility API.
 
+Unsupported methods
+--------------------
+
+- RCM reordering is currently not supported by rocSOLVER, rocSPARSE, and SuiteSparse. The following methods will instead use AMD
+  reordering when RCM is requested.
+
+  * :ref:`hipsolverSpXcsrlsvcholHost <sparse_csrlsvcholHost>` with `reorder = 1`
+  * :ref:`hipsolverSpXcsrlsvchol <sparse_csrlsvchol>` with `reorder = 1`
+
+.. _sparse_performance:
+
+Performance implications of the hipsolverSp API
+------------------------------------------------
+
+- The third-party SuiteSparse library is used to provide host-side functionality for the hipsolverSp API when using the rocSOLVER
+  backend. At present, SuiteSparse does not support single precision arrays, therefore hipSOLVER must allocate temporary double
+  precision arrays and copy the values one-by-one to and from the user-provided arguments.
+
+  (Single precision hipsolverSp functions are expected to perform slower and require more memory usage than double precision functions.)
+
+- A fully-featured, GPU-accelerated Cholesky factorization for sparse matrices has not yet been implemented in either rocSOLVER or
+  rocSPARSE. Therefore, we rely on SuiteSparse to provide this functionality. The functions :ref:`hipsolverSpXcsrlsvchol <sparse_csrlsvchol>`
+  will allocate space for sparse matrices on the host, copy the data to the host, use SuiteSparse to perform the factorization, and
+  then copy the resulting data back to the device.
+
+  (:ref:`hipsolverSpXcsrlsvchol <sparse_csrlsvchol>` may perform slower and will require more memory usage than
+  :ref:`hipsolverSpXcsrlsvcholHost <sparse_csrlsvcholHost>`.)
+
 
 .. _refactor_api_differences:
 

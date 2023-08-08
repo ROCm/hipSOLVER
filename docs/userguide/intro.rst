@@ -203,6 +203,8 @@ Sparse matrix routines
 ------------------------------
 
 Sparse matrix routines and direct solvers for sparse matrices are in the very earliest stages of development.
+Due to unsupported backend functionality, there are a number of :ref:`performance implicatios <sparse_performance>`
+that users will want to be aware of when using these routines.
 
 .. csv-table:: Combined factorization and linear-system solvers
     :header: "Function", "single", "double", "single complex", "double complex"
