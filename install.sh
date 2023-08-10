@@ -336,7 +336,7 @@ build_static=false
 build_release_debug=false
 build_codecoverage=false
 build_address_sanitizer=false
-build_freorg_bkwdcomp=true
+build_freorg_bkwdcomp=false
 declare -a cmake_common_options
 declare -a cmake_client_options
 
