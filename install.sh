@@ -48,6 +48,8 @@ function display_help()
   echo "    [--hipblas-path] Set specific path to custom built hipblas"
   echo "    [-s|--rocsolver] Set specific rocsolver version"
   echo "    [--rocsolver-path] Set specific path to custom built rocsolver"
+  echo "    [--rocsparse] Set specific rocsparse version"
+  echo "    [--rocsparse-path] Set specific path to custom built rocsparse"
   echo "    [--hipsparse-path] Set specific path to custom built hipsparse"
   echo "    [--static] Create static library instead of shared library"
   echo "    [--codecoverage] Build with code coverage profiling enabled, excluding release mode."
@@ -219,6 +221,25 @@ install_packages( )
         fi
       fi
 
+      # Custom rocsparse installation
+      # Do not install rocsparse if --rocsparse_path flag is set,
+      # as we will be building against our own rocsparse intead.
+      if [[ -z ${rocsparse_path+foo} ]]; then
+        if [[ -z ${custom_rocsparse+foo} ]]; then
+          # Install base rocsparse package unless --rocsparse flag is passed
+          library_dependencies_ubuntu+=( "rocsparse" )
+          library_dependencies_centos+=( "rocsparse" )
+          library_dependencies_fedora+=( "rocsparse" )
+          library_dependencies_sles+=( "rocsparse" )
+        else
+          # Install rocm-specific rocsparse package
+          library_dependencies_ubuntu+=( "${custom_rocsparse}" )
+          library_dependencies_centos+=( "${custom_rocsparse}" )
+          library_dependencies_fedora+=( "${custom_rocsparse}" )
+          library_dependencies_sles+=( "${custom_rocsparse}" )
+        fi
+      fi
+
       # Custom rocsolver installation
       # Do not install rocsolver if --rocsolver_path flag is set,
       # as we will be building against our own rocsolver intead.
@@ -358,7 +379,7 @@ declare -a cmake_client_options
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,hipsparse-path:,custom-target:,docs,address-sanitizer,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,rocsparse:,rocsparse-path:,hipsparse-path:,custom-target:,docs,address-sanitizer,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -452,6 +473,12 @@ while true; do
     --rocsolver-path)
         rocsolver_path=${2}
         shift 2 ;;
+    --rocsparse)
+         custom_rocsparse=${2}
+         shift 2;;
+    --rocsparse-path)
+        rocsparse_path=${2}
+        shift 2 ;;
     --hipsparse-path)
         hipsparse_path=${2}
         shift 2 ;;
@@ -505,6 +532,9 @@ if [[ -n "${hipblas_path+x}" ]]; then
 fi
 if [[ -n "${rocsolver_path+x}" ]]; then
   rocsolver_path="$(make_absolute_path "${rocsolver_path}")"
+fi
+if [[ -n "${rocsparse_path+x}" ]]; then
+  rocsparse_path="$(make_absolute_path "${rocsparse_path}")"
 fi
 if [[ -n "${hipsparse_path+x}" ]]; then
   hipsparse_path="$(make_absolute_path "${hipsparse_path}")"
@@ -615,6 +645,11 @@ fi
   # custom rocsolver
   if [[ ${rocsolver_path+foo} ]]; then
     cmake_common_options+=("-DCUSTOM_ROCSOLVER=${rocsolver_path}")
+  fi
+
+  # custom rocsparse
+  if [[ ${rocsparse_path+foo} ]]; then
+    cmake_common_options+=("-DCUSTOM_ROCSPARSE=${rocsparse_path}")
   fi
 
   # custom hipsparse

@@ -35,6 +35,7 @@
 #include "rocblas/internal/rocblas_device_malloc.hpp"
 #include "rocblas/rocblas.h"
 #include "rocsolver/rocsolver.h"
+#include "rocsparse/rocsparse.h"
 #include <algorithm>
 #include <climits>
 #include <functional>
@@ -133,12 +134,23 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(n < 0 || nnzA < 0)
         return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!csrRowPtr || !csrColInd || !csrVal || !descrA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!b || !x || !singularity)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(reorder < 0 || reorder > 3)
         return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    rocsparse_matrix_type mattype = rocsparse_get_mat_type((rocsparse_mat_descr)descrA);
+    // rocsparse_fill_mode fillmode = rocsparse_get_mat_fill_mode((rocsparse_mat_descr)descrA);
+    // rocsparse_diag_type diagtype = rocsparse_get_mat_diag_type((rocsparse_mat_descr)descrA);
+    rocsparse_index_base indbase = rocsparse_get_mat_index_base((rocsparse_mat_descr)descrA);
+    if(mattype != rocsparse_matrix_type_general)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
+    if(indbase != rocsparse_index_base_zero && indbase != rocsparse_index_base_one)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
 
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     *singularity          = -1;
@@ -161,10 +173,20 @@ try
         = cholmod_allocate_sparse(n, n, nnzA, true, true, -1, CHOLMOD_REAL, &sp->c_handle);
     CHECK_HIP_ERROR(
         hipMemcpy(c_A->p, csrRowPtr, sizeof(rocblas_int) * (n + 1), hipMemcpyDeviceToHost));
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i <= n; i++)
+            ((int*)c_A->p)[i]--;
+    }
 
     int count_A = std::min(nnzA, ((int*)c_A->p)[n]);
     CHECK_HIP_ERROR(
         hipMemcpy(c_A->i, csrColInd, sizeof(rocblas_int) * count_A, hipMemcpyDeviceToHost));
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i < count_A; i++)
+            ((int*)c_A->i)[i]--;
+    }
 
     float* sngVal = (float*)malloc(sizeof(float) * nnzA);
     CHECK_HIP_ERROR(hipMemcpy(sngVal, csrVal, sizeof(float) * count_A, hipMemcpyDeviceToHost));
@@ -197,8 +219,19 @@ try
 
     // copy back results
     count_A = std::min(nnzA, ((int*)c_L->p)[n]);
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i <= n; i++)
+            ((int*)c_L->p)[i]++;
+    }
     CHECK_HIP_ERROR(
         hipMemcpy((void*)csrRowPtr, c_L->p, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
+
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i < count_A; i++)
+            ((int*)c_L->i)[i]++;
+    }
     CHECK_HIP_ERROR(
         hipMemcpy((void*)csrColInd, c_L->i, sizeof(rocblas_int) * count_A, hipMemcpyHostToDevice));
 
@@ -240,12 +273,23 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(n < 0 || nnzA < 0)
         return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!csrRowPtr || !csrColInd || !csrVal || !descrA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!b || !x || !singularity)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(reorder < 0 || reorder > 3)
         return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    rocsparse_matrix_type mattype = rocsparse_get_mat_type((rocsparse_mat_descr)descrA);
+    // rocsparse_fill_mode fillmode = rocsparse_get_mat_fill_mode((rocsparse_mat_descr)descrA);
+    // rocsparse_diag_type diagtype = rocsparse_get_mat_diag_type((rocsparse_mat_descr)descrA);
+    rocsparse_index_base indbase = rocsparse_get_mat_index_base((rocsparse_mat_descr)descrA);
+    if(mattype != rocsparse_matrix_type_general)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
+    if(indbase != rocsparse_index_base_zero && indbase != rocsparse_index_base_one)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
 
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     *singularity          = -1;
@@ -268,10 +312,21 @@ try
         = cholmod_allocate_sparse(n, n, nnzA, true, true, -1, CHOLMOD_REAL, &sp->c_handle);
     CHECK_HIP_ERROR(
         hipMemcpy(c_A->p, csrRowPtr, sizeof(rocblas_int) * (n + 1), hipMemcpyDeviceToHost));
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i <= n; i++)
+            ((int*)c_A->p)[i]--;
+    }
 
     int count_A = std::min(nnzA, ((int*)c_A->p)[n]);
     CHECK_HIP_ERROR(
         hipMemcpy(c_A->i, csrColInd, sizeof(rocblas_int) * count_A, hipMemcpyDeviceToHost));
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i < count_A; i++)
+            ((int*)c_A->i)[i]--;
+    }
+
     CHECK_HIP_ERROR(hipMemcpy(c_A->x, csrVal, sizeof(double) * count_A, hipMemcpyDeviceToHost));
 
     if(tolerance > 0)
@@ -296,8 +351,19 @@ try
 
     // copy back results
     count_A = std::min(nnzA, ((int*)c_L->p)[n]);
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i <= n; i++)
+            ((int*)c_L->p)[i]++;
+    }
     CHECK_HIP_ERROR(
         hipMemcpy((void*)csrRowPtr, c_L->p, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
+
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i < count_A; i++)
+            ((int*)c_L->i)[i]++;
+    }
     CHECK_HIP_ERROR(
         hipMemcpy((void*)csrColInd, c_L->i, sizeof(rocblas_int) * count_A, hipMemcpyHostToDevice));
     CHECK_HIP_ERROR(
@@ -376,12 +442,23 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(n < 0 || nnzA < 0)
         return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!csrRowPtr || !csrColInd || !csrVal || !descrA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!b || !x || !singularity)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(reorder < 0 || reorder > 3)
         return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    rocsparse_matrix_type mattype = rocsparse_get_mat_type((rocsparse_mat_descr)descrA);
+    // rocsparse_fill_mode fillmode = rocsparse_get_mat_fill_mode((rocsparse_mat_descr)descrA);
+    // rocsparse_diag_type diagtype = rocsparse_get_mat_diag_type((rocsparse_mat_descr)descrA);
+    rocsparse_index_base indbase = rocsparse_get_mat_index_base((rocsparse_mat_descr)descrA);
+    if(mattype != rocsparse_matrix_type_general)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
+    if(indbase != rocsparse_index_base_zero && indbase != rocsparse_index_base_one)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
 
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     *singularity          = -1;
@@ -401,7 +478,18 @@ try
     }
 
     // set up A
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i <= n; i++)
+            ((int*)csrRowPtr)[i]--;
+    }
+
     int count_A = std::min(nnzA, csrRowPtr[n]);
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i < count_A; i++)
+            ((int*)csrColInd)[i]--;
+    }
 
     double* dblVal = (double*)malloc(sizeof(double) * nnzA);
     for(int i = 0; i < count_A; i++)
@@ -466,6 +554,14 @@ try
     for(int i = 0; i < n; i++)
         x[i] = (float)dblB[i];
 
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i <= n; i++)
+            ((int*)csrRowPtr)[i]++;
+        for(int i = 0; i < count_A; i++)
+            ((int*)csrColInd)[i]++;
+    }
+
     // free resources
     cholmod_free_factor(&c_L, &sp->c_handle);
     cholmod_free_dense(&c_x, &sp->c_handle);
@@ -495,12 +591,23 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(n < 0 || nnzA < 0)
         return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!csrRowPtr || !csrColInd || !csrVal || !descrA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(!b || !x || !singularity)
         return HIPSOLVER_STATUS_INVALID_VALUE;
     if(reorder < 0 || reorder > 3)
         return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    rocsparse_matrix_type mattype = rocsparse_get_mat_type((rocsparse_mat_descr)descrA);
+    // rocsparse_fill_mode fillmode = rocsparse_get_mat_fill_mode((rocsparse_mat_descr)descrA);
+    // rocsparse_diag_type diagtype = rocsparse_get_mat_diag_type((rocsparse_mat_descr)descrA);
+    rocsparse_index_base indbase = rocsparse_get_mat_index_base((rocsparse_mat_descr)descrA);
+    if(mattype != rocsparse_matrix_type_general)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
+    if(indbase != rocsparse_index_base_zero && indbase != rocsparse_index_base_one)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
 
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     *singularity          = -1;
@@ -519,7 +626,19 @@ try
     }
 
     // set up A
-    int            count_A = std::min(nnzA, csrRowPtr[n]);
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i <= n; i++)
+            ((int*)csrRowPtr)[i]--;
+    }
+
+    int count_A = std::min(nnzA, csrRowPtr[n]);
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i < count_A; i++)
+            ((int*)csrColInd)[i]--;
+    }
+
     cholmod_sparse c_A;
     c_A.nrow = c_A.ncol = n;
     c_A.nzmax           = nnzA;
@@ -567,6 +686,14 @@ try
     memcpy((void*)csrColInd, c_L->i, sizeof(int) * count_A);
     memcpy((void*)csrVal, c_L->x, sizeof(double) * count_A);
     memcpy((void*)x, c_x->x, sizeof(double) * n);
+
+    if(indbase == rocsparse_index_base_one)
+    {
+        for(int i = 0; i <= n; i++)
+            ((int*)csrRowPtr)[i]++;
+        for(int i = 0; i < count_A; i++)
+            ((int*)csrColInd)[i]++;
+    }
 
     // free resources
     cholmod_free_factor(&c_L, &sp->c_handle);

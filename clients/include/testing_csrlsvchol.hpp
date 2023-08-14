@@ -124,6 +124,7 @@ template <bool CPU, bool GPU, typename T, typename Td, typename Ud, typename Th,
 void csrlsvchol_initData(hipsolverSpHandle_t handle,
                          const int           n,
                          const int           nnzA,
+                         hipsparseMatDescr_t descrA,
                          Ud&                 dptrA,
                          Ud&                 dindA,
                          Td&                 dvalA,
@@ -173,6 +174,23 @@ void csrlsvchol_initData(hipsolverSpHandle_t handle,
             // read-in X
             file = testcase / "X_1";
             read_matrix(file.string(), n, 1, hX.data(), n);
+        }
+
+        // change to base 1, if applicable
+        hipsparseIndexBase_t indbase = hipsparseGetMatIndexBase(descrA);
+        if(indbase == HIPSPARSE_INDEX_BASE_ONE)
+        {
+            for(rocblas_int i = 0; i <= n; i++)
+            {
+                hptrA[0][i]++;
+                hptrT[0][i]++;
+            }
+
+            for(rocblas_int i = 0; i < nnzA; i++)
+                hindA[0][i]++;
+
+            for(rocblas_int i = 0; i < nnzT; i++)
+                hindT[0][i]++;
         }
     }
 
@@ -224,6 +242,7 @@ void csrlsvchol_getError(hipsolverSpHandle_t       handle,
     csrlsvchol_initData<true, true, T>(handle,
                                        n,
                                        nnzA,
+                                       descrA,
                                        dptrA,
                                        dindA,
                                        dvalA,
@@ -334,6 +353,7 @@ void testing_csrlsvchol(Arguments& argus)
     int                      nnzA      = argus.get<int>("nnzA");
     double                   tolerance = argus.get<double>("tolerance", 0);
     int                      reorder   = argus.get<int>("reorder", 0);
+    int                      base1     = argus.get<int>("base1", 0);
     int                      hot_calls = argus.iters;
 
     // check non-supported values
@@ -436,7 +456,10 @@ void testing_csrlsvchol(Arguments& argus)
     // memory allocations (all cases)
     hipsparse_local_mat_descr descrA;
     hipsparseSetMatType(descrA, HIPSPARSE_MATRIX_TYPE_GENERAL);
-    hipsparseSetMatIndexBase(descrA, HIPSPARSE_INDEX_BASE_ZERO);
+    if(base1 == 0)
+        hipsparseSetMatIndexBase(descrA, HIPSPARSE_INDEX_BASE_ZERO);
+    else
+        hipsparseSetMatIndexBase(descrA, HIPSPARSE_INDEX_BASE_ONE);
 
     host_strided_batch_vector<int> hptrA(size_ptrA, 1, size_ptrA, 1);
     host_strided_batch_vector<int> hindA(size_indA, 1, size_indA, 1);

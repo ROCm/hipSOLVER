@@ -14,7 +14,7 @@ typedef std::tuple<int, vector<int>> csrlsvchol_tuple;
 
 // each n_range vector is {n}
 
-// each nnz_range vector is {nnzA, reorder}
+// each nnz_range vector is {nnzA, reorder, base1}
 
 // case when n = 20 and nnz = 60 also execute the bad arguments test
 // (null handle, null pointers and invalid values)
@@ -25,10 +25,10 @@ const vector<int> n_range = {
     50,
 };
 const vector<vector<int>> nnz_range = {
-    {60, 0},
-    {60, 1},
-    {100, 2},
-    {140, 3},
+    {60, 0, 1},
+    {60, 1, 0},
+    {100, 2, 0},
+    {140, 3, 1},
 };
 
 // for daily_lapack tests
@@ -39,10 +39,10 @@ const vector<int> large_n_range = {
 };
 const vector<vector<int>> large_nnz_range = {
     // normal (valid) samples
-    {300, 0},
-    {300, 1},
-    {500, 2},
-    {700, 3},
+    {300, 0, 0},
+    {300, 1, 1},
+    {500, 2, 1},
+    {700, 3, 0},
 };
 
 Arguments csrlsvchol_setup_arguments(csrlsvchol_tuple tup)
@@ -55,6 +55,7 @@ Arguments csrlsvchol_setup_arguments(csrlsvchol_tuple tup)
     arg.set<rocblas_int>("n", n_v);
     arg.set<rocblas_int>("nnzA", nnz_v[0]);
     arg.set<rocblas_int>("reorder", nnz_v[1]);
+    arg.set<rocblas_int>("base1", nnz_v[1]);
 
     arg.timing = 0;
 
