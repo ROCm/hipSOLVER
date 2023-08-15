@@ -22,12 +22,14 @@
 
 find_package( GTest REQUIRED )
 
-if( NOT TARGET hipblas )
-  if( CUSTOM_HIPBLAS )
-    set ( ENV{hipblas_DIR} ${CUSTOM_HIPBLAS})
-    find_package( hipblas CONFIG NO_CMAKE_PATH )
-  else( )
-    find_package( hipblas CONFIG PATHS ${ROCM_PATH} /opt/rocm )
+if( BUILD_HIPBLAS_TESTS )
+  if( NOT TARGET hipblas )
+    if( CUSTOM_HIPBLAS )
+      set ( ENV{hipblas_DIR} ${CUSTOM_HIPBLAS})
+      find_package( hipblas REQUIRED CONFIG NO_CMAKE_PATH )
+    else( )
+      find_package( hipblas REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm )
+    endif( )
   endif( )
 endif( )
 
@@ -96,7 +98,7 @@ target_link_libraries( hipsolver-test PRIVATE
   Threads::Threads
   roc::hipsolver
 )
-if( hipblas_FOUND )
+if( BUILD_HIPBLAS_TESTS )
   target_link_libraries( hipsolver-test PRIVATE roc::hipblas )
   target_sources( hipsolver-test PRIVATE hipblas_include1_gtest.cpp hipblas_include2_gtest.cpp )
 endif( )

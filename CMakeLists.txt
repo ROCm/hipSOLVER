@@ -105,11 +105,13 @@ list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ROCM_PATH}/li
 # NOTE:  workaround until hip cmake modules fixes symlink logic in their config files; remove when fixed
 list( APPEND CMAKE_PREFIX_PATH /opt/rocm /opt/rocm/llvm /opt/rocm/hip )
 
-option( BUILD_VERBOSE "Output additional build information" OFF )
-
+option( BUILD_ADDRESS_SANITIZER "Build with address sanitizer enabled" OFF )
+option( BUILD_CODE_COVERAGE "Build hipSOLVER with code coverage enabled" OFF )
+option( BUILD_HIPBLAS_TESTS "Build additional tests to ensure hipBLAS and hipSOLVER are compatible (requires installed hipBLAS)" OFF )
 # BUILD_SHARED_LIBS is a cmake built-in; we make it an explicit option such that it shows in cmake-gui
 option( BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON )
-option(BUILD_ADDRESS_SANITIZER "Build with address sanitizer enabled" OFF)
+option( BUILD_VERBOSE "Output additional build information" OFF )
+option( USE_CUDA "Look for CUDA and use that as a backend if found" OFF )
 
 add_library(hipsolver-common INTERFACE)
 target_compile_options(hipsolver-common INTERFACE
@@ -136,7 +138,6 @@ set( ARMOR_LEVEL "${DEFAULT_ARMOR_LEVEL}" CACHE STRING "Enables increasingly exp
 include( armor-config )
 
 # Find CUDA if the user wants a CUDA version.
-option(USE_CUDA "Look for CUDA and use that as a backend if found" OFF)
 if (USE_CUDA)
     find_package( CUDA REQUIRED )
 endif()
@@ -153,7 +154,6 @@ if( USE_CUDA )
 endif( )
 
 # FOR OPTIONAL CODE COVERAGE
-option(BUILD_CODE_COVERAGE "Build hipSOLVER with code coverage enabled" OFF)
 if(BUILD_CODE_COVERAGE)
   add_compile_options(-fprofile-arcs -ftest-coverage)
   add_link_options(--coverage)

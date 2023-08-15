@@ -94,6 +94,6 @@ ci: {
             properties(auxiliary.addCommonProperties(property))
     }
 
-    String hostBuildCommand = './install.sh -c --compiler=g++'
+    String hostBuildCommand = './install.sh -c --compiler=g++ --cmake-arg -DBUILD_HIPBLAS_TESTS=ON'
     setupCI(urlJobName, jobNameList, hostBuildCommand, runCI, 'g++')
 }

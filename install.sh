@@ -593,7 +593,7 @@ fi
 
   # custom hipblas
   if [[ ${hipblas_path+foo} ]]; then
-    cmake_common_options+=("-DCUSTOM_HIPBLAS=${hipblas_path}")
+    cmake_common_options+=("-DCUSTOM_HIPBLAS=${hipblas_path} -DBUILD_HIPBLAS_TESTS=ON")
   fi
 
   # custom rocsolver

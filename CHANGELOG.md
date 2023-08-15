@@ -4,7 +4,7 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ## (Unreleased) hipSOLVER
 ### Added
-- Added hipBLAS as an optional dependency to hipsolver-test. Some tests will only be run if built with hipBLAS installed on the system.
+- Added hipBLAS as an optional dependency to hipsolver-test. Use the `BUILD_HIPBLAS_TESTS` CMake option to test compatibility between hipSOLVER and hipBLAS.
 
 ### Optimized
 ### Changed
