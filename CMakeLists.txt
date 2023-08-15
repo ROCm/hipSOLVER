@@ -110,6 +110,7 @@ option( BUILD_CODE_COVERAGE "Build hipSOLVER with code coverage enabled" OFF )
 option( BUILD_HIPBLAS_TESTS "Build additional tests to ensure hipBLAS and hipSOLVER are compatible (requires installed hipBLAS)" OFF )
 # BUILD_SHARED_LIBS is a cmake built-in; we make it an explicit option such that it shows in cmake-gui
 option( BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON )
+option( BUILD_WITH_SPARSE "Build hipSOLVER with sparse functionality and tests enabled (requires additional dependencies)" ON )
 option( BUILD_VERBOSE "Output additional build information" OFF )
 option( USE_CUDA "Look for CUDA and use that as a backend if found" OFF )
 
@@ -214,7 +215,13 @@ endif( )
 
 # Package specific CPACK vars
 if( NOT USE_CUDA )
-  rocm_package_add_dependencies(DEPENDS "rocblas >= 4.0.0" "rocsparse >= 2.2.0" "rocsolver >= 3.24.0")
+  set(hipsolver_pkgdeps "rocblas >= 4.0.0" "rocsolver >= 3.24.0")
+
+  if( BUILD_WITH_SPARSE )
+    list(APPEND hipsolver_pkgdeps "rocsparse >= 2.2.0")
+  endif( )
+
+  rocm_package_add_dependencies(DEPENDS ${hipsolver_pkgdeps})
 endif( )
 
 set( CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.md" )

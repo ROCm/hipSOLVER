@@ -54,6 +54,7 @@ function display_help()
   echo "    [--static] Create static library instead of shared library"
   echo "    [--codecoverage] Build with code coverage profiling enabled, excluding release mode."
   echo "    [--address-sanitizer] Build with address sanitizer enabled. Uses hipcc to compile"
+  echo "    [--no-sparse] Build with sparse functionality and tests disabled."
   echo "    [--docs] (experimental) Pass this flag to build the documentation from source."
   echo "    [--cmake-arg] Forward the given argument to CMake when configuring the build"
   echo "    [--rm-legacy-include-dir] Remove legacy include dir Packaging added for file/folder reorg backward compatibility."
@@ -180,11 +181,13 @@ install_packages( )
     library_dependencies_fedora+=( "" ) # how to install cuda on fedora?
 
   else
-    library_dependencies_ubuntu+=( "libsuitesparse-dev" )
-    library_dependencies_centos+=( "suitesparse-devel" )
-    library_dependencies_centos8+=( "suitesparse-devel" )
-    library_dependencies_fedora+=( "suitesparse-devel" )
-    library_dependencies_sles+=( "suitesparse-devel" )
+    if [[ "${build_sparse}" == true ]]; then
+      library_dependencies_ubuntu+=( "libsuitesparse-dev" )
+      library_dependencies_centos+=( "suitesparse-devel" )
+      library_dependencies_centos8+=( "suitesparse-devel" )
+      library_dependencies_fedora+=( "suitesparse-devel" )
+      library_dependencies_sles+=( "suitesparse-devel" )
+    fi
 
     if [[ "${build_hip_clang}" == false ]]; then
       # Custom rocm-dev installation
@@ -221,25 +224,6 @@ install_packages( )
         fi
       fi
 
-      # Custom rocsparse installation
-      # Do not install rocsparse if --rocsparse_path flag is set,
-      # as we will be building against our own rocsparse intead.
-      if [[ -z ${rocsparse_path+foo} ]]; then
-        if [[ -z ${custom_rocsparse+foo} ]]; then
-          # Install base rocsparse package unless --rocsparse flag is passed
-          library_dependencies_ubuntu+=( "rocsparse" )
-          library_dependencies_centos+=( "rocsparse" )
-          library_dependencies_fedora+=( "rocsparse" )
-          library_dependencies_sles+=( "rocsparse" )
-        else
-          # Install rocm-specific rocsparse package
-          library_dependencies_ubuntu+=( "${custom_rocsparse}" )
-          library_dependencies_centos+=( "${custom_rocsparse}" )
-          library_dependencies_fedora+=( "${custom_rocsparse}" )
-          library_dependencies_sles+=( "${custom_rocsparse}" )
-        fi
-      fi
-
       # Custom rocsolver installation
       # Do not install rocsolver if --rocsolver_path flag is set,
       # as we will be building against our own rocsolver intead.
@@ -256,6 +240,27 @@ install_packages( )
           library_dependencies_centos+=( "${custom_rocsolver}" )
           library_dependencies_fedora+=( "${custom_rocsolver}" )
           library_dependencies_sles+=( "${custom_rocsolver}" )
+        fi
+      fi
+
+      if [[ "${build_sparse}" == true ]]; then
+        # Custom rocsparse installation
+        # Do not install rocsparse if --rocsparse_path flag is set,
+        # as we will be building against our own rocsparse intead.
+        if [[ -z ${rocsparse_path+foo} ]]; then
+          if [[ -z ${custom_rocsparse+foo} ]]; then
+            # Install base rocsparse package unless --rocsparse flag is passed
+            library_dependencies_ubuntu+=( "rocsparse" )
+            library_dependencies_centos+=( "rocsparse" )
+            library_dependencies_fedora+=( "rocsparse" )
+            library_dependencies_sles+=( "rocsparse" )
+          else
+            # Install rocm-specific rocsparse package
+            library_dependencies_ubuntu+=( "${custom_rocsparse}" )
+            library_dependencies_centos+=( "${custom_rocsparse}" )
+            library_dependencies_fedora+=( "${custom_rocsparse}" )
+            library_dependencies_sles+=( "${custom_rocsparse}" )
+          fi
         fi
       fi
     fi
@@ -359,6 +364,7 @@ build_cuda=false
 build_hip_clang=true
 build_release=true
 build_relocatable=false
+build_sparse=true
 build_docs=false
 cmake_prefix_path=/opt/rocm
 cuda_path=/usr/local/cuda
@@ -379,7 +385,7 @@ declare -a cmake_client_options
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,rocsparse:,rocsparse-path:,hipsparse-path:,custom-target:,docs,address-sanitizer,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,rocsparse:,rocsparse-path:,hipsparse-path:,custom-target:,docs,address-sanitizer,no-sparse,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -445,6 +451,9 @@ while true; do
     --address-sanitizer)
         build_address_sanitizer=true
         compiler=hipcc
+        shift ;;
+    --no-sparse)
+        build_sparse=false
         shift ;;
     --rm-legacy-include-dir)
         build_freorg_bkwdcomp=false
@@ -671,11 +680,17 @@ fi
     cmake_common_options+=("-DBUILD_ADDRESS_SANITIZER=ON")
   fi
 
-if [[ "${build_freorg_bkwdcomp}" == true ]]; then
-  cmake_common_options="${cmake_common_options} -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=ON"
-  else
-  cmake_common_options="${cmake_common_options} -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF"
-fi
+  # no sparse
+  if [[ "${build_sparse}" == false ]]; then
+    cmake_common_options+=("-DBUILD_WITH_SPARSE=OFF")
+  fi
+
+  # backwards compatibility for file reorg
+  if [[ "${build_freorg_bkwdcomp}" == true ]]; then
+    cmake_common_options="${cmake_common_options} -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=ON"
+    else
+    cmake_common_options="${cmake_common_options} -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF"
+  fi
 
   # Build library
   if [[ "${build_relocatable}" == true ]]; then

@@ -98,6 +98,7 @@ endif( )
 
 # Build hipsolver from source on AMD platform
 if( NOT USE_CUDA )
+  # Find rocBLAS
   if( NOT TARGET rocblas )
     if( CUSTOM_ROCBLAS )
       set ( ENV{rocblas_DIR} ${CUSTOM_ROCBLAS})
@@ -107,15 +108,7 @@ if( NOT USE_CUDA )
     endif( )
   endif( )
 
-  if( NOT TARGET rocsparse )
-    if( CUSTOM_ROCSPARSE )
-      set ( ENV{rocsparse_DIR} ${CUSTOM_ROCSPARSE})
-      find_package( rocsparse REQUIRED CONFIG NO_CMAKE_PATH )
-    else( )
-      find_package( rocsparse REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocsparse )
-    endif( )
-  endif( )
-
+  # Find rocSOLVER
   if( NOT TARGET rocsolver )
     if( CUSTOM_ROCSOLVER )
       set ( ENV{rocsolver_DIR} ${CUSTOM_ROCSOLVER})
@@ -125,20 +118,37 @@ if( NOT USE_CUDA )
     endif( )
   endif( )
 
-  target_link_libraries( hipsolver PRIVATE roc::rocblas roc::rocsparse roc::rocsolver hip::host )
+  target_link_libraries( hipsolver PRIVATE roc::rocblas roc::rocsolver hip::host )
 
   if( CUSTOM_TARGET )
     target_link_libraries( hipsolver PRIVATE hip::${CUSTOM_TARGET} )
   endif( )
 
-  # Find and link SuiteSparse
-  find_library( SUITESPARSECONFIG_LIB suitesparseconfig )
-  find_library( CHOLMOD_LIB cholmod )
-  target_link_libraries( hipsolver PRIVATE ${SUITESPARSECONFIG_LIB} ${CHOLMOD_LIB} )
-  target_include_directories( hipsolver
-    SYSTEM PRIVATE
-    $<BUILD_INTERFACE:/usr/include/suitesparse/>
-  )
+  if( BUILD_WITH_SPARSE )
+    # Find rocSPARSE
+    if( NOT TARGET rocsparse )
+      if( CUSTOM_ROCSPARSE )
+        set ( ENV{rocsparse_DIR} ${CUSTOM_ROCSPARSE})
+        find_package( rocsparse REQUIRED CONFIG NO_CMAKE_PATH )
+      else( )
+        find_package( rocsparse REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocsparse )
+      endif( )
+    endif( )
+
+    # Find SuiteSparse
+    find_library( SUITESPARSECONFIG_LIB suitesparseconfig )
+    find_library( CHOLMOD_LIB cholmod )
+
+    target_link_libraries( hipsolver PRIVATE roc::rocsparse ${SUITESPARSECONFIG_LIB} ${CHOLMOD_LIB} )
+    target_include_directories( hipsolver
+      SYSTEM PRIVATE
+      $<BUILD_INTERFACE:/usr/include/suitesparse/>
+    )
+    set_source_files_properties(${hipsolver_source}
+      PROPERTIES
+        COMPILE_DEFINITIONS HAVE_ROCSPARSE
+    )
+  endif( )
 
 else( )
   target_compile_definitions( hipsolver PRIVATE __HIP_PLATFORM_NVCC__ )

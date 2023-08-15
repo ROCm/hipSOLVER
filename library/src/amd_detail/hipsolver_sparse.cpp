@@ -31,30 +31,36 @@
 #include "hipsolver.h"
 #include "hipsolver_conversions.hpp"
 
-#include "cholmod.h"
 #include "rocblas/internal/rocblas_device_malloc.hpp"
 #include "rocblas/rocblas.h"
 #include "rocsolver/rocsolver.h"
-#include "rocsparse/rocsparse.h"
 #include <algorithm>
 #include <climits>
 #include <functional>
 #include <iostream>
 #include <math.h>
 
+#ifdef HAVE_ROCSPARSE
+#include "cholmod.h"
+#include "rocsparse/rocsparse.h"
+#endif
+
 extern "C" {
 
 /******************** HANDLE ********************/
 struct hipsolverSpHandle
 {
+#ifdef HAVE_ROCSPARSE
     rocblas_handle handle;
 
     cholmod_common c_handle;
+#endif
 };
 
 hipsolverStatus_t hipsolverSpCreate(hipsolverSpHandle_t* handle)
 try
 {
+#ifdef HAVE_ROCSPARSE
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
@@ -77,6 +83,9 @@ try
 
     *handle = sp;
     return HIPSOLVER_STATUS_SUCCESS;
+#else
+    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+#endif
 }
 catch(...)
 {
@@ -86,6 +95,7 @@ catch(...)
 hipsolverStatus_t hipsolverSpDestroy(hipsolverSpHandle_t handle)
 try
 {
+#ifdef HAVE_ROCSPARSE
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
@@ -95,6 +105,9 @@ try
     delete sp;
 
     return HIPSOLVER_STATUS_SUCCESS;
+#else
+    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+#endif
 }
 catch(...)
 {
@@ -104,11 +117,15 @@ catch(...)
 hipsolverStatus_t hipsolverSpSetStream(hipsolverSpHandle_t handle, hipStream_t streamId)
 try
 {
+#ifdef HAVE_ROCSPARSE
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     return rocblas2hip_status(rocblas_set_stream(sp->handle, streamId));
+#else
+    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+#endif
 }
 catch(...)
 {
@@ -130,6 +147,7 @@ hipsolverStatus_t hipsolverSpScsrlsvchol(hipsolverSpHandle_t       handle,
                                          int*                      singularity)
 try
 {
+#ifdef HAVE_ROCSPARSE
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(n < 0 || nnzA < 0)
@@ -249,6 +267,9 @@ try
     // TODO: Call solve on GPU
 
     return HIPSOLVER_STATUS_SUCCESS;
+#else
+    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+#endif
 }
 catch(...)
 {
@@ -269,6 +290,7 @@ hipsolverStatus_t hipsolverSpDcsrlsvchol(hipsolverSpHandle_t       handle,
                                          int*                      singularity)
 try
 {
+#ifdef HAVE_ROCSPARSE
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(n < 0 || nnzA < 0)
@@ -376,6 +398,9 @@ try
     // TODO: Call solve on GPU
 
     return HIPSOLVER_STATUS_SUCCESS;
+#else
+    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+#endif
 }
 catch(...)
 {
@@ -438,6 +463,7 @@ hipsolverStatus_t hipsolverSpScsrlsvcholHost(hipsolverSpHandle_t       handle,
                                              int*                      singularity)
 try
 {
+#ifdef HAVE_ROCSPARSE
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(n < 0 || nnzA < 0)
@@ -567,6 +593,9 @@ try
     cholmod_free_dense(&c_x, &sp->c_handle);
 
     return HIPSOLVER_STATUS_SUCCESS;
+#else
+    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+#endif
 }
 catch(...)
 {
@@ -587,6 +616,7 @@ hipsolverStatus_t hipsolverSpDcsrlsvcholHost(hipsolverSpHandle_t       handle,
                                              int*                      singularity)
 try
 {
+#ifdef HAVE_ROCSPARSE
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(n < 0 || nnzA < 0)
@@ -700,6 +730,9 @@ try
     cholmod_free_dense(&c_x, &sp->c_handle);
 
     return HIPSOLVER_STATUS_SUCCESS;
+#else
+    return HIPSOLVER_STATUS_NOT_SUPPORTED;
+#endif
 }
 catch(...)
 {
