@@ -39,21 +39,33 @@ hipsolverStatus_t
 
 .. _operation_t:
 
+hipblasOperation_t
+--------------------
+.. doxygenenum:: hipblasOperation_t
+
 hipsolverOperation_t
 --------------------
-.. doxygenenum:: hipsolverOperation_t
+.. doxygentypedef:: hipsolverOperation_t
 
 .. _fillmode_t:
 
+hipblasFillMode_t
+--------------------
+.. doxygenenum:: hipblasFillMode_t
+
 hipsolverFillMode_t
 --------------------
-.. doxygenenum:: hipsolverFillMode_t
+.. doxygentypedef:: hipsolverFillMode_t
 
 .. _sidemode_t:
 
+hipblasSideMode_t
+--------------------
+.. doxygenenum:: hipblasSideMode_t
+
 hipsolverSideMode_t
 --------------------
-.. doxygenenum:: hipsolverSideMode_t
+.. doxygentypedef:: hipsolverSideMode_t
 
 .. _eigmode_t:
 

@@ -17,7 +17,7 @@ def runCI =
 
     //customize for project
     prj.paths.build_command = buildCommand
-    prj.libraryDependencies = []
+    prj.libraryDependencies = ['hipBLAS']
     prj.defaults.ccache = true
 
     // Define test architectures, optional rocm version argument is available
@@ -32,7 +32,7 @@ def runCI =
         platform, project->
 
         commonGroovy = load "${project.paths.project_src_prefix}/.jenkins/common.groovy"
-        commonGroovy.runCompileCommand(platform, project, jobName)
+        commonGroovy.runCompileCommand(platform, project, jobName, true)
     }
 
     def testCommand =
@@ -84,6 +84,6 @@ ci: {
             properties(auxiliary.addCommonProperties(property))
     }
 
-    String hostBuildCommand = './install.sh -c --compiler=g++ --cuda'
+    String hostBuildCommand = './install.sh -c --compiler=g++ --cuda --cmake-arg -DBUILD_HIPBLAS_TESTS=ON'
     setupCI(urlJobName, jobNameList, hostBuildCommand, runCI, 'g++')
 }

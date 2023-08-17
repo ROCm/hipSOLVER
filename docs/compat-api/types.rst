@@ -30,17 +30,17 @@ hipsolverStatus_t
 --------------------
 See :ref:`hipsolverStatus_t <status_t>`.
 
-hipsolverOperation_t
+hipblasOperation_t
 --------------------
-See :ref:`hipsolverOperation_t <operation_t>`.
+See :ref:`hipblasOperation_t <operation_t>`.
 
-hipsolverFillMode_t
+hipblasFillMode_t
 --------------------
-See :ref:`hipsolverFillMode_t <fillmode_t>`.
+See :ref:`hipblasFillMode_t <fillmode_t>`.
 
-hipsolverSideMode_t
+hipblasSideMode_t
 --------------------
-See :ref:`hipsolverSideMode_t <sidemode_t>`.
+See :ref:`hipblasSideMode_t <sidemode_t>`.
 
 hipsolverEigMode_t
 --------------------

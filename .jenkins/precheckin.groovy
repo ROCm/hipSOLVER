@@ -17,7 +17,7 @@ def runCI =
 
     //customize for project
     prj.paths.build_command = buildCommand
-    prj.libraryDependencies = ['rocBLAS-internal', 'rocSPARSE-internal', 'rocSOLVER']
+    prj.libraryDependencies = ['rocBLAS-internal', 'rocSPARSE-internal', 'rocSOLVER', 'hipBLAS']
     prj.defaults.ccache = true
 
     // Define test architectures, optional rocm version argument is available
@@ -94,6 +94,6 @@ ci: {
             properties(auxiliary.addCommonProperties(property))
     }
 
-    String hostBuildCommand = './install.sh -c --compiler=g++'
+    String hostBuildCommand = './install.sh -c --compiler=g++ --cmake-arg -DBUILD_HIPBLAS_TESTS=ON'
     setupCI(urlJobName, jobNameList, hostBuildCommand, runCI, 'g++')
 }

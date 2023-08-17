@@ -4,8 +4,8 @@
 # Edit script to bump versions for new development cycle/release.
 
 # for hipSOLVER version string
-OLD_HIPSOLVER_VERSION="1.9.0"
-NEW_HIPSOLVER_VERSION="1.10.0"
+OLD_HIPSOLVER_VERSION="2.0.0"
+NEW_HIPSOLVER_VERSION="2.1.0"
 sed -i "s/${OLD_HIPSOLVER_VERSION}/${NEW_HIPSOLVER_VERSION}/g" CMakeLists.txt
 
 # for rocBLAS/rocSOLVER package requirements
