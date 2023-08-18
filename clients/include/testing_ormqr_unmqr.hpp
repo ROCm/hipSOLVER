@@ -357,7 +357,7 @@ void ormqr_unmqr_getError(const hipsolverHandle_t    handle,
     // check info
     EXPECT_EQ(hInfo[0][0], hInfoRes[0][0]);
     if(hInfo[0][0] != hInfoRes[0][0])
-        *max_err++;
+        *max_err += 1;
 }
 
 template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>

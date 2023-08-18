@@ -13,6 +13,9 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ### Deprecated
 ### Removed
 ### Fixed
+- Fixed tests for hipsolver info updates in ORGBR/UNGBR, ORGQR/UNGQR,
+  ORGTR/UNGTR, ORMQR/UNMQR, and ORMTR/UNMTR.
+
 ### Known Issues
 ### Security
 
