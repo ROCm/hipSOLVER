@@ -83,6 +83,7 @@ if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
     common/hipsolver_datatype2string.cpp
     common/lapack_host_reference.cpp
     common/utility.cpp
+    rocsolvercommon/rocsolver_test.cpp
   )
 
   prepend_path("${CMAKE_CURRENT_SOURCE_DIR}/" common_source_files common_source_paths)
@@ -91,7 +92,7 @@ if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
   # Copy and point to sparse test data
   file(COPY
     ${CMAKE_CURRENT_SOURCE_DIR}/sparsedata/
-    DESTINATION ${PROJECT_BINARY_DIR}/sparsedata/
+    DESTINATION ${PROJECT_BINARY_DIR}/staging/sparsedata/
   )
   install(DIRECTORY
     ${CMAKE_CURRENT_SOURCE_DIR}/sparsedata/

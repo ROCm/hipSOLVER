@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <complex>
 #include <cstdarg>
 #include <cstdlib>
 #include <iomanip>
@@ -156,34 +157,4 @@ inline void rocsolver_bench_output(T arg, Ts... args)
 
 // location of the sparse data directory for the re-factorization tests
 
-inline fs::path get_sparse_data_dir()
-{
-    // first check an environment variable
-    if(const char* datadir = std::getenv("HIPSOLVER_TEST_DATA"))
-        return fs::path{datadir};
-
-    fs::path p            = fs::current_path();
-    fs::path p_parent     = p.parent_path();
-    fs::path installed    = p.root_directory() / "opt" / "rocm" / "share" / "hipsolver" / "test";
-    fs::path exe_relative = fs::path(hipsolver_exepath()) / ".." / "share" / "hipsolver" / "test";
-
-    // check relative to the current directory and relative to each parent
-    while(p != p_parent)
-    {
-        fs::path candidate = p / "clients" / "sparsedata";
-        if(fs::exists(candidate))
-            return candidate;
-        p        = p_parent;
-        p_parent = p.parent_path();
-    }
-
-    // check relative to the running executable
-    if(fs::exists(exe_relative))
-        return exe_relative;
-
-    // check relative to default install path
-    if(fs::exists(installed))
-        return installed;
-
-    return fs::current_path();
-}
+fs::path get_sparse_data_dir();
