@@ -346,7 +346,7 @@ declare -a cmake_client_options
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,custom-target:,docs,address-sanitizer`,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,custom-target:,docs,address-sanitizer,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
