@@ -4,6 +4,8 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 
 ## hipSOLVER 1.8.1 for ROCm 5.7.0
+### Changed
+- Changed hipsolver-test sparse input data search paths to be relative to the test executable
 
 
 ## hipSOLVER 1.8.0 for ROCm 5.6.0
