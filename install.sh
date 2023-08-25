@@ -45,6 +45,7 @@ function display_help()
   echo "    [-v|--rocm-dev] Set specific rocm-dev version"
   echo "    [-b|--rocblas] Set specific rocblas version"
   echo "    [--rocblas-path] Set specific path to custom built rocblas"
+  echo "    [--hipblas-path] Set specific path to custom built hipblas"
   echo "    [-s|--rocsolver] Set specific rocsolver version"
   echo "    [--rocsolver-path] Set specific path to custom built rocsolver"
   echo "    [--static] Create static library instead of shared library"
@@ -345,7 +346,7 @@ declare -a cmake_client_options
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,rocsolver:,rocsolver-path:,custom-target:,docs,address-sanitizer,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,custom-target:,docs,address-sanitizer`,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -427,6 +428,9 @@ while true; do
     --rocblas-path)
         rocblas_path=${2}
         shift 2 ;;
+    --hipblas-path)
+        hipblas_path=${2}
+        shift 2 ;;
     -s|--rocsolver)
          custom_rocsolver=${2}
          shift 2;;
@@ -477,6 +481,9 @@ fi
 # resolve relative paths
 if [[ -n "${rocblas_path+x}" ]]; then
   rocblas_path="$(make_absolute_path "${rocblas_path}")"
+fi
+if [[ -n "${hipblas_path+x}" ]]; then
+  hipblas_path="$(make_absolute_path "${hipblas_path}")"
 fi
 if [[ -n "${rocsolver_path+x}" ]]; then
   rocsolver_path="$(make_absolute_path "${rocsolver_path}")"
@@ -577,6 +584,11 @@ fi
   # custom rocblas
   if [[ ${rocblas_path+foo} ]]; then
     cmake_common_options+=("-DCUSTOM_ROCBLAS=${rocblas_path}")
+  fi
+
+  # custom hipblas
+  if [[ ${hipblas_path+foo} ]]; then
+    cmake_common_options+=("-DCUSTOM_HIPBLAS=${hipblas_path} -DBUILD_HIPBLAS_TESTS=ON")
   fi
 
   # custom rocsolver

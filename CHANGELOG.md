@@ -4,11 +4,18 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 
 ## (Unreleased) hipSOLVER
 ### Added
+- Added hipBLAS as an optional dependency to hipsolver-test. Use the `BUILD_HIPBLAS_TESTS` CMake option to test compatibility between hipSOLVER and hipBLAS.
+
 ### Optimized
 ### Changed
+- Types hipsolverOperation_t, hipsolverFillMode_t, and hipsolverSideMode_t are now aliases of hipblasOperation_t, hipblasFillMode_t, and hipblasSideMode_t.
+
 ### Deprecated
 ### Removed
 ### Fixed
+- Fixed tests for hipsolver info updates in ORGBR/UNGBR, ORGQR/UNGQR,
+  ORGTR/UNGTR, ORMQR/UNMQR, and ORMTR/UNMTR.
+
 ### Known Issues
 ### Security
 
