@@ -135,11 +135,7 @@ if( NOT USE_CUDA )
       endif( )
     endif( )
 
-    # Find SuiteSparse
-    find_library( SUITESPARSECONFIG_LIB suitesparseconfig )
-    find_library( CHOLMOD_LIB cholmod )
-
-    target_link_libraries( hipsolver PRIVATE roc::rocsparse ${SUITESPARSECONFIG_LIB} ${CHOLMOD_LIB} )
+    target_link_libraries( hipsolver PRIVATE roc::rocsparse suitesparseconfig cholmod )
     target_include_directories( hipsolver
       SYSTEM PRIVATE
       $<BUILD_INTERFACE:/usr/include/suitesparse/>
