@@ -196,9 +196,12 @@ else( )
 endif( )
 
 if( UNIX )
-  # Force installation of .f90 module files
-  install(FILES "hipsolver_module.f90"
-          DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/hipsolver")
+  # Exclude include folder for ASAN package
+  if( NOT ENABLE_ASAN_PACKAGING )
+    # Force installation of .f90 module files
+    install(FILES "hipsolver_module.f90"
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/hipsolver")
+  endif( )
 endif( )
 
 if(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY)
