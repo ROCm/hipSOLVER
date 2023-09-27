@@ -2,6 +2,11 @@
 
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
+## hipSOLVER 1.8.2 for ROCm 5.7.1
+### Fixed
+- Fixed conflicts between the hipsolver-dev and -asan packages by excluding
+  include files from the latter
+
 
 ## hipSOLVER 1.8.1 for ROCm 5.7.0
 ### Changed

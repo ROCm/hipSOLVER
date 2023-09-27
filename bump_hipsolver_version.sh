@@ -4,7 +4,7 @@
 # Edit script to bump versions for new development cycle/release.
 
 # for hipSOLVER version string
-OLD_HIPSOLVER_VERSION="1.8.1"
+OLD_HIPSOLVER_VERSION="1.8.2"
 NEW_HIPSOLVER_VERSION="1.9.0"
 sed -i "s/${OLD_HIPSOLVER_VERSION}/${NEW_HIPSOLVER_VERSION}/g" CMakeLists.txt
 

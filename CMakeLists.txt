@@ -89,7 +89,7 @@ include( ROCMInstallSymlinks )
 include( ROCMClients )
 include( ROCMHeaderWrapper )
 
-set ( VERSION_STRING "1.8.1" )
+set ( VERSION_STRING "1.8.2" )
 rocm_setup_version( VERSION ${VERSION_STRING} )
 
 if( NOT DEFINED ENV{HIP_PATH})
