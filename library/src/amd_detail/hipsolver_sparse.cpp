@@ -54,6 +54,80 @@ struct hipsolverSpHandle
     rocblas_handle handle;
 
     cholmod_common c_handle;
+
+    // Convert base one indices to base zero, and copy float values into double array
+    void prep_input(rocsparse_index_base indbase,
+                    int                  n,
+                    int                  nnz,
+                    int*                 ptr,
+                    int*                 ind,
+                    double*              val,
+                    float*               src_val)
+    {
+        int count;
+        if(indbase == rocsparse_index_base_one)
+        {
+            for(int i = 0; i <= n; i++)
+                ptr[i] -= 1;
+            count = std::min(nnz, ptr[n]);
+            for(int i = 0; i < count; i++)
+                ind[i] -= 1;
+        }
+        else
+            count = std::min(nnz, ptr[n]);
+
+        if(src_val)
+        {
+            for(int i = 0; i < count; i++)
+                val[i] = (double)src_val[i];
+        }
+    }
+    // Copy float values into double array
+    void prep_input(int n, double* val, float* src_val)
+    {
+        if(src_val)
+        {
+            for(int i = 0; i < n; i++)
+                val[i] = (double)src_val[i];
+        }
+    }
+
+    // Convert base zero indices to base one, and copy double values into float array
+    void prep_output(rocsparse_index_base indbase,
+                     int                  n,
+                     int                  nnz,
+                     int*                 ptr,
+                     int*                 ind,
+                     double*              val,
+                     float*               dest_val)
+    {
+        int count;
+        if(indbase == rocsparse_index_base_one)
+        {
+            count = std::min(nnz, ptr[n]);
+            for(int i = 0; i <= n; i++)
+                ptr[i] += 1;
+            for(int i = 0; i < count; i++)
+                ind[i] += 1;
+        }
+        else
+            count = std::min(nnz, ptr[n]);
+
+        if(dest_val)
+        {
+            for(int i = 0; i < count; i++)
+                dest_val[i] = (float)val[i];
+        }
+    }
+    // Copy double values into float array
+    void prep_output(int n, double* val, float* dest_val)
+    {
+        if(dest_val)
+        {
+            for(int i = 0; i < n; i++)
+                dest_val[i] = (float)val[i];
+        }
+    }
 #endif
 };
 
@@ -189,31 +263,15 @@ try
     }
 
     // set up A
+    float*          sngVal = (float*)malloc(sizeof(float) * nnzA);
     cholmod_sparse* c_A
         = cholmod_allocate_sparse(n, n, nnzA, true, true, -1, CHOLMOD_REAL, &sp->c_handle);
     CHECK_HIP_ERROR(
         hipMemcpy(c_A->p, csrRowPtr, sizeof(rocblas_int) * (n + 1), hipMemcpyDeviceToHost));
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i <= n; i++)
-            ((int*)c_A->p)[i]--;
-    }
-
-    int count_A = std::min(nnzA, ((int*)c_A->p)[n]);
     CHECK_HIP_ERROR(
-        hipMemcpy(c_A->i, csrColInd, sizeof(rocblas_int) * count_A, hipMemcpyDeviceToHost));
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i < count_A; i++)
-            ((int*)c_A->i)[i]--;
-    }
-
-    float* sngVal = (float*)malloc(sizeof(float) * nnzA);
-    CHECK_HIP_ERROR(hipMemcpy(sngVal, csrVal, sizeof(float) * count_A, hipMemcpyDeviceToHost));
-
-    double* dblVal = static_cast<double*>(c_A->x);
-    for(int i = 0; i < count_A; i++)
-        dblVal[i] = sngVal[i];
+        hipMemcpy(c_A->i, csrColInd, sizeof(rocblas_int) * nnzA, hipMemcpyDeviceToHost));
+    CHECK_HIP_ERROR(hipMemcpy(sngVal, csrVal, sizeof(float) * nnzA, hipMemcpyDeviceToHost));
+    sp->prep_input(indbase, n, nnzA, (int*)c_A->p, (int*)c_A->i, (double*)c_A->x, sngVal);
 
     if(tolerance > 0)
         cholmod_drop(tolerance, c_A, &sp->c_handle);
@@ -238,28 +296,12 @@ try
     }
 
     // copy back results
-    count_A = std::min(nnzA, ((int*)c_L->p)[n]);
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i <= n; i++)
-            ((int*)c_L->p)[i]++;
-    }
+    sp->prep_output(indbase, n, nnzA, (int*)c_L->p, (int*)c_L->i, (double*)c_L->x, sngVal);
     CHECK_HIP_ERROR(
         hipMemcpy((void*)csrRowPtr, c_L->p, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
-
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i < count_A; i++)
-            ((int*)c_L->i)[i]++;
-    }
     CHECK_HIP_ERROR(
-        hipMemcpy((void*)csrColInd, c_L->i, sizeof(rocblas_int) * count_A, hipMemcpyHostToDevice));
-
-    dblVal = static_cast<double*>(c_L->x);
-    for(int i = 0; i < count_A; i++)
-        sngVal[i] = (float)dblVal[i];
-    CHECK_HIP_ERROR(
-        hipMemcpy((void*)csrVal, sngVal, sizeof(float) * count_A, hipMemcpyHostToDevice));
+        hipMemcpy((void*)csrColInd, c_L->i, sizeof(rocblas_int) * nnzA, hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(hipMemcpy((void*)csrVal, sngVal, sizeof(float) * nnzA, hipMemcpyHostToDevice));
 
     // free resources
     free(sngVal);
@@ -338,22 +380,10 @@ try
         = cholmod_allocate_sparse(n, n, nnzA, true, true, -1, CHOLMOD_REAL, &sp->c_handle);
     CHECK_HIP_ERROR(
         hipMemcpy(c_A->p, csrRowPtr, sizeof(rocblas_int) * (n + 1), hipMemcpyDeviceToHost));
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i <= n; i++)
-            ((int*)c_A->p)[i]--;
-    }
-
-    int count_A = std::min(nnzA, ((int*)c_A->p)[n]);
     CHECK_HIP_ERROR(
-        hipMemcpy(c_A->i, csrColInd, sizeof(rocblas_int) * count_A, hipMemcpyDeviceToHost));
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i < count_A; i++)
-            ((int*)c_A->i)[i]--;
-    }
-
-    CHECK_HIP_ERROR(hipMemcpy(c_A->x, csrVal, sizeof(double) * count_A, hipMemcpyDeviceToHost));
+        hipMemcpy(c_A->i, csrColInd, sizeof(rocblas_int) * nnzA, hipMemcpyDeviceToHost));
+    CHECK_HIP_ERROR(hipMemcpy(c_A->x, csrVal, sizeof(double) * nnzA, hipMemcpyDeviceToHost));
+    sp->prep_input(indbase, n, nnzA, (int*)c_A->p, (int*)c_A->i, (double*)c_A->x, nullptr);
 
     if(tolerance > 0)
         cholmod_drop(tolerance, c_A, &sp->c_handle);
@@ -376,24 +406,12 @@ try
     }
 
     // copy back results
-    count_A = std::min(nnzA, ((int*)c_L->p)[n]);
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i <= n; i++)
-            ((int*)c_L->p)[i]++;
-    }
+    sp->prep_output(indbase, n, nnzA, (int*)c_L->p, (int*)c_L->i, (double*)c_L->x, nullptr);
     CHECK_HIP_ERROR(
         hipMemcpy((void*)csrRowPtr, c_L->p, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
-
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i < count_A; i++)
-            ((int*)c_L->i)[i]++;
-    }
     CHECK_HIP_ERROR(
-        hipMemcpy((void*)csrColInd, c_L->i, sizeof(rocblas_int) * count_A, hipMemcpyHostToDevice));
-    CHECK_HIP_ERROR(
-        hipMemcpy((void*)csrVal, c_L->x, sizeof(double) * count_A, hipMemcpyHostToDevice));
+        hipMemcpy((void*)csrColInd, c_L->i, sizeof(rocblas_int) * nnzA, hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(hipMemcpy((void*)csrVal, c_L->x, sizeof(double) * nnzA, hipMemcpyHostToDevice));
 
     // free resources
     cholmod_free_sparse(&c_A, &sp->c_handle);
@@ -509,23 +527,7 @@ try
     }
 
     // set up A
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i <= n; i++)
-            ((int*)csrRowPtr)[i]--;
-    }
-
-    int count_A = std::min(nnzA, csrRowPtr[n]);
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i < count_A; i++)
-            ((int*)csrColInd)[i]--;
-    }
-
-    double* dblVal = (double*)malloc(sizeof(double) * nnzA);
-    for(int i = 0; i < count_A; i++)
-        dblVal[i] = csrVal[i];
-
+    double*        dblVal = (double*)malloc(sizeof(double) * nnzA);
     cholmod_sparse c_A;
     c_A.nrow = c_A.ncol = n;
     c_A.nzmax           = nnzA;
@@ -537,6 +539,7 @@ try
     c_A.xtype           = CHOLMOD_REAL;
     c_A.dtype           = CHOLMOD_DOUBLE;
     c_A.packed          = true;
+    sp->prep_input(indbase, n, nnzA, (int*)c_A.p, (int*)c_A.i, (double*)c_A.x, (float*)csrVal);
 
     if(tolerance > 0)
         cholmod_drop(tolerance, &c_A, &sp->c_handle);
@@ -558,40 +561,24 @@ try
     }
 
     // set up B
-    double* dblB = (double*)malloc(sizeof(double) * n);
-    for(int i = 0; i < n; i++)
-        dblB[i] = b[i];
-
+    double*       dblB = (double*)malloc(sizeof(double) * n);
     cholmod_dense c_b;
     c_b.nrow = c_b.nzmax = c_b.d = n;
     c_b.ncol                     = 1;
     c_b.x                        = (void*)dblB;
     c_b.xtype                    = CHOLMOD_REAL;
     c_b.dtype                    = CHOLMOD_DOUBLE;
+    sp->prep_input(n, (double*)c_b.x, (float*)b);
 
     // solve for x
     cholmod_dense* c_x = cholmod_solve(CHOLMOD_A, c_L, &c_b, &sp->c_handle);
     free(dblB);
 
     // copy back results
-    count_A = std::min(nnzA, ((int*)c_L->p)[n]);
+    sp->prep_output(indbase, n, nnzA, (int*)c_L->p, (int*)c_L->i, (double*)c_L->x, (float*)csrVal);
+    sp->prep_output(n, (double*)c_x->x, (float*)x);
     memcpy((void*)csrRowPtr, c_L->p, sizeof(int) * (n + 1));
-    memcpy((void*)csrColInd, c_L->i, sizeof(int) * count_A);
-
-    dblVal = static_cast<double*>(c_L->x);
-    dblB   = static_cast<double*>(c_x->x);
-    for(int i = 0; i < count_A; i++)
-        ((float*)csrVal)[i] = (float)dblVal[i];
-    for(int i = 0; i < n; i++)
-        x[i] = (float)dblB[i];
-
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i <= n; i++)
-            ((int*)csrRowPtr)[i]++;
-        for(int i = 0; i < count_A; i++)
-            ((int*)csrColInd)[i]++;
-    }
+    memcpy((void*)csrColInd, c_L->i, sizeof(int) * nnzA);
 
     // free resources
     cholmod_free_factor(&c_L, &sp->c_handle);
@@ -663,19 +650,6 @@ try
     }
 
     // set up A
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i <= n; i++)
-            ((int*)csrRowPtr)[i]--;
-    }
-
-    int count_A = std::min(nnzA, csrRowPtr[n]);
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i < count_A; i++)
-            ((int*)csrColInd)[i]--;
-    }
-
     cholmod_sparse c_A;
     c_A.nrow = c_A.ncol = n;
     c_A.nzmax           = nnzA;
@@ -687,6 +661,7 @@ try
     c_A.xtype           = CHOLMOD_REAL;
     c_A.dtype           = CHOLMOD_DOUBLE;
     c_A.packed          = true;
+    sp->prep_input(indbase, n, nnzA, (int*)c_A.p, (int*)c_A.i, (double*)c_A.x, nullptr);
 
     if(tolerance > 0)
         cholmod_drop(tolerance, &c_A, &sp->c_handle);
@@ -718,19 +693,11 @@ try
     cholmod_dense* c_x = cholmod_solve(CHOLMOD_A, c_L, &c_b, &sp->c_handle);
 
     // copy back results
-    count_A = std::min(nnzA, ((int*)c_L->p)[n]);
+    sp->prep_output(indbase, n, nnzA, (int*)c_L->p, (int*)c_L->i, (double*)c_L->x, nullptr);
     memcpy((void*)csrRowPtr, c_L->p, sizeof(int) * (n + 1));
-    memcpy((void*)csrColInd, c_L->i, sizeof(int) * count_A);
-    memcpy((void*)csrVal, c_L->x, sizeof(double) * count_A);
+    memcpy((void*)csrColInd, c_L->i, sizeof(int) * nnzA);
+    memcpy((void*)csrVal, c_L->x, sizeof(double) * nnzA);
     memcpy((void*)x, c_x->x, sizeof(double) * n);
-
-    if(indbase == rocsparse_index_base_one)
-    {
-        for(int i = 0; i <= n; i++)
-            ((int*)csrRowPtr)[i]++;
-        for(int i = 0; i < count_A; i++)
-            ((int*)csrColInd)[i]++;
-    }
 
     // free resources
     cholmod_free_factor(&c_L, &sp->c_handle);
