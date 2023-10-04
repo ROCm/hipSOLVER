@@ -173,6 +173,8 @@ try
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     *singularity          = -1;
 
+    sp->c_handle.nmethods  = 1;
+    sp->c_handle.postorder = false;
     switch(reorder)
     {
     case 1:
@@ -316,6 +318,8 @@ try
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     *singularity          = -1;
 
+    sp->c_handle.nmethods  = 1;
+    sp->c_handle.postorder = false;
     switch(reorder)
     {
     case 1:
@@ -489,7 +493,8 @@ try
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     *singularity          = -1;
 
-    sp->c_handle.nmethods = 1;
+    sp->c_handle.nmethods  = 1;
+    sp->c_handle.postorder = false;
     switch(reorder)
     {
     case 1:
@@ -642,6 +647,8 @@ try
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     *singularity          = -1;
 
+    sp->c_handle.nmethods  = 1;
+    sp->c_handle.postorder = false;
     switch(reorder)
     {
     case 1:
