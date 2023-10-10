@@ -128,17 +128,10 @@ void csrlsvchol_initData(hipsolverSpHandle_t handle,
                          Ud&                 dptrA,
                          Ud&                 dindA,
                          Td&                 dvalA,
-                         const int           nnzT,
-                         Ud&                 dptrT,
-                         Ud&                 dindT,
-                         Td&                 dvalT,
                          Td&                 dB,
                          Uh&                 hptrA,
                          Uh&                 hindA,
                          Th&                 hvalA,
-                         Uh&                 hptrT,
-                         Uh&                 hindT,
-                         Th&                 hvalT,
                          Th&                 hB,
                          Th&                 hX,
                          const fs::path      testcase,
@@ -155,14 +148,6 @@ void csrlsvchol_initData(hipsolverSpHandle_t handle,
         read_matrix(file.string(), 1, nnzA, hindA.data(), 1);
         file = testcase / "valA";
         read_matrix(file.string(), 1, nnzA, hvalA.data(), 1);
-
-        // read-in T
-        file = testcase / "ptrT";
-        read_matrix(file.string(), 1, n + 1, hptrT.data(), 1);
-        file = testcase / "indT";
-        read_matrix(file.string(), 1, nnzT, hindT.data(), 1);
-        file = testcase / "valT";
-        read_matrix(file.string(), 1, nnzT, hvalT.data(), 1);
 
         // read-in B
         file = testcase / "B_1";
@@ -181,16 +166,10 @@ void csrlsvchol_initData(hipsolverSpHandle_t handle,
         if(indbase == HIPSPARSE_INDEX_BASE_ONE)
         {
             for(rocblas_int i = 0; i <= n; i++)
-            {
                 hptrA[0][i]++;
-                hptrT[0][i]++;
-            }
 
             for(rocblas_int i = 0; i < nnzA; i++)
                 hindA[0][i]++;
-
-            for(rocblas_int i = 0; i < nnzT; i++)
-                hindT[0][i]++;
         }
     }
 
@@ -199,9 +178,6 @@ void csrlsvchol_initData(hipsolverSpHandle_t handle,
         CHECK_HIP_ERROR(dptrA.transfer_from(hptrA));
         CHECK_HIP_ERROR(dindA.transfer_from(hindA));
         CHECK_HIP_ERROR(dvalA.transfer_from(hvalA));
-        CHECK_HIP_ERROR(dptrT.transfer_from(hptrT));
-        CHECK_HIP_ERROR(dindT.transfer_from(hindT));
-        CHECK_HIP_ERROR(dvalT.transfer_from(hvalT));
         CHECK_HIP_ERROR(dB.transfer_from(hB));
     }
 }
@@ -214,10 +190,6 @@ void csrlsvchol_getError(hipsolverSpHandle_t       handle,
                          Ud&                       dptrA,
                          Ud&                       dindA,
                          Td&                       dvalA,
-                         const int                 nnzT,
-                         Ud&                       dptrT,
-                         Ud&                       dindT,
-                         Td&                       dvalT,
                          Td&                       dB,
                          const S                   tolerance,
                          const int                 reorder,
@@ -225,12 +197,6 @@ void csrlsvchol_getError(hipsolverSpHandle_t       handle,
                          Uh&                       hptrA,
                          Uh&                       hindA,
                          Th&                       hvalA,
-                         Uh&                       hptrT,
-                         Uh&                       hptrTRes,
-                         Uh&                       hindT,
-                         Uh&                       hindTRes,
-                         Th&                       hvalT,
-                         Th&                       hvalTRes,
                          Th&                       hB,
                          Th&                       hX,
                          Th&                       hXRes,
@@ -239,27 +205,8 @@ void csrlsvchol_getError(hipsolverSpHandle_t       handle,
                          const fs::path            testcase)
 {
     // input data initialization
-    csrlsvchol_initData<true, true, T>(handle,
-                                       n,
-                                       nnzA,
-                                       descrA,
-                                       dptrA,
-                                       dindA,
-                                       dvalA,
-                                       nnzT,
-                                       dptrT,
-                                       dindT,
-                                       dvalT,
-                                       dB,
-                                       hptrA,
-                                       hindA,
-                                       hvalA,
-                                       hptrT,
-                                       hindT,
-                                       hvalT,
-                                       hB,
-                                       hX,
-                                       testcase);
+    csrlsvchol_initData<true, true, T>(
+        handle, n, nnzA, descrA, dptrA, dindA, dvalA, dB, hptrA, hindA, hvalA, hB, hX, testcase);
 
     // execute computations
     // GPU lapack
@@ -277,23 +224,11 @@ void csrlsvchol_getError(hipsolverSpHandle_t       handle,
                                              dX.data(),
                                              hSingularity.data()));
 
-    CHECK_HIP_ERROR(hptrTRes.transfer_from(dptrT));
-    CHECK_HIP_ERROR(hindTRes.transfer_from(dindT));
-    CHECK_HIP_ERROR(hvalTRes.transfer_from(dvalT));
     CHECK_HIP_ERROR(hXRes.transfer_from(dX));
 
     // compare computed results with original result
     double err;
     *max_err = 0;
-
-    err      = norm_error('I', 1, n + 1, 1, hptrT[0], hptrTRes[0]);
-    *max_err = err > *max_err ? err : *max_err;
-
-    err      = norm_error('I', 1, nnzT, 1, hindT[0], hindTRes[0]);
-    *max_err = err > *max_err ? err : *max_err;
-
-    err      = norm_error('I', 1, nnzT, 1, hvalT[0], hvalTRes[0]);
-    *max_err = err > *max_err ? err : *max_err;
 
     err      = norm_error('I', n, 1, n, hX[0], hXRes[0]);
     *max_err = err > *max_err ? err : *max_err;
@@ -315,10 +250,6 @@ void csrlsvchol_getPerfData(hipsolverSpHandle_t       handle,
                             Ud&                       dptrA,
                             Ud&                       dindA,
                             Td&                       dvalA,
-                            const int                 nnzT,
-                            Ud&                       dptrT,
-                            Ud&                       dindT,
-                            Td&                       dvalT,
                             Td&                       dB,
                             const S                   tolerance,
                             const int                 reorder,
@@ -326,9 +257,6 @@ void csrlsvchol_getPerfData(hipsolverSpHandle_t       handle,
                             Uh&                       hptrA,
                             Uh&                       hindA,
                             Th&                       hvalA,
-                            Uh&                       hptrT,
-                            Uh&                       hindT,
-                            Th&                       hvalT,
                             Th&                       hB,
                             Th&                       hX,
                             Uh&                       hSingularity,
@@ -416,8 +344,7 @@ void testing_csrlsvchol(Arguments& argus)
             nnzA = 700;
     }
 
-    // read/set corresponding nnzT
-    int      nnzT;
+    // read/set corresponding nnzA
     fs::path testcase;
     if(n > 0)
     {
@@ -426,30 +353,19 @@ void testing_csrlsvchol(Arguments& argus)
             = std::string("posmat_") + std::to_string(n) + "_" + std::to_string(nnzA);
         testcase = get_sparse_data_dir() / folder;
 
-        file = testcase / "ptrT";
-        read_last(file.string(), &nnzT);
+        file = testcase / "ptrA";
+        read_last(file.string(), &nnzA);
     }
 
     // determine sizes
     size_t size_ptrA = size_t(n) + 1;
     size_t size_indA = size_t(nnzA);
     size_t size_valA = size_t(nnzA);
-    size_t size_ptrT = size_t(n) + 1;
-    size_t size_indT = size_t(nnzT);
-    size_t size_valT = size_t(nnzT);
     size_t size_BX   = size_t(n);
 
-    size_t size_ptrTRes = 0;
-    size_t size_indTRes = 0;
-    size_t size_valTRes = 0;
-    size_t size_BXres   = 0;
+    size_t size_BXres = 0;
     if(argus.unit_check || argus.norm_check)
-    {
-        size_ptrTRes = size_ptrT;
-        size_indTRes = size_indT;
-        size_valTRes = size_valT;
-        size_BXres   = size_BX;
-    }
+        size_BXres = size_BX;
 
     double max_error = 0, gpu_time_used = 0, cpu_time_used = 0;
 
@@ -464,12 +380,6 @@ void testing_csrlsvchol(Arguments& argus)
     host_strided_batch_vector<int> hptrA(size_ptrA, 1, size_ptrA, 1);
     host_strided_batch_vector<int> hindA(size_indA, 1, size_indA, 1);
     host_strided_batch_vector<T>   hvalA(size_valA, 1, size_valA, 1);
-    host_strided_batch_vector<int> hptrT(size_ptrT, 1, size_ptrT, 1);
-    host_strided_batch_vector<int> hptrTRes(size_ptrTRes, 1, size_ptrTRes, 1);
-    host_strided_batch_vector<int> hindT(size_indT, 1, size_indT, 1);
-    host_strided_batch_vector<int> hindTRes(size_indTRes, 1, size_indTRes, 1);
-    host_strided_batch_vector<T>   hvalT(size_valT, 1, size_valT, 1);
-    host_strided_batch_vector<T>   hvalTRes(size_valTRes, 1, size_valTRes, 1);
     host_strided_batch_vector<T>   hB(size_BX, 1, size_BX, 1);
     host_strided_batch_vector<T>   hX(size_BX, 1, size_BX, 1);
     host_strided_batch_vector<T>   hXRes(size_BXres, 1, size_BXres, 1);
@@ -481,11 +391,17 @@ void testing_csrlsvchol(Arguments& argus)
         host_strided_batch_vector<int> dptrA(size_ptrA, 1, size_ptrA, 1);
         host_strided_batch_vector<int> dindA(size_indA, 1, size_indA, 1);
         host_strided_batch_vector<T>   dvalA(size_valA, 1, size_valA, 1);
-        host_strided_batch_vector<int> dptrT(size_ptrT, 1, size_ptrT, 1);
-        host_strided_batch_vector<int> dindT(size_indT, 1, size_indT, 1);
-        host_strided_batch_vector<T>   dvalT(size_valT, 1, size_valT, 1);
         host_strided_batch_vector<T>   dB(size_BX, 1, size_BX, 1);
         host_strided_batch_vector<T>   dX(size_BX, 1, size_BX, 1);
+        CHECK_HIP_ERROR(dptrA.memcheck());
+        if(size_indA)
+            CHECK_HIP_ERROR(dindA.memcheck());
+        if(size_valA)
+            CHECK_HIP_ERROR(dvalA.memcheck());
+        if(size_BX)
+            CHECK_HIP_ERROR(dB.memcheck());
+        if(size_BX)
+            CHECK_HIP_ERROR(dX.memcheck());
 
         // check computations
         if(argus.unit_check || argus.norm_check)
@@ -496,10 +412,6 @@ void testing_csrlsvchol(Arguments& argus)
                                          dptrA,
                                          dindA,
                                          dvalA,
-                                         nnzT,
-                                         dptrT,
-                                         dindT,
-                                         dvalT,
                                          dB,
                                          tolerance,
                                          reorder,
@@ -507,12 +419,6 @@ void testing_csrlsvchol(Arguments& argus)
                                          hptrA,
                                          hindA,
                                          hvalA,
-                                         hptrT,
-                                         hptrTRes,
-                                         hindT,
-                                         hindTRes,
-                                         hvalT,
-                                         hvalTRes,
                                          hB,
                                          hX,
                                          hXRes,
@@ -529,10 +435,6 @@ void testing_csrlsvchol(Arguments& argus)
                                             dptrA,
                                             dindA,
                                             dvalA,
-                                            nnzT,
-                                            dptrT,
-                                            dindT,
-                                            dvalT,
                                             dB,
                                             tolerance,
                                             reorder,
@@ -540,9 +442,6 @@ void testing_csrlsvchol(Arguments& argus)
                                             hptrA,
                                             hindA,
                                             hvalA,
-                                            hptrT,
-                                            hindT,
-                                            hvalT,
                                             hB,
                                             hX,
                                             hSingularity,
@@ -559,21 +458,13 @@ void testing_csrlsvchol(Arguments& argus)
         device_strided_batch_vector<int> dptrA(size_ptrA, 1, size_ptrA, 1);
         device_strided_batch_vector<int> dindA(size_indA, 1, size_indA, 1);
         device_strided_batch_vector<T>   dvalA(size_valA, 1, size_valA, 1);
-        device_strided_batch_vector<int> dptrT(size_ptrT, 1, size_ptrT, 1);
-        device_strided_batch_vector<int> dindT(size_indT, 1, size_indT, 1);
-        device_strided_batch_vector<T>   dvalT(size_valT, 1, size_valT, 1);
         device_strided_batch_vector<T>   dB(size_BX, 1, size_BX, 1);
         device_strided_batch_vector<T>   dX(size_BX, 1, size_BX, 1);
         CHECK_HIP_ERROR(dptrA.memcheck());
-        CHECK_HIP_ERROR(dptrT.memcheck());
         if(size_indA)
             CHECK_HIP_ERROR(dindA.memcheck());
         if(size_valA)
             CHECK_HIP_ERROR(dvalA.memcheck());
-        if(size_indT)
-            CHECK_HIP_ERROR(dindT.memcheck());
-        if(size_valT)
-            CHECK_HIP_ERROR(dvalT.memcheck());
         if(size_BX)
             CHECK_HIP_ERROR(dB.memcheck());
         if(size_BX)
@@ -588,10 +479,6 @@ void testing_csrlsvchol(Arguments& argus)
                                          dptrA,
                                          dindA,
                                          dvalA,
-                                         nnzT,
-                                         dptrT,
-                                         dindT,
-                                         dvalT,
                                          dB,
                                          tolerance,
                                          reorder,
@@ -599,12 +486,6 @@ void testing_csrlsvchol(Arguments& argus)
                                          hptrA,
                                          hindA,
                                          hvalA,
-                                         hptrT,
-                                         hptrTRes,
-                                         hindT,
-                                         hindTRes,
-                                         hvalT,
-                                         hvalTRes,
                                          hB,
                                          hX,
                                          hXRes,
@@ -621,10 +502,6 @@ void testing_csrlsvchol(Arguments& argus)
                                             dptrA,
                                             dindA,
                                             dvalA,
-                                            nnzT,
-                                            dptrT,
-                                            dindT,
-                                            dvalT,
                                             dB,
                                             tolerance,
                                             reorder,
@@ -632,9 +509,6 @@ void testing_csrlsvchol(Arguments& argus)
                                             hptrA,
                                             hindA,
                                             hvalA,
-                                            hptrT,
-                                            hindT,
-                                            hvalT,
                                             hB,
                                             hX,
                                             hSingularity,

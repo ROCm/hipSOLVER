@@ -265,7 +265,7 @@ try
     // set up A
     float*          sngVal = (float*)malloc(sizeof(float) * nnzA);
     cholmod_sparse* c_A
-        = cholmod_allocate_sparse(n, n, nnzA, true, true, -1, CHOLMOD_REAL, &sp->c_handle);
+        = cholmod_allocate_sparse(n, n, nnzA, true, true, 1, CHOLMOD_REAL, &sp->c_handle);
     CHECK_HIP_ERROR(
         hipMemcpy(c_A->p, csrRowPtr, sizeof(rocblas_int) * (n + 1), hipMemcpyDeviceToHost));
     CHECK_HIP_ERROR(
@@ -279,9 +279,9 @@ try
     // factorize A
     cholmod_factor* c_L    = cholmod_analyze(c_A, &sp->c_handle);
     int             status = cholmod_factorize(c_A, c_L, &sp->c_handle);
+    free(sngVal);
     if(status != true)
     {
-        free(sngVal);
         cholmod_free_sparse(&c_A, &sp->c_handle);
         cholmod_free_factor(&c_L, &sp->c_handle);
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
@@ -289,22 +289,12 @@ try
     if(sp->c_handle.status == CHOLMOD_NOT_POSDEF)
     {
         *singularity = c_L->minor;
-        free(sngVal);
         cholmod_free_sparse(&c_A, &sp->c_handle);
         cholmod_free_factor(&c_L, &sp->c_handle);
         return HIPSOLVER_STATUS_SUCCESS;
     }
 
-    // copy back results
-    sp->prep_output(indbase, n, nnzA, (int*)c_L->p, (int*)c_L->i, (double*)c_L->x, sngVal);
-    CHECK_HIP_ERROR(
-        hipMemcpy((void*)csrRowPtr, c_L->p, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
-    CHECK_HIP_ERROR(
-        hipMemcpy((void*)csrColInd, c_L->i, sizeof(rocblas_int) * nnzA, hipMemcpyHostToDevice));
-    CHECK_HIP_ERROR(hipMemcpy((void*)csrVal, sngVal, sizeof(float) * nnzA, hipMemcpyHostToDevice));
-
     // free resources
-    free(sngVal);
     cholmod_free_sparse(&c_A, &sp->c_handle);
     cholmod_free_factor(&c_L, &sp->c_handle);
 
@@ -377,7 +367,7 @@ try
 
     // set up A
     cholmod_sparse* c_A
-        = cholmod_allocate_sparse(n, n, nnzA, true, true, -1, CHOLMOD_REAL, &sp->c_handle);
+        = cholmod_allocate_sparse(n, n, nnzA, true, true, 1, CHOLMOD_REAL, &sp->c_handle);
     CHECK_HIP_ERROR(
         hipMemcpy(c_A->p, csrRowPtr, sizeof(rocblas_int) * (n + 1), hipMemcpyDeviceToHost));
     CHECK_HIP_ERROR(
@@ -404,14 +394,6 @@ try
         cholmod_free_factor(&c_L, &sp->c_handle);
         return HIPSOLVER_STATUS_SUCCESS;
     }
-
-    // copy back results
-    sp->prep_output(indbase, n, nnzA, (int*)c_L->p, (int*)c_L->i, (double*)c_L->x, nullptr);
-    CHECK_HIP_ERROR(
-        hipMemcpy((void*)csrRowPtr, c_L->p, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
-    CHECK_HIP_ERROR(
-        hipMemcpy((void*)csrColInd, c_L->i, sizeof(rocblas_int) * nnzA, hipMemcpyHostToDevice));
-    CHECK_HIP_ERROR(hipMemcpy((void*)csrVal, c_L->x, sizeof(double) * nnzA, hipMemcpyHostToDevice));
 
     // free resources
     cholmod_free_sparse(&c_A, &sp->c_handle);
@@ -527,61 +509,48 @@ try
     }
 
     // set up A
-    double*        dblVal = (double*)malloc(sizeof(double) * nnzA);
-    cholmod_sparse c_A;
-    c_A.nrow = c_A.ncol = n;
-    c_A.nzmax           = nnzA;
-    c_A.p               = (void*)csrRowPtr;
-    c_A.i               = (void*)csrColInd;
-    c_A.x               = (void*)dblVal;
-    c_A.stype           = -1;
-    c_A.itype           = CHOLMOD_INT;
-    c_A.xtype           = CHOLMOD_REAL;
-    c_A.dtype           = CHOLMOD_DOUBLE;
-    c_A.packed          = true;
-    sp->prep_input(indbase, n, nnzA, (int*)c_A.p, (int*)c_A.i, (double*)c_A.x, (float*)csrVal);
+    float*          sngVal = (float*)malloc(sizeof(float) * nnzA);
+    cholmod_sparse* c_A
+        = cholmod_allocate_sparse(n, n, nnzA, true, true, 1, CHOLMOD_REAL, &sp->c_handle);
+    memcpy(c_A->p, csrRowPtr, sizeof(rocblas_int) * (n + 1));
+    memcpy(c_A->i, csrColInd, sizeof(rocblas_int) * nnzA);
+    sp->prep_input(indbase, n, nnzA, (int*)c_A->p, (int*)c_A->i, (double*)c_A->x, (float*)csrVal);
 
     if(tolerance > 0)
-        cholmod_drop(tolerance, &c_A, &sp->c_handle);
+        cholmod_drop(tolerance, c_A, &sp->c_handle);
 
     // factorize A
-    cholmod_factor* c_L    = cholmod_analyze(&c_A, &sp->c_handle);
-    int             status = cholmod_factorize(&c_A, c_L, &sp->c_handle);
-    free(dblVal);
+    cholmod_factor* c_L    = cholmod_analyze(c_A, &sp->c_handle);
+    int             status = cholmod_factorize(c_A, c_L, &sp->c_handle);
+    free(sngVal);
     if(status != true)
     {
+        cholmod_free_sparse(&c_A, &sp->c_handle);
         cholmod_free_factor(&c_L, &sp->c_handle);
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
     }
     if(sp->c_handle.status == CHOLMOD_NOT_POSDEF)
     {
         *singularity = c_L->minor;
+        cholmod_free_sparse(&c_A, &sp->c_handle);
         cholmod_free_factor(&c_L, &sp->c_handle);
         return HIPSOLVER_STATUS_SUCCESS;
     }
 
     // set up B
-    double*       dblB = (double*)malloc(sizeof(double) * n);
-    cholmod_dense c_b;
-    c_b.nrow = c_b.nzmax = c_b.d = n;
-    c_b.ncol                     = 1;
-    c_b.x                        = (void*)dblB;
-    c_b.xtype                    = CHOLMOD_REAL;
-    c_b.dtype                    = CHOLMOD_DOUBLE;
-    sp->prep_input(n, (double*)c_b.x, (float*)b);
+    cholmod_dense* c_b = cholmod_allocate_dense(n, 1, n, CHOLMOD_REAL, &sp->c_handle);
+    sp->prep_input(n, (double*)c_b->x, (float*)b);
 
     // solve for x
-    cholmod_dense* c_x = cholmod_solve(CHOLMOD_A, c_L, &c_b, &sp->c_handle);
-    free(dblB);
+    cholmod_dense* c_x = cholmod_solve(CHOLMOD_A, c_L, c_b, &sp->c_handle);
 
     // copy back results
-    sp->prep_output(indbase, n, nnzA, (int*)c_L->p, (int*)c_L->i, (double*)c_L->x, (float*)csrVal);
     sp->prep_output(n, (double*)c_x->x, (float*)x);
-    memcpy((void*)csrRowPtr, c_L->p, sizeof(int) * (n + 1));
-    memcpy((void*)csrColInd, c_L->i, sizeof(int) * nnzA);
 
     // free resources
+    cholmod_free_sparse(&c_A, &sp->c_handle);
     cholmod_free_factor(&c_L, &sp->c_handle);
+    cholmod_free_dense(&c_b, &sp->c_handle);
     cholmod_free_dense(&c_x, &sp->c_handle);
 
     return HIPSOLVER_STATUS_SUCCESS;
@@ -650,57 +619,47 @@ try
     }
 
     // set up A
-    cholmod_sparse c_A;
-    c_A.nrow = c_A.ncol = n;
-    c_A.nzmax           = nnzA;
-    c_A.p               = (void*)csrRowPtr;
-    c_A.i               = (void*)csrColInd;
-    c_A.x               = (void*)csrVal;
-    c_A.stype           = -1;
-    c_A.itype           = CHOLMOD_INT;
-    c_A.xtype           = CHOLMOD_REAL;
-    c_A.dtype           = CHOLMOD_DOUBLE;
-    c_A.packed          = true;
-    sp->prep_input(indbase, n, nnzA, (int*)c_A.p, (int*)c_A.i, (double*)c_A.x, nullptr);
+    cholmod_sparse* c_A
+        = cholmod_allocate_sparse(n, n, nnzA, true, true, 1, CHOLMOD_REAL, &sp->c_handle);
+    memcpy(c_A->p, csrRowPtr, sizeof(rocblas_int) * (n + 1));
+    memcpy(c_A->i, csrColInd, sizeof(rocblas_int) * nnzA);
+    memcpy(c_A->x, csrVal, sizeof(double) * nnzA);
+    sp->prep_input(indbase, n, nnzA, (int*)c_A->p, (int*)c_A->i, (double*)c_A->x, nullptr);
 
     if(tolerance > 0)
-        cholmod_drop(tolerance, &c_A, &sp->c_handle);
+        cholmod_drop(tolerance, c_A, &sp->c_handle);
 
     // factorize A
-    cholmod_factor* c_L    = cholmod_analyze(&c_A, &sp->c_handle);
-    int             status = cholmod_factorize(&c_A, c_L, &sp->c_handle);
+    cholmod_factor* c_L    = cholmod_analyze(c_A, &sp->c_handle);
+    int             status = cholmod_factorize(c_A, c_L, &sp->c_handle);
     if(status != true)
     {
+        cholmod_free_sparse(&c_A, &sp->c_handle);
         cholmod_free_factor(&c_L, &sp->c_handle);
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
     }
     if(sp->c_handle.status == CHOLMOD_NOT_POSDEF)
     {
         *singularity = c_L->minor;
+        cholmod_free_sparse(&c_A, &sp->c_handle);
         cholmod_free_factor(&c_L, &sp->c_handle);
         return HIPSOLVER_STATUS_SUCCESS;
     }
 
     // set up B
-    cholmod_dense c_b;
-    c_b.nrow = c_b.nzmax = c_b.d = n;
-    c_b.ncol                     = 1;
-    c_b.x                        = (void*)b;
-    c_b.xtype                    = CHOLMOD_REAL;
-    c_b.dtype                    = CHOLMOD_DOUBLE;
+    cholmod_dense* c_b = cholmod_allocate_dense(n, 1, n, CHOLMOD_REAL, &sp->c_handle);
+    memcpy(c_b->x, b, sizeof(double) * n);
 
     // solve for x
-    cholmod_dense* c_x = cholmod_solve(CHOLMOD_A, c_L, &c_b, &sp->c_handle);
+    cholmod_dense* c_x = cholmod_solve(CHOLMOD_A, c_L, c_b, &sp->c_handle);
 
     // copy back results
-    sp->prep_output(indbase, n, nnzA, (int*)c_L->p, (int*)c_L->i, (double*)c_L->x, nullptr);
-    memcpy((void*)csrRowPtr, c_L->p, sizeof(int) * (n + 1));
-    memcpy((void*)csrColInd, c_L->i, sizeof(int) * nnzA);
-    memcpy((void*)csrVal, c_L->x, sizeof(double) * nnzA);
     memcpy((void*)x, c_x->x, sizeof(double) * n);
 
     // free resources
+    cholmod_free_sparse(&c_A, &sp->c_handle);
     cholmod_free_factor(&c_L, &sp->c_handle);
+    cholmod_free_dense(&c_b, &sp->c_handle);
     cholmod_free_dense(&c_x, &sp->c_handle);
 
     return HIPSOLVER_STATUS_SUCCESS;
