@@ -2,6 +2,7 @@
 
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
+
 ## (Unreleased) hipSOLVER
 ### Added
 - Added compatibility API with hipsolverSp prefix
@@ -11,13 +12,10 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
     - hipsolverSpScsrlsvchol, hipsolverSpDcsrlsvchol
 - Added rocSPARSE and SuiteSparse as optional dependencies to hipSOLVER (rocSOLVER backend only). Use the `BUILD_WITH_SPARSE` CMake option to enable
   functionality for the hipsolverSp API (on by default).
-- Added hipBLAS as an optional dependency to hipsolver-test. Use the `BUILD_HIPBLAS_TESTS` CMake option to test compatibility between hipSOLVER and hipBLAS.
 - Added hipSPARSE as an optional dependency to hipsolver-test. Use the `BUILD_WITH_SPARSE` CMake option to enable tests of the hipsolverSp API (on by default).
 
 ### Optimized
 ### Changed
-- Types hipsolverOperation_t, hipsolverFillMode_t, and hipsolverSideMode_t are now aliases of hipblasOperation_t, hipblasFillMode_t, and hipblasSideMode_t.
-
 ### Deprecated
 ### Removed
 ### Fixed
@@ -25,7 +23,21 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ### Security
 
 
+## hipSOLVER 2.0.0 for ROCm 6.0.0
+### Added
+- Added hipBLAS as an optional dependency to hipsolver-test. Use the `BUILD_HIPBLAS_TESTS` CMake option to test compatibility between hipSOLVER and hipBLAS.
+
+### Changed
+- Types hipsolverOperation_t, hipsolverFillMode_t, and hipsolverSideMode_t are now aliases of hipblasOperation_t, hipblasFillMode_t, and hipblasSideMode_t.
+
+### Fixed
+- Fixed tests for hipsolver info updates in ORGBR/UNGBR, ORGQR/UNGQR,
+  ORGTR/UNGTR, ORMQR/UNMQR, and ORMTR/UNMTR.
+
+
 ## hipSOLVER 1.8.1 for ROCm 5.7.0
+### Changed
+- Changed hipsolver-test sparse input data search paths to be relative to the test executable
 
 
 ## hipSOLVER 1.8.0 for ROCm 5.6.0

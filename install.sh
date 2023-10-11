@@ -57,7 +57,6 @@ function display_help()
   echo "    [--no-sparse] Build with sparse functionality and tests disabled."
   echo "    [--docs] (experimental) Pass this flag to build the documentation from source."
   echo "    [--cmake-arg] Forward the given argument to CMake when configuring the build"
-  echo "    [--rm-legacy-include-dir] Remove legacy include dir Packaging added for file/folder reorg backward compatibility."
 }
 
 # Find project root directory
@@ -374,7 +373,6 @@ build_static=false
 build_release_debug=false
 build_codecoverage=false
 build_address_sanitizer=false
-build_freorg_bkwdcomp=true
 declare -a cmake_common_options
 declare -a cmake_client_options
 
@@ -385,7 +383,7 @@ declare -a cmake_client_options
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,rocsparse:,rocsparse-path:,hipsparse-path:,custom-target:,docs,address-sanitizer,no-sparse,rm-legacy-include-dir,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,rocsparse:,rocsparse-path:,hipsparse-path:,custom-target:,docs,address-sanitizer,no-sparse,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -454,9 +452,6 @@ while true; do
         shift ;;
     --no-sparse)
         build_sparse=false
-        shift ;;
-    --rm-legacy-include-dir)
-        build_freorg_bkwdcomp=false
         shift ;;
     -p|--cmakepp)
         cmake_prefix_path=${2}
@@ -683,13 +678,6 @@ fi
   # no sparse
   if [[ "${build_sparse}" == false ]]; then
     cmake_common_options+=("-DBUILD_WITH_SPARSE=OFF")
-  fi
-
-  # backwards compatibility for file reorg
-  if [[ "${build_freorg_bkwdcomp}" == true ]]; then
-    cmake_common_options="${cmake_common_options} -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=ON"
-    else
-    cmake_common_options="${cmake_common_options} -DBUILD_FILE_REORG_BACKWARD_COMPATIBILITY=OFF"
   fi
 
   # Build library

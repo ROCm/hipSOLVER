@@ -423,8 +423,7 @@ public:
 template <typename T>
 T random_generator()
 {
-    // return rand()/( (T)RAND_MAX + 1);
-    return T(rand() % 10 + 1);
+    return std::uniform_int_distribution<int>(1, 10)(hipsolver_rng);
 };
 
 // for hipsolverComplex, generate 2 floats
@@ -432,7 +431,8 @@ T random_generator()
 template <>
 inline hipsolverComplex random_generator<hipsolverComplex>()
 {
-    return hipsolverComplex(rand() % 10 + 1, rand() % 10 + 1);
+    return hipsolverComplex(float(std::uniform_int_distribution<int>(1, 10)(hipsolver_rng)),
+                            float(std::uniform_int_distribution<int>(1, 10)(hipsolver_rng)));
 }
 
 // for hipsolverDoubleComplex, generate 2 doubles
@@ -440,15 +440,15 @@ inline hipsolverComplex random_generator<hipsolverComplex>()
 template <>
 inline hipsolverDoubleComplex random_generator<hipsolverDoubleComplex>()
 {
-    return hipsolverDoubleComplex(rand() % 10 + 1, rand() % 10 + 1);
+    return hipsolverDoubleComplex(double(std::uniform_int_distribution<int>(1, 10)(hipsolver_rng)),
+                                  double(std::uniform_int_distribution<int>(1, 10)(hipsolver_rng)));
 }
 
 /*! \brief  generate a random number in range [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10] */
 template <typename T>
 inline T random_generator_negative()
 {
-    // return rand()/( (T)RAND_MAX + 1);
-    return -T(rand() % 10 + 1);
+    return std::uniform_int_distribution<int>(-10, -1)(hipsolver_rng);
 };
 
 // for complex, generate two values, convert both to negative
@@ -458,13 +458,16 @@ inline T random_generator_negative()
 template <>
 inline hipsolverComplex random_generator_negative<hipsolverComplex>()
 {
-    return {float(-(rand() % 10 + 1)), float(-(rand() % 10 + 1))};
+    return hipsolverComplex(float(std::uniform_int_distribution<int>(-10, -1)(hipsolver_rng)),
+                            float(std::uniform_int_distribution<int>(-10, -1)(hipsolver_rng)));
 }
 
 template <>
 inline hipsolverDoubleComplex random_generator_negative<hipsolverDoubleComplex>()
 {
-    return {double(-(rand() % 10 + 1)), double(-(rand() % 10 + 1))};
+    return hipsolverDoubleComplex(
+        double(std::uniform_int_distribution<int>(-10, -1)(hipsolver_rng)),
+        double(std::uniform_int_distribution<int>(-10, -1)(hipsolver_rng)));
 }
 
 /* ============================================================================================ */
@@ -500,6 +503,27 @@ int type2int(T val);
 
 /* ============================================================================================ */
 /*! \brief  Debugging purpose, print out CPU and GPU result matrix, not valid in complex number  */
+template <typename T, std::enable_if_t<!is_complex<T>, int> = 0>
+void print_matrix(T* result, int m, int n, int lda)
+{
+    for(int i = 0; i < m; i++)
+        for(int j = 0; j < n; j++)
+            printf("matrix  col %d, row %d, result=%.8g\n", j, i, double(result[i + j * lda]));
+}
+
+/*! \brief  Debugging purpose, print out CPU and GPU result matrix, valid for complex number  */
+template <typename T, std::enable_if_t<+is_complex<T>, int> = 0>
+void print_matrix(T* result, int m, int n, int lda)
+{
+    for(int i = 0; i < m; i++)
+        for(int j = 0; j < n; j++)
+            printf("matrix  col %d, row %d, result=(%.8g,%.8g)\n",
+                   j,
+                   i,
+                   double(result[i + j * lda].real()),
+                   double(result[i + j * lda].imag()));
+}
+
 template <typename T, std::enable_if_t<!is_complex<T>, int> = 0>
 void print_matrix(T* CPU_result, T* GPU_result, int m, int n, int lda)
 {
