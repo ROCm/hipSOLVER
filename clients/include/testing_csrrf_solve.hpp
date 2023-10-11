@@ -399,6 +399,9 @@ void testing_csrrf_solve(Arguments& argus)
         std::string folder = std::string("mat_") + std::to_string(n) + "_" + std::to_string(nnzA);
         testcase           = get_sparse_data_dir() / folder;
 
+        file = testcase / "ptrA";
+        read_last(file.string(), &nnzA);
+
         file = testcase / "ptrL";
         read_last(file.string(), &nnzL);
 
