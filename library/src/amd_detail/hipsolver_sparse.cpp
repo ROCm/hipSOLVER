@@ -333,9 +333,9 @@ try
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     *singularity          = -1;
 
-    sp->c_handle.nmethods  = 1;
-    sp->c_handle.postorder = false;
-    sp->c_handle.final_ll  = true;
+    sp->c_handle.nmethods  = 1; // use 1 reordering method
+    sp->c_handle.postorder = false; // no postordering
+    sp->c_handle.final_ll  = true; // factorize as LL' not LDL'
     switch(reorder)
     {
     case 1:
@@ -490,9 +490,9 @@ try
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     *singularity          = -1;
 
-    sp->c_handle.nmethods  = 1;
-    sp->c_handle.postorder = false;
-    sp->c_handle.final_ll  = true;
+    sp->c_handle.nmethods  = 1; // use 1 reordering method
+    sp->c_handle.postorder = false; // no postordering
+    sp->c_handle.final_ll  = true; // factorize as LL' not LDL'
     switch(reorder)
     {
     case 1:
@@ -683,9 +683,9 @@ try
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     *singularity          = -1;
 
-    sp->c_handle.nmethods  = 1;
-    sp->c_handle.postorder = false;
-    sp->c_handle.final_ll  = true;
+    sp->c_handle.nmethods  = 1; // use 1 reordering method
+    sp->c_handle.postorder = false; // no postordering
+    sp->c_handle.final_ll  = true; // factorize as LL' not LDL'
     switch(reorder)
     {
     case 1:
@@ -794,9 +794,9 @@ try
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     *singularity          = -1;
 
-    sp->c_handle.nmethods  = 1;
-    sp->c_handle.postorder = false;
-    sp->c_handle.final_ll  = true;
+    sp->c_handle.nmethods  = 1; // use 1 reordering method
+    sp->c_handle.postorder = false; // no postordering
+    sp->c_handle.final_ll  = true; // factorize as LL' not LDL'
     switch(reorder)
     {
     case 1:
