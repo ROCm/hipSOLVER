@@ -89,7 +89,7 @@ include( ROCMInstallSymlinks )
 include( ROCMClients )
 include( ROCMHeaderWrapper )
 
-set ( VERSION_STRING "2.0.0" )
+set ( VERSION_STRING "2.1.0" )
 rocm_setup_version( VERSION ${VERSION_STRING} )
 
 if( NOT DEFINED ENV{HIP_PATH})
@@ -215,10 +215,10 @@ endif( )
 
 # Package specific CPACK vars
 if( NOT USE_CUDA )
-  set(hipsolver_pkgdeps "rocblas >= 4.0.0" "rocsolver >= 3.24.0")
+  set(hipsolver_pkgdeps "rocblas >= 4.1.0" "rocsolver >= 3.25.0")
 
   if( BUILD_WITH_SPARSE )
-    list(APPEND hipsolver_pkgdeps "rocsparse >= 2.2.0")
+    list(APPEND hipsolver_pkgdeps "rocsparse >= 2.3.0")
   endif( )
 
   rocm_package_add_dependencies(DEPENDS ${hipsolver_pkgdeps})
