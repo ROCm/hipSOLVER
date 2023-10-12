@@ -379,6 +379,24 @@ try
             "                           Used in iterative Jacobi functions.\n"
             "                           ")
 
+        // sparse routine options
+        ("base1",
+         value<rocblas_int>(),
+            "0 = use base zero indices, 1 = use base one indices.\n"
+            "                           ")
+
+        ("nnzA",
+         value<rocblas_int>(),
+            "Matrix size parameter.\n"
+            "                           Maximum number of non-zero entries of matrices A.\n"
+            "                           ")
+
+        ("reorder",
+         value<rocblas_int>(),
+            "0 = no reordering, 1 = RCM reordering,\n"
+            "                           2 = AMD reordering, 3 = METIS reordering.\n"
+            "                           ")
+
         // other options
         // ("direct",
         //  value<char>()->default_value('F'),

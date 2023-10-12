@@ -20,6 +20,17 @@
 #
 # ########################################################################
 
+if( BUILD_WITH_SPARSE )
+  if( NOT TARGET hipsparse )
+    if( CUSTOM_HIPSPARSE )
+      set ( ENV{hipsparse_DIR} ${CUSTOM_HIPSPARSE})
+      find_package( hipsparse REQUIRED CONFIG NO_CMAKE_PATH )
+    else( )
+      find_package( hipsparse REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm )
+    endif( )
+  endif( )
+endif( )
+
 add_executable( hipsolver-bench client.cpp )
 
 # Internal header includes
@@ -43,6 +54,9 @@ target_link_libraries( hipsolver-bench PRIVATE
   clients-common
   roc::hipsolver
 )
+if( BUILD_WITH_SPARSE )
+  target_link_libraries( hipsolver-bench PRIVATE roc::hipsparse )
+endif( )
 if( UNIX )
   target_link_libraries( hipsolver-bench PRIVATE hipsolver_fortran_client )
 endif( )

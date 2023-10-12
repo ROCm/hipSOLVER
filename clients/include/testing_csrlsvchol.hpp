@@ -267,7 +267,82 @@ void csrlsvchol_getPerfData(hipsolverSpHandle_t       handle,
                             const fs::path            testcase)
 {
     *cpu_time_used = nan(""); // no timing on cpu-lapack execution
-    *gpu_time_used = nan(""); // no timing on gpu-lapack execution
+
+    csrlsvchol_initData<true, false, T>(
+        handle, n, nnzA, descrA, dptrA, dindA, dvalA, dB, hptrA, hindA, hvalA, hB, hX, testcase);
+
+    // cold calls
+    for(int iter = 0; iter < 2; iter++)
+    {
+        csrlsvchol_initData<false, true, T>(handle,
+                                            n,
+                                            nnzA,
+                                            descrA,
+                                            dptrA,
+                                            dindA,
+                                            dvalA,
+                                            dB,
+                                            hptrA,
+                                            hindA,
+                                            hvalA,
+                                            hB,
+                                            hX,
+                                            testcase);
+
+        CHECK_ROCBLAS_ERROR(hipsolver_csrlsvchol(HOST,
+                                                 handle,
+                                                 n,
+                                                 nnzA,
+                                                 descrA,
+                                                 dvalA.data(),
+                                                 dptrA.data(),
+                                                 dindA.data(),
+                                                 dB.data(),
+                                                 tolerance,
+                                                 reorder,
+                                                 dX.data(),
+                                                 hSingularity.data()));
+    }
+
+    // gpu-lapack performance
+    hipStream_t stream;
+    CHECK_ROCBLAS_ERROR(hipsolverGetStream(handle, &stream));
+    double start;
+
+    for(int iter = 0; iter < hot_calls; iter++)
+    {
+        csrlsvchol_initData<false, true, T>(handle,
+                                            n,
+                                            nnzA,
+                                            descrA,
+                                            dptrA,
+                                            dindA,
+                                            dvalA,
+                                            dB,
+                                            hptrA,
+                                            hindA,
+                                            hvalA,
+                                            hB,
+                                            hX,
+                                            testcase);
+
+        start = get_time_us_sync(stream);
+        hipsolver_csrlsvchol(HOST,
+                             handle,
+                             n,
+                             nnzA,
+                             descrA,
+                             dvalA.data(),
+                             dptrA.data(),
+                             dindA.data(),
+                             dB.data(),
+                             tolerance,
+                             reorder,
+                             dX.data(),
+                             hSingularity.data());
+        *gpu_time_used += get_time_us_sync(stream) - start;
+    }
+    *gpu_time_used /= hot_calls;
 }
 
 template <bool HOST, typename T>
