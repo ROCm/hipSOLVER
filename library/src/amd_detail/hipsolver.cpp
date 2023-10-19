@@ -6194,8 +6194,8 @@ try
     // perform computation
     CHECK_ROCBLAS_ERROR(
         rocsolver_cgesvdx_strided_batched((rocblas_handle)handle,
-                                          hip2rocblas_evect2svect(jobz, 1),
-                                          hip2rocblas_evect2svect(jobz, 1),
+                                          hip2rocblas_evect2svect(jobz, 0),
+                                          hip2rocblas_evect2svect(jobz, 0),
                                           rocblas_srange_index,
                                           m,
                                           n,

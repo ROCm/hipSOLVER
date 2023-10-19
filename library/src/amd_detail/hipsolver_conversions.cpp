@@ -213,10 +213,10 @@ rocblas_svect_ hip2rocblas_evect2svect(hipsolverEigMode_t eig, int econ)
     switch(eig)
     {
     case HIPSOLVER_EIG_MODE_NOVECTOR:
-        return rocblas_svect_none;
+        return rocblas_svect_singular;
     case HIPSOLVER_EIG_MODE_VECTOR:
         if(econ)
-            return rocblas_svect_singular;
+            return rocblas_svect_none;
         else
             return rocblas_svect_all;
     default:
