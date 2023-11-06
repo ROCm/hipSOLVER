@@ -46,7 +46,8 @@ class hipsparse_local_mat_descr
 public:
     hipsparse_local_mat_descr()
     {
-        hipsparseCreateMatDescr(&m_info);
+        if(hipsparseCreateMatDescr(&m_info) != HIPSPARSE_STATUS_SUCCESS)
+            throw std::runtime_error("ERROR: Could not create hipsparseMatDescr_t");
     }
     ~hipsparse_local_mat_descr()
     {

@@ -18,7 +18,7 @@ def runCI =
 
     // customize for project
     prj.paths.build_command = buildCommand
-    prj.libraryDependencies = ['rocBLAS', 'rocSPARSE', 'rocSOLVER', 'hipBLAS', 'hipSPARSE']
+    prj.libraryDependencies = ['rocBLAS-internal', 'rocSPARSE-internal', 'rocSOLVER', 'hipBLAS', 'hipSPARSE']
     prj.defaults.ccache = true
 
     // Define test architectures, optional rocm version argument is available

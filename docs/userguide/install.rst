@@ -66,7 +66,7 @@ The rocSOLVER backend has the following dependencies:
 1. `rocSOLVER <https://github.com/ROCmSoftwarePlatform/rocSOLVER>`_
 2. `rocBLAS <https://github.com/ROCmSoftwarePlatform/rocBLAS>`_
 3. `rocSPARSE <https://github.com/ROCmSoftwarePlatform/rocSPARSE>`_ (optional, required by default)
-4. `SuiteSparse <https://github.com/DrTimothyAldenDavis/SuiteSparse>`_ (optional, required by default)
+4. `SuiteSparse <https://github.com/DrTimothyAldenDavis/SuiteSparse>`_ modules CHOLMOD and SuiteSparse_config (optional, required by default)
 
 rocSOLVER itself depends on rocBLAS and rocSPARSE, therefore all three libraries should be present with a standard rocSOLVER installation. For more information
 about building and installing rocSOLVER, refer to the `rocSOLVER documentation <https://rocm.docs.amd.com/projects/rocSOLVER/en/latest/userguide/install.html>`_.

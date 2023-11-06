@@ -10,8 +10,8 @@ at `cuSOLVER API <https://docs.nvidia.com/cuda/cusolver/index.html#cuds-api>`_ a
 
 For ease of porting from existing cuSOLVER applications to hipSOLVER, functions in the hipsolverSp compatibility API are designed to have
 method signatures that are consistent with the cusolverSp interface. At present, equivalent functions have not been added to hipSOLVER's
-regular API. Note that :ref:`some performance issues <sparse_performance>` are expected when using the rocSOLVER backend due to currently
-unsupported functionality.
+regular API. Note that there are :ref:`some performance limitations <sparse_performance>` when using the rocSOLVER backend as not all the
+functionality required for optimal performance has been implemented yet.
 
 .. tableofcontents::
 

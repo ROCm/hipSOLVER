@@ -123,7 +123,8 @@ class hipsolver_local_handle
 public:
     hipsolver_local_handle()
     {
-        hipsolverCreate(&m_handle);
+        if(hipsolverCreate(&m_handle) != HIPSOLVER_STATUS_SUCCESS)
+            throw std::runtime_error("ERROR: Could not create hipsolverHandle_t");
     }
     ~hipsolver_local_handle()
     {
@@ -156,7 +157,8 @@ class hipsolverRf_local_handle
 public:
     hipsolverRf_local_handle()
     {
-        hipsolverRfCreate(&m_handle);
+        if(hipsolverRfCreate(&m_handle) != HIPSOLVER_STATUS_SUCCESS)
+            throw std::runtime_error("ERROR: Could not create hipsolverRfHandle_t");
     }
     ~hipsolverRf_local_handle()
     {
@@ -189,7 +191,8 @@ class hipsolverSp_local_handle
 public:
     hipsolverSp_local_handle()
     {
-        hipsolverSpCreate(&m_handle);
+        if(hipsolverSpCreate(&m_handle) != HIPSOLVER_STATUS_SUCCESS)
+            throw std::runtime_error("ERROR: Could not create hipsolverSpHandle_t");
     }
     ~hipsolverSp_local_handle()
     {
@@ -225,7 +228,8 @@ class hipsolver_local_gesvdj_info
 public:
     hipsolver_local_gesvdj_info()
     {
-        hipsolverDnCreateGesvdjInfo(&m_info);
+        if(hipsolverDnCreateGesvdjInfo(&m_info) != HIPSOLVER_STATUS_SUCCESS)
+            throw std::runtime_error("ERROR: Could not create hipsolverGesvdjInfo_t");
     }
     ~hipsolver_local_gesvdj_info()
     {
@@ -261,7 +265,8 @@ class hipsolver_local_syevj_info
 public:
     hipsolver_local_syevj_info()
     {
-        hipsolverDnCreateSyevjInfo(&m_info);
+        if(hipsolverDnCreateSyevjInfo(&m_info) != HIPSOLVER_STATUS_SUCCESS)
+            throw std::runtime_error("ERROR: Could not create hipsolverSyevjInfo_t");
     }
     ~hipsolver_local_syevj_info()
     {

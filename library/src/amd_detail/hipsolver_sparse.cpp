@@ -124,11 +124,8 @@ struct hipsolverSpHandle
     // Free memory
     void free_all()
     {
-        if(this->d_buffer)
-        {
-            hipFree(this->d_buffer);
-            this->d_buffer = nullptr;
-        }
+        hipFree(this->d_buffer);
+        this->d_buffer = nullptr;
     }
 
     // Convert base one indices to base zero, and copy float values into double array
@@ -230,8 +227,7 @@ try
         return rocblas2hip_status(status);
     }
 
-    int ret;
-    if((ret = cholmod_start(&sp->c_handle)) != true)
+    if(cholmod_start(&sp->c_handle) != 1)
     {
         rocblas_destroy_handle(sp->handle);
         rocsolver_destroy_rfinfo(sp->rfinfo);
