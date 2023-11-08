@@ -45,6 +45,9 @@
 #include "rocsparse/rocsparse.h"
 #endif
 
+#undef TRUE
+#define TRUE 1
+
 extern "C" {
 
 /******************** HANDLE ********************/
@@ -227,7 +230,7 @@ try
         return rocblas2hip_status(status);
     }
 
-    if(cholmod_start(&sp->c_handle) != 1)
+    if(cholmod_start(&sp->c_handle) != TRUE)
     {
         rocblas_destroy_handle(sp->handle);
         rocsolver_destroy_rfinfo(sp->rfinfo);
@@ -363,7 +366,7 @@ try
     // factorize A
     cholmod_factor* c_L    = cholmod_analyze(c_A, &sp->c_handle);
     int             status = cholmod_factorize(c_A, c_L, &sp->c_handle);
-    if(status != true)
+    if(status != TRUE)
     {
         cholmod_free_sparse(&c_A, &sp->c_handle);
         cholmod_free_factor(&c_L, &sp->c_handle);
@@ -518,7 +521,7 @@ try
     // factorize A
     cholmod_factor* c_L    = cholmod_analyze(c_A, &sp->c_handle);
     int             status = cholmod_factorize(c_A, c_L, &sp->c_handle);
-    if(status != true)
+    if(status != TRUE)
     {
         cholmod_free_sparse(&c_A, &sp->c_handle);
         cholmod_free_factor(&c_L, &sp->c_handle);
@@ -710,7 +713,7 @@ try
     // factorize A
     cholmod_factor* c_L    = cholmod_analyze(c_A, &sp->c_handle);
     int             status = cholmod_factorize(c_A, c_L, &sp->c_handle);
-    if(status != true)
+    if(status != TRUE)
     {
         cholmod_free_sparse(&c_A, &sp->c_handle);
         cholmod_free_factor(&c_L, &sp->c_handle);
@@ -820,7 +823,7 @@ try
     // factorize A
     cholmod_factor* c_L    = cholmod_analyze(c_A, &sp->c_handle);
     int             status = cholmod_factorize(c_A, c_L, &sp->c_handle);
-    if(status != true)
+    if(status != TRUE)
     {
         cholmod_free_sparse(&c_A, &sp->c_handle);
         cholmod_free_factor(&c_L, &sp->c_handle);
