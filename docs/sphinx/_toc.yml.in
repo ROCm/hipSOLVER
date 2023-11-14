@@ -38,3 +38,6 @@ subtrees:
         - file: refactor-api/types
         - file: refactor-api/helpers
         - file: refactor-api/refactor
+  - caption: About
+    entries:
+      - file: license
