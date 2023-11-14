@@ -105,17 +105,20 @@ the ``CMAKE_PREFIX_PATH`` definition. The following is a sequence of steps to bu
     cmake -DBUILD_BOOST=OFF <HIPSOLVER_SOURCE_PATH>/deps   #assuming boost is installed through package manager as above
     make -j$(nproc) install
 
-hipBLAS and hipSPARSE can be installed similarly to hipSOLVER. For example, the install scripts for hipBLAS and hipSPARSE can each be invoked to build and
+hipBLAS is only required if the ``BUILD_HIPBLAS_TESTS`` option is set to ``ON``, and is used to ensure compatibility between the hipblas enums defined
+separately by hipBLAS and hipSOLVER. hipSPARSE is required by default but can be ignored if the ``BUILD_WITH_SPARSE`` option is set to ``OFF``, and is used
+to create objects required by tests for the hipsolverSp API.
+
+* ``DBUILD_HIPBLAS_TESTS=ON``
+* ``DBUILD_WITH_SPARSE=OFF``
+
+Both libraries can be installed similarly to hipSOLVER. For example, the install scripts for hipBLAS and hipSPARSE can each be invoked to build and
 install the respective library via:
 
 * ``./install.sh -i``
 
 More details can be found in the `hipBLAS documentation <https://hipblas.readthedocs.io/en/latest/install.html>`_ and the `hipSPARSE documentation
-<https://github.com/ROCmSoftwarePlatform/hipSPARSE/wiki/Build>`_. hipBLAS is only required if the ``BUILD_HIPBLAS_TESTS`` option is set to ``ON``, and
-hipSPARSE is required by default but can be ignored if the ``BUILD_WITH_SPARSE`` option is set to ``OFF``.
-
-* ``DBUILD_HIPBLAS_TESTS=ON``
-* ``DBUILD_WITH_SPARSE=OFF``
+<https://github.com/ROCmSoftwarePlatform/hipSPARSE/wiki/Build>`_.
 
 Library and clients
 --------------------
