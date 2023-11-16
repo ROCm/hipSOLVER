@@ -17,7 +17,7 @@ def runCI =
 
     //customize for project
     prj.paths.build_command = buildCommand
-    prj.libraryDependencies = ['hipBLAS', 'hipSPARSE']
+    prj.libraryDependencies = ['hipSPARSE']
     prj.defaults.ccache = true
 
     // Define test architectures, optional rocm version argument is available
@@ -84,6 +84,6 @@ ci: {
             properties(auxiliary.addCommonProperties(property))
     }
 
-    String hostBuildCommand = './install.sh -c --compiler=g++ --cuda --cmake-arg -DBUILD_HIPBLAS_TESTS=ON'
+    String hostBuildCommand = './install.sh -c --compiler=g++ --cuda'
     setupCI(urlJobName, jobNameList, hostBuildCommand, runCI, 'g++')
 }
