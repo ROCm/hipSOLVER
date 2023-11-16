@@ -33,7 +33,7 @@ The hipSOLVER library remains in active development. New features are being cont
 release of the ROCm platform.
 
 The following tables summarize the wrapper functions that are implemented in the regular API for the different supported precisions in
-hipSOLVER's latest release. Most of these functions have a corresponding version in the compatibility API, where applicable.
+hipSOLVER's latest release. Most of these functions have a corresponding version in the compatibility APIs, where applicable.
 
 LAPACK auxiliary functions
 ----------------------------
@@ -203,8 +203,9 @@ Sparse matrix routines
 ------------------------------
 
 Sparse matrix routines and direct solvers for sparse matrices are in the very earliest stages of development.
-Due to unsupported backend functionality, there are a number of :ref:`performance implicatios <sparse_performance>`
-that users will want to be aware of when using these routines.
+Due to unsupported backend functionality, there are a number of intricacies and possible performance implications 
+that users will want to be aware of when using these routines. 
+Refer to the :ref:`hipsolverSp compatibility API <library_sparse>` for more details and a full listing of supported functions.
 
 .. csv-table:: Combined factorization and linear-system solvers
     :header: "Function", "single", "double", "single complex", "double complex"
@@ -216,5 +217,18 @@ Refactorization routines
 ------------------------------
 
 Refactorization routines and direct solvers for sparse matrices are in the very earliest stages of development.
-Refer to the :ref:`hipsolverRf compatibility API <library_refactor>` for a full listing of supported functions.
+Due to unsupported backend functionality, there are a number of intricacies and possible performance implications
+that users will want to be aware of when using these routines.
+Refer to the :ref:`hipsolverRf compatibility API <library_refactor>` for more details and a full listing of supported functions.
 
+.. csv-table:: Triangular factorizations
+    :header: "Function", "single", "double", "single complex", "double complex"
+
+    :ref:`hipsolverRfRefactor <refactor_refactor>`, x, x, ,
+    :ref:`hipsolverRfBatchRefactor <refactor_batch_refactor>`, x, x, ,
+
+.. csv-table:: linear-system solvers
+    :header: "Function", "single", "double", "single complex", "double complex"
+
+    :ref:`hipsolverRfSolve <refactor_solve>`, x, x, ,
+    :ref:`hipsolverRfBatchSolve <refactor_batch_solve>`, x, x, ,

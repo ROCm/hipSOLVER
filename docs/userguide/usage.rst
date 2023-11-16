@@ -28,7 +28,7 @@ hipSOLVER's compatibility APIs, which use the :ref:`hipsolverDn <library_compat>
 :ref:`hipsolverRf <library_refactor>` prefixes and have method signatures that are fully consistent with cuSOLVER functions.
 
 However, the compatibility APIs may introduce some performance drawbacks, especially when using the rocSOLVER backend. So, as a second
-stage, it is recommended to begin the switch to hipSOLVER's :ref:`regular API <library_api>`, which uses the `hipsolver` prefix and
+stage, it is recommended to begin the switch to hipSOLVER's :ref:`regular API <library_api>` when possible. The regular API  uses the `hipsolver` prefix and
 introduces minor adjustments to the API in order to get the best performance out of the rocSOLVER backend. In most cases, switching to
 the regular API is as simple as removing `Dn` from the `hipsolverDn` prefix (methods with the `hipsolverSp` and `hipsolverRf` prefixes
 are not currently supported by the regular API).

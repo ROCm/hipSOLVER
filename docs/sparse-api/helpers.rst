@@ -4,8 +4,8 @@
 Helper Functions
 ****************
 
-These are helper functions that control aspects of the hipSOLVER library. These are divided
-into four categories:
+These are helper functions that control aspects of the hipSOLVER library. They are divided
+into the following categories:
 
 * :ref:`sparse_initialize` functions. Used to initialize and cleanup the library handle.
 * :ref:`sparse_stream` functions. Provide functionality to manipulate streams.
