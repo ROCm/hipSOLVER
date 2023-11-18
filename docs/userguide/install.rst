@@ -12,10 +12,13 @@ Installation
 Install pre-built packages
 ===========================
 
-Download pre-built packages from `ROCm's package servers <https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4.3/page/Introduction_to_ROCm_Installation_Guide_for_Linux.html>`_. Release notes
-are available on the releases tab of the `library's github page <https://github.com/ROCmSoftwarePlatform/hipSOLVER>`_.
+Download pre-built packages from `ROCm's package servers <https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4.3/page/Introduction_to_ROCm_Installation_Guide_for_Linux.html>`_.
+Release notes are available on the releases tab of the `library's github page <https://github.com/ROCmSoftwarePlatform/hipSOLVER>`_.
 
 * `sudo apt update && sudo apt install hipsolver`
+
+Note that the pre-built packages depend on the third-party library SuiteSparse, which must be installed on the system prior to installing hipSOLVER.
+SuiteSparse can be installed using the package manager of most distros.
 
 
 Build & install library using script (Ubuntu only)
