@@ -7,9 +7,13 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ### Added
 ### Optimized
 ### Changed
+- Relax array length requirements for GESVDA.
+
 ### Deprecated
 ### Removed
 ### Fixed
+- Fixed incorrect singular vectors returned from GESVDA.
+
 ### Known Issues
 ### Security
 

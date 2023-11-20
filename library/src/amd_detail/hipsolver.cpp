@@ -449,6 +449,114 @@ rocblas_status rocsolver_zgesvdj_notransv_strided_batched(rocblas_handle        
                                                           rocblas_int*            info,
                                                           const rocblas_int       batch_count);
 
+rocblas_status rocsolver_sgesvdx_notransv_strided_batched(rocblas_handle       handle,
+                                                          const rocblas_svect  left_svect,
+                                                          const rocblas_svect  right_svect,
+                                                          const rocblas_srange srange,
+                                                          const rocblas_int    m,
+                                                          const rocblas_int    n,
+                                                          float*               A,
+                                                          const rocblas_int    lda,
+                                                          const rocblas_stride strideA,
+                                                          const float          vl,
+                                                          const float          vu,
+                                                          const rocblas_int    il,
+                                                          const rocblas_int    iu,
+                                                          rocblas_int*         nsv,
+                                                          float*               S,
+                                                          const rocblas_stride strideS,
+                                                          float*               U,
+                                                          const rocblas_int    ldu,
+                                                          const rocblas_stride strideU,
+                                                          float*               V,
+                                                          const rocblas_int    ldv,
+                                                          const rocblas_stride strideV,
+                                                          rocblas_int*         ifail,
+                                                          const rocblas_stride strideF,
+                                                          rocblas_int*         info,
+                                                          const rocblas_int    batch_count);
+
+rocblas_status rocsolver_dgesvdx_notransv_strided_batched(rocblas_handle       handle,
+                                                          const rocblas_svect  left_svect,
+                                                          const rocblas_svect  right_svect,
+                                                          const rocblas_srange srange,
+                                                          const rocblas_int    m,
+                                                          const rocblas_int    n,
+                                                          double*              A,
+                                                          const rocblas_int    lda,
+                                                          const rocblas_stride strideA,
+                                                          const double         vl,
+                                                          const double         vu,
+                                                          const rocblas_int    il,
+                                                          const rocblas_int    iu,
+                                                          rocblas_int*         nsv,
+                                                          double*              S,
+                                                          const rocblas_stride strideS,
+                                                          double*              U,
+                                                          const rocblas_int    ldu,
+                                                          const rocblas_stride strideU,
+                                                          double*              V,
+                                                          const rocblas_int    ldv,
+                                                          const rocblas_stride strideV,
+                                                          rocblas_int*         ifail,
+                                                          const rocblas_stride strideF,
+                                                          rocblas_int*         info,
+                                                          const rocblas_int    batch_count);
+
+rocblas_status rocsolver_cgesvdx_notransv_strided_batched(rocblas_handle         handle,
+                                                          const rocblas_svect    left_svect,
+                                                          const rocblas_svect    right_svect,
+                                                          const rocblas_srange   srange,
+                                                          const rocblas_int      m,
+                                                          const rocblas_int      n,
+                                                          rocblas_float_complex* A,
+                                                          const rocblas_int      lda,
+                                                          const rocblas_stride   strideA,
+                                                          const float            vl,
+                                                          const float            vu,
+                                                          const rocblas_int      il,
+                                                          const rocblas_int      iu,
+                                                          rocblas_int*           nsv,
+                                                          float*                 S,
+                                                          const rocblas_stride   strideS,
+                                                          rocblas_float_complex* U,
+                                                          const rocblas_int      ldu,
+                                                          const rocblas_stride   strideU,
+                                                          rocblas_float_complex* V,
+                                                          const rocblas_int      ldv,
+                                                          const rocblas_stride   strideV,
+                                                          rocblas_int*           ifail,
+                                                          const rocblas_stride   strideF,
+                                                          rocblas_int*           info,
+                                                          const rocblas_int      batch_count);
+
+rocblas_status rocsolver_zgesvdx_notransv_strided_batched(rocblas_handle          handle,
+                                                          const rocblas_svect     left_svect,
+                                                          const rocblas_svect     right_svect,
+                                                          const rocblas_srange    srange,
+                                                          const rocblas_int       m,
+                                                          const rocblas_int       n,
+                                                          rocblas_double_complex* A,
+                                                          const rocblas_int       lda,
+                                                          const rocblas_stride    strideA,
+                                                          const double            vl,
+                                                          const double            vu,
+                                                          const rocblas_int       il,
+                                                          const rocblas_int       iu,
+                                                          rocblas_int*            nsv,
+                                                          double*                 S,
+                                                          const rocblas_stride    strideS,
+                                                          rocblas_double_complex* U,
+                                                          const rocblas_int       ldu,
+                                                          const rocblas_stride    strideU,
+                                                          rocblas_double_complex* V,
+                                                          const rocblas_int       ldv,
+                                                          const rocblas_stride    strideV,
+                                                          rocblas_int*            ifail,
+                                                          const rocblas_stride    strideF,
+                                                          rocblas_int*            info,
+                                                          const rocblas_int       batch_count);
+
 /******************** HELPERS ********************/
 inline rocblas_status hipsolverManageWorkspace(rocblas_handle handle, size_t new_size)
 {
@@ -5438,57 +5546,45 @@ try
     *lwork = 0;
     size_t sz;
 
-    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR && ldv < n)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
-    if(jobz == HIPSOLVER_EIG_MODE_NOVECTOR && ldv < 1)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
-
-    bool use_V_copy = jobz != HIPSOLVER_EIG_MODE_NOVECTOR;
-    int  ldv_copy   = use_V_copy ? min(m, n) : 1;
-
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status
-        = rocblas2hip_status(rocsolver_sgesvdx_strided_batched((rocblas_handle)handle,
-                                                               hip2rocblas_evect2svect(jobz, 1),
-                                                               hip2rocblas_evect2svect(jobz, 1),
-                                                               rocblas_srange_index,
-                                                               m,
-                                                               n,
-                                                               nullptr,
-                                                               lda,
-                                                               strideA,
-                                                               0,
-                                                               0,
-                                                               1,
-                                                               rank,
-                                                               nullptr,
-                                                               nullptr,
-                                                               strideS,
-                                                               nullptr,
-                                                               ldu,
-                                                               strideU,
-                                                               nullptr,
-                                                               ldv_copy,
-                                                               ldv_copy * n,
-                                                               nullptr,
-                                                               n,
-                                                               nullptr,
-                                                               batch_count));
+    hipsolverStatus_t status = rocblas2hip_status(
+        rocsolver_sgesvdx_notransv_strided_batched((rocblas_handle)handle,
+                                                   hip2rocblas_evect2svect(jobz, 1),
+                                                   hip2rocblas_evect2svect(jobz, 1),
+                                                   rocblas_srange_index,
+                                                   m,
+                                                   n,
+                                                   nullptr,
+                                                   lda,
+                                                   strideA,
+                                                   0,
+                                                   0,
+                                                   1,
+                                                   rank,
+                                                   nullptr,
+                                                   nullptr,
+                                                   strideS,
+                                                   nullptr,
+                                                   ldu,
+                                                   strideU,
+                                                   nullptr,
+                                                   ldv,
+                                                   strideV,
+                                                   nullptr,
+                                                   n,
+                                                   nullptr,
+                                                   batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for nsv array
     size_t size_nsv = sizeof(int) * batch_count;
-
-    // space for V_copy array
-    size_t size_V_copy = use_V_copy ? sizeof(float) * ldv_copy * n * batch_count : 0;
 
     // space for ifail array
     size_t size_ifail = sizeof(int) * min(m, n) * batch_count;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size(
-        (rocblas_handle)handle, sz, size_nsv, size_V_copy, size_ifail);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_nsv, size_ifail);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -5532,57 +5628,45 @@ try
     *lwork = 0;
     size_t sz;
 
-    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR && ldv < n)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
-    if(jobz == HIPSOLVER_EIG_MODE_NOVECTOR && ldv < 1)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
-
-    bool use_V_copy = jobz != HIPSOLVER_EIG_MODE_NOVECTOR;
-    int  ldv_copy   = use_V_copy ? min(m, n) : 1;
-
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status
-        = rocblas2hip_status(rocsolver_dgesvdx_strided_batched((rocblas_handle)handle,
-                                                               hip2rocblas_evect2svect(jobz, 1),
-                                                               hip2rocblas_evect2svect(jobz, 1),
-                                                               rocblas_srange_index,
-                                                               m,
-                                                               n,
-                                                               nullptr,
-                                                               lda,
-                                                               strideA,
-                                                               0,
-                                                               0,
-                                                               1,
-                                                               rank,
-                                                               nullptr,
-                                                               nullptr,
-                                                               strideS,
-                                                               nullptr,
-                                                               ldu,
-                                                               strideU,
-                                                               nullptr,
-                                                               ldv_copy,
-                                                               ldv_copy * n,
-                                                               nullptr,
-                                                               n,
-                                                               nullptr,
-                                                               batch_count));
+    hipsolverStatus_t status = rocblas2hip_status(
+        rocsolver_dgesvdx_notransv_strided_batched((rocblas_handle)handle,
+                                                   hip2rocblas_evect2svect(jobz, 1),
+                                                   hip2rocblas_evect2svect(jobz, 1),
+                                                   rocblas_srange_index,
+                                                   m,
+                                                   n,
+                                                   nullptr,
+                                                   lda,
+                                                   strideA,
+                                                   0,
+                                                   0,
+                                                   1,
+                                                   rank,
+                                                   nullptr,
+                                                   nullptr,
+                                                   strideS,
+                                                   nullptr,
+                                                   ldu,
+                                                   strideU,
+                                                   nullptr,
+                                                   ldv,
+                                                   strideV,
+                                                   nullptr,
+                                                   n,
+                                                   nullptr,
+                                                   batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for nsv array
     size_t size_nsv = sizeof(int) * batch_count;
-
-    // space for V_copy array
-    size_t size_V_copy = use_V_copy ? sizeof(double) * ldv_copy * n * batch_count : 0;
 
     // space for ifail array
     size_t size_ifail = sizeof(int) * min(m, n) * batch_count;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size(
-        (rocblas_handle)handle, sz, size_nsv, size_V_copy, size_ifail);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_nsv, size_ifail);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -5626,58 +5710,45 @@ try
     *lwork = 0;
     size_t sz;
 
-    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR && ldv < n)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
-    if(jobz == HIPSOLVER_EIG_MODE_NOVECTOR && ldv < 1)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
-
-    bool use_V_copy = jobz != HIPSOLVER_EIG_MODE_NOVECTOR;
-    int  ldv_copy   = use_V_copy ? min(m, n) : 1;
-
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status
-        = rocblas2hip_status(rocsolver_cgesvdx_strided_batched((rocblas_handle)handle,
-                                                               hip2rocblas_evect2svect(jobz, 1),
-                                                               hip2rocblas_evect2svect(jobz, 1),
-                                                               rocblas_srange_index,
-                                                               m,
-                                                               n,
-                                                               nullptr,
-                                                               lda,
-                                                               strideA,
-                                                               0,
-                                                               0,
-                                                               1,
-                                                               rank,
-                                                               nullptr,
-                                                               nullptr,
-                                                               strideS,
-                                                               nullptr,
-                                                               ldu,
-                                                               strideU,
-                                                               nullptr,
-                                                               ldv_copy,
-                                                               ldv_copy * n,
-                                                               nullptr,
-                                                               n,
-                                                               nullptr,
-                                                               batch_count));
+    hipsolverStatus_t status = rocblas2hip_status(
+        rocsolver_cgesvdx_notransv_strided_batched((rocblas_handle)handle,
+                                                   hip2rocblas_evect2svect(jobz, 1),
+                                                   hip2rocblas_evect2svect(jobz, 1),
+                                                   rocblas_srange_index,
+                                                   m,
+                                                   n,
+                                                   nullptr,
+                                                   lda,
+                                                   strideA,
+                                                   0,
+                                                   0,
+                                                   1,
+                                                   rank,
+                                                   nullptr,
+                                                   nullptr,
+                                                   strideS,
+                                                   nullptr,
+                                                   ldu,
+                                                   strideU,
+                                                   nullptr,
+                                                   ldv,
+                                                   strideV,
+                                                   nullptr,
+                                                   n,
+                                                   nullptr,
+                                                   batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for nsv array
     size_t size_nsv = sizeof(int) * batch_count;
-
-    // space for V_copy array
-    size_t size_V_copy
-        = use_V_copy ? sizeof(rocblas_float_complex) * ldv_copy * n * batch_count : 0;
 
     // space for ifail array
     size_t size_ifail = sizeof(int) * min(m, n) * batch_count;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size(
-        (rocblas_handle)handle, sz, size_nsv, size_V_copy, size_ifail);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_nsv, size_ifail);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -5720,58 +5791,45 @@ try
     *lwork = 0;
     size_t sz;
 
-    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR && ldv < n)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
-    if(jobz == HIPSOLVER_EIG_MODE_NOVECTOR && ldv < 1)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
-
-    bool use_V_copy = jobz != HIPSOLVER_EIG_MODE_NOVECTOR;
-    int  ldv_copy   = use_V_copy ? min(m, n) : 1;
-
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    hipsolverStatus_t status
-        = rocblas2hip_status(rocsolver_zgesvdx_strided_batched((rocblas_handle)handle,
-                                                               hip2rocblas_evect2svect(jobz, 1),
-                                                               hip2rocblas_evect2svect(jobz, 1),
-                                                               rocblas_srange_index,
-                                                               m,
-                                                               n,
-                                                               nullptr,
-                                                               lda,
-                                                               strideA,
-                                                               0,
-                                                               0,
-                                                               1,
-                                                               rank,
-                                                               nullptr,
-                                                               nullptr,
-                                                               strideS,
-                                                               nullptr,
-                                                               ldu,
-                                                               strideU,
-                                                               nullptr,
-                                                               ldv_copy,
-                                                               ldv_copy * n,
-                                                               nullptr,
-                                                               n,
-                                                               nullptr,
-                                                               batch_count));
+    hipsolverStatus_t status = rocblas2hip_status(
+        rocsolver_zgesvdx_notransv_strided_batched((rocblas_handle)handle,
+                                                   hip2rocblas_evect2svect(jobz, 1),
+                                                   hip2rocblas_evect2svect(jobz, 1),
+                                                   rocblas_srange_index,
+                                                   m,
+                                                   n,
+                                                   nullptr,
+                                                   lda,
+                                                   strideA,
+                                                   0,
+                                                   0,
+                                                   1,
+                                                   rank,
+                                                   nullptr,
+                                                   nullptr,
+                                                   strideS,
+                                                   nullptr,
+                                                   ldu,
+                                                   strideU,
+                                                   nullptr,
+                                                   ldv,
+                                                   strideV,
+                                                   nullptr,
+                                                   n,
+                                                   nullptr,
+                                                   batch_count));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for nsv array
     size_t size_nsv = sizeof(int) * batch_count;
-
-    // space for V_copy array
-    size_t size_V_copy
-        = use_V_copy ? sizeof(rocblas_double_complex) * ldv_copy * n * batch_count : 0;
 
     // space for ifail array
     size_t size_ifail = sizeof(int) * min(m, n) * batch_count;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
-    rocblas_set_optimal_device_memory_size(
-        (rocblas_handle)handle, sz, size_nsv, size_V_copy, size_ifail);
+    rocblas_set_optimal_device_memory_size((rocblas_handle)handle, sz, size_nsv, size_ifail);
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     if(status != HIPSOLVER_STATUS_SUCCESS)
@@ -5812,28 +5870,10 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(ldv < 1)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     rocblas_device_malloc mem((rocblas_handle)handle);
     int*                  nsv;
-    float*                V_copy;
     int*                  ifail;
-
-    const float one         = 1.0f;
-    const float zero        = 0.0f;
-    bool        use_V_copy  = false;
-    int         ldv_copy    = 1;
-    size_t      size_V_copy = 0;
-    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-    {
-        if(ldv < n || !V)
-            return HIPSOLVER_STATUS_INVALID_VALUE;
-
-        use_V_copy  = true;
-        ldv_copy    = min(m, n);
-        size_V_copy = sizeof(float) * ldv_copy * n * batch_count;
-    }
 
     // prepare workspace
     if(work && lwork)
@@ -5842,13 +5882,9 @@ try
         if(batch_count > 0)
             work = (float*)(nsv + batch_count);
 
-        V_copy = work;
-        if(use_V_copy)
-            work = V_copy + ldv_copy * n * batch_count;
-
         ifail = (int*)work;
-        if(use_V_copy)
-            work = (float*)(ifail + n * batch_count);
+        if(min(m, n) * batch_count > 0)
+            work = (float*)(ifail + min(m, n) * batch_count);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     }
@@ -5876,64 +5912,41 @@ try
 
         mem = rocblas_device_malloc((rocblas_handle)handle,
                                     sizeof(int) * batch_count,
-                                    size_V_copy,
                                     sizeof(int) * min(m, n) * batch_count);
         if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        nsv    = (int*)mem[0];
-        V_copy = (float*)mem[1];
-        ifail  = (int*)mem[2];
+        nsv   = (int*)mem[0];
+        ifail = (int*)mem[1];
     }
 
     // perform computation
-    CHECK_ROCBLAS_ERROR(rocsolver_sgesvdx_strided_batched((rocblas_handle)handle,
-                                                          hip2rocblas_evect2svect(jobz, 1),
-                                                          hip2rocblas_evect2svect(jobz, 1),
-                                                          rocblas_srange_index,
-                                                          m,
-                                                          n,
-                                                          const_cast<float*>(A),
-                                                          lda,
-                                                          strideA,
-                                                          0,
-                                                          0,
-                                                          1,
-                                                          rank,
-                                                          nsv,
-                                                          S,
-                                                          strideS,
-                                                          U,
-                                                          ldu,
-                                                          strideU,
-                                                          V_copy,
-                                                          ldv_copy,
-                                                          ldv_copy * n,
-                                                          ifail,
-                                                          min(m, n),
-                                                          devInfo,
-                                                          batch_count));
-
-    // transpose V
-    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-        return rocblas2hip_status(rocblas_sgeam_strided_batched((rocblas_handle)handle,
-                                                                rocblas_operation_transpose,
-                                                                rocblas_operation_transpose,
-                                                                n,
-                                                                rank,
-                                                                &one,
-                                                                V_copy,
-                                                                ldv_copy,
-                                                                ldv_copy * n,
-                                                                &zero,
-                                                                V_copy,
-                                                                ldv_copy,
-                                                                ldv_copy * n,
-                                                                V,
-                                                                ldv,
-                                                                strideV,
-                                                                batch_count));
-    else
-        return HIPSOLVER_STATUS_SUCCESS;
+    return rocblas2hip_status(
+        (rocsolver_sgesvdx_notransv_strided_batched((rocblas_handle)handle,
+                                                    hip2rocblas_evect2svect(jobz, 1),
+                                                    hip2rocblas_evect2svect(jobz, 1),
+                                                    rocblas_srange_index,
+                                                    m,
+                                                    n,
+                                                    const_cast<float*>(A),
+                                                    lda,
+                                                    strideA,
+                                                    0,
+                                                    0,
+                                                    1,
+                                                    rank,
+                                                    nsv,
+                                                    S,
+                                                    strideS,
+                                                    U,
+                                                    ldu,
+                                                    strideU,
+                                                    V,
+                                                    ldv,
+                                                    strideV,
+                                                    ifail,
+                                                    min(m, n),
+                                                    devInfo,
+                                                    batch_count)));
 }
 catch(...)
 {
@@ -5965,28 +5978,10 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(ldv < 1)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
 
     rocblas_device_malloc mem((rocblas_handle)handle);
     int*                  nsv;
-    double*               V_copy;
     int*                  ifail;
-
-    const double one         = 1.0f;
-    const double zero        = 0.0f;
-    bool         use_V_copy  = false;
-    int          ldv_copy    = 1;
-    size_t       size_V_copy = 0;
-    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-    {
-        if(ldv < n || !V)
-            return HIPSOLVER_STATUS_INVALID_VALUE;
-
-        use_V_copy  = true;
-        ldv_copy    = min(m, n);
-        size_V_copy = sizeof(double) * ldv_copy * n * batch_count;
-    }
 
     // prepare workspace
     if(work && lwork)
@@ -5995,13 +5990,9 @@ try
         if(batch_count > 0)
             work = (double*)(nsv + batch_count);
 
-        V_copy = work;
-        if(use_V_copy)
-            work = V_copy + ldv_copy * n * batch_count;
-
         ifail = (int*)work;
-        if(use_V_copy)
-            work = (double*)(ifail + n * batch_count);
+        if(min(m, n) * batch_count > 0)
+            work = (double*)(ifail + min(m, n) * batch_count);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     }
@@ -6029,64 +6020,41 @@ try
 
         mem = rocblas_device_malloc((rocblas_handle)handle,
                                     sizeof(int) * batch_count,
-                                    size_V_copy,
                                     sizeof(int) * min(m, n) * batch_count);
         if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        nsv    = (int*)mem[0];
-        V_copy = (double*)mem[1];
-        ifail  = (int*)mem[2];
+        nsv   = (int*)mem[0];
+        ifail = (int*)mem[1];
     }
 
     // perform computation
-    CHECK_ROCBLAS_ERROR(rocsolver_dgesvdx_strided_batched((rocblas_handle)handle,
-                                                          hip2rocblas_evect2svect(jobz, 1),
-                                                          hip2rocblas_evect2svect(jobz, 1),
-                                                          rocblas_srange_index,
-                                                          m,
-                                                          n,
-                                                          const_cast<double*>(A),
-                                                          lda,
-                                                          strideA,
-                                                          0,
-                                                          0,
-                                                          1,
-                                                          rank,
-                                                          nsv,
-                                                          S,
-                                                          strideS,
-                                                          U,
-                                                          ldu,
-                                                          strideU,
-                                                          V_copy,
-                                                          ldv_copy,
-                                                          ldv_copy * n,
-                                                          ifail,
-                                                          min(m, n),
-                                                          devInfo,
-                                                          batch_count));
-
-    // transpose V
-    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-        return rocblas2hip_status(rocblas_dgeam_strided_batched((rocblas_handle)handle,
-                                                                rocblas_operation_transpose,
-                                                                rocblas_operation_transpose,
-                                                                n,
-                                                                rank,
-                                                                &one,
-                                                                V_copy,
-                                                                ldv_copy,
-                                                                ldv_copy * n,
-                                                                &zero,
-                                                                V_copy,
-                                                                ldv_copy,
-                                                                ldv_copy * n,
-                                                                V,
-                                                                ldv,
-                                                                strideV,
-                                                                batch_count));
-    else
-        return HIPSOLVER_STATUS_SUCCESS;
+    return rocblas2hip_status(
+        (rocsolver_dgesvdx_notransv_strided_batched((rocblas_handle)handle,
+                                                    hip2rocblas_evect2svect(jobz, 1),
+                                                    hip2rocblas_evect2svect(jobz, 1),
+                                                    rocblas_srange_index,
+                                                    m,
+                                                    n,
+                                                    const_cast<double*>(A),
+                                                    lda,
+                                                    strideA,
+                                                    0,
+                                                    0,
+                                                    1,
+                                                    rank,
+                                                    nsv,
+                                                    S,
+                                                    strideS,
+                                                    U,
+                                                    ldu,
+                                                    strideU,
+                                                    V,
+                                                    ldv,
+                                                    strideV,
+                                                    ifail,
+                                                    min(m, n),
+                                                    devInfo,
+                                                    batch_count)));
 }
 catch(...)
 {
@@ -6118,28 +6086,10 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(ldv < 1)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    rocblas_device_malloc  mem((rocblas_handle)handle);
-    int*                   nsv;
-    rocblas_float_complex* V_copy;
-    int*                   ifail;
-
-    const rocblas_float_complex one         = {1.0f, 0.0f};
-    const rocblas_float_complex zero        = {0.0f, 0.0f};
-    bool                        use_V_copy  = false;
-    int                         ldv_copy    = 1;
-    size_t                      size_V_copy = 0;
-    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-    {
-        if(ldv < n || !V)
-            return HIPSOLVER_STATUS_INVALID_VALUE;
-
-        use_V_copy  = true;
-        ldv_copy    = min(m, n);
-        size_V_copy = sizeof(rocblas_float_complex) * ldv_copy * n * batch_count;
-    }
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    int*                  nsv;
+    int*                  ifail;
 
     // prepare workspace
     if(work && lwork)
@@ -6148,13 +6098,9 @@ try
         if(batch_count > 0)
             work = (hipFloatComplex*)(nsv + batch_count);
 
-        V_copy = (rocblas_float_complex*)work;
-        if(use_V_copy)
-            work = (hipFloatComplex*)(V_copy + ldv_copy * n * batch_count);
-
         ifail = (int*)work;
-        if(use_V_copy)
-            work = (hipFloatComplex*)(ifail + n * batch_count);
+        if(min(m, n) * batch_count > 0)
+            work = (hipFloatComplex*)(ifail + min(m, n) * batch_count);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     }
@@ -6182,66 +6128,41 @@ try
 
         mem = rocblas_device_malloc((rocblas_handle)handle,
                                     sizeof(int) * batch_count,
-                                    size_V_copy,
                                     sizeof(int) * min(m, n) * batch_count);
         if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        nsv    = (int*)mem[0];
-        V_copy = (rocblas_float_complex*)mem[1];
-        ifail  = (int*)mem[2];
+        nsv   = (int*)mem[0];
+        ifail = (int*)mem[1];
     }
 
     // perform computation
-    CHECK_ROCBLAS_ERROR(
-        rocsolver_cgesvdx_strided_batched((rocblas_handle)handle,
-                                          hip2rocblas_evect2svect(jobz, 1),
-                                          hip2rocblas_evect2svect(jobz, 1),
-                                          rocblas_srange_index,
-                                          m,
-                                          n,
-                                          (rocblas_float_complex*)const_cast<hipFloatComplex*>(A),
-                                          lda,
-                                          strideA,
-                                          0,
-                                          0,
-                                          1,
-                                          rank,
-                                          nsv,
-                                          S,
-                                          strideS,
-                                          (rocblas_float_complex*)U,
-                                          ldu,
-                                          strideU,
-                                          V_copy,
-                                          ldv_copy,
-                                          ldv_copy * n,
-                                          ifail,
-                                          min(m, n),
-                                          devInfo,
-                                          batch_count));
-
-    // transpose V
-    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-        return rocblas2hip_status(
-            rocblas_cgeam_strided_batched((rocblas_handle)handle,
-                                          rocblas_operation_conjugate_transpose,
-                                          rocblas_operation_conjugate_transpose,
-                                          n,
-                                          rank,
-                                          &one,
-                                          V_copy,
-                                          ldv_copy,
-                                          ldv_copy * n,
-                                          &zero,
-                                          V_copy,
-                                          ldv_copy,
-                                          ldv_copy * n,
-                                          (rocblas_float_complex*)V,
-                                          ldv,
-                                          strideV,
-                                          batch_count));
-    else
-        return HIPSOLVER_STATUS_SUCCESS;
+    return rocblas2hip_status((rocsolver_cgesvdx_notransv_strided_batched(
+        (rocblas_handle)handle,
+        hip2rocblas_evect2svect(jobz, 1),
+        hip2rocblas_evect2svect(jobz, 1),
+        rocblas_srange_index,
+        m,
+        n,
+        (rocblas_float_complex*)const_cast<hipFloatComplex*>(A),
+        lda,
+        strideA,
+        0,
+        0,
+        1,
+        rank,
+        nsv,
+        S,
+        strideS,
+        (rocblas_float_complex*)U,
+        ldu,
+        strideU,
+        (rocblas_float_complex*)V,
+        ldv,
+        strideV,
+        ifail,
+        min(m, n),
+        devInfo,
+        batch_count)));
 }
 catch(...)
 {
@@ -6273,28 +6194,10 @@ try
 {
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    if(ldv < 1)
-        return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    rocblas_device_malloc   mem((rocblas_handle)handle);
-    int*                    nsv;
-    rocblas_double_complex* V_copy;
-    int*                    ifail;
-
-    const rocblas_double_complex one         = {1.0f, 0.0f};
-    const rocblas_double_complex zero        = {0.0f, 0.0f};
-    bool                         use_V_copy  = false;
-    int                          ldv_copy    = 1;
-    size_t                       size_V_copy = 0;
-    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-    {
-        if(ldv < n || !V)
-            return HIPSOLVER_STATUS_INVALID_VALUE;
-
-        use_V_copy  = true;
-        ldv_copy    = min(m, n);
-        size_V_copy = sizeof(rocblas_double_complex) * ldv_copy * n * batch_count;
-    }
+    rocblas_device_malloc mem((rocblas_handle)handle);
+    int*                  nsv;
+    int*                  ifail;
 
     // prepare workspace
     if(work && lwork)
@@ -6303,13 +6206,9 @@ try
         if(batch_count > 0)
             work = (hipDoubleComplex*)(nsv + batch_count);
 
-        V_copy = (rocblas_double_complex*)work;
-        if(use_V_copy)
-            work = (hipDoubleComplex*)(V_copy + ldv_copy * n * batch_count);
-
         ifail = (int*)work;
-        if(use_V_copy)
-            work = (hipDoubleComplex*)(ifail + n * batch_count);
+        if(min(m, n) * batch_count > 0)
+            work = (hipDoubleComplex*)(ifail + min(m, n) * batch_count);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     }
@@ -6337,66 +6236,41 @@ try
 
         mem = rocblas_device_malloc((rocblas_handle)handle,
                                     sizeof(int) * batch_count,
-                                    size_V_copy,
                                     sizeof(int) * min(m, n) * batch_count);
         if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
-        nsv    = (int*)mem[0];
-        V_copy = (rocblas_double_complex*)mem[1];
-        ifail  = (int*)mem[2];
+        nsv   = (int*)mem[0];
+        ifail = (int*)mem[1];
     }
 
     // perform computation
-    CHECK_ROCBLAS_ERROR(
-        rocsolver_zgesvdx_strided_batched((rocblas_handle)handle,
-                                          hip2rocblas_evect2svect(jobz, 1),
-                                          hip2rocblas_evect2svect(jobz, 1),
-                                          rocblas_srange_index,
-                                          m,
-                                          n,
-                                          (rocblas_double_complex*)const_cast<hipDoubleComplex*>(A),
-                                          lda,
-                                          strideA,
-                                          0,
-                                          0,
-                                          1,
-                                          rank,
-                                          nsv,
-                                          S,
-                                          strideS,
-                                          (rocblas_double_complex*)U,
-                                          ldu,
-                                          strideU,
-                                          V_copy,
-                                          ldv_copy,
-                                          ldv_copy * n,
-                                          ifail,
-                                          min(m, n),
-                                          devInfo,
-                                          batch_count));
-
-    // transpose V
-    if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
-        return rocblas2hip_status(
-            rocblas_zgeam_strided_batched((rocblas_handle)handle,
-                                          rocblas_operation_conjugate_transpose,
-                                          rocblas_operation_conjugate_transpose,
-                                          n,
-                                          rank,
-                                          &one,
-                                          V_copy,
-                                          ldv_copy,
-                                          ldv_copy * n,
-                                          &zero,
-                                          V_copy,
-                                          ldv_copy,
-                                          ldv_copy * n,
-                                          (rocblas_double_complex*)V,
-                                          ldv,
-                                          strideV,
-                                          batch_count));
-    else
-        return HIPSOLVER_STATUS_SUCCESS;
+    return rocblas2hip_status((rocsolver_zgesvdx_notransv_strided_batched(
+        (rocblas_handle)handle,
+        hip2rocblas_evect2svect(jobz, 1),
+        hip2rocblas_evect2svect(jobz, 1),
+        rocblas_srange_index,
+        m,
+        n,
+        (rocblas_double_complex*)const_cast<hipDoubleComplex*>(A),
+        lda,
+        strideA,
+        0,
+        0,
+        1,
+        rank,
+        nsv,
+        S,
+        strideS,
+        (rocblas_double_complex*)U,
+        ldu,
+        strideU,
+        (rocblas_double_complex*)V,
+        ldv,
+        strideV,
+        ifail,
+        min(m, n),
+        devInfo,
+        batch_count)));
 }
 catch(...)
 {
