@@ -717,9 +717,9 @@ void testing_gesvda(Arguments& argus)
     int                    ldu   = argus.get<int>("ldu", m);
     int                    ldv   = argus.get<int>("ldv", n);
     rocblas_stride         stA   = argus.get<rocblas_stride>("strideA", lda * n);
-    rocblas_stride         stS   = argus.get<rocblas_stride>("strideS", min(m, n));
-    rocblas_stride         stU   = argus.get<rocblas_stride>("strideU", ldu * min(m, n));
-    rocblas_stride         stV   = argus.get<rocblas_stride>("strideV", ldv * min(m, n));
+    rocblas_stride         stS   = argus.get<rocblas_stride>("strideS", rank);
+    rocblas_stride         stU   = argus.get<rocblas_stride>("strideU", ldu * rank);
+    rocblas_stride         stV   = argus.get<rocblas_stride>("strideV", ldv * rank);
 
     hipsolverEigMode_t jobz      = char2hipsolver_evect(jobzC);
     int                bc        = argus.batch_count;
@@ -729,10 +729,11 @@ void testing_gesvda(Arguments& argus)
     rocblas_stride stVres = 0;
 
     // determine sizes
-    size_t size_A = size_t(lda) * n;
-    size_t size_S = size_t(min(m, n));
-    size_t size_V = 0;
-    size_t size_U = 0;
+    size_t size_A     = size_t(lda) * n;
+    size_t size_S     = size_t(rank);
+    size_t size_S_cpu = size_t(min(m, n));
+    size_t size_V     = 0;
+    size_t size_U     = 0;
 
     size_t size_Sres  = 0;
     size_t size_hUres = 0;
@@ -740,8 +741,8 @@ void testing_gesvda(Arguments& argus)
 
     if(jobz != HIPSOLVER_EIG_MODE_NOVECTOR)
     {
-        size_U = size_t(ldu) * min(m, n);
-        size_V = size_t(ldv) * min(m, n);
+        size_U = size_t(ldu) * rank;
+        size_V = size_t(ldv) * rank;
     }
 
     if(argus.unit_check || argus.norm_check)
@@ -854,7 +855,8 @@ void testing_gesvda(Arguments& argus)
 
     // memory allocations (all cases)
     // host
-    host_strided_batch_vector<S>      hS(size_S, 1, stS, bc);
+    host_strided_batch_vector<S> hS(
+        size_S_cpu, 1, size_S_cpu, bc); // extra space for cpu_gesvd call
     host_strided_batch_vector<T>      hV(size_V, 1, stV, bc);
     host_strided_batch_vector<T>      hU(size_U, 1, stU, bc);
     host_strided_batch_vector<double> hRnrmF(1, 1, 1, bc);

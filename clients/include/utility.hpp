@@ -603,7 +603,9 @@ inline void
         for(int i = 0; i < m; ++i)
         {
             int read = fscanf(mat, "%d", &v);
-            assert(read == 1);
+            if(read != 1)
+                throw std::out_of_range(std::string("Error: Could not read element from file ")
+                                        + filename);
             A[i + j * lda] = v;
         }
     }
@@ -647,7 +649,9 @@ inline void
         for(int i = 0; i < m; ++i)
         {
             int read = fscanf(mat, "%g", &v);
-            assert(read == 1);
+            if(read != 1)
+                throw std::out_of_range(std::string("Error: Could not read element from file ")
+                                        + filename);
             A[i + j * lda] = v;
         }
     }
@@ -673,7 +677,9 @@ inline void
         for(int i = 0; i < m; ++i)
         {
             int read = fscanf(mat, "%lg", &v);
-            assert(read == 1);
+            if(read != 1)
+                throw std::out_of_range(std::string("Error: Could not read element from file ")
+                                        + filename);
             A[i + j * lda] = v;
         }
     }

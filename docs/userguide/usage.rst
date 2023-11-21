@@ -45,13 +45,6 @@ Some considerations when using the hipsolverDn API
 The hipsolverDn API is intended as a 1:1 translation of the cusolverDn API, but not all functionality is equally supported in
 rocSOLVER. Keep in mind the following considerations when using this compatibility API.
 
-Different minimum array lengths
---------------------------------
-
-- Currently, the following methods require larger arrays than the minimum required by cuSOLVER.
-
-  * :ref:`hipsolverDnXgesvdaStridedBatched <compat_gesvda_strided_batched>` requires `U` to be of length `ldu * min(m,n)` at
-    minimum, and `S` to be of length `min(m,n)` at minimum.
 
 Arguments not referenced by rocSOLVER
 --------------------------------------
@@ -94,9 +87,6 @@ Performance implications of the hipsolverDn API
 
   (Users must keep in mind that even if the compatibility API does not have bufferSize helpers for the mentioned functions, these functions do require
   workspace when using rocSOLVER, and it will be automatically managed. This may imply device memory reallocations with corresponding overheads).
-
-- The function :ref:`hipsolverDnXgesvdaStridedBatched <compat_gesvda_strided_batched>` must apply a transpose operation to `V` in order to match the output of
-  cuSOLVER, requiring an additional function call and extra workspace.
 
 
 .. _sparse_api_differences:
