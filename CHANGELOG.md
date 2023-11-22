@@ -1,4 +1,22 @@
 # Changelog for hipSOLVER
+# Change Log for hipSOLVER
+
+Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
+
+
+## (Unreleased) hipSOLVER
+### Added
+### Optimized
+### Changed
+- Relax array length requirements for GESVDA.
+
+### Deprecated
+### Removed
+### Fixed
+- Fixed incorrect singular vectors returned from GESVDA.
+
+### Known Issues
+### Security
 
 Documentation for hipSOLVER is available at
 [https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/](https://hipsolver.readthedocs.io/en/latest/).
