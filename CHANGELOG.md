@@ -1,22 +1,4 @@
 # Changelog for hipSOLVER
-# Change Log for hipSOLVER
-
-Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
-
-
-## (Unreleased) hipSOLVER
-### Added
-### Optimized
-### Changed
-- Relax array length requirements for GESVDA.
-
-### Deprecated
-### Removed
-### Fixed
-- Fixed incorrect singular vectors returned from GESVDA.
-
-### Known Issues
-### Security
 
 Documentation for hipSOLVER is available at
 [https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/](https://hipsolver.readthedocs.io/en/latest/).
@@ -34,11 +16,14 @@ Documentation for hipSOLVER is available at
 * The `hipsolverOperation_t` type is now an alias of `hipblasOperation_t`
 * The `hipsolverFillMode_t` type is now an alias of `hipblasFillMode_t`
 * The `hipsolverSideMode_t` type is now an alias of `hipblasSideMode_t`
+* Relax array length requirements for GESVDA
 
 ### Fixes
 
-* Fixed tests for hipSOLVER info updates in `ORGBR/UNGBR`, `ORGQR/UNGQR`, `ORGTR/UNGTR`,
+* Tests for hipSOLVER info updates in `ORGBR/UNGBR`, `ORGQR/UNGQR`, `ORGTR/UNGTR`,
   `ORMQR/UNMQR`, and `ORMTR/UNMTR`
+* Incorrect singular vectors returned from GESVDA
+
 
 ## hipSOLVER 1.8.1 for ROCm 5.7.0
 
