@@ -15,6 +15,12 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
   ORGTR/UNGTR, ORMQR/UNMQR, and ORMTR/UNMTR.
 
 
+## hipSOLVER 1.8.2 for ROCm 5.7.1
+### Fixed
+- Fixed conflicts between the hipsolver-dev and -asan packages by excluding
+  hipsolver_module.f90 from the latter
+
+
 ## hipSOLVER 1.8.1 for ROCm 5.7.0
 ### Changed
 - Changed hipsolver-test sparse input data search paths to be relative to the test executable
