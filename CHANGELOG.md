@@ -1,7 +1,7 @@
 # Changelog for hipSOLVER
 
 Documentation for hipSOLVER is available at
-[https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/]([https://hipsolver.readthedocs.io/en/latest/](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/)).
+[https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/).
 
 ## hipSOLVER 2.0.0 for ROCm 6.0.0
 
