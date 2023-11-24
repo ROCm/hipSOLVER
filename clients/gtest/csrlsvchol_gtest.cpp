@@ -55,7 +55,7 @@ Arguments csrlsvchol_setup_arguments(csrlsvchol_tuple tup)
     arg.set<rocblas_int>("n", n_v);
     arg.set<rocblas_int>("nnzA", nnz_v[0]);
     arg.set<rocblas_int>("reorder", nnz_v[1]);
-    arg.set<rocblas_int>("base1", nnz_v[1]);
+    arg.set<rocblas_int>("base1", nnz_v[2]);
 
     arg.timing = 0;
 
