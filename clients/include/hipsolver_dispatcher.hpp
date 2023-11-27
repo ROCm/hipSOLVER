@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2021-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2021-2023 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@
 #include <map>
 #include <string>
 
+#include "testing_csrlsvchol.hpp"
 #include "testing_gebrd.hpp"
 #include "testing_gels.hpp"
 #include "testing_geqrf.hpp"
@@ -119,6 +120,8 @@ class hipsolver_dispatcher
             {"sygvdx", testing_sygvdx_hegvdx<API_COMPAT, false, false, T>},
             {"sygvj", testing_sygvj_hegvj<API_NORMAL, false, false, T>},
             {"sytrd", testing_sytrd_hetrd<false, false, false, T>},
+            {"csrlsvchol", testing_csrlsvchol<false, T>},
+            {"csrlsvcholHost", testing_csrlsvchol<true, T>},
         };
 
         // Grab function from the map and execute

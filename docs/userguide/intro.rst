@@ -22,8 +22,8 @@ to the given architecture is recommended.
 
 Another purpose of hipSOLVER is to facilitate the translation of cuSOLVER applications to
 `AMD's open source ROCm platform <https://rocmdocs.amd.com/en/latest/index.html>`_ ecosystem. To that end, hipSOLVER also includes
-:ref:`hipsolverDn <library_compat>` and :ref:`hipsolverRf <library_refactor>` compatibility APIs with method signatures that match exactly those
-of cuSOLVER. For more details see the section :ref:`usage_label`.
+:ref:`hipsolverDn <library_compat>`, :ref:`hipsolverSp <library_sparse>`, and :ref:`hipsolverRf <library_refactor>` compatibility APIs with
+method signatures that match exactly those of cuSOLVER. For more details see the section :ref:`usage_label`.
 
 
 Currently implemented functionality
@@ -33,7 +33,7 @@ The hipSOLVER library remains in active development. New features are being cont
 release of the ROCm platform.
 
 The following tables summarize the wrapper functions that are implemented in the regular API for the different supported precisions in
-hipSOLVER's latest release. Most of these functions have a corresponding version in the compatibility API, where applicable.
+hipSOLVER's latest release. Most of these functions have a corresponding version in the compatibility APIs, where applicable.
 
 LAPACK auxiliary functions
 ----------------------------
@@ -168,7 +168,7 @@ Compatibility-only functions
 
 The following tables summarize the wrapper functions that are provided only in the compatibility APIs.
 These wrappers are supported in rocSOLVER but either by equivalent functions
-that use different algorithmic approaches, or by functionality that is not fully exposed in the public API. 
+that use different algorithmic approaches, or by functionality that is not fully exposed in the public API.
 For these reasons, at present, the corresponding wrappers are not provided in the regular hipSOLVER API.
 
 Partial eigensolver functions
@@ -199,11 +199,36 @@ Partial SVD has been implemented in rocSOLVER, but at present it does not use an
     :ref:`hipsolverDnXgesvdaStridedBatched_bufferSize <compat_gesvda_strided_batched_bufferSize>`, x, x, x, x
     :ref:`hipsolverDnXgesvdaStridedBatched <compat_gesvda_strided_batched>`, x, x, x, x
 
+Sparse matrix routines
+------------------------------
+
+Sparse matrix routines and direct solvers for sparse matrices are in the very earliest stages of development.
+Due to unsupported backend functionality, there are a number of intricacies and possible performance implications 
+that users will want to be aware of when using these routines. 
+Refer to the :ref:`hipsolverSp compatibility API <library_sparse>` for more details and a full listing of supported functions.
+
+.. csv-table:: Combined factorization and linear-system solvers
+    :header: "Function", "single", "double", "single complex", "double complex"
+
+    :ref:`hipsolverSpXcsrlsvcholHost <sparse_csrlsvcholHost>`, x, x, ,
+    :ref:`hipsolverSpXcsrlsvchol <sparse_csrlsvchol>`, x, x, ,
+
 Refactorization routines
 ------------------------------
 
-Refactorization routines and direct solvers for sparse matrices are in the very earliest stages of development. 
-At present, some of the functionality is not exposed as part of
-rocSOLVER's public API and is subject to change. Refer to the :ref:`hipsolverRf compatibility API <library_refactor>` for a full listing
-of supported functions.
+Refactorization routines and direct solvers for sparse matrices are in the very earliest stages of development.
+Due to unsupported backend functionality, there are a number of intricacies and possible performance implications
+that users will want to be aware of when using these routines.
+Refer to the :ref:`hipsolverRf compatibility API <library_refactor>` for more details and a full listing of supported functions.
 
+.. csv-table:: Triangular factorizations
+    :header: "Function", "single", "double", "single complex", "double complex"
+
+    :ref:`hipsolverRfRefactor <refactor_refactor>`, x, x, ,
+    :ref:`hipsolverRfBatchRefactor <refactor_batch_refactor>`, x, x, ,
+
+.. csv-table:: linear-system solvers
+    :header: "Function", "single", "double", "single complex", "double complex"
+
+    :ref:`hipsolverRfSolve <refactor_solve>`, x, x, ,
+    :ref:`hipsolverRfBatchSolve <refactor_batch_solve>`, x, x, ,

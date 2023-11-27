@@ -48,9 +48,13 @@ function display_help()
   echo "    [--hipblas-path] Set specific path to custom built hipblas"
   echo "    [-s|--rocsolver] Set specific rocsolver version"
   echo "    [--rocsolver-path] Set specific path to custom built rocsolver"
+  echo "    [--rocsparse] Set specific rocsparse version"
+  echo "    [--rocsparse-path] Set specific path to custom built rocsparse"
+  echo "    [--hipsparse-path] Set specific path to custom built hipsparse"
   echo "    [--static] Create static library instead of shared library"
   echo "    [--codecoverage] Build with code coverage profiling enabled, excluding release mode."
   echo "    [--address-sanitizer] Build with address sanitizer enabled. Uses hipcc to compile"
+  echo "    [--no-sparse] Build with sparse functionality and tests disabled."
   echo "    [--docs] (experimental) Pass this flag to build the documentation from source."
   echo "    [--cmake-arg] Forward the given argument to CMake when configuring the build"
 }
@@ -135,6 +139,18 @@ install_dnf_packages( )
   done
 }
 
+# Take an array of packages as input, and install those packages with 'zypper' if they are not already installed
+install_zypper_packages( )
+{
+  package_dependencies=("$@")
+  for package in "${package_dependencies[@]}"; do
+    if [[ $(rpm -q ${package} &> /dev/null; echo $? ) -ne 0 ]]; then
+      printf "\033[32mInstalling \033[33m${package}\033[32m from distro package manager\033[0m\n"
+      elevate_if_not_root zypper -n --no-gpg-checks install ${package}
+    fi
+  done
+}
+
 # Take an array of packages as input, and delegate the work to the appropriate distro installer
 # prereq: ${ID} must be defined before calling
 # prereq: ${build_clients} must be defined before calling
@@ -162,57 +178,89 @@ install_packages( )
     library_dependencies_ubuntu+=( "cuda" )
     library_dependencies_centos+=( "" ) # how to install cuda on centos?
     library_dependencies_fedora+=( "" ) # how to install cuda on fedora?
-  elif [[ "${build_hip_clang}" == false ]]; then
-    # Custom rocm-dev installation
-    if [[ -z ${custom_rocm_dev+foo} ]]; then
-      # Install base rocm-dev package unless -v/--rocm-dev flag is passed
-      library_dependencies_ubuntu+=( "rocm-dev" )
-      library_dependencies_centos+=( "rocm-dev" )
-      library_dependencies_fedora+=( "rocm-dev" )
-      library_dependencies_sles+=( "rocm-dev" )
-    else
-      # Install rocm-specific rocm-dev package
-      library_dependencies_ubuntu+=( "${custom_rocm_dev}" )
-      library_dependencies_centos+=( "${custom_rocm_dev}" )
-      library_dependencies_fedora+=( "${custom_rocm_dev}" )
-      library_dependencies_sles+=( "${custom_rocm_dev}" )
+
+  else
+    if [[ "${build_sparse}" == true ]]; then
+      library_dependencies_ubuntu+=( "libsuitesparse-dev" )
+      library_dependencies_centos+=( "suitesparse-devel" )
+      library_dependencies_centos8+=( "suitesparse-devel" )
+      library_dependencies_fedora+=( "suitesparse-devel" )
+      library_dependencies_sles+=( "suitesparse-devel" )
     fi
 
-    # Custom rocblas installation
-    # Do not install rocblas if --rocblas_path flag is set,
-    # as we will be building against our own rocblas intead.
-    if [[ -z ${rocblas_path+foo} ]]; then
-      if [[ -z ${custom_rocblas+foo} ]]; then
-        # Install base rocblas package unless -b/--rocblas flag is passed
-        library_dependencies_ubuntu+=( "rocblas" )
-        library_dependencies_centos+=( "rocblas" )
-        library_dependencies_fedora+=( "rocblas" )
-        library_dependencies_sles+=( "rocblas" )
+    if [[ "${build_hip_clang}" == false ]]; then
+      # Custom rocm-dev installation
+      if [[ -z ${custom_rocm_dev+foo} ]]; then
+        # Install base rocm-dev package unless -v/--rocm-dev flag is passed
+        library_dependencies_ubuntu+=( "rocm-dev" )
+        library_dependencies_centos+=( "rocm-dev" )
+        library_dependencies_fedora+=( "rocm-dev" )
+        library_dependencies_sles+=( "rocm-dev" )
       else
-        # Install rocm-specific rocblas package
-        library_dependencies_ubuntu+=( "${custom_rocblas}" )
-        library_dependencies_centos+=( "${custom_rocblas}" )
-        library_dependencies_fedora+=( "${custom_rocblas}" )
-        library_dependencies_sles+=( "${custom_rocblas}" )
+        # Install rocm-specific rocm-dev package
+        library_dependencies_ubuntu+=( "${custom_rocm_dev}" )
+        library_dependencies_centos+=( "${custom_rocm_dev}" )
+        library_dependencies_fedora+=( "${custom_rocm_dev}" )
+        library_dependencies_sles+=( "${custom_rocm_dev}" )
       fi
-    fi
 
-    # Custom rocsolver installation
-    # Do not install rocsolver if --rocsolver_path flag is set,
-    # as we will be building against our own rocsolver intead.
-    if [[ -z ${rocsolver_path+foo} ]]; then
-      if [[ -z ${custom_rocsolver+foo} ]]; then
-        # Install base rocsolver package unless -s/--rocsolver flag is passed
-        library_dependencies_ubuntu+=( "rocsolver" )
-        library_dependencies_centos+=( "rocsolver" )
-        library_dependencies_fedora+=( "rocsolver" )
-        library_dependencies_sles+=( "rocsolver" )
-      else
-        # Install rocm-specific rocsolver package
-        library_dependencies_ubuntu+=( "${custom_rocsolver}" )
-        library_dependencies_centos+=( "${custom_rocsolver}" )
-        library_dependencies_fedora+=( "${custom_rocsolver}" )
-        library_dependencies_sles+=( "${custom_rocsolver}" )
+      # Custom rocblas installation
+      # Do not install rocblas if --rocblas_path flag is set,
+      # as we will be building against our own rocblas intead.
+      if [[ -z ${rocblas_path+foo} ]]; then
+        if [[ -z ${custom_rocblas+foo} ]]; then
+          # Install base rocblas package unless -b/--rocblas flag is passed
+          library_dependencies_ubuntu+=( "rocblas" )
+          library_dependencies_centos+=( "rocblas" )
+          library_dependencies_fedora+=( "rocblas" )
+          library_dependencies_sles+=( "rocblas" )
+        else
+          # Install rocm-specific rocblas package
+          library_dependencies_ubuntu+=( "${custom_rocblas}" )
+          library_dependencies_centos+=( "${custom_rocblas}" )
+          library_dependencies_fedora+=( "${custom_rocblas}" )
+          library_dependencies_sles+=( "${custom_rocblas}" )
+        fi
+      fi
+
+      # Custom rocsolver installation
+      # Do not install rocsolver if --rocsolver_path flag is set,
+      # as we will be building against our own rocsolver intead.
+      if [[ -z ${rocsolver_path+foo} ]]; then
+        if [[ -z ${custom_rocsolver+foo} ]]; then
+          # Install base rocsolver package unless -s/--rocsolver flag is passed
+          library_dependencies_ubuntu+=( "rocsolver" )
+          library_dependencies_centos+=( "rocsolver" )
+          library_dependencies_fedora+=( "rocsolver" )
+          library_dependencies_sles+=( "rocsolver" )
+        else
+          # Install rocm-specific rocsolver package
+          library_dependencies_ubuntu+=( "${custom_rocsolver}" )
+          library_dependencies_centos+=( "${custom_rocsolver}" )
+          library_dependencies_fedora+=( "${custom_rocsolver}" )
+          library_dependencies_sles+=( "${custom_rocsolver}" )
+        fi
+      fi
+
+      if [[ "${build_sparse}" == true ]]; then
+        # Custom rocsparse installation
+        # Do not install rocsparse if --rocsparse_path flag is set,
+        # as we will be building against our own rocsparse intead.
+        if [[ -z ${rocsparse_path+foo} ]]; then
+          if [[ -z ${custom_rocsparse+foo} ]]; then
+            # Install base rocsparse package unless --rocsparse flag is passed
+            library_dependencies_ubuntu+=( "rocsparse" )
+            library_dependencies_centos+=( "rocsparse" )
+            library_dependencies_fedora+=( "rocsparse" )
+            library_dependencies_sles+=( "rocsparse" )
+          else
+            # Install rocm-specific rocsparse package
+            library_dependencies_ubuntu+=( "${custom_rocsparse}" )
+            library_dependencies_centos+=( "${custom_rocsparse}" )
+            library_dependencies_fedora+=( "${custom_rocsparse}" )
+            library_dependencies_sles+=( "${custom_rocsparse}" )
+          fi
+        fi
       fi
     fi
   fi
@@ -274,18 +322,6 @@ install_packages( )
   esac
 }
 
-# Take an array of packages as input, and install those packages with 'zypper' if they are not already installed
-install_zypper_packages( )
-{
-  package_dependencies=("$@")
-  for package in "${package_dependencies[@]}"; do
-    if [[ $(rpm -q ${package} &> /dev/null; echo $? ) -ne 0 ]]; then
-      printf "\033[32mInstalling \033[33m${package}\033[32m from distro package manager\033[0m\n"
-      elevate_if_not_root zypper -n --no-gpg-checks install ${package}
-    fi
-  done
-}
-
 # given a relative path, returns the absolute path
 make_absolute_path( ) {
   (cd "$1" && pwd -P)
@@ -327,6 +363,7 @@ build_cuda=false
 build_hip_clang=true
 build_release=true
 build_relocatable=false
+build_sparse=true
 build_docs=false
 cmake_prefix_path=/opt/rocm
 cuda_path=/usr/local/cuda
@@ -346,7 +383,7 @@ declare -a cmake_client_options
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,custom-target:,docs,address-sanitizer,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,rocsparse:,rocsparse-path:,hipsparse-path:,custom-target:,docs,address-sanitizer,no-sparse,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -413,6 +450,9 @@ while true; do
         build_address_sanitizer=true
         compiler=hipcc
         shift ;;
+    --no-sparse)
+        build_sparse=false
+        shift ;;
     -p|--cmakepp)
         cmake_prefix_path=${2}
         shift 2 ;;
@@ -436,6 +476,15 @@ while true; do
          shift 2;;
     --rocsolver-path)
         rocsolver_path=${2}
+        shift 2 ;;
+    --rocsparse)
+         custom_rocsparse=${2}
+         shift 2;;
+    --rocsparse-path)
+        rocsparse_path=${2}
+        shift 2 ;;
+    --hipsparse-path)
+        hipsparse_path=${2}
         shift 2 ;;
     --prefix)
         install_prefix=${2}
@@ -487,6 +536,12 @@ if [[ -n "${hipblas_path+x}" ]]; then
 fi
 if [[ -n "${rocsolver_path+x}" ]]; then
   rocsolver_path="$(make_absolute_path "${rocsolver_path}")"
+fi
+if [[ -n "${rocsparse_path+x}" ]]; then
+  rocsparse_path="$(make_absolute_path "${rocsparse_path}")"
+fi
+if [[ -n "${hipsparse_path+x}" ]]; then
+  hipsparse_path="$(make_absolute_path "${hipsparse_path}")"
 fi
 
 # Default cmake executable is called cmake
@@ -596,6 +651,16 @@ fi
     cmake_common_options+=("-DCUSTOM_ROCSOLVER=${rocsolver_path}")
   fi
 
+  # custom rocsparse
+  if [[ ${rocsparse_path+foo} ]]; then
+    cmake_common_options+=("-DCUSTOM_ROCSPARSE=${rocsparse_path}")
+  fi
+
+  # custom hipsparse
+  if [[ ${hipsparse_path+foo} ]]; then
+    cmake_common_options+=("-DCUSTOM_HIPSPARSE=${hipsparse_path}")
+  fi
+
   # code coverage
   if [[ "${build_codecoverage}" == true ]]; then
       if [[ "${build_release}" == true ]]; then
@@ -608,6 +673,11 @@ fi
   # address sanitizer
   if [[ "${build_address_sanitizer}" == true ]]; then
     cmake_common_options+=("-DBUILD_ADDRESS_SANITIZER=ON")
+  fi
+
+  # no sparse
+  if [[ "${build_sparse}" == false ]]; then
+    cmake_common_options+=("-DBUILD_WITH_SPARSE=OFF")
   fi
 
   # Build library

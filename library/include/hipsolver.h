@@ -33,4 +33,8 @@
  */
 #include "internal/hipsolver-refactor.h"
 
+/* Defines functions and types with the hipsolverSp prefix. APIs match those from cuSOLVER.
+ */
+#include "internal/hipsolver-sparse.h"
+
 #endif // HIPSOLVER_H
