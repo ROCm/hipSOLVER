@@ -46,6 +46,7 @@ if( NOT USE_CUDA )
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_compat.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_refactor.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_sparse.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
   )
 else( )
@@ -54,6 +55,7 @@ else( )
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_compat.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_refactor.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_sparse.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
   )
 endif( )
@@ -96,6 +98,7 @@ endif( )
 
 # Build hipsolver from source on AMD platform
 if( NOT USE_CUDA )
+  # Find rocBLAS
   if( NOT TARGET rocblas )
     if( CUSTOM_ROCBLAS )
       set ( ENV{rocblas_DIR} ${CUSTOM_ROCBLAS})
@@ -105,6 +108,7 @@ if( NOT USE_CUDA )
     endif( )
   endif( )
 
+  # Find rocSOLVER
   if( NOT TARGET rocsolver )
     if( CUSTOM_ROCSOLVER )
       set ( ENV{rocsolver_DIR} ${CUSTOM_ROCSOLVER})
@@ -118,6 +122,28 @@ if( NOT USE_CUDA )
 
   if( CUSTOM_TARGET )
     target_link_libraries( hipsolver PRIVATE hip::${CUSTOM_TARGET} )
+  endif( )
+
+  if( BUILD_WITH_SPARSE )
+    # Find rocSPARSE
+    if( NOT TARGET rocsparse )
+      if( CUSTOM_ROCSPARSE )
+        set ( ENV{rocsparse_DIR} ${CUSTOM_ROCSPARSE})
+        find_package( rocsparse REQUIRED CONFIG NO_CMAKE_PATH )
+      else( )
+        find_package( rocsparse REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocsparse )
+      endif( )
+    endif( )
+
+    target_link_libraries( hipsolver PRIVATE roc::rocsparse suitesparseconfig cholmod )
+    target_include_directories( hipsolver
+      SYSTEM PRIVATE
+      $<BUILD_INTERFACE:/usr/include/suitesparse/>
+    )
+    set_source_files_properties(${hipsolver_source}
+      PROPERTIES
+        COMPILE_DEFINITIONS HAVE_ROCSPARSE
+    )
   endif( )
 
 else( )

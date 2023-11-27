@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -377,6 +377,24 @@ try
             "0 = no sorting, 1 = ascending order.\n"
             "                           Indicates whether the computed eigenvalues are sorted in ascending order.\n"
             "                           Used in iterative Jacobi functions.\n"
+            "                           ")
+
+        // sparse routine options
+        ("base1",
+         value<rocblas_int>(),
+            "0 = use base zero indices, 1 = use base one indices.\n"
+            "                           ")
+
+        ("nnzA",
+         value<rocblas_int>(),
+            "Matrix size parameter.\n"
+            "                           Maximum number of non-zero entries of matrices A.\n"
+            "                           ")
+
+        ("reorder",
+         value<rocblas_int>(),
+            "0 = no reordering, 1 = RCM reordering,\n"
+            "                           2 = AMD reordering, 3 = METIS reordering.\n"
             "                           ")
 
         // other options

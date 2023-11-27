@@ -26,6 +26,12 @@ subtrees:
         - file: compat-api/auxiliary
         - file: compat-api/lapack
         - file: compat-api/lapacklike
+    - file: sparse-api/index
+      subtrees:
+      - entries:
+        - file: sparse-api/types
+        - file: sparse-api/helpers
+        - file: sparse-api/sparse
     - file: refactor-api/index
       subtrees:
       - entries:

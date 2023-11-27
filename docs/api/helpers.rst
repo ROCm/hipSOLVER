@@ -4,8 +4,8 @@
 Helper Functions
 ****************
 
-These are helper functions that control aspects of the hipSOLVER library. These are divided
-into two categories:
+These are helper functions that control aspects of the hipSOLVER library. They are divided 
+into the following categories:
 
 * :ref:`initialize` functions. Used to initialize and cleanup the library handle.
 * :ref:`stream` functions. Provide functionality to manipulate streams.

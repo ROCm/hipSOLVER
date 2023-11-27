@@ -31,6 +31,7 @@ typedef enum
     HIPSOLVER_STATUS_INVALID_ENUM      = 10, // unsupported enum value was passed to function
     HIPSOLVER_STATUS_UNKNOWN           = 11, // back-end returned an unsupported status code
     HIPSOLVER_STATUS_ZERO_PIVOT        = 12,
+    HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED = 13,
 } hipsolverStatus_t;
 
 #ifndef HIPBLAS_OPERATION_DECLARED

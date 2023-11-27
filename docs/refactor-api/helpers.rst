@@ -4,8 +4,8 @@
 Helper Functions
 ****************
 
-These are helper functions that control aspects of the hipSOLVER library. These are divided
-into four categories:
+These are helper functions that control aspects of the hipSOLVER library. They are divided 
+into the following categories:
 
 * :ref:`refactor_initialize` functions. Used to initialize and cleanup the library handle.
 * :ref:`refactor_input` functions. Provide functionality to manipulate function input.

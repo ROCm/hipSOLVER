@@ -3,8 +3,8 @@
 Types
 *****
 
-hipSOLVER defines types and enumerations that are internally converted to cuBLAS/cuSOLVER or
-rocBLAS/rocSOLVER types at runtime. Here we list the types used in the compatibility API.
+hipSOLVER defines types and enumerations that are internally converted to the corresponding backend 
+types at runtime. Here we list the types used in the this compatibility API.
 
 hipSOLVER compatibility API types
 ====================================

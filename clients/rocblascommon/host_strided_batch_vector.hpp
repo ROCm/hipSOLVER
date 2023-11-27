@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2018-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2018-2023 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -220,20 +220,11 @@ public:
     //!
     //! @brief Copy data from a strided batched vector on host.
     //! @param that That strided batched vector on host.
-    //! @return true if successful, false otherwise.
+    //! @return The hip error.
     //!
-    bool copy_from(const host_strided_batch_vector& that)
+    hipError_t transfer_from(const host_strided_batch_vector& that)
     {
-        if(that.n() == this->m_n && that.inc() == this->m_inc && that.stride() == this->m_stride
-           && that.batch_count() == this->m_batch_count)
-        {
-            memcpy(this->data(), that.data(), sizeof(T) * this->m_nmemb);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return hipMemcpy(this->data(), that.data(), sizeof(T) * this->m_nmemb, hipMemcpyHostToHost);
     }
 
     //!

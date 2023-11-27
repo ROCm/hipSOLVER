@@ -32,9 +32,9 @@ set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
 # Print out compiler flags for viewing/debug
 if( BUILD_VERBOSE )
-  message( STATUS "hipsolver_VERSION: ${hipsolver_VERSION}" )
-  message( STATUS "\t==>CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}" )
-  message( STATUS "\t==>BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}" )
+  message( STATUS "hipsolver_VERSION: " ${hipsolver_VERSION} )
+  message( STATUS "\t==>CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE} )
+  message( STATUS "\t==>BUILD_SHARED_LIBS: " ${BUILD_SHARED_LIBS} )
   message( STATUS "\t==>CMAKE_INSTALL_PREFIX link: " ${CMAKE_INSTALL_PREFIX} )
   message( STATUS "\t==>CMAKE_MODULE_PATH link: " ${CMAKE_MODULE_PATH} )
   message( STATUS "\t==>CMAKE_PREFIX_PATH link: " ${CMAKE_PREFIX_PATH} )

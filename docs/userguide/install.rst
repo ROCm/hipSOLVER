@@ -12,10 +12,13 @@ Installation
 Install pre-built packages
 ===========================
 
-Download pre-built packages from `ROCm's package servers <https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4.3/page/Introduction_to_ROCm_Installation_Guide_for_Linux.html>`_. Release notes
-are available on the releases tab of the `library's github page <https://github.com/ROCmSoftwarePlatform/hipSOLVER>`_.
+Download pre-built packages from `ROCm's package servers <https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4.3/page/Introduction_to_ROCm_Installation_Guide_for_Linux.html>`_.
+Release notes are available on the releases tab of the `library's github page <https://github.com/ROCmSoftwarePlatform/hipSOLVER>`_.
 
 * `sudo apt update && sudo apt install hipsolver`
+
+Note that the pre-built packages depend on the third-party library SuiteSparse, which must be installed on the system prior to installing hipSOLVER.
+SuiteSparse can be installed using the package manager of most distros.
 
 
 Build & install library using script (Ubuntu only)
@@ -28,6 +31,8 @@ so it may prompt you for a password.
 
 * ``./install.sh -id`` --- build library, build dependencies, and install (-d flag only needs to be passed once on a system).
 * ``./install.sh -ic`` --- build library, build clients (tests, benchmarks, and samples), and install.
+* ``./install.sh --cuda`` --- build library on a CUDA-enabled machine, with cuSOLVER as the backend.
+* ``./install.sh --no-sparse`` --- build library without hipsolverSp functionality, with rocSOLVER as the backend.
 
 To see more options, use the help option of the install script.
 
@@ -52,20 +57,44 @@ sudo is required if installing into a system directory such as /opt/rocm, which 
 * Use ``-DCMAKE_INSTALL_PREFIX=<other_path>`` to specify a different install directory.
 * Use ``-DCMAKE_BUILD_TYPE=<other_configuration>`` to specify a build configuration, such as 'Debug'. The default build configuration is 'Release'.
 
+Library dependencies
+---------------------
+
+The hipSOLVER library has two separate sets of dependencies, depending on the desired backend. The cuSOLVER backend has the following dependencies:
+
+1. cuSOLVER
+
+The rocSOLVER backend has the following dependencies:
+
+1. `rocSOLVER <https://github.com/ROCmSoftwarePlatform/rocSOLVER>`_
+2. `rocBLAS <https://github.com/ROCmSoftwarePlatform/rocBLAS>`_
+3. `rocSPARSE <https://github.com/ROCmSoftwarePlatform/rocSPARSE>`_ (optional, required by default)
+4. `SuiteSparse <https://github.com/DrTimothyAldenDavis/SuiteSparse>`_ modules CHOLMOD and SuiteSparse_config (optional, required by default)
+
+rocSOLVER itself depends on rocBLAS and rocSPARSE, therefore all three libraries should be present with a standard rocSOLVER installation. For more information
+about building and installing rocSOLVER, refer to the `rocSOLVER documentation <https://rocm.docs.amd.com/projects/rocSOLVER/en/latest/userguide/install.html>`_.
+
+SuiteSparse is a third-party library, and can be installed using the package managers of most distros. Together with rocSPARSE, it is used to provide
+functionality for the hipsolverSp API. If only hipsolverDn and/or hipsolverRf are needed, these dependencies can be ignored by setting the ``BUILD_WITH_SPARSE``
+option to ``OFF``.
+
+* ``DBUILD_WITH_SPARSE=OFF``
+
 
 Build library + tests + benchmarks + samples manually
 ======================================================
 
 The repository contains source code for client programs that serve as tests, benchmarks, and samples. Client source code can be found in the clients subdirectory.
 
-Dependencies (only necessary for hipSOLVER clients)
-----------------------------------------------------
+Client dependencies
+--------------------
 
 The hipSOLVER samples have no external dependencies, but our unit test and benchmarking applications do. These clients introduce the following dependencies:
 
 1. `lapack <https://github.com/Reference-LAPACK/lapack-release>`_ (lapack itself brings a dependency on a fortran compiler)
 2. `googletest <https://github.com/google/googletest>`_
 3. `hipBLAS <https://github.com/ROCmSoftwarePlatform/hipBLAS>`_ (optional)
+4. `hipSPARSE <https://github.com/ROCmSoftwarePlatform/hipSPARSE>`_ (optional, required by default)
 
 Unfortunately, many distros do not provide a googletest package with pre-compiled libraries, and the
 lapack packages do not have the necessary cmake config files for cmake to configure linking the cblas library. hipSOLVER provides a cmake script that builds
@@ -79,12 +108,20 @@ the ``CMAKE_PREFIX_PATH`` definition. The following is a sequence of steps to bu
     cmake -DBUILD_BOOST=OFF <HIPSOLVER_SOURCE_PATH>/deps   #assuming boost is installed through package manager as above
     make -j$(nproc) install
 
-hipBLAS, an optional dependency, can be installed similarly to hipSOLVER. For example, hipBLAS's install script can be invoked to build and install the
-library via:
+hipBLAS is only required if the ``BUILD_HIPBLAS_TESTS`` option is set to ``ON``, and is used to ensure compatibility between the hipblas enums defined
+separately by hipBLAS and hipSOLVER. hipSPARSE is required by default but can be ignored if the ``BUILD_WITH_SPARSE`` option is set to ``OFF``, and is used
+to create objects required by tests for the hipsolverSp API.
+
+* ``DBUILD_HIPBLAS_TESTS=ON``
+* ``DBUILD_WITH_SPARSE=OFF``
+
+Both libraries can be installed similarly to hipSOLVER. For example, the install scripts for hipBLAS and hipSPARSE can each be invoked to build and
+install the respective library via:
 
 * ``./install.sh -i``
 
-More details can be found in the `hipBLAS documentation <https://hipblas.readthedocs.io/en/latest/install.html>`_.
+More details can be found in the `hipBLAS documentation <https://hipblas.readthedocs.io/en/latest/install.html>`_ and the `hipSPARSE documentation
+<https://github.com/ROCmSoftwarePlatform/hipSPARSE/wiki/Build>`_.
 
 Library and clients
 --------------------

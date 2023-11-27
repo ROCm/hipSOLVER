@@ -4,8 +4,8 @@
 Helper Functions
 ****************
 
-These are helper functions that control aspects of the hipSOLVER library. These are divided
-into two categories:
+These are helper functions that control aspects of the hipSOLVER library. They are divided
+into the following categories:
 
 * :ref:`compat_initialize` functions. Used to initialize and cleanup the library handle.
 * :ref:`compat_stream` functions. Provide functionality to manipulate streams.

@@ -392,6 +392,10 @@ hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     case CUSOLVER_STATUS_ARCH_MISMATCH:
         return HIPSOLVER_STATUS_ARCH_MISMATCH;
+    case CUSOLVER_STATUS_ZERO_PIVOT:
+        return HIPSOLVER_STATUS_ZERO_PIVOT;
+    case CUSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED:
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
     default:
         return HIPSOLVER_STATUS_UNKNOWN;
     }
