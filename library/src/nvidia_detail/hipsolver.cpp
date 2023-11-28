@@ -66,7 +66,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return cuda2hip_status(cusolverDnSetStream((cusolverDnHandle_t)handle, streamId));
+    return cuda2hip_status(cusolverDnSetStream((cusolverDnHandle_t)handle, (cudaStream_t)streamId));
 }
 catch(...)
 {
@@ -79,7 +79,8 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return cuda2hip_status(cusolverDnGetStream((cusolverDnHandle_t)handle, streamId));
+    return cuda2hip_status(
+        cusolverDnGetStream((cusolverDnHandle_t)handle, (cudaStream_t*)streamId));
 }
 catch(...)
 {

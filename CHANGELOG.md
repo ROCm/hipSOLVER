@@ -3,6 +3,30 @@
 Documentation for hipSOLVER is available at
 [https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/).
 
+## hipSOLVER 2.1.0 for ROCm 6.1.0
+
+### Additions
+
+* Compatibility API with `hipsolverSp` prefix
+* Compatibility-only functions:
+  * `csrlsvchol`:
+    * `hipsolverSpScsrlsvcholHost`, `hipsolverSpDcsrlsvcholHost`
+    * `hipsolverSpScsrlsvchol`, `hipsolverSpDcsrlsvchol`
+* rocSPARSE and SuiteSparse are now optional dependencies for hipSOLVER (rocSOLVER backend
+  only)
+  * Use the `BUILD_WITH_SPARSE` CMake option to enable functionality for the `hipsolverSp` API (on by
+    default)
+* hipSPARSE is now an optional dependency for `hipsolver-test`. Use the `BUILD_WITH_SPARSE` CMake
+  option to enable hipsolverSp API tests (on by default)
+
+### Changes
+
+* Relax array length requirements for GESVDA
+
+### Fixes
+
+* Incorrect singular vectors returned from GESVDA
+
 ## hipSOLVER 2.0.0 for ROCm 6.0.0
 
 ### Additions

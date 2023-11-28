@@ -123,7 +123,8 @@ class hipsolver_local_handle
 public:
     hipsolver_local_handle()
     {
-        hipsolverCreate(&m_handle);
+        if(hipsolverCreate(&m_handle) != HIPSOLVER_STATUS_SUCCESS)
+            throw std::runtime_error("ERROR: Could not create hipsolverHandle_t");
     }
     ~hipsolver_local_handle()
     {
@@ -156,7 +157,8 @@ class hipsolverRf_local_handle
 public:
     hipsolverRf_local_handle()
     {
-        hipsolverRfCreate(&m_handle);
+        if(hipsolverRfCreate(&m_handle) != HIPSOLVER_STATUS_SUCCESS)
+            throw std::runtime_error("ERROR: Could not create hipsolverRfHandle_t");
     }
     ~hipsolverRf_local_handle()
     {
@@ -182,6 +184,40 @@ public:
     }
 };
 
+class hipsolverSp_local_handle
+{
+    hipsolverSpHandle_t m_handle;
+
+public:
+    hipsolverSp_local_handle()
+    {
+        if(hipsolverSpCreate(&m_handle) != HIPSOLVER_STATUS_SUCCESS)
+            throw std::runtime_error("ERROR: Could not create hipsolverSpHandle_t");
+    }
+    ~hipsolverSp_local_handle()
+    {
+        hipsolverSpDestroy(m_handle);
+    }
+
+    hipsolverSp_local_handle(const hipsolverSp_local_handle&) = delete;
+
+    hipsolverSp_local_handle(hipsolverSp_local_handle&&) = delete;
+
+    hipsolverSp_local_handle& operator=(const hipsolverSp_local_handle&) = delete;
+
+    hipsolverSp_local_handle& operator=(hipsolverSp_local_handle&&) = delete;
+
+    // Allow hipsolverSp_local_handle to be used anywhere hipsolverSpHandle_t is expected
+    operator hipsolverSpHandle_t&()
+    {
+        return m_handle;
+    }
+    operator const hipsolverSpHandle_t&() const
+    {
+        return m_handle;
+    }
+};
+
 /* ============================================================================================
  */
 /*! \brief  local gesvdj params which is automatically created and destroyed  */
@@ -192,7 +228,8 @@ class hipsolver_local_gesvdj_info
 public:
     hipsolver_local_gesvdj_info()
     {
-        hipsolverDnCreateGesvdjInfo(&m_info);
+        if(hipsolverDnCreateGesvdjInfo(&m_info) != HIPSOLVER_STATUS_SUCCESS)
+            throw std::runtime_error("ERROR: Could not create hipsolverGesvdjInfo_t");
     }
     ~hipsolver_local_gesvdj_info()
     {
@@ -228,7 +265,8 @@ class hipsolver_local_syevj_info
 public:
     hipsolver_local_syevj_info()
     {
-        hipsolverDnCreateSyevjInfo(&m_info);
+        if(hipsolverDnCreateSyevjInfo(&m_info) != HIPSOLVER_STATUS_SUCCESS)
+            throw std::runtime_error("ERROR: Could not create hipsolverSyevjInfo_t");
     }
     ~hipsolver_local_syevj_info()
     {
@@ -516,6 +554,32 @@ void print_matrix(T* CPU_result, T* GPU_result, int m, int n, int lda)
                    double(CPU_result[i + j * lda].imag()),
                    double(GPU_result[i + j * lda].real()),
                    double(GPU_result[i + j * lda].imag()));
+}
+
+/*! \brief  Debugging purpose, print out sparse matrix, not valid in complex number  */
+template <typename T, std::enable_if_t<!is_complex<T>, int> = 0>
+void print_sparse_matrix(int m, int n, int* csrRowPtr, int* csrColInd, T* csrVal)
+{
+    printf("%d by %d matrix\n", m, n);
+
+    int idx = 0;
+    for(int i = 0; i < m; i++)
+    {
+        printf("    ");
+        for(int j = 0; j < n; j++)
+        {
+            if(idx < csrRowPtr[i + 1] && j == csrColInd[idx])
+            {
+                printf("%.8g, ", csrVal[idx]);
+                idx++;
+            }
+            else
+                printf("0, ");
+        }
+        printf("\n");
+    }
+
+    printf("\n");
 }
 
 /* ============================================================================================ */

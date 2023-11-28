@@ -110,6 +110,7 @@ option( BUILD_CODE_COVERAGE "Build hipSOLVER with code coverage enabled" OFF )
 option( BUILD_HIPBLAS_TESTS "Build additional tests to ensure hipBLAS and hipSOLVER are compatible (requires installed hipBLAS)" OFF )
 # BUILD_SHARED_LIBS is a cmake built-in; we make it an explicit option such that it shows in cmake-gui
 option( BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON )
+option( BUILD_WITH_SPARSE "Build hipSOLVER with sparse functionality and tests enabled (requires additional dependencies)" ON )
 option( BUILD_VERBOSE "Output additional build information" OFF )
 option( USE_CUDA "Look for CUDA and use that as a backend if found" OFF )
 
@@ -183,20 +184,21 @@ add_subdirectory( library )
 
 include( clients/cmake/build-options.cmake )
 
+if(NOT SYSTEM_OS)
+  rocm_set_os_id(SYSTEM_OS)
+  string(TOLOWER "${SYSTEM_OS}" SYSTEM_OS)
+  rocm_read_os_release(SYSTEM_OS VERSION_ID)
+endif()
+
 # Build clients of the library
 if( BUILD_CLIENTS_SAMPLES OR BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
-  if(NOT CLIENTS_OS)
-    rocm_set_os_id(CLIENTS_OS)
-    string(TOLOWER "${CLIENTS_OS}" CLIENTS_OS)
-    rocm_read_os_release(CLIENTS_OS_VERSION VERSION_ID)
-  endif()
   set(GFORTRAN_RPM "libgfortran4")
   set(GFORTRAN_DEB "libgfortran4")
-  if(CLIENTS_OS STREQUAL "centos" OR CLIENTS_OS STREQUAL "rhel")
-    if(CLIENTS_OS_VERSION VERSION_GREATER_EQUAL "8")
+  if(SYSTEM_OS STREQUAL "centos" OR SYSTEM_OS STREQUAL "rhel")
+    if(SYSTEM_OS_VERSION VERSION_GREATER_EQUAL "8")
       set(GFORTRAN_RPM "libgfortran")
     endif()
-  elseif(CLIENTS_OS STREQUAL "ubuntu" AND CLIENTS_OS_VERSION VERSION_GREATER_EQUAL "20.04")
+  elseif(SYSTEM_OS STREQUAL "ubuntu" AND SYSTEM_OS_VERSION VERSION_GREATER_EQUAL "20.04")
     set(GFORTRAN_DEB "libgfortran5")
   endif()
   rocm_package_setup_component(clients)
@@ -214,7 +216,19 @@ endif( )
 
 # Package specific CPACK vars
 if( NOT USE_CUDA )
-  rocm_package_add_dependencies(DEPENDS "rocblas >= 4.1.0" "rocsolver >= 3.25.0")
+  set(hipsolver_pkgdeps "rocblas >= 4.1.0" "rocsolver >= 3.25.0")
+
+  if( BUILD_WITH_SPARSE )
+    list(APPEND hipsolver_pkgdeps "rocsparse >= 2.3.0")
+
+    if( SYSTEM_OS STREQUAL "centos" OR SYSTEM_OS STREQUAL "rhel" )
+      list(APPEND hipsolver_pkgdeps "suitesparse")
+    else()
+      list(APPEND hipsolver_pkgdeps "libcholmod3" "libsuitesparseconfig5")
+    endif()
+  endif( )
+
+  rocm_package_add_dependencies(DEPENDS ${hipsolver_pkgdeps})
 endif( )
 
 set( CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.md" )

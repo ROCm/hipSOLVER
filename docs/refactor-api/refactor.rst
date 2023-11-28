@@ -22,9 +22,12 @@ Triangular factorizations
    :local:
    :backlinks: top
 
+.. _refactor_refactor:
+
 hipsolverRfRefactor()
 ---------------------------------------------------
 .. doxygenfunction:: hipsolverRfRefactor
+
 
 .. _refactor_batch_refactor:
 
@@ -43,9 +46,12 @@ Linear-systems solvers
    :local:
    :backlinks: top
 
+.. _refactor_solve:
+
 hipsolverRfSolve()
 ---------------------------------------------------
 .. doxygenfunction:: hipsolverRfSolve
+
 
 .. _refactor_batch_solve:
 
