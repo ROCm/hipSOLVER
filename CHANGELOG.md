@@ -3,7 +3,7 @@
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
 
-## (Unreleased) hipSOLVER
+## hipSOLVER 2.1.0 for ROCm 6.1.0
 ### Added
 - Added compatibility API with hipsolverSp prefix
 - Added compatibility-only functions
@@ -14,17 +14,11 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
   functionality for the hipsolverSp API (on by default).
 - Added hipSPARSE as an optional dependency to hipsolver-test. Use the `BUILD_WITH_SPARSE` CMake option to enable tests of the hipsolverSp API (on by default).
 
-### Optimized
 ### Changed
 - Relax array length requirements for GESVDA.
 
-### Deprecated
-### Removed
 ### Fixed
 - Fixed incorrect singular vectors returned from GESVDA.
-
-### Known Issues
-### Security
 
 
 ## hipSOLVER 2.0.0 for ROCm 6.0.0
