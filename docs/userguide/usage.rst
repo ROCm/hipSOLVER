@@ -119,7 +119,7 @@ Performance implications of the hipsolverSp API
 
 - A fully-featured, GPU-accelerated Cholesky factorization for sparse matrices has not yet been implemented in either rocSOLVER or
   rocSPARSE. Therefore, we rely on SuiteSparse to provide this functionality. The functions :ref:`hipsolverSpXcsrlsvchol <sparse_csrlsvchol>`
-  will allocate space for sparse matrices on the host, copy the data to the host, use SuiteSparse to perform the factorization, and
+  will allocate space for sparse matrices on the host, copy the data to the host, use SuiteSparse to perform the symbolic factorization, and
   then copy the resulting data back to the device.
 
   (:ref:`hipsolverSpXcsrlsvchol <sparse_csrlsvchol>` may perform slower and will require more memory usage than
