@@ -52,15 +52,15 @@ def runPackageCommand(platform, project, jobName, label='')
     String testPackageCommand;
     if (platform.jenkinsLabel.contains('ubuntu'))
     {
-        testPackageCommand = 'apt-get install '
+        testPackageCommand = 'sudo apt-get install '
     }
     else if (platform.jenkinsLabel.contains('centos'))
     {
-        testPackageCommand = 'yum install '
+        testPackageCommand = 'sudo yum install '
     }
     else
     {
-        testPackageCommand = 'zypper install '
+        testPackageCommand = 'sudo zypper install '
     }
 
     command = """
