@@ -64,7 +64,7 @@ def runPackageCommand(platform, project, jobName, label='')
     }
 
     command = """
-            set -x
+            set -ex
             cd ${project.paths.project_build_prefix}/build/${dir}
             make package
             ${testPackageCommand} ./hipsolver*.$ext
