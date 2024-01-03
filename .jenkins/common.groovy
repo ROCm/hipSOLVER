@@ -52,11 +52,11 @@ def runPackageCommand(platform, project, jobName, label='')
     String testPackageCommand;
     if (platform.jenkinsLabel.contains('ubuntu'))
     {
-        testPackageCommand = 'sudo apt-get install -y '
+        testPackageCommand = 'sudo apt-get install -y --simulate '
     }
     else if (platform.jenkinsLabel.contains('centos') || platform.jenkinsLabel.contains('rhel'))
     {
-        testPackageCommand = 'sudo yum install -y '
+        testPackageCommand = 'sudo yum install -y --setopt tsflags=test '
     }
     else
     {
