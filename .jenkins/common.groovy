@@ -49,10 +49,25 @@ def runPackageCommand(platform, project, jobName, label='')
     String ext = platform.jenkinsLabel.contains('ubuntu') ? "deb" : "rpm"
     String dir = project.buildName.contains('Debug') ? "debug" : "release"
 
+    String testPackageCommand;
+    if (platform.jenkinsLabel.contains('ubuntu'))
+    {
+        testPackageCommand = 'apt-get install '
+    }
+    else if (platform.jenkinsLabel.contains('centos'))
+    {
+        testPackageCommand = 'yum install '
+    }
+    else
+    {
+        testPackageCommand = 'zypper install '
+    }
+
     command = """
             set -x
             cd ${project.paths.project_build_prefix}/build/${dir}
             make package
+            ${testPackageCommand} ./hipsolver*.$ext
             mkdir -p package
             if [ ! -z "$label" ]
             then
