@@ -60,7 +60,7 @@ def runPackageCommand(platform, project, jobName, label='')
     }
     else
     {
-        testPackageCommand = 'sudo zypper install -y '
+        testPackageCommand = 'sudo zypper install -y --dry-run --download-only --allow-unsigned-rpm '
     }
 
     command = """
