@@ -120,8 +120,8 @@ install the respective library via:
 
 * ``./install.sh -i``
 
-More details can be found in the `hipBLAS documentation <https://hipblas.readthedocs.io/en/latest/install.html>`_ and the `hipSPARSE documentation
-<https://github.com/ROCmSoftwarePlatform/hipSPARSE/wiki/Build>`_.
+More details can be found in the `hipBLAS documentation <https://rocm.docs.amd.com/projects/hipBLAS/en/latest/index.html>`_
+and the `hipSPARSE documentation <https://rocm.docs.amd.com/projects/hipSPARSE/en/latest/index.html>`_.
 
 Library and clients
 --------------------
