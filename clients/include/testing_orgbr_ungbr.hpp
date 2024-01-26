@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -138,7 +138,7 @@ void orgbr_ungbr_initData(const hipsolverHandle_t   handle,
                         hA[0][i + j * lda] -= 4;
                 }
             }
-            cblas_gebrd<T>(
+            cpu_gebrd(
                 m, k, hA[0], lda, D.data(), E.data(), hIpiv[0], P.data(), hW.data(), size_W, &info);
         }
         else
@@ -153,7 +153,7 @@ void orgbr_ungbr_initData(const hipsolverHandle_t   handle,
                         hA[0][i + j * lda] -= 4;
                 }
             }
-            cblas_gebrd<T>(
+            cpu_gebrd(
                 k, n, hA[0], lda, D.data(), E.data(), P.data(), hIpiv[0], hW.data(), size_W, &info);
         }
     }
@@ -210,7 +210,7 @@ void orgbr_ungbr_getError(const hipsolverHandle_t   handle,
     CHECK_HIP_ERROR(hInfoRes.transfer_from(dInfo));
 
     // CPU lapack
-    cblas_orgbr_ungbr<T>(side, m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W, hInfo[0]);
+    cpu_orgbr_ungbr(side, m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W, hInfo[0]);
 
     // error is ||hA - hAr|| / ||hA||
     // (THIS DOES NOT ACCOUNT FOR NUMERICAL REPRODUCIBILITY ISSUES.
@@ -254,7 +254,7 @@ void orgbr_ungbr_getPerfData(const hipsolverHandle_t   handle,
 
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
-        cblas_orgbr_ungbr<T>(side, m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W, hInfo[0]);
+        cpu_orgbr_ungbr(side, m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W, hInfo[0]);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 

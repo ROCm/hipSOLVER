@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2021-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2021-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -493,27 +493,27 @@ void syevdx_heevdx_getError(const hipsolverHandle_t   handle,
 
     // CPU lapack
     for(int b = 0; b < bc; ++b)
-        cblas_syevx_heevx<T>(evect,
-                             erange,
-                             uplo,
-                             n,
-                             hA[b],
-                             lda,
-                             vl,
-                             vu,
-                             il,
-                             iu,
-                             abstol,
-                             hNev[b],
-                             hW[b],
-                             Z.data(),
-                             lda,
-                             work.data(),
-                             size_work,
-                             rwork.data(),
-                             iwork.data(),
-                             ifail.data(),
-                             hinfo[b]);
+        cpu_syevx_heevx(evect,
+                        erange,
+                        uplo,
+                        n,
+                        hA[b],
+                        lda,
+                        vl,
+                        vu,
+                        il,
+                        iu,
+                        abstol,
+                        hNev[b],
+                        hW[b],
+                        Z.data(),
+                        lda,
+                        work.data(),
+                        size_work,
+                        rwork.data(),
+                        iwork.data(),
+                        ifail.data(),
+                        hinfo[b]);
 
     // Check info for non-convergence
     *max_err = 0;
@@ -564,16 +564,16 @@ void syevdx_heevdx_getError(const hipsolverHandle_t   handle,
                 for(int j = 0; j < hNev[b][0]; j++)
                 {
                     alpha = T(1) / hWRes[b][j];
-                    cblas_symv_hemv(uplo,
-                                    n,
-                                    alpha,
-                                    A.data() + b * lda * n,
-                                    lda,
-                                    hARes[b] + j * lda,
-                                    1,
-                                    beta,
-                                    hA[b] + j * lda,
-                                    1);
+                    cpu_symv_hemv(uplo,
+                                  n,
+                                  alpha,
+                                  A.data() + b * lda * n,
+                                  lda,
+                                  hARes[b] + j * lda,
+                                  1,
+                                  beta,
+                                  hA[b] + j * lda,
+                                  1);
                 }
 
                 // error is ||hA - hARes|| / ||hA||
@@ -644,27 +644,27 @@ void syevdx_heevdx_getPerfData(const hipsolverHandle_t   handle,
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
         for(int b = 0; b < bc; ++b)
-            cblas_syevx_heevx<T>(evect,
-                                 erange,
-                                 uplo,
-                                 n,
-                                 hA[b],
-                                 lda,
-                                 vl,
-                                 vu,
-                                 il,
-                                 iu,
-                                 abstol,
-                                 hNev[b],
-                                 hW[b],
-                                 Z.data(),
-                                 lda,
-                                 work.data(),
-                                 size_work,
-                                 rwork.data(),
-                                 iwork.data(),
-                                 ifail.data(),
-                                 hinfo[b]);
+            cpu_syevx_heevx(evect,
+                            erange,
+                            uplo,
+                            n,
+                            hA[b],
+                            lda,
+                            vl,
+                            vu,
+                            il,
+                            iu,
+                            abstol,
+                            hNev[b],
+                            hW[b],
+                            Z.data(),
+                            lda,
+                            work.data(),
+                            size_work,
+                            rwork.data(),
+                            iwork.data(),
+                            ifail.data(),
+                            hinfo[b]);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 
