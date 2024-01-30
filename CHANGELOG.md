@@ -1,6 +1,6 @@
 # Change Log for hipSOLVER
 
-Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
+Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html).
 
 
 ## (Unreleased) hipSOLVER
@@ -239,4 +239,3 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ### Removed
 - Removed unused HIPSOLVER_FILL_MODE_FULL enum value.
 - Removed hipsolverComplex and hipsolverDoubleComplex from the library. Use hipFloatComplex and hipDoubleComplex instead.
-

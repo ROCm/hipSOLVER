@@ -225,7 +225,7 @@ Using rocSOLVER's memory model
 
 Most hipSOLVER functions take a workspace pointer and size as arguments, allowing the user to manage the device memory used
 internally by the backends. rocSOLVER, however, can maintain the device workspace automatically by default
-(see `rocSOLVER's memory model <https://rocsolver.readthedocs.io/en/master/userguide_memory.html>`_ for more details). In order to take
+(see `rocSOLVER's memory model <https://rocm.docs.amd.com/projects/rocSOLVER/en/latest/userguide/memory.html>`_ for more details). In order to take
 advantage of this feature, users may pass a null pointer for the `work` argument or a zero size for the `lwork` argument of any function
 when using the rocSOLVER backend, and the workspace will be automatically managed behind-the-scenes. It is recommended, however, to use
 a consistent strategy for workspace management, as performance issues may arise if the internal workspace is made to flip-flop between
