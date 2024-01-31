@@ -3,6 +3,21 @@
 Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
 
 
+## (Unreleased) hipSOLVER
+### Added
+### Optimized
+### Changed
+- Relax array length requirements for GESVDA.
+
+### Deprecated
+### Removed
+### Fixed
+- Fixed incorrect singular vectors returned from GESVDA.
+
+### Known Issues
+### Security
+
+
 ## hipSOLVER 2.0.0 for ROCm 6.0.0
 ### Added
 - Added hipBLAS as an optional dependency to hipsolver-test. Use the `BUILD_HIPBLAS_TESTS` CMake option to test compatibility between hipSOLVER and hipBLAS.
