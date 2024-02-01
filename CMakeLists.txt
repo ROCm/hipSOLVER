@@ -187,7 +187,7 @@ include( clients/cmake/build-options.cmake )
 if(NOT SYSTEM_OS)
   rocm_set_os_id(SYSTEM_OS)
   string(TOLOWER "${SYSTEM_OS}" SYSTEM_OS)
-  rocm_read_os_release(SYSTEM_OS VERSION_ID)
+  rocm_read_os_release(SYSTEM_OS_VERSION VERSION_ID)
 endif()
 
 # Build clients of the library
