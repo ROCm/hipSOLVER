@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2024 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -113,6 +113,7 @@ option( BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON )
 option( BUILD_WITH_SPARSE "Build hipSOLVER with sparse functionality and tests enabled (requires additional dependencies)" ON )
 option( BUILD_VERBOSE "Output additional build information" OFF )
 option( USE_CUDA "Look for CUDA and use that as a backend if found" OFF )
+option( HIPSOLVER_FIND_PACKAGE_LAPACK_CONFIG "Skip module mode search for LAPACK" ON )
 
 add_library(hipsolver-common INTERFACE)
 target_compile_options(hipsolver-common INTERFACE

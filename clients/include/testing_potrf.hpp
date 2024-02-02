@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -174,7 +174,7 @@ void potrf_getError(const hipsolverHandle_t   handle,
 
     // CPU lapack
     for(int b = 0; b < bc; ++b)
-        cblas_potrf<T>(uplo, n, hA[b], lda, hInfo[b]);
+        cpu_potrf(uplo, n, hA[b], lda, hInfo[b]);
 
     // error is ||hA - hARes|| / ||hA|| (ideally ||LL' - Lres Lres'|| / ||LL'||)
     // (THIS DOES NOT ACCOUNT FOR NUMERICAL REPRODUCIBILITY ISSUES.
@@ -238,7 +238,7 @@ void potrf_getPerfData(const hipsolverHandle_t   handle,
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
         for(int b = 0; b < bc; ++b)
-            cblas_potrf<T>(uplo, n, hA[b], lda, hInfo[b]);
+            cpu_potrf(uplo, n, hA[b], lda, hInfo[b]);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 

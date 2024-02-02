@@ -47,9 +47,7 @@ target_include_directories( hipsolver-bench
 )
 
 target_link_libraries( hipsolver-bench PRIVATE
-  cblas
-  lapack
-  blas
+  ${LAPACK_LIBRARIES}
   hipsolver-common
   clients-common
   roc::hipsolver
