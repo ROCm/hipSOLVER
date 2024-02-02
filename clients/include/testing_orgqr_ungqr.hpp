@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -122,7 +122,7 @@ void orgqr_ungqr_initData(const hipsolverHandle_t handle,
         }
 
         // compute QR factorization
-        cblas_geqrf<T>(m, n, hA[0], lda, hIpiv[0], hW.data(), size_W, &info);
+        cpu_geqrf(m, n, hA[0], lda, hIpiv[0], hW.data(), size_W, &info);
     }
 
     if(GPU)
@@ -165,7 +165,7 @@ void orgqr_ungqr_getError(const hipsolverHandle_t handle,
     CHECK_HIP_ERROR(hInfoRes.transfer_from(dInfo));
 
     // CPU lapack
-    cblas_orgqr_ungqr<T>(m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W, hInfo[0]);
+    cpu_orgqr_ungqr(m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W, hInfo[0]);
 
     // error is ||hA - hAr|| / ||hA||
     // (THIS DOES NOT ACCOUNT FOR NUMERICAL REPRODUCIBILITY ISSUES.
@@ -208,7 +208,7 @@ void orgqr_ungqr_getPerfData(const hipsolverHandle_t handle,
 
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
-        cblas_orgqr_ungqr<T>(m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W, hInfo[0]);
+        cpu_orgqr_ungqr(m, n, k, hA[0], lda, hIpiv[0], hW.data(), size_W, hInfo[0]);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 

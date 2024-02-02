@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -520,21 +520,21 @@ void gesvda_getError(const hipsolverHandle_t handle,
     // CPU lapack
     // Only singular values needed
     for(int b = 0; b < bc; ++b)
-        cblas_gesvd<T>('N',
-                       'N',
-                       m,
-                       n,
-                       hA[b],
-                       lda,
-                       hS[b],
-                       nullptr,
-                       ldu,
-                       nullptr,
-                       ldv,
-                       hWork.data(),
-                       size_W,
-                       hE.data(),
-                       hinfo[b]);
+        cpu_gesvd<T>('N',
+                     'N',
+                     m,
+                     n,
+                     hA[b],
+                     lda,
+                     hS[b],
+                     nullptr,
+                     ldu,
+                     nullptr,
+                     ldv,
+                     hWork.data(),
+                     size_W,
+                     hE.data(),
+                     hinfo[b]);
 
     // // Check info for non-convergence
     *max_err = 0;

@@ -101,9 +101,7 @@ target_include_directories( hipsolver-test
 )
 
 target_link_libraries( hipsolver-test PRIVATE
-  cblas
-  lapack
-  blas
+  ${LAPACK_LIBRARIES}
   hipsolver-common
   clients-common
   GTest::GTest

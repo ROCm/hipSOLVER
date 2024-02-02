@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -513,21 +513,21 @@ void gesvdj_getError(const hipsolverHandle_t handle,
     // CPU lapack
     // Only singular values needed
     for(int b = 0; b < bc; ++b)
-        cblas_gesvd<T>('N',
-                       'N',
-                       m,
-                       n,
-                       hA[b],
-                       lda,
-                       hS[b],
-                       nullptr,
-                       ldu,
-                       nullptr,
-                       ldv,
-                       hWork.data(),
-                       size_W,
-                       hE.data(),
-                       hinfo[b]);
+        cpu_gesvd<T>('N',
+                     'N',
+                     m,
+                     n,
+                     hA[b],
+                     lda,
+                     hS[b],
+                     nullptr,
+                     ldu,
+                     nullptr,
+                     ldv,
+                     hWork.data(),
+                     size_W,
+                     hE.data(),
+                     hinfo[b]);
 
     // Check info for non-convergence
     *max_err = 0;
@@ -653,21 +653,21 @@ void gesvdj_getPerfData(const hipsolverHandle_t handle,
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
         for(int b = 0; b < bc; ++b)
-            cblas_gesvd<T>(svect,
-                           svect,
-                           m,
-                           n,
-                           hA[b],
-                           lda,
-                           hS[b],
-                           hU[b],
-                           ldu,
-                           hV[b],
-                           ldv_trans,
-                           hWork.data(),
-                           size_W,
-                           hE.data(),
-                           hinfo[b]);
+            cpu_gesvd(svect,
+                      svect,
+                      m,
+                      n,
+                      hA[b],
+                      lda,
+                      hS[b],
+                      hU[b],
+                      ldu,
+                      hV[b],
+                      ldv_trans,
+                      hWork.data(),
+                      size_W,
+                      hE.data(),
+                      hinfo[b]);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 

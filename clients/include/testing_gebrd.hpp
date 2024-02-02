@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -456,17 +456,17 @@ void gebrd_getError(const hipsolverHandle_t handle,
         for(int b = 0; b < bc; ++b)
         {
             memcpy(hARes[b], hA[b], lda * n * sizeof(T));
-            cblas_gebrd<T>(m,
-                           n,
-                           hARes[b],
-                           lda,
-                           hD[b],
-                           hE[b],
-                           hTauq[b],
-                           hTaup[b],
-                           hW.data(),
-                           max(m, n),
-                           hInfoRes[b]);
+            cpu_gebrd(m,
+                      n,
+                      hARes[b],
+                      lda,
+                      hD[b],
+                      hE[b],
+                      hTauq[b],
+                      hTaup[b],
+                      hW.data(),
+                      max(m, n),
+                      hInfoRes[b]);
         }
     }
 
@@ -487,25 +487,25 @@ void gebrd_getError(const hipsolverHandle_t handle,
                 {
                     if(COMPLEX)
                     {
-                        cblas_lacgv(1, taup + j, 1);
-                        cblas_lacgv(n - j - 1, a + j + (j + 1) * lda, lda);
+                        cpu_lacgv(1, taup + j, 1);
+                        cpu_lacgv(n - j - 1, a + j + (j + 1) * lda, lda);
                     }
                     for(int i = 1; i < n - j - 1; i++)
                     {
                         vec[i]                   = a[j + (j + i + 1) * lda];
                         a[j + (j + i + 1) * lda] = 0;
                     }
-                    cblas_larf(HIPSOLVER_SIDE_RIGHT,
-                               m - j,
-                               n - j - 1,
-                               vec.data(),
-                               1,
-                               taup + j,
-                               a + j + (j + 1) * lda,
-                               lda,
-                               hW.data());
+                    cpu_larf(HIPSOLVER_SIDE_RIGHT,
+                             m - j,
+                             n - j - 1,
+                             vec.data(),
+                             1,
+                             taup + j,
+                             a + j + (j + 1) * lda,
+                             lda,
+                             hW.data());
                     if(COMPLEX)
-                        cblas_lacgv(1, taup + j, 1);
+                        cpu_lacgv(1, taup + j, 1);
                 }
 
                 for(int i = 1; i < m - j; i++)
@@ -513,15 +513,15 @@ void gebrd_getError(const hipsolverHandle_t handle,
                     vec[i]               = a[(j + i) + j * lda];
                     a[(j + i) + j * lda] = 0;
                 }
-                cblas_larf(HIPSOLVER_SIDE_LEFT,
-                           m - j,
-                           n - j,
-                           vec.data(),
-                           1,
-                           tauq + j,
-                           a + j + j * lda,
-                           lda,
-                           hW.data());
+                cpu_larf(HIPSOLVER_SIDE_LEFT,
+                         m - j,
+                         n - j,
+                         vec.data(),
+                         1,
+                         tauq + j,
+                         a + j + j * lda,
+                         lda,
+                         hW.data());
             }
         }
         else
@@ -535,38 +535,38 @@ void gebrd_getError(const hipsolverHandle_t handle,
                         vec[i]                   = a[(j + i + 1) + j * lda];
                         a[(j + i + 1) + j * lda] = 0;
                     }
-                    cblas_larf(HIPSOLVER_SIDE_LEFT,
-                               m - j - 1,
-                               n - j,
-                               vec.data(),
-                               1,
-                               tauq + j,
-                               a + (j + 1) + j * lda,
-                               lda,
-                               hW.data());
+                    cpu_larf(HIPSOLVER_SIDE_LEFT,
+                             m - j - 1,
+                             n - j,
+                             vec.data(),
+                             1,
+                             tauq + j,
+                             a + (j + 1) + j * lda,
+                             lda,
+                             hW.data());
                 }
 
                 if(COMPLEX)
                 {
-                    cblas_lacgv(1, taup + j, 1);
-                    cblas_lacgv(n - j, a + j + j * lda, lda);
+                    cpu_lacgv(1, taup + j, 1);
+                    cpu_lacgv(n - j, a + j + j * lda, lda);
                 }
                 for(int i = 1; i < n - j; i++)
                 {
                     vec[i]               = a[j + (j + i) * lda];
                     a[j + (j + i) * lda] = 0;
                 }
-                cblas_larf(HIPSOLVER_SIDE_RIGHT,
-                           m - j,
-                           n - j,
-                           vec.data(),
-                           1,
-                           taup + j,
-                           a + j + j * lda,
-                           lda,
-                           hW.data());
+                cpu_larf(HIPSOLVER_SIDE_RIGHT,
+                         m - j,
+                         n - j,
+                         vec.data(),
+                         1,
+                         taup + j,
+                         a + j + j * lda,
+                         lda,
+                         hW.data());
                 if(COMPLEX)
-                    cblas_lacgv(1, taup + j, 1);
+                    cpu_lacgv(1, taup + j, 1);
             }
         }
     }
@@ -659,7 +659,7 @@ void gebrd_getPerfData(const hipsolverHandle_t handle,
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
         for(int b = 0; b < bc; ++b)
-            cblas_gebrd<T>(
+            cpu_gebrd(
                 m, n, hA[b], lda, hD[b], hE[b], hTauq[b], hTaup[b], hW.data(), max(m, n), hInfo[b]);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }

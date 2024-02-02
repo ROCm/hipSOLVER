@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -509,22 +509,22 @@ void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
     // CPU lapack
     for(int b = 0; b < bc; ++b)
     {
-        cblas_sygvd_hegvd(itype,
-                          evect,
-                          uplo,
-                          n,
-                          hA[b],
-                          lda,
-                          hB[b],
-                          ldb,
-                          hD[b],
-                          work.data(),
-                          ltwork,
-                          rwork.data(),
-                          lrwork,
-                          iwork.data(),
-                          liwork,
-                          hInfo[b]);
+        cpu_sygvd_hegvd(itype,
+                        evect,
+                        uplo,
+                        n,
+                        hA[b],
+                        lda,
+                        hB[b],
+                        ldb,
+                        hD[b],
+                        work.data(),
+                        ltwork,
+                        rwork.data(),
+                        lrwork,
+                        iwork.data(),
+                        liwork,
+                        hInfo[b]);
     }
 
     // check info for non-convergence and/or positive-definiteness
@@ -584,18 +584,18 @@ void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
 
                 // hARes contains eigenvectors x
                 // compute B*x (or A*x) and store in hB
-                cblas_symm_hemm<T>(HIPSOLVER_SIDE_LEFT,
-                                   uplo,
-                                   n,
-                                   n,
-                                   alpha,
-                                   B[b],
-                                   ldb,
-                                   hARes[b],
-                                   lda,
-                                   beta,
-                                   hB[b],
-                                   ldb);
+                cpu_symm_hemm(HIPSOLVER_SIDE_LEFT,
+                              uplo,
+                              n,
+                              n,
+                              alpha,
+                              B[b],
+                              ldb,
+                              hARes[b],
+                              lda,
+                              beta,
+                              hB[b],
+                              ldb);
 
                 if(itype == HIPSOLVER_EIG_TYPE_1)
                 {
@@ -605,16 +605,16 @@ void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
                     for(int j = 0; j < n; j++)
                     {
                         alpha = T(1) / hDRes[b][j];
-                        cblas_symv_hemv(uplo,
-                                        n,
-                                        alpha,
-                                        A[b],
-                                        lda,
-                                        hARes[b] + j * lda,
-                                        1,
-                                        beta,
-                                        hA[b] + j * lda,
-                                        1);
+                        cpu_symv_hemv(uplo,
+                                      n,
+                                      alpha,
+                                      A[b],
+                                      lda,
+                                      hARes[b] + j * lda,
+                                      1,
+                                      beta,
+                                      hA[b] + j * lda,
+                                      1);
                     }
 
                     // move B*x into hARes
@@ -630,16 +630,16 @@ void sygvj_hegvj_getError(const hipsolverHandle_t   handle,
                     for(int j = 0; j < n; j++)
                     {
                         alpha = T(1) / hDRes[b][j];
-                        cblas_symv_hemv(uplo,
-                                        n,
-                                        alpha,
-                                        A[b],
-                                        lda,
-                                        hB[b] + j * ldb,
-                                        1,
-                                        beta,
-                                        hA[b] + j * lda,
-                                        1);
+                        cpu_symv_hemv(uplo,
+                                      n,
+                                      alpha,
+                                      A[b],
+                                      lda,
+                                      hB[b] + j * ldb,
+                                      1,
+                                      beta,
+                                      hA[b] + j * lda,
+                                      1);
                     }
                 }
 
@@ -719,22 +719,22 @@ void sygvj_hegvj_getPerfData(const hipsolverHandle_t   handle,
         *cpu_time_used = get_time_us_no_sync();
         for(int b = 0; b < bc; ++b)
         {
-            cblas_sygvd_hegvd<T>(itype,
-                                 evect,
-                                 uplo,
-                                 n,
-                                 hA[b],
-                                 lda,
-                                 hB[b],
-                                 ldb,
-                                 hD[b],
-                                 work.data(),
-                                 ltwork,
-                                 rwork.data(),
-                                 lrwork,
-                                 iwork.data(),
-                                 liwork,
-                                 hInfo[b]);
+            cpu_sygvd_hegvd(itype,
+                            evect,
+                            uplo,
+                            n,
+                            hA[b],
+                            lda,
+                            hB[b],
+                            ldb,
+                            hD[b],
+                            work.data(),
+                            ltwork,
+                            rwork.data(),
+                            lrwork,
+                            iwork.data(),
+                            liwork,
+                            hInfo[b]);
         }
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }

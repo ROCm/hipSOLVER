@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -312,7 +312,7 @@ void ormtr_unmtr_initData(const hipsolverHandle_t    handle,
         }
 
         // compute sytrd/hetrd
-        cblas_sytrd_hetrd<T>(uplo, nq, hA[0], lda, D.data(), E.data(), hIpiv[0], hW.data(), size_W);
+        cpu_sytrd_hetrd(uplo, nq, hA[0], lda, D.data(), E.data(), hIpiv[0], hW.data(), size_W);
     }
 
     if(GPU)
@@ -375,7 +375,7 @@ void ormtr_unmtr_getError(const hipsolverHandle_t    handle,
     CHECK_HIP_ERROR(hInfoRes.transfer_from(dInfo));
 
     // CPU lapack
-    cblas_ormtr_unmtr<T>(
+    cpu_ormtr_unmtr(
         side, uplo, trans, m, n, hA[0], lda, hIpiv[0], hC[0], ldc, hW.data(), size_W, hInfo[0]);
 
     // error is ||hC - hCr|| / ||hC||
@@ -424,7 +424,7 @@ void ormtr_unmtr_getPerfData(const hipsolverHandle_t    handle,
 
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
-        cblas_ormtr_unmtr<T>(
+        cpu_ormtr_unmtr(
             side, uplo, trans, m, n, hA[0], lda, hIpiv[0], hC[0], ldc, hW.data(), size_W, hInfo[0]);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
