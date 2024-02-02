@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 /*! \file
@@ -13,7 +13,6 @@
 #ifndef HIPSOLVER_COMPAT_H
 #define HIPSOLVER_COMPAT_H
 
-#include "hipsolver-functions.h"
 #include "hipsolver-types.h"
 
 /*! \brief Provided for convenience when porting code from cuSOLVER.
