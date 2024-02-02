@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 /*! \file
@@ -10,6 +10,7 @@
 #define HIPSOLVER_TYPES_H
 
 #include <hip/hip_complex.h>
+#include <hip/hip_runtime_api.h>
 
 typedef void* hipsolverHandle_t;
 
