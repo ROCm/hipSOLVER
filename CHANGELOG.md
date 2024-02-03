@@ -7,6 +7,8 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 ### Added
 ### Optimized
 ### Changed
+- The numerical factorization in csrlsvchol will now be performed on the GPU. (The symbolic factorization is still performed on the CPU.)
+
 ### Deprecated
 ### Removed
 ### Fixed
@@ -48,7 +50,7 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 ### Fixed
 - Fixed conflicts between the hipsolver-dev and -asan packages by excluding
   hipsolver_module.f90 from the latter
-  
+
 
 ## hipSOLVER 1.8.1 for ROCm 5.7.0
 ### Changed
