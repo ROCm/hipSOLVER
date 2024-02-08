@@ -1,43 +1,19 @@
-# Anywhere {branch} is used, the branch name will be substituted.
-# These comments will also be removed.
+defaults:
+  numbered: False
 root: index
 subtrees:
-  - numbered: False
-    entries:
-    - file: userguide/index
-      subtrees:
-      - entries:
-        - file: userguide/intro
-        - file: userguide/install
-        - file: userguide/usage
-    - file: api/index
-      subtrees:
-      - entries:
-        - file: api/types
-        - file: api/helpers
-        - file: api/auxiliary
-        - file: api/lapack
-        - file: api/lapacklike
-    - file: compat-api/index
-      subtrees:
-      - entries:
-        - file: compat-api/types
-        - file: compat-api/helpers
-        - file: compat-api/auxiliary
-        - file: compat-api/lapack
-        - file: compat-api/lapacklike
-    - file: sparse-api/index
-      subtrees:
-      - entries:
-        - file: sparse-api/types
-        - file: sparse-api/helpers
-        - file: sparse-api/sparse
-    - file: refactor-api/index
-      subtrees:
-      - entries:
-        - file: refactor-api/types
-        - file: refactor-api/helpers
-        - file: refactor-api/refactor
-  - caption: About
-    entries:
-      - file: license
+- entries:
+  - file: install/install.rst
+    title: Installation
+  - file: how-to/usage.rst
+    title: Using hipSOLVER
+  - file: api/reference.rst
+    title: API Reference
+    subtrees:
+    - entries:
+      - file: api/intro.rst
+      - file: api/index.rst
+      - file: compat-api/index.rst
+      - file: sparse-api/index.rst
+      - file: refactor-api/index.rst
+  - file: license.rst

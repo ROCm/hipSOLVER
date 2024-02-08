@@ -1,8 +1,12 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
+
 .. _refactor_helpers:
 
-****************
-Helper Functions
-****************
+**********************************
+Refactorization helper functions
+**********************************
 
 These are helper functions that control aspects of the hipSOLVER library. They are divided 
 into the following categories:

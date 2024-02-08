@@ -1,17 +1,18 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
-*****
-Types
-*****
+.. _sparse_types:
+
+*******************************
+Sparse matrix datatypes
+*******************************
 
 hipSOLVER defines types and enumerations that are internally converted to the corresponding backend
 types at runtime. Here we list the types used in this compatibility API.
 
 hipSOLVER compatibility API types
 ====================================
-
-.. contents:: List of types in the compatibility API
-   :local:
-   :backlinks: top
 
 hipsolverSpHandle_t
 ---------------------------------

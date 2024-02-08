@@ -1,27 +1,36 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
+
 .. _usage_label:
 
 *****************
 Using hipSOLVER
 *****************
 
+hipSOLVER is an open-source marshalling library for `LAPACK routines <https://www.netlib.org/lapack/explore-html/modules.html>`_ on the GPU.
+It sits between a backend library and the user application, marshalling inputs to and outputs from the backend library so that the user
+application remains unchanged when using different backends. Currently, two backend libraries are supported by hipSOLVER: NVIDIA's `cuSOLVER
+library <https://developer.nvidia.com/cusolver>`_ and AMD's open-source `rocSOLVER library <https://github.com/ROCmSoftwarePlatform/rocSOLVER>`_.
+
+The :ref:`regular hipSOLVER API <library_api>` is a thin wrapper layer around the different backends. As such, it is not expected to introduce
+significant overhead. However, its main purpose is portability, so when performance is critical directly using the library backend is recommended.
+
 Once installed, hipSOLVER can be used just like any other library with a C API. The header file will need to be included
 in the user code, and the shared library will become link-time and run-time dependencies for the user application. The
 user code can be ported, with no changes, to any system with hipSOLVER installed regardless of the backend library.
 
 For more details on how to use the API methods, see the code samples on
-`hipSOLVER's github page <https://github.com/ROCmSoftwarePlatform/hipSOLVER/tree/develop/clients/samples>`_, or
+`hipSOLVER's Clients github page <https://github.com/ROCm/hipSOLVER/tree/develop/clients/samples>`_, or
 the documentation of the corresponding backend libraries.
-
-.. contents:: Table of contents
-   :local:
-   :backlinks: top
-
 
 .. _porting:
 
 Porting cuSOLVER applications to hipSOLVER
 ============================================
 
+Another purpose of hipSOLVER is to facilitate the translation of cuSOLVER applications to
+`AMD's open source ROCm platform <https://rocmdocs.amd.com/en/latest/index.html>`_ ecosystem. 
 hipSOLVER is designed to make it easy for users of cuSOLVER to port their existing applications to hipSOLVER, and provides two
 separate but interchangeable API patterns in order to facilitate a two-stage transition process. Users are encouraged to start with
 hipSOLVER's compatibility APIs, which use the :ref:`hipsolverDn <library_compat>`, :ref:`hipsolverSp <library_sparse>`, and

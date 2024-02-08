@@ -1,9 +1,12 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
 .. _compat_lapacklike:
 
-**********************
-LAPACK-like Functions
-**********************
+************************************
+Dense matrix LAPACK-like functions
+************************************
 
 Other Lapack-like routines provided by hipSOLVER. These are divided into the following subcategories:
 

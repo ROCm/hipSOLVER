@@ -1,11 +1,14 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
 .. _lapacklike:
 
-**********************
-LAPACK-like Functions
-**********************
+********************************
+hipSOLVER LAPACK-like functions
+********************************
 
-Other Lapack-like routines provided by hipSOLVER. These are divided into the following subcategories:
+Other Lapack-like routines provided by hipSOLVER are divided into the following subcategories:
 
 * :ref:`likeeigens`. Eigenproblems for symmetric matrices.
 * :ref:`likesvds`. Singular values and related problems for general matrices.

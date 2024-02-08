@@ -1,9 +1,12 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
 .. _refactor_refactorfunc:
 
-**********************
-Refactoring Functions
-**********************
+**************************
+Refactorization Functions
+**************************
 
 Refactoring routines to solve complex Numerical Linear Algebra problems for sparse matrices.
 These functions are organized in the following categories:

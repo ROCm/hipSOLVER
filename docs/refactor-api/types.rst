@@ -1,7 +1,12 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
-*****
-Types
-*****
+.. _refactor_types:
+
+********************************************************************
+Refactorization datatypes
+********************************************************************
 
 hipSOLVER defines types and enumerations that are internally converted to the corresponding backend 
 types at runtime. Here we list the types used in the this compatibility API.

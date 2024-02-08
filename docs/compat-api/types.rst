@@ -1,18 +1,14 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
-*****
-Types
-*****
+.. _compat_types:
 
-hipSOLVER defines types and enumerations that are internally converted to the corresponding backend 
-types at runtime. Here we list the types used in this compatibility API.
+********************************************************************
+Dense matrix datatypes
+********************************************************************
 
-hipSOLVER compatibility API types
-====================================
-
-
-.. contents:: List of types in the compatibility API
-   :local:
-   :backlinks: top
+hipSOLVER defines types and enumerations that are internally converted to the corresponding backend types at runtime. Here we list the types used in this compatibility API.
 
 hipsolverDnHandle_t
 --------------------

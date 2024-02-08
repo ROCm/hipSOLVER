@@ -1,7 +1,12 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
-***************************
-LAPACK Auxiliary Functions
-***************************
+.. _compat_auxiliary:
+
+****************************************
+Dense matrix LAPACK auxiliary functions
+****************************************
 
 These are functions that support more :ref:`advanced LAPACK routines <compat_lapackfunc>`.
 The auxiliary functions are divided into the following categories:

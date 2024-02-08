@@ -1,6 +1,11 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
+
+.. _library_auxiliary:
 
 ***************************
-LAPACK Auxiliary Functions
+LAPACK auxiliary functions
 ***************************
 
 These are functions that support more :ref:`advanced LAPACK routines <lapackfunc>`.
@@ -8,8 +13,6 @@ The auxiliary functions are divided into the following categories:
 
 * :ref:`orthonormal`. Generation and application of orthonormal matrices.
 * :ref:`unitary`. Generation and application of unitary matrices.
-
-
 
 .. _orthonormal:
 

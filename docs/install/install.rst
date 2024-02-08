@@ -1,32 +1,28 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
-*************
-Installation
-*************
+.. _install-linux:
 
-
-.. contents:: Table of contents
-   :local:
-   :backlinks: top
-
+*****************************
+Installation on Linux
+*****************************
 
 Install pre-built packages
 ===========================
 
-Download pre-built packages from `ROCm's package servers <https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4.3/page/Introduction_to_ROCm_Installation_Guide_for_Linux.html>`_.
-Release notes are available on the releases tab of the `library's github page <https://github.com/ROCmSoftwarePlatform/hipSOLVER>`_.
+Download pre-built packages from `ROCm's package servers <https://rocm.docs.amd.com/projects/install-on-linux/en/latest/index.html>`_. Updates to each release are listed in the ``CHANGELOG.md`` file under the releases tab of the `hipSOLVER github page <https://github.com/ROCm/hipSOLVER>`_.
 
 * `sudo apt update && sudo apt install hipsolver`
 
-Note that the pre-built packages depend on the third-party library SuiteSparse, which must be installed on the system prior to installing hipSOLVER.
-SuiteSparse can be installed using the package manager of most distros.
+.. note::
+    The pre-built packages depend on the third-party library SuiteSparse, which must be installed on the system prior to installing hipSOLVER. SuiteSparse can be installed using the package manager of most distros.
 
 
 Build & install library using script (Ubuntu only)
 ===================================================
 
-The root of the `hipSOLVER repository <https://github.com/ROCmSoftwarePlatform/hipSOLVER>`_ has a helper bash script ``install.sh`` to build and install
-hipSOLVER on Ubuntu with a single command.  It does not take a lot of options and hard-codes configuration that can be specified through invoking cmake
-directly, but it's a great way to get started quickly and can serve as an example of how to build/install.  A few commands in the script need sudo access,
+The root of the `hipSOLVER repository <https://github.com/ROCm/hipSOLVER>`_ has a helper bash script ``install.sh`` to build and install hipSOLVER on Ubuntu with a single command.  It does not take a lot of options and hard-codes configuration that can be specified through invoking ``cmake`` directly, but it's a great way to get started quickly and can serve as an example of how to build/install.  A few commands in the script need sudo access,
 so it may prompt you for a password.
 
 * ``./install.sh -id`` --- build library, build dependencies, and install (-d flag only needs to be passed once on a system).
@@ -93,11 +89,10 @@ The hipSOLVER samples have no external dependencies, but our unit test and bench
 
 1. `lapack <https://github.com/Reference-LAPACK/lapack-release>`_ (lapack itself brings a dependency on a fortran compiler)
 2. `googletest <https://github.com/google/googletest>`_
-3. `hipBLAS <https://github.com/ROCmSoftwarePlatform/hipBLAS>`_ (optional)
-4. `hipSPARSE <https://github.com/ROCmSoftwarePlatform/hipSPARSE>`_ (optional, required by default)
+3. `hipBLAS <https://github.com/ROCm/hipBLAS>`_ (optional)
+4. `hipSPARSE <https://github.com/ROCm/hipSPARSE>`_ (optional, required by default)
 
-Unfortunately, many distros do not provide a googletest package with pre-compiled libraries, and the
-lapack packages do not have the necessary cmake config files for cmake to configure linking the cblas library. hipSOLVER provides a cmake script that builds
+Unfortunately, many distros do not provide a googletest package with pre-compiled libraries, and the lapack packages do not have the necessary cmake config files for cmake to configure linking the cblas library. hipSOLVER provides a cmake script that builds
 lapack and googletest from source. This is an optional step; users can provide their own builds of these dependencies and help cmake find them by setting
 the ``CMAKE_PREFIX_PATH`` definition. The following is a sequence of steps to build dependencies and install them to the cmake default, /usr/local:
 

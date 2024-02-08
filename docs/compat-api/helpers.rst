@@ -1,16 +1,20 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
+
 .. _compat_helpers:
 
-****************
-Helper Functions
-****************
+*****************************************
+Dense matrix helper functions
+*****************************************
 
 These are helper functions that control aspects of the hipSOLVER library. They are divided
 into the following categories:
 
-* :ref:`compat_initialize` functions. Used to initialize and cleanup the library handle.
-* :ref:`compat_stream` functions. Provide functionality to manipulate streams.
-* :ref:`compat_gesvdj_info` functions. Provide functionality to manipulate gesvdj parameters.
-* :ref:`compat_syevj_info` functions. Provide functionality to manipulate syevj parameters.
+* :ref:`compat_initialize` functions used to initialize and cleanup the library handle
+* :ref:`compat_stream` functions provide functionality to manipulate streams
+* :ref:`compat_gesvdj_info` functions provide functionality to manipulate gesvdj parameters
+* :ref:`compat_syevj_info` functions provide functionality to manipulate syevj parameters
 
 
 .. _compat_initialize:

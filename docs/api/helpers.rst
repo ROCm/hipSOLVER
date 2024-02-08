@@ -1,8 +1,12 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
+
 .. _api_helpers:
 
-****************
-Helper Functions
-****************
+******************
+Helper functions
+******************
 
 These are helper functions that control aspects of the hipSOLVER library. They are divided 
 into the following categories:

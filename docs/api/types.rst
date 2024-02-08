@@ -1,17 +1,18 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
-*****
-Types
-*****
+.. _library_types:
+
+********************************************************************
+hipSOLVER regular datatypes
+********************************************************************
 
 hipSOLVER defines types and enumerations that are internally converted to the corresponding backend
 types at runtime. Here we list the types used in the regular API.
 
 hipSOLVER regular API types
 ================================
-
-.. contents:: List of types in the regular API
-   :local:
-   :backlinks: top
 
 .. _handle_t:
 

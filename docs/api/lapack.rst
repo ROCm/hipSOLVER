@@ -1,9 +1,12 @@
+.. meta::
+  :description: hipSOLVER documentation and API reference library
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
 .. _lapackfunc:
 
-********************
-LAPACK Functions
-********************
+***************************
+hipSOLVER LAPACK Functions
+***************************
 
 LAPACK routines solve complex Numerical Linear Algebra problems. These functions are organized
 in the following categories:
