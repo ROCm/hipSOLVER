@@ -3,6 +3,16 @@
 Documentation for hipSOLVER is available at
 [https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/).
 
+## (Unreleased) hipSOLVER
+
+### Changes
+- The numerical factorization in csrlsvchol will now be performed on the GPU. (The symbolic factorization is still performed on the CPU.)
+
+### Deprecations
+### Fixes
+### Known Issues
+### Security
+
 ## hipSOLVER 2.1.0 for ROCm 6.1.0
 
 ### Additions
