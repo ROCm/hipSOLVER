@@ -48,7 +48,8 @@ code to make the hipSOLVER library a link-time and run-time dependency for your 
 
 The hipSOLVER interface is compatible with rocSOLVER and cuSOLVER-v11 APIs. Porting a CUDA
 application that originally calls the cuSOLVER API to an application that calls the hipSOLVER API is
-relatively straightforward; refer to [porting a cuSOLVER application to hipSOLVER](https://hipsolver.readthedocs.io/en/latest/userguide_intro.html#porting-a-cusolver-application-to-hipsolver).
+relatively straightforward; refer to
+[porting a cuSOLVER application to hipSOLVER](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/userguide/usage.html#porting-cusolver-applications-to-hipsolver).
 
 For example, the hipSOLVER SGEQRF interface is
 
@@ -78,5 +79,5 @@ hipsolverSgeqrf(hipsolverHandle_t handle,
 ## Supported functionality
 
 For a complete list supported functions, refer to the
-[hipSOLVER user guide](https://hipsolver.readthedocs.io/en/latest/userguide_intro.html) and
-[API documentation](https://hipsolver.readthedocs.io/en/latest/api_index.html).
+[hipSOLVER user guide](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/userguide/index.html)
+and [API documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/api/index.html).

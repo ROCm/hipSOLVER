@@ -6,7 +6,7 @@ hipSOLVER Compatibility API (Dense Matrices)
 
 Currently, this API document only provides the method signatures for the wrapper functions that are currently implemented in hipSOLVER.
 For a complete description of the functions' behavior and arguments, see the corresponding backends' documentation
-at `cuSOLVER API <https://docs.nvidia.com/cuda/cusolver/>`_ and/or `rocSOLVER API <https://rocsolver.readthedocs.io/>`_.
+at `cuSOLVER API <https://docs.nvidia.com/cuda/cusolver/>`_ and/or `rocSOLVER API <https://rocm.docs.amd.com/projects/rocSOLVER/en/latest/api/index.html>`_.
 
 For ease of porting from existing cuSOLVER applications to hipSOLVER, functions in the hipsolverDn compatibility API are designed to have
 method signatures that are consistent with the cusolverDn interface. However, :ref:`performance issues <compat_performance>` may arise when

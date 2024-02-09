@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -445,26 +445,26 @@ void sytrd_hetrd_getError(const hipsolverHandle_t   handle,
                 v[0] = 1;
 
                 // apply householder reflector
-                cblas_larf(HIPSOLVER_SIDE_LEFT,
-                           n - 1 - j,
-                           n - j,
-                           v.data(),
-                           1,
-                           t + j,
-                           a + (j + 1) + j * lda,
-                           lda,
-                           hW.data());
+                cpu_larf(HIPSOLVER_SIDE_LEFT,
+                         n - 1 - j,
+                         n - j,
+                         v.data(),
+                         1,
+                         t + j,
+                         a + (j + 1) + j * lda,
+                         lda,
+                         hW.data());
                 if(COMPLEX)
-                    cblas_lacgv(1, t + j, 1);
-                cblas_larf(HIPSOLVER_SIDE_RIGHT,
-                           n - j,
-                           n - 1 - j,
-                           v.data(),
-                           1,
-                           t + j,
-                           a + j + (j + 1) * lda,
-                           lda,
-                           hW.data());
+                    cpu_lacgv(1, t + j, 1);
+                cpu_larf(HIPSOLVER_SIDE_RIGHT,
+                         n - j,
+                         n - 1 - j,
+                         v.data(),
+                         1,
+                         t + j,
+                         a + j + (j + 1) * lda,
+                         lda,
+                         hW.data());
             }
         }
 
@@ -490,12 +490,10 @@ void sytrd_hetrd_getError(const hipsolverHandle_t   handle,
                     a[i + j * lda] = 0;
 
                 // apply householder reflector
-                cblas_larf(
-                    HIPSOLVER_SIDE_LEFT, j, j + 1, v.data(), 1, t + j - 1, a, lda, hW.data());
+                cpu_larf(HIPSOLVER_SIDE_LEFT, j, j + 1, v.data(), 1, t + j - 1, a, lda, hW.data());
                 if(COMPLEX)
-                    cblas_lacgv(1, t + j - 1, 1);
-                cblas_larf(
-                    HIPSOLVER_SIDE_RIGHT, j + 1, j, v.data(), 1, t + j - 1, a, lda, hW.data());
+                    cpu_lacgv(1, t + j - 1, 1);
+                cpu_larf(HIPSOLVER_SIDE_RIGHT, j + 1, j, v.data(), 1, t + j - 1, a, lda, hW.data());
             }
         }
     }
@@ -569,7 +567,7 @@ void sytrd_hetrd_getPerfData(const hipsolverHandle_t   handle,
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
         for(int b = 0; b < bc; ++b)
-            cblas_sytrd_hetrd<T, S>(uplo, n, hA[b], lda, hD[b], hE[b], hTau[b], hW.data(), 32 * n);
+            cpu_sytrd_hetrd(uplo, n, hA[b], lda, hD[b], hE[b], hTau[b], hW.data(), 32 * n);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 

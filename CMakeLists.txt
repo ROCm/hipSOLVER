@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2024 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -89,7 +89,7 @@ include( ROCMInstallSymlinks )
 include( ROCMClients )
 include( ROCMHeaderWrapper )
 
-set ( VERSION_STRING "2.1.0" )
+set ( VERSION_STRING "2.2.0" )
 rocm_setup_version( VERSION ${VERSION_STRING} )
 
 if( NOT DEFINED ENV{HIP_PATH})
@@ -113,6 +113,7 @@ option( BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON )
 option( BUILD_WITH_SPARSE "Build hipSOLVER with sparse functionality and tests enabled (requires additional dependencies)" ON )
 option( BUILD_VERBOSE "Output additional build information" OFF )
 option( USE_CUDA "Look for CUDA and use that as a backend if found" OFF )
+option( HIPSOLVER_FIND_PACKAGE_LAPACK_CONFIG "Skip module mode search for LAPACK" ON )
 
 add_library(hipsolver-common INTERFACE)
 target_compile_options(hipsolver-common INTERFACE
@@ -187,7 +188,7 @@ include( clients/cmake/build-options.cmake )
 if(NOT SYSTEM_OS)
   rocm_set_os_id(SYSTEM_OS)
   string(TOLOWER "${SYSTEM_OS}" SYSTEM_OS)
-  rocm_read_os_release(SYSTEM_OS VERSION_ID)
+  rocm_read_os_release(SYSTEM_OS_VERSION VERSION_ID)
 endif()
 
 # Build clients of the library
@@ -216,7 +217,7 @@ endif( )
 
 # Package specific CPACK vars
 if( NOT USE_CUDA )
-  set(hipsolver_pkgdeps "rocblas >= 4.1.0" "rocsolver >= 3.25.0")
+  set(hipsolver_pkgdeps "rocblas >= 4.2.0" "rocsolver >= 3.26.0")
 
   if( BUILD_WITH_SPARSE )
     list(APPEND hipsolver_pkgdeps "rocsparse >= 2.3.0")

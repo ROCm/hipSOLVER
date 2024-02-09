@@ -49,10 +49,25 @@ def runPackageCommand(platform, project, jobName, label='')
     String ext = platform.jenkinsLabel.contains('ubuntu') ? "deb" : "rpm"
     String dir = project.buildName.contains('Debug') ? "debug" : "release"
 
+    String testPackageCommand;
+    if (platform.jenkinsLabel.contains('ubuntu'))
+    {
+        testPackageCommand = 'sudo apt-get install -y --simulate '
+    }
+    else if (platform.jenkinsLabel.contains('centos') || platform.jenkinsLabel.contains('rhel'))
+    {
+        testPackageCommand = 'sudo yum install -y --setopt tsflags=test '
+    }
+    else
+    {
+        testPackageCommand = 'sudo zypper install -y --dry-run --download-only --allow-unsigned-rpm '
+    }
+
     command = """
-            set -x
+            set -ex
             cd ${project.paths.project_build_prefix}/build/${dir}
             make package
+            ${testPackageCommand} ./hipsolver*.$ext
             mkdir -p package
             if [ ! -z "$label" ]
             then

@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -131,7 +131,7 @@ void potri_initData(const hipsolverHandle_t   handle,
                 hA[b][i + i * lda] = hA[b][i + i * lda] * conj(hA[b][i + i * lda]) * 400;
 
             // do the Cholesky factorization of matrix A w/ the reference LAPACK routine
-            cblas_potrf<T>(uplo, n, hA[b], lda, hInfo[b]);
+            cpu_potrf(uplo, n, hA[b], lda, hInfo[b]);
         }
     }
 
@@ -171,7 +171,7 @@ void potri_getError(const hipsolverHandle_t   handle,
 
     // CPU lapack
     for(int b = 0; b < bc; ++b)
-        cblas_potri<T>(uplo, n, hA[b], lda, hInfo[b]);
+        cpu_potri(uplo, n, hA[b], lda, hInfo[b]);
 
     // check info for singularities
     double err = 0;
@@ -226,7 +226,7 @@ void potri_getPerfData(const hipsolverHandle_t   handle,
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
         for(int b = 0; b < bc; ++b)
-            cblas_potri<T>(uplo, n, hA[b], lda, hInfo[b]);
+            cpu_potri(uplo, n, hA[b], lda, hInfo[b]);
         *cpu_time_used = get_time_us_no_sync() - *cpu_time_used;
     }
 

@@ -2,11 +2,14 @@
 
 Documentation for hipSOLVER is available at
 [https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/).
+Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html).
 
 ## (Unreleased) hipSOLVER
 
 ### Changes
-- The numerical factorization in csrlsvchol will now be performed on the GPU. (The symbolic factorization is still performed on the CPU.)
+
+* The numerical factorization in `csrlsvchol` will now be performed on the GPU (symbolic factorization
+  is still performed on the CPU)
 
 ### Deprecations
 ### Fixes
@@ -58,6 +61,12 @@ Documentation for hipSOLVER is available at
   `ORMQR/UNMQR`, and `ORMTR/UNMTR`
 * Incorrect singular vectors returned from GESVDA
 
+## hipSOLVER 1.8.2 for ROCm 5.7.1
+
+### Fixes
+
+* Excluded `hipsolver_module.f90` from `hipsolver-asan` to resolve conflicts between the
+  `hipsolver-dev` and `hipsolver-asan` packages
 
 ## hipSOLVER 1.8.1 for ROCm 5.7.0
 
@@ -316,3 +325,6 @@ Documentation for hipSOLVER is available at
 * Removed unused `HIPSOLVER_FILL_MODE_FULL` enum value.
 * Removed `hipsolverComplex` and `hipsolverDoubleComplex` from the library; use `hipFloatComplex`
   and `hipDoubleComplex` instead
+### Removed
+- Removed unused HIPSOLVER_FILL_MODE_FULL enum value.
+- Removed hipsolverComplex and hipsolverDoubleComplex from the library. Use hipFloatComplex and hipDoubleComplex instead.

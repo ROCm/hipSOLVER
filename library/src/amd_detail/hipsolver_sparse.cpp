@@ -40,6 +40,9 @@
 #include <iostream>
 #include <math.h>
 
+#include <set>
+#include <vector>
+
 #ifdef HAVE_ROCSPARSE
 #include "cholmod.h"
 #include "rocsparse/rocsparse.h"
@@ -58,31 +61,41 @@ struct hipsolverSpHandle
     rocsolver_rfinfo rfinfo;
     cholmod_common   c_handle;
 
-    rocblas_int n, nnzA, batch_count;
+    rocblas_int h_n;
+    rocblas_int d_n, d_nnzA, d_nnzT;
 
     rocblas_int* dPtrA;
     rocblas_int* dIndA;
-    double*      dValA;
+
+    rocblas_int *dPtrT, *hPtrT;
+    rocblas_int* dIndT;
+    double*      dValT;
 
     rocblas_int* dQ;
 
-    char* d_buffer;
+    rocblas_int* hParent;
+    rocblas_int *hWork1, *hWork2, *hWork3;
+
+    char *d_buffer, *h_buffer;
 
     // Constructor
     explicit hipsolverSpHandle()
-        : n(0)
-        , nnzA(0)
+        : h_n(0)
+        , d_n(0)
+        , d_nnzA(0)
+        , d_nnzT(0)
         , d_buffer(nullptr)
+        , h_buffer(nullptr)
     {
     }
 
     // Allocate device memory
-    hipsolverStatus_t malloc_device(int n, int nnzA)
+    hipsolverStatus_t malloc_device(int n, int nnzA, int nnzT)
     {
-        if(n < 0 || nnzA < 0)
+        if(n < 0 || nnzA < 0 || nnzT < 0)
             return HIPSOLVER_STATUS_INVALID_VALUE;
 
-        if(this->n < n || this->nnzA < nnzA)
+        if(this->d_n < n || this->d_nnzA < nnzA || this->d_nnzT < nnzT)
         {
             if(this->d_buffer)
             {
@@ -93,32 +106,89 @@ struct hipsolverSpHandle
 
             size_t size_dPtrA = sizeof(rocblas_int) * (n + 1);
             size_t size_dIndA = sizeof(rocblas_int) * nnzA;
-            size_t size_dValA = sizeof(double) * nnzA;
+
+            size_t size_dPtrT = sizeof(rocblas_int) * (n + 1);
+            size_t size_dIndT = sizeof(rocblas_int) * nnzT;
+            size_t size_dValT = sizeof(double) * nnzT;
 
             size_t size_dQ = sizeof(rocblas_int) * n;
 
             // 128 byte alignment
             size_dPtrA = ((size_dPtrA - 1) / 128 + 1) * 128;
             size_dIndA = ((size_dIndA - 1) / 128 + 1) * 128;
-            size_dValA = ((size_dValA - 1) / 128 + 1) * 128;
+            size_dPtrT = ((size_dPtrT - 1) / 128 + 1) * 128;
+            size_dIndT = ((size_dIndT - 1) / 128 + 1) * 128;
+            size_dValT = ((size_dValT - 1) / 128 + 1) * 128;
             size_dQ    = ((size_dQ - 1) / 128 + 1) * 128;
 
-            size_t size_buffer = size_dPtrA + size_dIndA + size_dValA + size_dQ;
+            size_t size_buffer
+                = size_dPtrA + size_dIndA + size_dPtrT + size_dIndT + size_dValT + size_dQ;
 
             if(hipMalloc(&this->d_buffer, size_buffer) != hipSuccess)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
 
             char* temp_buf;
             this->dPtrA = (rocblas_int*)(temp_buf = this->d_buffer);
+            this->dPtrT = (rocblas_int*)(temp_buf += size_dPtrA);
 
-            this->dIndA = (rocblas_int*)(temp_buf += size_dPtrA);
+            this->dIndA = (rocblas_int*)(temp_buf += size_dPtrT);
+            this->dIndT = (rocblas_int*)(temp_buf += size_dIndA);
 
-            this->dQ = (rocblas_int*)(temp_buf += size_dIndA);
+            this->dQ = (rocblas_int*)(temp_buf += size_dIndT);
 
-            this->dValA = (double*)(temp_buf += size_dQ);
+            this->dValT = (double*)(temp_buf += size_dQ);
 
-            this->n    = n;
-            this->nnzA = nnzA;
+            this->d_n    = n;
+            this->d_nnzT = nnzT;
+        }
+
+        return HIPSOLVER_STATUS_SUCCESS;
+    }
+
+    // Allocate host memory
+    hipsolverStatus_t malloc_host(int n)
+    {
+        if(n < 0)
+            return HIPSOLVER_STATUS_INVALID_VALUE;
+
+        if(this->h_n < n)
+        {
+            if(this->h_buffer)
+            {
+                free(this->h_buffer);
+                this->h_buffer = nullptr;
+            }
+
+            size_t size_hPtrT = sizeof(rocblas_int) * (n + 1);
+
+            size_t size_hParent = sizeof(rocblas_int) * n;
+            size_t size_hWork1  = sizeof(rocblas_int) * n;
+            size_t size_hWork2  = sizeof(rocblas_int) * n;
+            size_t size_hWork3  = sizeof(rocblas_int) * n;
+
+            // 128 byte alignment
+            size_hPtrT   = ((size_hPtrT - 1) / 128 + 1) * 128;
+            size_hParent = ((size_hParent - 1) / 128 + 1) * 128;
+            size_hWork1  = ((size_hWork1 - 1) / 128 + 1) * 128;
+            size_hWork2  = ((size_hWork2 - 1) / 128 + 1) * 128;
+            size_hWork3  = ((size_hWork3 - 1) / 128 + 1) * 128;
+
+            size_t size_buffer
+                = size_hPtrT + size_hParent + size_hWork1 + size_hWork2 + size_hWork3;
+
+            this->h_buffer = (char*)malloc(size_buffer);
+            if(!this->h_buffer)
+                return HIPSOLVER_STATUS_ALLOC_FAILED;
+
+            char* temp_buf;
+            this->hPtrT = (rocblas_int*)(temp_buf = this->h_buffer);
+
+            this->hParent = (rocblas_int*)(temp_buf += size_hPtrT);
+            this->hWork1  = (rocblas_int*)(temp_buf += size_hParent);
+            this->hWork2  = (rocblas_int*)(temp_buf += size_hWork1);
+            this->hWork3  = (rocblas_int*)(temp_buf += size_hWork2);
+
+            this->h_n = n;
         }
 
         return HIPSOLVER_STATUS_SUCCESS;
@@ -127,6 +197,9 @@ struct hipsolverSpHandle
     // Free memory
     void free_all()
     {
+        free(this->h_buffer);
+        this->h_buffer = nullptr;
+
         hipFree(this->d_buffer);
         this->d_buffer = nullptr;
     }
@@ -202,6 +275,58 @@ struct hipsolverSpHandle
         {
             for(int i = 0; i < n; i++)
                 dest_val[i] = (float)val[i];
+        }
+    }
+
+    // Generates the sparsity pattern of T given the sparsity pattern of A, the elimination tree (specified by parent),
+    // and the ordering (specified by new2old)
+    void gen_sparsity_pattern(int               n,
+                              int*              Ap,
+                              int*              Ai,
+                              int*              new2old,
+                              int*              old2new,
+                              int*              parent,
+                              int*              mark,
+                              int*              Tp,
+                              std::vector<int>& Ti)
+    {
+        Tp[0] = 0;
+        Ti.clear();
+        for(int i = 0; i < n; i++)
+        {
+            old2new[new2old[i]] = i;
+            mark[i]             = -1;
+        }
+
+        std::set<int> graph;
+        for(int i = 0; i < n; i++)
+        {
+            int iold = new2old[i];
+            mark[i]  = i;
+
+            auto const kstart = Ap[iold];
+            auto const kend   = Ap[iold + 1];
+            for(int k = kstart; k < kend; k++)
+            {
+
+                int jold = Ai[k];
+                int j    = old2new[jold];
+
+                if(j < i)
+                {
+                    while((0 <= j) && (j < n) && (mark[j] != i))
+                    {
+                        mark[j] = i;
+                        graph.insert(j);
+                        j = parent[j];
+                    }
+                }
+            }
+
+            graph.insert(i);
+            Ti.insert(Ti.end(), graph.begin(), graph.end());
+            Tp[i + 1] = Ti.size();
+            graph.clear();
         }
     }
 #endif
@@ -335,65 +460,86 @@ try
     sp->c_handle.nmethods  = 1; // use 1 reordering method
     sp->c_handle.postorder = false; // no postordering
     sp->c_handle.final_ll  = true; // factorize as LL' not LDL'
+    int ordering;
     switch(reorder)
     {
     case 1:
     case 2:
-        sp->c_handle.method[0].ordering = CHOLMOD_AMD;
+        ordering = CHOLMOD_AMD;
         break;
     case 3:
-        sp->c_handle.method[0].ordering = CHOLMOD_METIS;
+        ordering = CHOLMOD_METIS;
         break;
     default:
-        sp->c_handle.method[0].ordering = CHOLMOD_NATURAL;
+        ordering = CHOLMOD_NATURAL;
     }
+    sp->c_handle.method[0].ordering = ordering;
 
     // set up A
-    float*          sngVal = (float*)malloc(sizeof(float) * nnzA);
     cholmod_sparse* c_A
-        = cholmod_allocate_sparse(n, n, nnzA, true, true, 1, CHOLMOD_REAL, &sp->c_handle);
+        = cholmod_allocate_sparse(n, n, nnzA, true, true, 1, CHOLMOD_PATTERN, &sp->c_handle);
     CHECK_HIP_ERROR(
         hipMemcpy(c_A->p, csrRowPtr, sizeof(rocblas_int) * (n + 1), hipMemcpyDeviceToHost));
     CHECK_HIP_ERROR(
         hipMemcpy(c_A->i, csrColInd, sizeof(rocblas_int) * nnzA, hipMemcpyDeviceToHost));
-    CHECK_HIP_ERROR(hipMemcpy(sngVal, csrVal, sizeof(float) * nnzA, hipMemcpyDeviceToHost));
-    sp->prep_input(indbase, n, nnzA, (int*)c_A->p, (int*)c_A->i, (double*)c_A->x, sngVal);
-    free(sngVal);
+    sp->prep_input(indbase, n, nnzA, (int*)c_A->p, (int*)c_A->i, nullptr, nullptr);
 
     if(tolerance > 0)
         cholmod_drop(tolerance, c_A, &sp->c_handle);
 
-    // factorize A
-    cholmod_factor* c_L    = cholmod_analyze(c_A, &sp->c_handle);
-    int             status = cholmod_factorize(c_A, c_L, &sp->c_handle);
-    if(status != TRUE)
+    // factorize A (symbolic)
+    cholmod_factor* c_L = cholmod_analyze(c_A, &sp->c_handle);
+
+    CHECK_HIPSOLVER_ERROR(sp->malloc_host(n));
+    int status = cholmod_analyze_ordering(c_A,
+                                          ordering,
+                                          (int*)c_L->Perm,
+                                          nullptr,
+                                          0,
+                                          sp->hParent,
+                                          sp->hWork1,
+                                          nullptr,
+                                          sp->hWork2,
+                                          sp->hWork3,
+                                          &sp->c_handle);
+
+    std::vector<int> hIndA;
+    sp->gen_sparsity_pattern(n,
+                             (int*)c_A->p,
+                             (int*)c_A->i,
+                             (int*)c_L->Perm,
+                             sp->hWork1,
+                             sp->hParent,
+                             sp->hWork2,
+                             sp->hPtrT,
+                             hIndA);
+
+    // set up A
+    int *dPtrA, *dIndA;
+    if(indbase == rocsparse_index_base_zero)
     {
-        cholmod_free_sparse(&c_A, &sp->c_handle);
-        cholmod_free_factor(&c_L, &sp->c_handle);
-        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+        // if indices are base zero, can use input arrays
+        CHECK_HIPSOLVER_ERROR(sp->malloc_device(n, 0, hIndA.size()));
+        dPtrA = (int*)csrRowPtr;
+        dIndA = (int*)csrColInd;
     }
-    if(sp->c_handle.status == CHOLMOD_NOT_POSDEF)
+    else
     {
-        *singularity = c_L->minor;
-        cholmod_free_sparse(&c_A, &sp->c_handle);
-        cholmod_free_factor(&c_L, &sp->c_handle);
-        return HIPSOLVER_STATUS_SUCCESS;
+        // if indices are base one, need to use temp arrays and load base zero indices
+        CHECK_HIPSOLVER_ERROR(sp->malloc_device(n, nnzA, hIndA.size()));
+        dPtrA = sp->dPtrA;
+        dIndA = sp->dIndA;
+        CHECK_HIP_ERROR(hipMemcpy(
+            (void*)sp->dPtrA, c_A->p, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
+        CHECK_HIP_ERROR(
+            hipMemcpy((void*)sp->dIndA, c_A->i, sizeof(rocblas_int) * nnzA, hipMemcpyHostToDevice));
     }
 
     // set up T
-    cholmod_sparse* c_TT = cholmod_factor_to_sparse(c_L, &sp->c_handle);
-    cholmod_sparse* c_T  = cholmod_transpose(c_TT, 2, &sp->c_handle);
-    CHECK_HIPSOLVER_ERROR(sp->malloc_device(n, c_T->nzmax));
-    CHECK_HIP_ERROR(
-        hipMemcpy((void*)sp->dPtrA, c_T->p, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
     CHECK_HIP_ERROR(hipMemcpy(
-        (void*)sp->dIndA, c_T->i, sizeof(rocblas_int) * c_T->nzmax, hipMemcpyHostToDevice));
-
-    sngVal = (float*)malloc(sizeof(float) * c_T->nzmax);
-    sp->prep_output(c_T->nzmax, (double*)c_T->x, sngVal);
-    CHECK_HIP_ERROR(
-        hipMemcpy((void*)sp->dValA, sngVal, sizeof(float) * c_T->nzmax, hipMemcpyHostToDevice));
-    free(sngVal);
+        (void*)sp->dPtrT, sp->hPtrT, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(hipMemcpy(
+        (void*)sp->dIndT, hIndA.data(), sizeof(rocblas_int) * hIndA.size(), hipMemcpyHostToDevice));
 
     // set up Q
     CHECK_HIP_ERROR(
@@ -402,31 +548,45 @@ try
     // set up B
     CHECK_HIP_ERROR(hipMemcpy((void*)x, b, sizeof(float) * n, hipMemcpyDeviceToDevice));
 
-    // solve for x
+    // factorize A (numeric)
     CHECK_ROCBLAS_ERROR(rocsolver_set_rfinfo_mode(sp->rfinfo, rocsolver_rfinfo_mode_cholesky));
     CHECK_ROCBLAS_ERROR(rocsolver_scsrrf_analysis(sp->handle,
                                                   n,
                                                   1,
                                                   nnzA,
-                                                  (int*)csrRowPtr,
-                                                  (int*)csrColInd,
+                                                  dPtrA,
+                                                  dIndA,
                                                   (float*)csrVal,
-                                                  c_T->nzmax,
-                                                  sp->dPtrA,
-                                                  sp->dIndA,
-                                                  (float*)sp->dValA,
+                                                  hIndA.size(),
+                                                  sp->dPtrT,
+                                                  sp->dIndT,
+                                                  (float*)sp->dValT,
                                                   nullptr,
                                                   sp->dQ,
                                                   x,
                                                   n,
                                                   sp->rfinfo));
+    CHECK_ROCBLAS_ERROR(rocsolver_scsrrf_refactchol(sp->handle,
+                                                    n,
+                                                    nnzA,
+                                                    dPtrA,
+                                                    dIndA,
+                                                    (float*)csrVal,
+                                                    hIndA.size(),
+                                                    sp->dPtrT,
+                                                    sp->dIndT,
+                                                    (float*)sp->dValT,
+                                                    sp->dQ,
+                                                    sp->rfinfo));
+
+    // solve for x
     CHECK_ROCBLAS_ERROR(rocsolver_scsrrf_solve(sp->handle,
                                                n,
                                                1,
-                                               c_T->nzmax,
-                                               sp->dPtrA,
-                                               sp->dIndA,
-                                               (float*)sp->dValA,
+                                               hIndA.size(),
+                                               sp->dPtrT,
+                                               sp->dIndT,
+                                               (float*)sp->dValT,
                                                nullptr,
                                                sp->dQ,
                                                x,
@@ -435,8 +595,6 @@ try
 
     // free resources
     cholmod_free_sparse(&c_A, &sp->c_handle);
-    cholmod_free_sparse(&c_TT, &sp->c_handle);
-    cholmod_free_sparse(&c_T, &sp->c_handle);
     cholmod_free_factor(&c_L, &sp->c_handle);
 
     return HIPSOLVER_STATUS_SUCCESS;
@@ -492,59 +650,86 @@ try
     sp->c_handle.nmethods  = 1; // use 1 reordering method
     sp->c_handle.postorder = false; // no postordering
     sp->c_handle.final_ll  = true; // factorize as LL' not LDL'
+    int ordering;
     switch(reorder)
     {
     case 1:
     case 2:
-        sp->c_handle.method[0].ordering = CHOLMOD_AMD;
+        ordering = CHOLMOD_AMD;
         break;
     case 3:
-        sp->c_handle.method[0].ordering = CHOLMOD_METIS;
+        ordering = CHOLMOD_METIS;
         break;
     default:
-        sp->c_handle.method[0].ordering = CHOLMOD_NATURAL;
+        ordering = CHOLMOD_NATURAL;
     }
+    sp->c_handle.method[0].ordering = ordering;
 
     // set up A
     cholmod_sparse* c_A
-        = cholmod_allocate_sparse(n, n, nnzA, true, true, 1, CHOLMOD_REAL, &sp->c_handle);
+        = cholmod_allocate_sparse(n, n, nnzA, true, true, 1, CHOLMOD_PATTERN, &sp->c_handle);
     CHECK_HIP_ERROR(
         hipMemcpy(c_A->p, csrRowPtr, sizeof(rocblas_int) * (n + 1), hipMemcpyDeviceToHost));
     CHECK_HIP_ERROR(
         hipMemcpy(c_A->i, csrColInd, sizeof(rocblas_int) * nnzA, hipMemcpyDeviceToHost));
-    CHECK_HIP_ERROR(hipMemcpy(c_A->x, csrVal, sizeof(double) * nnzA, hipMemcpyDeviceToHost));
-    sp->prep_input(indbase, n, nnzA, (int*)c_A->p, (int*)c_A->i, (double*)c_A->x, nullptr);
+    sp->prep_input(indbase, n, nnzA, (int*)c_A->p, (int*)c_A->i, nullptr, nullptr);
 
     if(tolerance > 0)
         cholmod_drop(tolerance, c_A, &sp->c_handle);
 
-    // factorize A
-    cholmod_factor* c_L    = cholmod_analyze(c_A, &sp->c_handle);
-    int             status = cholmod_factorize(c_A, c_L, &sp->c_handle);
-    if(status != TRUE)
+    // factorize A (symbolic)
+    cholmod_factor* c_L = cholmod_analyze(c_A, &sp->c_handle);
+
+    CHECK_HIPSOLVER_ERROR(sp->malloc_host(n));
+    int status = cholmod_analyze_ordering(c_A,
+                                          ordering,
+                                          (int*)c_L->Perm,
+                                          nullptr,
+                                          0,
+                                          sp->hParent,
+                                          sp->hWork1,
+                                          nullptr,
+                                          sp->hWork2,
+                                          sp->hWork3,
+                                          &sp->c_handle);
+
+    std::vector<int> hIndA;
+    sp->gen_sparsity_pattern(n,
+                             (int*)c_A->p,
+                             (int*)c_A->i,
+                             (int*)c_L->Perm,
+                             sp->hWork1,
+                             sp->hParent,
+                             sp->hWork2,
+                             sp->hPtrT,
+                             hIndA);
+
+    // set up A
+    int *dPtrA, *dIndA;
+    if(indbase == rocsparse_index_base_zero)
     {
-        cholmod_free_sparse(&c_A, &sp->c_handle);
-        cholmod_free_factor(&c_L, &sp->c_handle);
-        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+        // if indices are base zero, can use input arrays
+        CHECK_HIPSOLVER_ERROR(sp->malloc_device(n, 0, hIndA.size()));
+        dPtrA = (int*)csrRowPtr;
+        dIndA = (int*)csrColInd;
     }
-    if(sp->c_handle.status == CHOLMOD_NOT_POSDEF)
+    else
     {
-        *singularity = c_L->minor;
-        cholmod_free_sparse(&c_A, &sp->c_handle);
-        cholmod_free_factor(&c_L, &sp->c_handle);
-        return HIPSOLVER_STATUS_SUCCESS;
+        // if indices are base one, need to use temp arrays and load base zero indices
+        CHECK_HIPSOLVER_ERROR(sp->malloc_device(n, nnzA, hIndA.size()));
+        dPtrA = sp->dPtrA;
+        dIndA = sp->dIndA;
+        CHECK_HIP_ERROR(hipMemcpy(
+            (void*)sp->dPtrA, c_A->p, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
+        CHECK_HIP_ERROR(
+            hipMemcpy((void*)sp->dIndA, c_A->i, sizeof(rocblas_int) * nnzA, hipMemcpyHostToDevice));
     }
 
     // set up T
-    cholmod_sparse* c_TT = cholmod_factor_to_sparse(c_L, &sp->c_handle);
-    cholmod_sparse* c_T  = cholmod_transpose(c_TT, 2, &sp->c_handle);
-    CHECK_HIPSOLVER_ERROR(sp->malloc_device(n, c_T->nzmax));
-    CHECK_HIP_ERROR(
-        hipMemcpy((void*)sp->dPtrA, c_T->p, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
     CHECK_HIP_ERROR(hipMemcpy(
-        (void*)sp->dIndA, c_T->i, sizeof(rocblas_int) * c_T->nzmax, hipMemcpyHostToDevice));
-    CHECK_HIP_ERROR(
-        hipMemcpy((void*)sp->dValA, c_T->x, sizeof(double) * c_T->nzmax, hipMemcpyHostToDevice));
+        (void*)sp->dPtrT, sp->hPtrT, sizeof(rocblas_int) * (n + 1), hipMemcpyHostToDevice));
+    CHECK_HIP_ERROR(hipMemcpy(
+        (void*)sp->dIndT, hIndA.data(), sizeof(rocblas_int) * hIndA.size(), hipMemcpyHostToDevice));
 
     // set up Q
     CHECK_HIP_ERROR(
@@ -553,31 +738,45 @@ try
     // set up B
     CHECK_HIP_ERROR(hipMemcpy((void*)x, b, sizeof(double) * n, hipMemcpyDeviceToDevice));
 
-    // solve for x
+    // factorize A (numeric)
     CHECK_ROCBLAS_ERROR(rocsolver_set_rfinfo_mode(sp->rfinfo, rocsolver_rfinfo_mode_cholesky));
     CHECK_ROCBLAS_ERROR(rocsolver_dcsrrf_analysis(sp->handle,
                                                   n,
                                                   1,
                                                   nnzA,
-                                                  (int*)csrRowPtr,
-                                                  (int*)csrColInd,
+                                                  dPtrA,
+                                                  dIndA,
                                                   (double*)csrVal,
-                                                  c_T->nzmax,
-                                                  sp->dPtrA,
-                                                  sp->dIndA,
-                                                  sp->dValA,
+                                                  hIndA.size(),
+                                                  sp->dPtrT,
+                                                  sp->dIndT,
+                                                  sp->dValT,
                                                   nullptr,
                                                   sp->dQ,
                                                   x,
                                                   n,
                                                   sp->rfinfo));
+    CHECK_ROCBLAS_ERROR(rocsolver_dcsrrf_refactchol(sp->handle,
+                                                    n,
+                                                    nnzA,
+                                                    dPtrA,
+                                                    dIndA,
+                                                    (double*)csrVal,
+                                                    hIndA.size(),
+                                                    sp->dPtrT,
+                                                    sp->dIndT,
+                                                    sp->dValT,
+                                                    sp->dQ,
+                                                    sp->rfinfo));
+
+    // solve for x
     CHECK_ROCBLAS_ERROR(rocsolver_dcsrrf_solve(sp->handle,
                                                n,
                                                1,
-                                               c_T->nzmax,
-                                               sp->dPtrA,
-                                               sp->dIndA,
-                                               sp->dValA,
+                                               hIndA.size(),
+                                               sp->dPtrT,
+                                               sp->dIndT,
+                                               sp->dValT,
                                                nullptr,
                                                sp->dQ,
                                                x,
@@ -586,8 +785,6 @@ try
 
     // free resources
     cholmod_free_sparse(&c_A, &sp->c_handle);
-    cholmod_free_sparse(&c_TT, &sp->c_handle);
-    cholmod_free_sparse(&c_T, &sp->c_handle);
     cholmod_free_factor(&c_L, &sp->c_handle);
 
     return HIPSOLVER_STATUS_SUCCESS;

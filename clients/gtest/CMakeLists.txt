@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2024 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -101,9 +101,7 @@ target_include_directories( hipsolver-test
 )
 
 target_link_libraries( hipsolver-test PRIVATE
-  cblas
-  lapack
-  blas
+  ${LAPACK_LIBRARIES}
   hipsolver-common
   clients-common
   GTest::GTest
@@ -138,7 +136,7 @@ if( NOT USE_CUDA )
     target_link_libraries( hipsolver-test PRIVATE -lpthread -lm )
   endif()
 else( )
-  target_compile_definitions( hipsolver-test PRIVATE __HIP_PLATFORM_NVCC__ )
+  target_compile_definitions( hipsolver-test PRIVATE __HIP_PLATFORM_NVIDIA__ )
 
   target_include_directories( hipsolver-test
     PRIVATE
