@@ -13,8 +13,6 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 
 ### Deprecations
 ### Fixes
-### Known Issues
-### Security
 
 ## hipSOLVER 2.1.0 for ROCm 6.1.0
 
