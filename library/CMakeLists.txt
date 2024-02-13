@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2024 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -60,8 +60,9 @@ set( hipsolver_headers_public
   include/hipsolver.h
   include/internal/hipsolver-types.h
   include/internal/hipsolver-functions.h
-  include/internal/hipsolver-compat.h
+  include/internal/hipsolver-dense.h
   include/internal/hipsolver-refactor.h
+  include/internal/hipsolver-sparse.h
   ${PROJECT_BINARY_DIR}/include/hipsolver/internal/hipsolver-version.h
 )
 

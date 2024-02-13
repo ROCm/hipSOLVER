@@ -3,15 +3,15 @@
  * ************************************************************************ */
 
 /*! \file
- *  \brief hipsolver-compat.h provides a compatibility API for users of
+ *  \brief hipsolver-dense.h provides a compatibility API for users of
  *  cuSOLVER wishing to transition to hipSOLVER. Functions in this file
  *  have parameter lists matching those of cuSOLVER, but may suffer from
  *  performance issues when using the rocSOLVER backend. Switching to the
  *  use of functions from hipsolver-functions.h is recommended.
  */
 
-#ifndef HIPSOLVER_COMPAT_H
-#define HIPSOLVER_COMPAT_H
+#ifndef HIPSOLVER_DENSE_H
+#define HIPSOLVER_DENSE_H
 
 #include "hipsolver-types.h"
 
@@ -2672,4 +2672,4 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnZsytrf(hipsolverHandle_t handle,
 }
 #endif
 
-#endif // HIPSOLVER_COMPAT_H
+#endif // HIPSOLVER_DENSE_H

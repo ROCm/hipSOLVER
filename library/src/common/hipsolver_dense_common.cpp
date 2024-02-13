@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
  * ************************************************************************ */
 
 /*! \file
- *  \brief hipsolver_compat_common.cpp provides implementations of the compatibility APIs
+ *  \brief hipsolver_dense_common.cpp provides implementations of the compatibility APIs
  *  that are equivalent for both cuSOLVER and rocSOLVER. These simply call hipSOLVER's
  *  regular APIs.
  */
