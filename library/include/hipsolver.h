@@ -28,6 +28,7 @@
  * result in degraded rocSOLVER performance.
  */
 #include "internal/hipsolver-dense.h"
+#include "internal/hipsolver-dense64.h"
 
 /* Defines functions and types with the hipsolverRf prefix. APIs match those from cuSOLVER.
  */

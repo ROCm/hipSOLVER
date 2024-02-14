@@ -62,6 +62,7 @@ set( hipsolver_headers_public
   include/internal/hipsolver-functions.h
   include/internal/hipsolver-compat.h
   include/internal/hipsolver-dense.h
+  include/internal/hipsolver-dense64.h
   include/internal/hipsolver-refactor.h
   include/internal/hipsolver-sparse.h
   ${PROJECT_BINARY_DIR}/include/hipsolver/internal/hipsolver-version.h
