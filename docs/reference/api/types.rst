@@ -5,7 +5,7 @@
 .. _library_types:
 
 ********************************************************************
-hipSOLVER regular datatypes
+hipSOLVER datatypes
 ********************************************************************
 
 hipSOLVER defines types and enumerations that are internally converted to the corresponding backend

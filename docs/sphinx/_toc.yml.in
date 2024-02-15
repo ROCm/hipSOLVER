@@ -1,19 +1,38 @@
 defaults:
   numbered: False
 root: index
-subtrees:
-- entries:
-  - file: install/install.rst
-    title: Installation
-  - file: how-to/usage.rst
-    title: Using hipSOLVER
-  - file: api/reference.rst
-    title: API Reference
-    subtrees:
-    - entries:
-      - file: api/intro.rst
-      - file: api/index.rst
-      - file: compat-api/index.rst
-      - file: sparse-api/index.rst
-      - file: refactor-api/index.rst
-  - file: license.rst
+entries:
+- file: installation/index.rst
+  entries:
+  - file: installation/install.rst
+- file: howto/index.rst
+  entries:
+  - file: howto/usage.rst      
+- file: reference/index.rst
+  entries:
+  - file: reference/intro.rst
+  - file: reference/api/index.rst
+    entries:
+    - file: reference/api/types.rst
+    - file: reference/api/helpers.rst
+    - file: reference/api/auxiliary.rst
+    - file: reference/api/lapack.rst
+    - file: reference/api/lapacklike.rst
+  - file: reference/compat-api/index.rst
+    entries:
+    - file: reference/compat-api/types.rst
+    - file: reference/compat-api/helpers.rst
+    - file: reference/compat-api/auxiliary.rst
+    - file: reference/compat-api/lapack.rst
+    - file: reference/compat-api/lapacklike.rst
+  - file: reference/sparse-api/index.rst
+    entries:
+    - file: reference/sparse-api/types.rst
+    - file: reference/sparse-api/helpers.rst
+    - file: reference/sparse-api/sparse.rst
+  - file: reference/refactor-api/index.rst
+    entries:
+    - file: reference/refactor-api/types.rst
+    - file: reference/refactor-api/helpers.rst
+    - file: reference/refactor-api/refactor.rst
+- file: license.rst

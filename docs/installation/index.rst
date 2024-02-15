@@ -2,14 +2,12 @@
   :description: hipSOLVER documentation and API reference library
   :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
-.. _api_reference:
+.. _Installation:
 
 ********************************************************************
-hipSOLVER API reference
+Installation
 ********************************************************************
 
-* :ref:`api-intro`
-* :ref:`library_api`
-* :ref:`library_compat` 
-* :ref:`library_sparse` 
-* :ref:`library_refactor` 
+This section provides a guide to install hipSOLVER in different systems. 
+
+* :ref:`install-linux`
