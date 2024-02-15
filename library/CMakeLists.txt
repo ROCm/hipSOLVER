@@ -60,6 +60,7 @@ set( hipsolver_headers_public
   include/hipsolver.h
   include/internal/hipsolver-types.h
   include/internal/hipsolver-functions.h
+  include/internal/hipsolver-compat.h
   include/internal/hipsolver-dense.h
   include/internal/hipsolver-refactor.h
   include/internal/hipsolver-sparse.h
