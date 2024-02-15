@@ -4,9 +4,9 @@
 
 .. _api_helpers:
 
-******************
-Helper functions
-******************
+***************************
+hipSOLVER helper functions
+***************************
 
 These are helper functions that control aspects of the hipSOLVER library. They are divided 
 into the following categories:

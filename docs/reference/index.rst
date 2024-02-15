@@ -2,10 +2,17 @@
   :description: hipSOLVER documentation and API reference library
   :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
-.. _ug_index:
+.. _reference:
 
 ********************************************************************
-hipSOLVER User Guide
+Reference
 ********************************************************************
 
-* :ref:`usage_label`
+This section provides technical descriptions and important information about 
+the different hipSOLVER APIs and library components.
+
+* :ref:`api-intro`
+* :ref:`library_api`
+* :ref:`library_compat` 
+* :ref:`library_sparse` 
+* :ref:`library_refactor` 
