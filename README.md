@@ -11,7 +11,7 @@ hipSOLVER supports [rocSOLVER](https://github.com/ROCmSoftwarePlatform/rocSOLVER
 ## Documentation
 
 Documentation for hipSOLVER is available at
-[https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/](https://hipsolver.readthedocs.io/en/latest/).
+[https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/).
 
 To build documentation locally, use the following code:
 
@@ -31,7 +31,15 @@ To download the hipSOLVER source code, clone this repository using:
 git clone https://github.com/ROCmSoftwarePlatform/hipSOLVER.git
 ```
 
-To install hipSOLVER, you must have cuSOLVER or rocSOLVER and rocBLAS installed on your system.
+To install hipSOLVER, you must have must install these dependencies:
+
+* rocSOLVER
+  *rocBLAS
+    * Tensile
+  * rocSPARSE
+    * rocPRIM
+* SuiteSparse
+
 Once these are installed, use the following commands to build and install hipSOLVER:
 
 ```bash
