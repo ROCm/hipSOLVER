@@ -26,8 +26,8 @@ Documentation for hipSOLVER is available at
   only)
   * Use the `BUILD_WITH_SPARSE` CMake option to enable functionality for the `hipsolverSp` API (on by
     default)
-* hipSPARSE is now an optional dependency for `hipsolver-test`. Use the `BUILD_WITH_SPARSE` CMake
-  option to enable hipsolverSp API tests (on by default)
+* hipSPARSE is now an optional dependency for `hipsolver-test`.
+  * Use the `BUILD_WITH_SPARSE` CMake option to enable hipsolverSp API tests (on by default)
 
 ### Changes
 
@@ -50,13 +50,11 @@ Documentation for hipSOLVER is available at
 * The `hipsolverOperation_t` type is now an alias of `hipblasOperation_t`
 * The `hipsolverFillMode_t` type is now an alias of `hipblasFillMode_t`
 * The `hipsolverSideMode_t` type is now an alias of `hipblasSideMode_t`
-* Relax array length requirements for GESVDA
 
 ### Fixes
 
 * Tests for hipSOLVER info updates in `ORGBR/UNGBR`, `ORGQR/UNGQR`, `ORGTR/UNGTR`,
   `ORMQR/UNMQR`, and `ORMTR/UNMTR`
-* Incorrect singular vectors returned from GESVDA
 
 ## hipSOLVER 1.8.2 for ROCm 5.7.1
 
@@ -248,7 +246,7 @@ Documentation for hipSOLVER is available at
     * `hipsolverSpotri_bufferSize`, `hipsolverDpotri_bufferSize`, `hipsolverCpotri_bufferSize`, and
       `hipsolverZpotri_bufferSize`
   * `orgbr/ungbr`
-    * `hipsolverSorgbr`, `hipsolverDorgbr`, `hipsolverCungbr`, `hipsolverZungbr`
+    * `hipsolverSorgbr`, `hipsolverDorgbr`, `hipsolverCungbr`, and `hipsolverZungbr`
     * `hipsolverSorgbr_bufferSize`, `hipsolverDorgbr_bufferSize`, `hipsolverCungbr_bufferSize`, and
       `hipsolverZungbr_bufferSize`
   * `orgqr/ungqr`
@@ -281,7 +279,8 @@ Documentation for hipSOLVER is available at
       `hipsolverZgesvd_bufferSize`
   * `getrs`
     * `hipsolverSgetrs`, `hipsolverDgetrs`, `hipsolverCgetrs`, and `hipsolverZgetrs`
-    * `hipsolverSgetrs_bufferSize, hipsolverDgetrs_bufferSize, hipsolverCgetrs_bufferSize, hipsolverZgetrs_bufferSize
+    * `hipsolverSgetrs_bufferSize`, `hipsolverDgetrs_bufferSize`, `hipsolverCgetrs_bufferSize`, and
+      `hipsolverZgetrs_bufferSize`
   * `potrf`
     * `hipsolverSpotrf`, `hipsolverDpotrf`, `hipsolverCpotrf`, and `hipsolverZpotrf`
     * `hipsolverSpotrf_bufferSize`, `hipsolverDpotrf_bufferSize`, `hipsolverCpotrf_bufferSize`, and
@@ -322,6 +321,3 @@ Documentation for hipSOLVER is available at
 * Removed unused `HIPSOLVER_FILL_MODE_FULL` enum value.
 * Removed `hipsolverComplex` and `hipsolverDoubleComplex` from the library; use `hipFloatComplex`
   and `hipDoubleComplex` instead
-### Removed
-- Removed unused HIPSOLVER_FILL_MODE_FULL enum value.
-- Removed hipsolverComplex and hipsolverDoubleComplex from the library. Use hipFloatComplex and hipDoubleComplex instead.
