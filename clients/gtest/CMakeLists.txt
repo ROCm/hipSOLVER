@@ -82,7 +82,11 @@ set(hipsolverRf_test_source
   csrrf_solve_gtest.cpp
 )
 
-add_executable( hipsolver-test ${hipsolverDn_test_source} ${hipsolverRf_test_source} )
+set(others_test_source
+  params_gtest.cpp
+)
+
+add_executable( hipsolver-test ${others_test_source} ${hipsolverDn_test_source} ${hipsolverRf_test_source} )
 
 target_include_directories( hipsolver-test
   PRIVATE
