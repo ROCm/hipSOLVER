@@ -1,241 +1,323 @@
-# Change Log for hipSOLVER
+# Changelog for hipSOLVER
 
-Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html).
-
+Documentation for hipSOLVER is available at
+[https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/).
 
 ## (Unreleased) hipSOLVER
-### Added
-### Optimized
-### Changed
-- The numerical factorization in csrlsvchol will now be performed on the GPU. (The symbolic factorization is still performed on the CPU.)
 
-### Deprecated
-### Removed
-### Fixed
-### Known Issues
-### Security
+### Changes
 
+* The numerical factorization in `csrlsvchol` will now be performed on the GPU (symbolic factorization
+  is still performed on the CPU)
+
+### Deprecations
+### Fixes
 
 ## hipSOLVER 2.1.0 for ROCm 6.1.0
-### Added
-- Added compatibility API with hipsolverSp prefix
-- Added compatibility-only functions
-  - csrlsvchol
-    - hipsolverSpScsrlsvcholHost, hipsolverSpDcsrlsvcholHost
-    - hipsolverSpScsrlsvchol, hipsolverSpDcsrlsvchol
-- Added rocSPARSE and SuiteSparse as optional dependencies to hipSOLVER (rocSOLVER backend only). Use the `BUILD_WITH_SPARSE` CMake option to enable
-  functionality for the hipsolverSp API (on by default).
-- Added hipSPARSE as an optional dependency to hipsolver-test. Use the `BUILD_WITH_SPARSE` CMake option to enable tests of the hipsolverSp API (on by default).
 
-### Changed
-- Relax array length requirements for GESVDA.
+### Additions
 
-### Fixed
-- Fixed incorrect singular vectors returned from GESVDA.
+* Compatibility API with `hipsolverSp` prefix
+* Compatibility-only functions:
+  * `csrlsvchol`:
+    * `hipsolverSpScsrlsvcholHost`, `hipsolverSpDcsrlsvcholHost`
+    * `hipsolverSpScsrlsvchol`, `hipsolverSpDcsrlsvchol`
+* rocSPARSE and SuiteSparse are now optional dependencies for hipSOLVER (rocSOLVER backend
+  only)
+  * Use the `BUILD_WITH_SPARSE` CMake option to enable functionality for the `hipsolverSp` API (on by
+    default)
+* hipSPARSE is now an optional dependency for `hipsolver-test`.
+  * Use the `BUILD_WITH_SPARSE` CMake option to enable hipsolverSp API tests (on by default)
 
+### Changes
+
+* Relax array length requirements for GESVDA
+
+### Fixes
+
+* Incorrect singular vectors returned from GESVDA
 
 ## hipSOLVER 2.0.0 for ROCm 6.0.0
-### Added
-- Added hipBLAS as an optional dependency to hipsolver-test. Use the `BUILD_HIPBLAS_TESTS` CMake option to test compatibility between hipSOLVER and hipBLAS.
 
-### Changed
-- Types hipsolverOperation_t, hipsolverFillMode_t, and hipsolverSideMode_t are now aliases of hipblasOperation_t, hipblasFillMode_t, and hipblasSideMode_t.
+### Additions
 
-### Fixed
-- Fixed tests for hipsolver info updates in ORGBR/UNGBR, ORGQR/UNGQR,
-  ORGTR/UNGTR, ORMQR/UNMQR, and ORMTR/UNMTR.
+* Added hipBLAS as an optional dependency to `hipsolver-test`
+  * You can use the `BUILD_HIPBLAS_TESTS` CMake option to test the compatibility between hipSOLVER
+    and hipBLAS
 
+### Changes
+
+* The `hipsolverOperation_t` type is now an alias of `hipblasOperation_t`
+* The `hipsolverFillMode_t` type is now an alias of `hipblasFillMode_t`
+* The `hipsolverSideMode_t` type is now an alias of `hipblasSideMode_t`
+
+### Fixes
+
+* Tests for hipSOLVER info updates in `ORGBR/UNGBR`, `ORGQR/UNGQR`, `ORGTR/UNGTR`,
+  `ORMQR/UNMQR`, and `ORMTR/UNMTR`
 
 ## hipSOLVER 1.8.2 for ROCm 5.7.1
-### Fixed
-- Fixed conflicts between the hipsolver-dev and -asan packages by excluding
-  hipsolver_module.f90 from the latter
 
+### Fixes
+
+* Excluded `hipsolver_module.f90` from `hipsolver-asan` to resolve conflicts between the
+  `hipsolver-dev` and `hipsolver-asan` packages
 
 ## hipSOLVER 1.8.1 for ROCm 5.7.0
-### Changed
-- Changed hipsolver-test sparse input data search paths to be relative to the test executable
 
+### Changes
+
+* Changed `hipsolver-test` sparse input data search paths to be relative to the test executable
 
 ## hipSOLVER 1.8.0 for ROCm 5.6.0
-### Added
-- Added compatibility API with hipsolverRf prefix
 
+### Additions
+
+* Added
+  [`hipsolverRf*`](https://rocm.docs.amd.com/projects/hipSOLVER/en/docs-5.6.1/userguide/usage.html#porting-cusolver-applications-to-hipsolver)
+  APIs for compatibility
 
 ## hipSOLVER 1.7.0 for ROCm 5.5.0
-### Added
-- Added functions
-  - gesvdj
-    - hipsolverSgesvdj_bufferSize, hipsolverDgesvdj_bufferSize, hipsolverCgesvdj_bufferSize, hipsolverZgesvdj_bufferSize
-    - hipsolverSgesvdj, hipsolverDgesvdj, hipsolverCgesvdj, hipsolverZgesvdj
-  - gesvdjBatched
-    - hipsolverSgesvdjBatched_bufferSize, hipsolverDgesvdjBatched_bufferSize, hipsolverCgesvdjBatched_bufferSize, hipsolverZgesvdjBatched_bufferSize
-    - hipsolverSgesvdjBatched, hipsolverDgesvdjBatched, hipsolverCgesvdjBatched, hipsolverZgesvdjBatched
 
+### Additions
+
+* Added the following functions:
+  * `gesvdj`
+    * `hipsolverSgesvdj`, `hipsolverDgesvdj`, `hipsolverCgesvdj`, and `hipsolverZgesvdj`
+    * `hipsolverSgesvdj_bufferSize`, `hipsolverDgesvdj_bufferSize`, `hipsolverCgesvdj_bufferSize`, and
+      `hipsolverZgesvdj_bufferSize`
+  * `gesvdjBatched`
+    * `hipsolverSgesvdjBatched`, `hipsolverDgesvdjBatched`, `hipsolverCgesvdjBatched`, and `hipsolverZgesvdjBatched`
+    * `hipsolverSgesvdjBatched_bufferSize`, `hipsolverDgesvdjBatched_bufferSize`, `hipsolverCgesvdjBatched_bufferSize`, and `hipsolverZgesvdjBatched_bufferSize`
 
 ## hipSOLVER 1.6.0 for ROCm 5.4.0
-### Added
-- Added compatibility-only functions
-  - gesvdaStridedBatched
-    - hipsolverDnSgesvdaStridedBatched_bufferSize, hipsolverDnDgesvdaStridedBatched_bufferSize, hipsolverDnCgesvdaStridedBatched_bufferSize, hipsolverDnZgesvdaStridedBatched_bufferSize
-    - hipsolverDnSgesvdaStridedBatched, hipsolverDnDgesvdaStridedBatched, hipsolverDnCgesvdaStridedBatched, hipsolverDnZgesvdaStridedBatched
 
+### Additions
+
+* Added the following compatibility-only functions:
+  * `gesvdaStridedBatched`
+    * `hipsolverDnSgesvdaStridedBatched`, `hipsolverDnDgesvdaStridedBatched`,
+      `hipsolverDnCgesvdaStridedBatched`, and `hipsolverDnZgesvdaStridedBatched`
+    * `hipsolverDnSgesvdaStridedBatched_bufferSize`, `hipsolverDnDgesvdaStridedBatched_bufferSize`,
+      `hipsolverDnCgesvdaStridedBatched_bufferSize`, and
+      `hipsolverDnZgesvdaStridedBatched_bufferSize`
 
 ## hipSOLVER 1.5.0 for ROCm 5.3.0
-### Added
-- Added functions
-  - syevj
-    - hipsolverSsyevj_bufferSize, hipsolverDsyevj_bufferSize, hipsolverCheevj_bufferSize, hipsolverZheevj_bufferSize
-    - hipsolverSsyevj, hipsolverDsyevj, hipsolverCheevj, hipsolverZheevj
-  - syevjBatched
-    - hipsolverSsyevjBatched_bufferSize, hipsolverDsyevjBatched_bufferSize, hipsolverCheevjBatched_bufferSize, hipsolverZheevjBatched_bufferSize
-    - hipsolverSsyevjBatched, hipsolverDsyevjBatched, hipsolverCheevjBatched, hipsolverZheevjBatched
-  - sygvj
-    - hipsolverSsygvj_bufferSize, hipsolverDsygvj_bufferSize, hipsolverChegvj_bufferSize, hipsolverZhegvj_bufferSize
-    - hipsolverSsygvj, hipsolverDsygvj, hipsolverChegvj, hipsolverZhegvj
-- Added compatibility-only functions
-  - syevdx/heevdx
-    - hipsolverDnSsyevdx_bufferSize, hipsolverDnDsyevdx_bufferSize, hipsolverDnCheevdx_bufferSize, hipsolverDnZheevdx_bufferSize
-    - hipsolverDnSsyevdx, hipsolverDnDsyevdx, hipsolverDnCheevdx, hipsolverDnZheevdx
-  - sygvdx/hegvdx
-    - hipsolverDnSsygvdx_bufferSize, hipsolverDnDsygvdx_bufferSize, hipsolverDnChegvdx_bufferSize, hipsolverDnZhegvdx_bufferSize
-    - hipsolverDnSsygvdx, hipsolverDnDsygvdx, hipsolverDnChegvdx, hipsolverDnZhegvdx
-- Added --mem_query option to hipsolver-bench, which will print the amount of device memory workspace required by the function.
 
-### Changed
-- The rocSOLVER backend will now set `info` to zero if rocSOLVER does not reference `info`. (Applies to orgbr/ungbr, orgqr/ungqr, orgtr/ungtr, ormqr/unmqr, ormtr/unmtr, gebrd, geqrf, getrs, potrs, and sytrd/hetrd).
-- gesvdj will no longer require extra workspace to transpose `V` when `jobz` is `HIPSOLVER_EIG_MODE_VECTOR` and `econ` is 1.
+### Additions
 
-### Fixed
-- Fixed Fortran return value declarations within hipsolver_module.f90
-- Fixed gesvdj_bufferSize returning `HIPSOLVER_STATUS_INVALID_VALUE` when `jobz` is `HIPSOLVER_EIG_MODE_NOVECTOR` and 1 <= `ldv` < `n`
-- Fixed gesvdj returning `HIPSOLVER_STATUS_INVALID_VALUE` when `jobz` is `HIPSOLVER_EIG_MODE_VECTOR`, `econ` is 1, and `m` < `n`
+* Added the following functions:
+  * `syevj`
+    * `hipsolverSsyevj`, `hipsolverDsyevj`, `hipsolverCheevj`, and `hipsolverZheevj`
+    * `hipsolverSsyevj_bufferSize`, `hipsolverDsyevj_bufferSize`, `hipsolverCheevj_bufferSize`, and
+      `hipsolverZheevj_bufferSize`
+  * `syevjBatched`
+    * `hipsolverSsyevjBatched`, `hipsolverDsyevjBatched`, `hipsolverCheevjBatched`, and
+      `hipsolverZheevjBatched`
+    * `hipsolverSsyevjBatched_bufferSize`, `hipsolverDsyevjBatched_bufferSize`,
+      `hipsolverCheevjBatched_bufferSize`, and `hipsolverZheevjBatched_bufferSize`
+  * `sygvj`
+    * `hipsolverSsygvj`, `hipsolverDsygvj`, `hipsolverChegvj`, and `hipsolverZhegvj`
+    * `hipsolverSsygvj_bufferSize`, `hipsolverDsygvj_bufferSize`, `hipsolverChegvj_bufferSize`, and
+      `hipsolverZhegvj_bufferSize`
+* Added the following compatibility-only functions:
+  * `syevdx/heevdx`
+    * `hipsolverDnSsyevdx`, `hipsolverDnDsyevdx`, `hipsolverDnCheevdx`, and `hipsolverDnZheevdx`
+    * `hipsolverDnSsyevdx_bufferSize`, `hipsolverDnDsyevdx_bufferSize`,
+      `hipsolverDnCheevdx_bufferSize`, and `hipsolverDnZheevdx_bufferSize`
+  * `sygvdx/hegvdx`
+    * `hipsolverDnSsygvdx`, `hipsolverDnDsygvdx`, `hipsolverDnChegvdx`, and `hipsolverDnZhegvdx`
+    * `hipsolverDnSsygvdx_bufferSize`, `hipsolverDnDsygvdx_bufferSize`,
+      `hipsolverDnChegvdx_bufferSize`, and `hipsolverDnZhegvdx_bufferSize`
+* Added the `--mem_query` option to `hipsolver-bench`, which prints the amount of device memory
+  workspace required by the function
 
+### Changes
+
+* The rocSOLVER backend now sets `info` to zero if rocSOLVER doesn't reference `info` (this applies to:
+  `orgbr`/`ungbr`, `orgqr`/`ungqr`, `orgtr`/`ungtr`, `ormqr`/`unmqr`, `ormtr`/`unmtr`, `gebrd`, `geqrf`,
+  `getrs`, `potrs`, and `sytrd`/`hetrd`)
+* `gesvdj` no longer requires extra workspace to transpose `V` when `jobz` is
+  `HIPSOLVER_EIG_MODE_VECTOR` and `econ` is 1
+
+### Fixes
+
+* Fixed Fortran return value declarations within `hipsolver_module.f90`
+* Fixed `gesvdj_bufferSize` returning `HIPSOLVER_STATUS_INVALID_VALUE` when `jobz` is
+  `HIPSOLVER_EIG_MODE_NOVECTOR` and 1 <= `ldv` < `n`
+* Fixed `gesvdj` returning `HIPSOLVER_STATUS_INVALID_VALUE` when `jobz` is
+  `HIPSOLVER_EIG_MODE_VECTOR`, `econ` is 1, and `m` < `n`
 
 ## hipSOLVER 1.4.0 for ROCm 5.2.0
-### Added
-- Package generation for test and benchmark executables on all supported OSes using CPack.
-- File/Folder Reorg
-  - Added File/Folder Reorg Changes with backward compatibility support using ROCM-CMAKE wrapper functions.
 
-### Fixed
-- Fixed the ReadTheDocs documentation generation.
+### Additions
 
+* Package generation for test and benchmark executables on all supported operating systems using
+  CPack
+* File/folder reorganization with backward compatibility support using ROCm-CMake wrapper functions
+
+### Fixes
+
+* Fixed the *ReadTheDocs* documentation generation.
 
 ## hipSOLVER 1.3.0 for ROCm 5.1.0
-### Added
-- Added functions
-  - gels
-    - hipsolverSSgels_bufferSize, hipsolverDDgels_bufferSize, hipsolverCCgels_bufferSize, hipsolverZZgels_bufferSize
-    - hipsolverSSgels, hipsolverDDgels, hipsolverCCgels, hipsolverZZgels
-- Added library version and device information to hipsolver-test output.
-- Added compatibility API with hipsolverDn prefix.
-- Added compatibility-only functions
-  - gesvdj
-    - hipsolverDnSgesvdj_bufferSize, hipsolverDnDgesvdj_bufferSize, hipsolverDnCgesvdj_bufferSize, hipsolverDnZgesvdj_bufferSize
-    - hipsolverDnSgesvdj, hipsolverDnDgesvdj, hipsolverDnCgesvdj, hipsolverDnZgesvdj
-  - gesvdjBatched
-    - hipsolverDnSgesvdjBatched_bufferSize, hipsolverDnDgesvdjBatched_bufferSize, hipsolverDnCgesvdjBatched_bufferSize, hipsolverDnZgesvdjBatched_bufferSize
-    - hipsolverDnSgesvdjBatched, hipsolverDnDgesvdjBatched, hipsolverDnCgesvdjBatched, hipsolverDnZgesvdjBatched
-  - syevj
-    - hipsolverDnSsyevj_bufferSize, hipsolverDnDsyevj_bufferSize, hipsolverDnCheevj_bufferSize, hipsolverDnZheevj_bufferSize
-    - hipsolverDnSsyevj, hipsolverDnDsyevj, hipsolverDnCheevj, hipsolverDnZheevj
-  - syevjBatched
-    - hipsolverDnSsyevjBatched_bufferSize, hipsolverDnDsyevjBatched_bufferSize, hipsolverDnCheevjBatched_bufferSize, hipsolverDnZheevjBatched_bufferSize
-    - hipsolverDnSsyevjBatched, hipsolverDnDsyevjBatched, hipsolverDnCheevjBatched, hipsolverDnZheevjBatched
-  - sygvj
-    - hipsolverDnSsygvj_bufferSize, hipsolverDnDsygvj_bufferSize, hipsolverDnChegvj_bufferSize, hipsolverDnZhegvj_bufferSize
-    - hipsolverDnSsygvj, hipsolverDnDsygvj, hipsolverDnChegvj, hipsolverDnZhegvj
 
-### Changed
-- The rocSOLVER backend now allows hipsolverXXgels and hipsolverXXgesv to be called in-place when B == X.
-- The rocSOLVER backend now allows rwork to be passed as a null pointer to hipsolverXgesvd.
+### Additions
 
-### Fixed
-- bufferSize functions will now return HIPSOLVER_STATUS_NOT_INITIALIZED instead of HIPSOLVER_STATUS_INVALID_VALUE when both handle and lwork are null.
-- Fixed rare memory allocation failure in syevd/heevd and sygvd/hegvd caused by improper workspace array allocation outside of rocSOLVER.
+* Added the following functions:
+  * `gels`
+    * `hipsolverSSgels`, `hipsolverDDgels`, `hipsolverCCgels`, and `hipsolverZZgels`
+    * `hipsolverSSgels_bufferSize`, `hipsolverDDgels_bufferSize`, `hipsolverCCgels_bufferSize`, and
+      `hipsolverZZgels_bufferSize`
+* Added library version and device information to `hipsolver-test` output
+* Added compatibility APIs with the `hipsolverDn` prefix
+* Added compatibility-only functions
+  * `gesvdj`
+    * `hipsolverDnSgesvdj`, `hipsolverDnDgesvdj`, `hipsolverDnCgesvdj`, and `hipsolverDnZgesvdj`
+    * `hipsolverDnSgesvdj_bufferSize`, `hipsolverDnDgesvdj_bufferSize`, `hipsolverDnCgesvdj_bufferSize`,
+      and `hipsolverDnZgesvdj_bufferSize`
+  * `gesvdjBatched`
+    * `hipsolverDnSgesvdjBatched`, `hipsolverDnDgesvdjBatched`, `hipsolverDnCgesvdjBatched`, and
+      `hipsolverDnZgesvdjBatched`
+    * `hipsolverDnSgesvdjBatched_bufferSize`,` hipsolverDnDgesvdjBatched_bufferSize`,
+      `hipsolverDnCgesvdjBatched_bufferSize`, and `hipsolverDnZgesvdjBatched_bufferSize`
+  * `syevj`
+    * `hipsolverDnSsyevj`, `hipsolverDnDsyevj`, `hipsolverDnCheevj`, and `hipsolverDnZheevj`
+    * `hipsolverDnSsyevj_bufferSize`, `hipsolverDnDsyevj_bufferSize`, `hipsolverDnCheevj_bufferSize`, and
+      `hipsolverDnZheevj_bufferSize`
+  * `syevjBatched`
+    * `hipsolverDnSsyevjBatched`, `hipsolverDnDsyevjBatched`, `hipsolverDnCheevjBatched`, and
+      `hipsolverDnZheevjBatched`
+    * `hipsolverDnSsyevjBatched_bufferSize`, `hipsolverDnDsyevjBatched_bufferSize`,
+      `hipsolverDnCheevjBatched_bufferSize`, and `hipsolverDnZheevjBatched_bufferSize`
+  * `sygvj`
+    * `hipsolverDnSsygv`j, `hipsolverDnDsygvj`, `hipsolverDnChegvj`, and `hipsolverDnZhegvj`
+    * `hipsolverDnSsygvj_bufferSize`, `hipsolverDnDsygvj_bufferSize`, `hipsolverDnChegvj_bufferSize`, and
+      `hipsolverDnZhegvj_bufferSize`
 
+### Changes
+
+* The rocSOLVER backend now allows `hipsolverXXgels` and `hipsolverXXgesv` to be called in-place
+  when B == X
+* The rocSOLVER backend now allows `rwork` to be passed as a null pointer to `hipsolverXgesvd`
+
+### Fixes
+
+* `bufferSize` functions will now return `HIPSOLVER_STATUS_NOT_INITIALIZED` instead of
+  `HIPSOLVER_STATUS_INVALID_VALUE` when both handle and lwork are null
+* Fixed rare memory allocation failure in `syevd`/`heevd` and `sygvd`/`hegvd` caused by improper
+  workspace array allocation outside of rocSOLVER.
 
 ## hipSOLVER 1.2.0 for ROCm 5.0.0
-### Added
-- Added functions
-  - sytrf
-    - hipsolverSsytrf_bufferSize, hipsolverDsytrf_bufferSize, hipsolverCsytrf_bufferSize, hipsolverZsytrf_bufferSize
-    - hipsolverSsytrf, hipsolverDsytrf, hipsolverCsytrf, hipsolverZsytrf
 
-### Fixed
-- Fixed use of incorrect `HIP_PATH` when building from source (#40).
-  Thanks [@jakub329homola](https://github.com/jakub329homola)!
+### Additions
 
+* Added functions
+  * `sytrf`
+    * `hipsolverSsytrf`, `hipsolverDsytrf`, `hipsolverCsytrf`, and `hipsolverZsytrf`
+    * `hipsolverSsytrf_bufferSize`, `hipsolverDsytrf_bufferSize`, `hipsolverCsytrf_bufferSize`, and
+      `hipsolverZsytrf_bufferSize`
+
+### Fixes
+
+* Fixed use of incorrect `HIP_PATH` when building from source
+  ([GitHub issue #40](https://github.com/ROCmSoftwarePlatform/hipSOLVER/issues/40)).
 
 ## hipSOLVER 1.1.0 for ROCm 4.5.0
-### Added
-- Added functions
-  - gesv
-    - hipsolverSSgesv_bufferSize, hipsolverDDgesv_bufferSize, hipsolverCCgesv_bufferSize, hipsolverZZgesv_bufferSize
-    - hipsolverSSgesv, hipsolverDDgesv, hipsolverCCgesv, hipsolverZZgesv
-  - potrs
-    - hipsolverSpotrs_bufferSize, hipsolverDpotrs_bufferSize, hipsolverCpotrs_bufferSize, hipsolverZpotrs_bufferSize
-    - hipsolverSpotrs, hipsolverDpotrs, hipsolverCpotrs, hipsolverZpotrs
-  - potrsBatched
-    - hipsolverSpotrsBatched_bufferSize, hipsolverDpotrsBatched_bufferSize, hipsolverCpotrsBatched_bufferSize, hipsolverZpotrsBatched_bufferSize
-    - hipsolverSpotrsBatched, hipsolverDpotrsBatched, hipsolverCpotrsBatched, hipsolverZpotrsBatched
-  - potri
-    - hipsolverSpotri_bufferSize, hipsolverDpotri_bufferSize, hipsolverCpotri_bufferSize, hipsolverZpotri_bufferSize
-    - hipsolverSpotri, hipsolverDpotri, hipsolverCpotri, hipsolverZpotri
-  - orgbr/ungbr
-    - hipsolverSorgbr_bufferSize, hipsolverDorgbr_bufferSize, hipsolverCungbr_bufferSize, hipsolverZungbr_bufferSize
-    - hipsolverSorgbr, hipsolverDorgbr, hipsolverCungbr, hipsolverZungbr
-  - orgqr/ungqr
-    - hipsolverSorgqr_bufferSize, hipsolverDorgqr_bufferSize, hipsolverCungqr_bufferSize, hipsolverZungqr_bufferSize
-    - hipsolverSorgqr, hipsolverDorgqr, hipsolverCungqr, hipsolverZungqr
-  - orgtr/ungtr
-    - hipsolverSorgtr_bufferSize, hipsolverDorgtr_bufferSize, hipsolverCungtr_bufferSize, hipsolverZungtr_bufferSize
-    - hipsolverSorgtr, hipsolverDorgtr, hipsolverCungtr, hipsolverZungtr
-  - ormqr/unmqr
-    - hipsolverSormqr_bufferSize, hipsolverDormqr_bufferSize, hipsolverCunmqr_bufferSize, hipsolverZunmqr_bufferSize
-    - hipsolverSormqr, hipsolverDormqr, hipsolverCunmqr, hipsolverZunmqr
-  - ormtr/unmtr
-    - hipsolverSormtr_bufferSize, hipsolverDormtr_bufferSize, hipsolverCunmtr_bufferSize, hipsolverZunmtr_bufferSize
-    - hipsolverSormtr, hipsolverDormtr, hipsolverCunmtr, hipsolverZunmtr
-  - gebrd
-    - hipsolverSgebrd_bufferSize, hipsolverDgebrd_bufferSize, hipsolverCgebrd_bufferSize, hipsolverZgebrd_bufferSize
-    - hipsolverSgebrd, hipsolverDgebrd, hipsolverCgebrd, hipsolverZgebrd
-  - geqrf
-    - hipsolverSgeqrf_bufferSize, hipsolverDgeqrf_bufferSize, hipsolverCgeqrf_bufferSize, hipsolverZgeqrf_bufferSize
-    - hipsolverSgeqrf, hipsolverDgeqrf, hipsolverCgeqrf, hipsolverZgeqrf
-  - gesvd
-    - hipsolverSgesvd_bufferSize, hipsolverDgesvd_bufferSize, hipsolverCgesvd_bufferSize, hipsolverZgesvd_bufferSize
-    - hipsolverSgesvd, hipsolverDgesvd, hipsolverCgesvd, hipsolverZgesvd
-  - getrs
-    - hipsolverSgetrs_bufferSize, hipsolverDgetrs_bufferSize, hipsolverCgetrs_bufferSize, hipsolverZgetrs_bufferSize
-    - hipsolverSgetrs, hipsolverDgetrs, hipsolverCgetrs, hipsolverZgetrs
-  - potrf
-    - hipsolverSpotrf_bufferSize, hipsolverDpotrf_bufferSize, hipsolverCpotrf_bufferSize, hipsolverZpotrf_bufferSize
-    - hipsolverSpotrf, hipsolverDpotrf, hipsolverCpotrf, hipsolverZpotrf
-  - potrfBatched
-    - hipsolverSpotrfBatched_bufferSize, hipsolverDpotrfBatched_bufferSize, hipsolverCpotrfBatched_bufferSize, hipsolverZpotrfBatched_bufferSize
-    - hipsolverSpotrfBatched, hipsolverDpotrfBatched, hipsolverCpotrfBatched, hipsolverZpotrfBatched
-  - syevd/heevd
-    - hipsolverSsyevd_bufferSize, hipsolverDsyevd_bufferSize, hipsolverCheevd_bufferSize, hipsolverZheevd_bufferSize
-    - hipsolverSsyevd, hipsolverDsyevd, hipsolverCheevd, hipsolverZheevd
-  - sygvd/hegvd
-    - hipsolverSsygvd_bufferSize, hipsolverDsygvd_bufferSize, hipsolverChegvd_bufferSize, hipsolverZhegvd_bufferSize
-    - hipsolverSsygvd, hipsolverDsygvd, hipsolverChegvd, hipsolverZhegvd
-  - sytrd/hetrd
-    - hipsolverSsytrd_bufferSize, hipsolverDsytrd_bufferSize, hipsolverChetrd_bufferSize, hipsolverZhetrd_bufferSize
-    - hipsolverSsytrd, hipsolverDsytrd, hipsolverChetrd, hipsolverZhetrd
-  - getrf
-    - hipsolverSgetrf_bufferSize, hipsolverDgetrf_bufferSize, hipsolverCgetrf_bufferSize, hipsolverZgetrf_bufferSize
-    - hipsolverSgetrf, hipsolverDgetrf, hipsolverCgetrf, hipsolverZgetrf
-  - auxiliary
-    - hipsolverCreate, hipsolverDestroy
-    - hipsolverSetStream, hipsolverGetStream
 
-### Changed
-- hipSOLVER functions will now return HIPSOLVER_STATUS_INVALID_ENUM or HIPSOLVER_STATUS_UNKNOWN status codes rather than throw exceptions.
-- hipsolverXgetrf functions now take lwork as an argument.
+### Additions
 
-### Removed
-- Removed unused HIPSOLVER_FILL_MODE_FULL enum value.
-- Removed hipsolverComplex and hipsolverDoubleComplex from the library. Use hipFloatComplex and hipDoubleComplex instead.
+* Added the following functions:
+  * `gesv`
+    * `hipsolverSSgesv`, `hipsolverDDgesv`, `hipsolverCCgesv`, and `hipsolverZZgesv`
+    * `hipsolverSSgesv_bufferSize`, `hipsolverDDgesv_bufferSize`, `hipsolverCCgesv_bufferSize`, and
+      `hipsolverZZgesv_bufferSize`
+  * `potrs`
+    * `hipsolverSpotrs`, `hipsolverDpotrs`, `hipsolverCpotrs`, and `hipsolverZpotrs`
+    * `hipsolverSpotrs_bufferSize`, `hipsolverDpotrs_bufferSize`, `hipsolverCpotrs_bufferSize`, and
+      `hipsolverZpotrs_bufferSize`
+  * `potrsBatched`
+    * `hipsolverSpotrsBatched`, `hipsolverDpotrsBatched`, `hipsolverCpotrsBatched`, and
+      `hipsolverZpotrsBatched`
+    * `hipsolverSpotrsBatched_bufferSize`, `hipsolverDpotrsBatched_bufferSize`,
+      `hipsolverCpotrsBatched_bufferSize`, and `hipsolverZpotrsBatched_bufferSize`
+  * `potri`
+    * `hipsolverSpotri`, `hipsolverDpotri`, `hipsolverCpotri`, and `hipsolverZpotri`
+    * `hipsolverSpotri_bufferSize`, `hipsolverDpotri_bufferSize`, `hipsolverCpotri_bufferSize`, and
+      `hipsolverZpotri_bufferSize`
+  * `orgbr/ungbr`
+    * `hipsolverSorgbr`, `hipsolverDorgbr`, `hipsolverCungbr`, and `hipsolverZungbr`
+    * `hipsolverSorgbr_bufferSize`, `hipsolverDorgbr_bufferSize`, `hipsolverCungbr_bufferSize`, and
+      `hipsolverZungbr_bufferSize`
+  * `orgqr/ungqr`
+    * `hipsolverSorgqr`, `hipsolverDorgqr`, `hipsolverCungqr`, and `hipsolverZungqr`
+    * `hipsolverSorgqr_bufferSize`, `hipsolverDorgqr_bufferSize`, `hipsolverCungqr_bufferSize`, and
+      `hipsolverZungqr_bufferSize`
+  * `orgtr/ungtr`
+    * `hipsolverSorgqr`, `hipsolverDorgqr`, `hipsolverCungqr`, and `hipsolverZungqr`
+    * `hipsolverSorgtr_bufferSize`, `hipsolverDorgtr_bufferSize`, `hipsolverCungtr_bufferSize`, and
+      `hipsolverZungtr_bufferSize`
+  * `ormqr/unmqr`
+    * `hipsolverSormqr`, `hipsolverDormqr`, `hipsolverCunmqr`, and `hipsolverZunmqr`
+    * `hipsolverSormqr_bufferSize`, `hipsolverDormqr_bufferSize`, `hipsolverCunmqr_bufferSize`, and
+      `hipsolverZunmqr_bufferSize`
+  * `ormtr/unmtr`
+    * `hipsolverSormtr`, `hipsolverDormtr`, `hipsolverCunmtr`, and `hipsolverZunmtr`
+    * `hipsolverSormtr_bufferSize`, `hipsolverDormtr_bufferSize`, `hipsolverCunmtr_bufferSize`, and
+      `hipsolverZunmtr_bufferSize`
+  * `gebrd`
+    * `hipsolverSgebrd`, `hipsolverDgebrd`, `hipsolverCgebrd`, and `hipsolverZgebrd`
+    * `hipsolverSgebrd_bufferSize`, `hipsolverDgebrd_bufferSize`, `hipsolverCgebrd_bufferSize`, and
+      `hipsolverZgebrd_bufferSize`
+  * `geqrf`
+    * `hipsolverSgeqrf`, `hipsolverDgeqrf`, `hipsolverCgeqrf`, and `hipsolverZgeqrf`
+    * `hipsolverSgeqrf_bufferSize`, `hipsolverDgeqrf_bufferSize`, `hipsolverCgeqrf_bufferSize`, and
+      `hipsolverZgeqrf_bufferSize`
+  * `gesvd`
+    * `hipsolverSgesvd`, `hipsolverDgesvd`, `hipsolverCgesvd`, and `hipsolverZgesvd`
+    * `hipsolverSgesvd_bufferSize`, `hipsolverDgesvd_bufferSize`, `hipsolverCgesvd_bufferSize`, and
+      `hipsolverZgesvd_bufferSize`
+  * `getrs`
+    * `hipsolverSgetrs`, `hipsolverDgetrs`, `hipsolverCgetrs`, and `hipsolverZgetrs`
+    * `hipsolverSgetrs_bufferSize`, `hipsolverDgetrs_bufferSize`, `hipsolverCgetrs_bufferSize`, and
+      `hipsolverZgetrs_bufferSize`
+  * `potrf`
+    * `hipsolverSpotrf`, `hipsolverDpotrf`, `hipsolverCpotrf`, and `hipsolverZpotrf`
+    * `hipsolverSpotrf_bufferSize`, `hipsolverDpotrf_bufferSize`, `hipsolverCpotrf_bufferSize`, and
+      `hipsolverZpotrf_bufferSize`
+  * `potrfBatched`
+    * `hipsolverSpotrfBatched`, `hipsolverDpotrfBatched`, `hipsolverCpotrfBatched`, and
+      `hipsolverZpotrfBatched`
+    * `hipsolverSpotrfBatched_bufferSize`, `hipsolverDpotrfBatched_bufferSize`,
+      `hipsolverCpotrfBatched_bufferSize`, and `hipsolverZpotrfBatched_bufferSize`
+  * `syevd/heevd`
+    * `hipsolverSsyevd, hipsolverDsyevd` and `hipsolverCheevd, hipsolverZheevd`
+    * `hipsolverSsyevd_bufferSize`, `hipsolverDsyevd_bufferSize`, `hipsolverCheevd_bufferSize`, and
+      `hipsolverZheevd_bufferSize`
+  * `sygvd/hegvd`
+    * `hipsolverSsygvd`, `hipsolverDsygvd`, `hipsolverChegvd`, and `hipsolverZhegvd`
+    * `hipsolverSsygvd_bufferSize`, `hipsolverDsygvd_bufferSize`, `hipsolverChegvd_bufferSize`, and
+      `hipsolverZhegvd_bufferSize`
+  * `sytrd/hetrd`
+    * `hipsolverSsytrd`, `hipsolverDsytrd`, `hipsolverChetrd`, and `hipsolverZhetrd`
+    * `hipsolverSsytrd_bufferSize`, `hipsolverDsytrd_bufferSize`, `hipsolverChetrd_bufferSize`, and
+      `hipsolverZhetrd_bufferSize`
+  * `getrf`
+    * `hipsolverSgetrf`, `hipsolverDgetrf`, `hipsolverCgetrf`, and `hipsolverZgetrf`
+    * `hipsolverSgetrf_bufferSize`, `hipsolverDgetrf_bufferSize`, `hipsolverCgetrf_bufferSize`, and
+      `hipsolverZgetrf_bufferSize`
+  * `auxiliary`
+    * `hipsolverCreate` and `hipsolverDestroy`
+    * `hipsolverSetStream` and `hipsolverGetStream`
+
+### Changes
+
+* hipSOLVER functions now return `HIPSOLVER_STATUS_INVALID_ENUM` or
+  `HIPSOLVER_STATUS_UNKNOWN` status codes rather than throw exceptions
+* `hipsolverXgetrf` functions now take `lwork` as an argument
+
+### Removals
+
+* Removed unused `HIPSOLVER_FILL_MODE_FULL` enum value.
+* Removed `hipsolverComplex` and `hipsolverDoubleComplex` from the library; use `hipFloatComplex`
+  and `hipDoubleComplex` instead

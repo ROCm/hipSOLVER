@@ -1,14 +1,19 @@
 # hipSOLVER
 
-hipSOLVER is a LAPACK marshalling library, with multiple supported backends.  It sits between the application and a 'worker' LAPACK library, marshalling inputs into the backend library and marshalling results back to the application.  hipSOLVER exports an interface that does not require the client to change, regardless of the chosen backend.  Currently, hipSOLVER supports [rocSOLVER](https://github.com/ROCmSoftwarePlatform/rocSOLVER) and [cuSOLVER](https://developer.nvidia.com/cusolver) as backends.
+hipSOLVER is a LAPACK marshalling library with multiple supported backends. It sits between your
+application and a 'worker' LAPACK library, where it marshals inputs to the backend library and marshals
+results to your application. hipSOLVER exports an interface that doesn't require the client to change,
+regardless of the chosen backend.
+
+hipSOLVER supports [rocSOLVER](https://github.com/ROCmSoftwarePlatform/rocSOLVER) and
+[cuSOLVER](https://developer.nvidia.com/cusolver) backends.
 
 ## Documentation
 
-For a detailed description of the hipSOLVER library, its implemented routines, the installation process and user guide, see the [hipSOLVER Documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html).
+Documentation for hipSOLVER is available at
+[https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/).
 
-### How to build documentation
-
-Run the steps below to build documentation locally.
+To build documentation locally, use the following code:
 
 ```shell
 cd docs
@@ -18,24 +23,43 @@ pip3 install -r sphinx/requirements.txt
 python3 -m sphinx -T -E -b html -d _build/doctrees -D language=en . _build/html
 ```
 
-## Quickstart Build
+## Build and install
 
-To download the hipSOLVER source code, clone this repository with the command:
+To download the hipSOLVER source code, clone this repository using:
 
-    git clone https://github.com/ROCmSoftwarePlatform/hipSOLVER.git
+```bash
+git clone https://github.com/ROCmSoftwarePlatform/hipSOLVER.git
+```
 
-hipSOLVER requires either cuSOLVER or rocSOLVER + SuiteSparse to be installed on the system. Once these are installed, the following commands will build hipSOLVER and install to `/opt/rocm`:
+To install hipSOLVER, you must have must install these dependencies:
 
-    cd hipSOLVER
-    ./install.sh -i
+* rocSOLVER
+  *rocBLAS
+    * Tensile
+  * rocSPARSE
+    * rocPRIM
+* SuiteSparse
 
-Once installed, hipSOLVER can be used just like any other library with a C API. The header file will need to be included in the user code, and the hipSOLVER library will become a link-time and run-time dependency for the user application.
+Once these are installed, use the following commands to build and install hipSOLVER:
 
-For more information on building and installing hipSOLVER, see the [hipSOLVER install guide](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/userguide/install.html)
+```bash
+cd hipSOLVER
+./install.sh -i
+```
 
-## Using the hipSOLVER Interface
+The install directory is `/opt/rocm`.
 
-The hipSOLVER interface is compatible with the rocSOLVER and cuSOLVER-v11 APIs. Porting a CUDA application that originally calls the cuSOLVER API to an application calling the hipSOLVER API should be fairly straightforward (see [porting a cuSOLVER application to hipSOLVER](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/userguide/usage.html#porting-cusolver-applications-to-hipsolver)). For example, the hipSOLVER SGEQRF interface is
+Once installed, hipSOLVER can be used just like any other C API library. Include the header file in your
+code to make the hipSOLVER library a link-time and run-time dependency for your application.
+
+## Using the hipSOLVER interface
+
+The hipSOLVER interface is compatible with rocSOLVER and cuSOLVER-v11 APIs. Porting a CUDA
+application that originally calls the cuSOLVER API to an application that calls the hipSOLVER API is
+relatively straightforward; refer to
+[porting a cuSOLVER application to hipSOLVER](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/userguide/usage.html#porting-cusolver-applications-to-hipsolver).
+
+For example, the hipSOLVER SGEQRF interface is
 
 ```c
 hipsolverStatus_t
@@ -60,6 +84,8 @@ hipsolverSgeqrf(hipsolverHandle_t handle,
                 int*              devInfo);
 ```
 
-## Supported Functionality
+## Supported functionality
 
-For a complete listing of all supported functions, see the [hipSOLVER user guide](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/userguide/index.html) and/or [API documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/api/index.html).
+For a complete list supported functions, refer to the
+[hipSOLVER user guide](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/userguide/index.html)
+and [API documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/api/index.html).
