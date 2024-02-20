@@ -17,10 +17,10 @@ the best performance out of both backends. Generally, this involves the addition
 Refer to :ref:`usage_label` for a complete list of :ref:`API differences <api_differences>`.
 
 Users interested in using hipSOLVER without these adjustments, so that the interface matches cuSOLVER, should instead consult the
-:ref:`Compatibility API documentation <library_compat>`. See also :ref:`the porting section <porting>` for more details.
+:ref:`Compatibility API documentation <library_dense>`. See also :ref:`the porting section <porting>` for more details.
 
   * :ref:`library_types`
-  * :ref:`api_helpers` 
+  * :ref:`api_helpers`
   * :ref:`library_auxiliary`
   * :ref:`lapackfunc`
   * :ref:`lapacklike`
