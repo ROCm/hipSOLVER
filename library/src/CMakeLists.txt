@@ -96,6 +96,8 @@ if( WIN32 )
   endif( )
 endif( )
 
+set( static_depends )
+
 # Build hipsolver from source on AMD platform
 if( NOT USE_CUDA )
   # Find rocBLAS
@@ -106,6 +108,7 @@ if( NOT USE_CUDA )
     else( )
       find_package( rocblas REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocblas )
     endif( )
+    list( APPEND static_depends PACKAGE rocblas )
   endif( )
 
   # Find rocSOLVER
@@ -116,6 +119,7 @@ if( NOT USE_CUDA )
     else( )
       find_package( rocsolver REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocsolver /usr/local/rocsolver )
     endif( )
+    list( APPEND static_depends PACKAGE rocsolver )
   endif( )
 
   target_link_libraries( hipsolver PRIVATE roc::rocblas roc::rocsolver hip::host )
@@ -133,6 +137,7 @@ if( NOT USE_CUDA )
       else( )
         find_package( rocsparse REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocsparse )
       endif( )
+      list( APPEND static_depends PACKAGE rocsparse )
     endif( )
 
     target_link_libraries( hipsolver PRIVATE roc::rocsparse suitesparseconfig cholmod )
@@ -211,6 +216,8 @@ if ( NOT USE_CUDA )
   rocm_export_targets(
     TARGETS roc::hipsolver
     DEPENDS PACKAGE hip
+    STATIC_DEPENDS
+      ${static_depends}
     NAMESPACE roc::
   )
 else( )
