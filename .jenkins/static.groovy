@@ -15,7 +15,7 @@ def runCI =
 
     def prj  = new rocProject('hipSOLVER', 'StaticLibrary')
     prj.paths.build_command = './install.sh -cd --static -p /opt/rocm/lib/cmake'
-    prj.libraryDependencies = ['rocBLAS-internal', 'rocSPARSE-internal', 'rocSOLVER', 'hipSPARSE']
+    prj.libraryDependencies = ['rocBLAS', 'rocSPARSE', 'rocSOLVER', 'hipSPARSE']
     prj.defaults.ccache = true
 
     // Define test architectures, optional rocm version argument is available
@@ -53,10 +53,10 @@ def runCI =
 ci: {
     String urlJobName = auxiliary.getTopJobName(env.BUILD_URL)
 
-    def propertyList = ["compute-rocm-dkms-no-npi-hipclang":[pipelineTriggers([cron('0 1 * * 0')])]]
+    def propertyList = ["main":[pipelineTriggers([cron('0 1 * * 0')])]]
     propertyList = auxiliary.appendPropertyList(propertyList)
 
-    def jobNameList = ["compute-rocm-dkms-no-npi-hipclang":([ubuntu18:['gfx900']])]
+    def jobNameList = ["main":([ubuntu22:['gfx90a']])]
     jobNameList = auxiliary.appendJobNameList(jobNameList)
 
     propertyList.each
@@ -80,7 +80,7 @@ ci: {
     {
         properties(auxiliary.addCommonProperties([pipelineTriggers([cron('0 1 * * *')])]))
         stage(urlJobName) {
-            runCI([ubuntu18:['gfx900']], urlJobName)
+            runCI([ubuntu22:['gfx90a']], urlJobName)
         }
     }
 }
