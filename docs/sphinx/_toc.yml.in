@@ -7,7 +7,7 @@ entries:
   - file: installation/install.rst
 - file: howto/index.rst
   entries:
-  - file: howto/usage.rst      
+  - file: howto/usage.rst
 - file: reference/index.rst
   entries:
   - file: reference/intro.rst
@@ -18,13 +18,13 @@ entries:
     - file: reference/api/auxiliary.rst
     - file: reference/api/lapack.rst
     - file: reference/api/lapacklike.rst
-  - file: reference/compat-api/index.rst
+  - file: reference/dense-api/index.rst
     entries:
-    - file: reference/compat-api/types.rst
-    - file: reference/compat-api/helpers.rst
-    - file: reference/compat-api/auxiliary.rst
-    - file: reference/compat-api/lapack.rst
-    - file: reference/compat-api/lapacklike.rst
+    - file: reference/dense-api/types.rst
+    - file: reference/dense-api/helpers.rst
+    - file: reference/dense-api/auxiliary.rst
+    - file: reference/dense-api/lapack.rst
+    - file: reference/dense-api/lapacklike.rst
   - file: reference/sparse-api/index.rst
     entries:
     - file: reference/sparse-api/types.rst
