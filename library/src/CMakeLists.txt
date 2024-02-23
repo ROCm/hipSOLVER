@@ -44,19 +44,19 @@ if( NOT USE_CUDA )
   set( hipsolver_source
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_conversions.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_compat.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_dense.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_refactor.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_sparse.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_dense_common.cpp"
   )
 else( )
   set( hipsolver_source
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_conversions.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_compat.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_dense.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_refactor.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_sparse.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_dense_common.cpp"
   )
 endif( )
 

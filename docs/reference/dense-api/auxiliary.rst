@@ -2,21 +2,21 @@
   :description: hipSOLVER documentation and API reference library
   :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
-.. _compat_auxiliary:
+.. _dense_auxiliary:
 
 ****************************************
 Dense matrix LAPACK auxiliary functions
 ****************************************
 
-These are functions that support more :ref:`advanced LAPACK routines <compat_lapackfunc>`.
+These are functions that support more :ref:`advanced LAPACK routines <dense_lapackfunc>`.
 The auxiliary functions are divided into the following categories:
 
-* :ref:`compat_orthonormal`. Generation and application of orthonormal matrices.
-* :ref:`compat_unitary`. Generation and application of unitary matrices.
+* :ref:`dense_orthonormal`. Generation and application of orthonormal matrices.
+* :ref:`dense_unitary`. Generation and application of unitary matrices.
 
 
 
-.. _compat_orthonormal:
+.. _dense_orthonormal:
 
 Orthonormal matrices
 ==================================
@@ -25,7 +25,7 @@ Orthonormal matrices
    :local:
    :backlinks: top
 
-.. _compat_orgbr_bufferSize:
+.. _dense_orgbr_bufferSize:
 
 hipsolverDn<type>orgbr_bufferSize()
 ---------------------------------------
@@ -33,7 +33,7 @@ hipsolverDn<type>orgbr_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSorgbr_bufferSize
 
-.. _compat_orgbr:
+.. _dense_orgbr:
 
 hipsolverDn<type>orgbr()
 ---------------------------------------
@@ -41,7 +41,7 @@ hipsolverDn<type>orgbr()
    :outline:
 .. doxygenfunction:: hipsolverDnSorgbr
 
-.. _compat_orgqr_bufferSize:
+.. _dense_orgqr_bufferSize:
 
 hipsolverDn<type>orgqr_bufferSize()
 ---------------------------------------
@@ -49,7 +49,7 @@ hipsolverDn<type>orgqr_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSorgqr_bufferSize
 
-.. _compat_orgqr:
+.. _dense_orgqr:
 
 hipsolverDn<type>orgqr()
 ---------------------------------------
@@ -57,7 +57,7 @@ hipsolverDn<type>orgqr()
    :outline:
 .. doxygenfunction:: hipsolverDnSorgqr
 
-.. _compat_orgtr_bufferSize:
+.. _dense_orgtr_bufferSize:
 
 hipsolverDn<type>orgtr_bufferSize()
 ---------------------------------------
@@ -65,7 +65,7 @@ hipsolverDn<type>orgtr_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSorgtr_bufferSize
 
-.. _compat_orgtr:
+.. _dense_orgtr:
 
 hipsolverDn<type>orgtr()
 ---------------------------------------
@@ -73,7 +73,7 @@ hipsolverDn<type>orgtr()
    :outline:
 .. doxygenfunction:: hipsolverDnSorgtr
 
-.. _compat_ormqr_bufferSize:
+.. _dense_ormqr_bufferSize:
 
 hipsolverDn<type>ormqr_bufferSize()
 ---------------------------------------
@@ -81,7 +81,7 @@ hipsolverDn<type>ormqr_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSormqr_bufferSize
 
-.. _compat_ormqr:
+.. _dense_ormqr:
 
 hipsolverDn<type>ormqr()
 ---------------------------------------
@@ -89,7 +89,7 @@ hipsolverDn<type>ormqr()
    :outline:
 .. doxygenfunction:: hipsolverDnSormqr
 
-.. _compat_ormtr_bufferSize:
+.. _dense_ormtr_bufferSize:
 
 hipsolverDn<type>ormtr_bufferSize()
 ---------------------------------------
@@ -97,7 +97,7 @@ hipsolverDn<type>ormtr_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSormtr_bufferSize
 
-.. _compat_ormtr:
+.. _dense_ormtr:
 
 hipsolverDn<type>ormtr()
 ---------------------------------------
@@ -107,7 +107,7 @@ hipsolverDn<type>ormtr()
 
 
 
-.. _compat_unitary:
+.. _dense_unitary:
 
 Unitary matrices
 ==================================
@@ -116,7 +116,7 @@ Unitary matrices
    :local:
    :backlinks: top
 
-.. _compat_ungbr_bufferSize:
+.. _dense_ungbr_bufferSize:
 
 hipsolverDn<type>ungbr_bufferSize()
 ---------------------------------------
@@ -124,7 +124,7 @@ hipsolverDn<type>ungbr_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnCungbr_bufferSize
 
-.. _compat_ungbr:
+.. _dense_ungbr:
 
 hipsolverDn<type>ungbr()
 ---------------------------------------
@@ -132,7 +132,7 @@ hipsolverDn<type>ungbr()
    :outline:
 .. doxygenfunction:: hipsolverDnCungbr
 
-.. _compat_ungqr_bufferSize:
+.. _dense_ungqr_bufferSize:
 
 hipsolverDn<type>ungqr_bufferSize()
 ---------------------------------------
@@ -140,7 +140,7 @@ hipsolverDn<type>ungqr_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnCungqr_bufferSize
 
-.. _compat_ungqr:
+.. _dense_ungqr:
 
 hipsolverDn<type>ungqr()
 ---------------------------------------
@@ -148,7 +148,7 @@ hipsolverDn<type>ungqr()
    :outline:
 .. doxygenfunction:: hipsolverDnCungqr
 
-.. _compat_ungtr_bufferSize:
+.. _dense_ungtr_bufferSize:
 
 hipsolverDn<type>ungtr_bufferSize()
 ---------------------------------------
@@ -156,7 +156,7 @@ hipsolverDn<type>ungtr_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnCungtr_bufferSize
 
-.. _compat_ungtr:
+.. _dense_ungtr:
 
 hipsolverDn<type>ungtr()
 ---------------------------------------
@@ -164,7 +164,7 @@ hipsolverDn<type>ungtr()
    :outline:
 .. doxygenfunction:: hipsolverDnCungtr
 
-.. _compat_unmqr_bufferSize:
+.. _dense_unmqr_bufferSize:
 
 hipsolverDn<type>unmqr_bufferSize()
 ---------------------------------------
@@ -172,7 +172,7 @@ hipsolverDn<type>unmqr_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnCunmqr_bufferSize
 
-.. _compat_unmqr:
+.. _dense_unmqr:
 
 hipsolverDn<type>unmqr()
 ---------------------------------------
@@ -180,7 +180,7 @@ hipsolverDn<type>unmqr()
    :outline:
 .. doxygenfunction:: hipsolverDnCunmqr
 
-.. _compat_unmtr_bufferSize:
+.. _dense_unmtr_bufferSize:
 
 hipsolverDn<type>unmtr_bufferSize()
 ---------------------------------------
@@ -188,7 +188,7 @@ hipsolverDn<type>unmtr_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnCunmtr_bufferSize
 
-.. _compat_unmtr:
+.. _dense_unmtr:
 
 hipsolverDn<type>unmtr()
 ---------------------------------------

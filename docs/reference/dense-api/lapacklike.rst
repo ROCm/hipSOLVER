@@ -2,7 +2,7 @@
   :description: hipSOLVER documentation and API reference library
   :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
-.. _compat_lapacklike:
+.. _dense_lapacklike:
 
 ************************************
 Dense matrix LAPACK-like functions
@@ -10,12 +10,12 @@ Dense matrix LAPACK-like functions
 
 Other Lapack-like routines provided by hipSOLVER. These are divided into the following subcategories:
 
-* :ref:`compat_likeeigens`. Eigenproblems for symmetric matrices.
-* :ref:`compat_likesvds`. Singular values and related problems for general matrices.
+* :ref:`dense_likeeigens`. Eigenproblems for symmetric matrices.
+* :ref:`dense_likesvds`. Singular values and related problems for general matrices.
 
 
 
-.. _compat_likeeigens:
+.. _dense_likeeigens:
 
 Symmetric eigensolvers
 ================================
@@ -24,7 +24,7 @@ Symmetric eigensolvers
    :local:
    :backlinks: top
 
-.. _compat_syevdx_bufferSize:
+.. _dense_syevdx_bufferSize:
 
 hipsolverDn<type>syevdx_bufferSize()
 ---------------------------------------------------
@@ -32,7 +32,7 @@ hipsolverDn<type>syevdx_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSsyevdx_bufferSize
 
-.. _compat_heevdx_bufferSize:
+.. _dense_heevdx_bufferSize:
 
 hipsolverDn<type>heevdx_bufferSize()
 ---------------------------------------------------
@@ -40,7 +40,7 @@ hipsolverDn<type>heevdx_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnCheevdx_bufferSize
 
-.. _compat_syevdx:
+.. _dense_syevdx:
 
 hipsolverDn<type>syevdx()
 ---------------------------------------------------
@@ -48,7 +48,7 @@ hipsolverDn<type>syevdx()
    :outline:
 .. doxygenfunction:: hipsolverDnSsyevdx
 
-.. _compat_heevdx:
+.. _dense_heevdx:
 
 hipsolverDn<type>heevdx()
 ---------------------------------------------------
@@ -56,7 +56,7 @@ hipsolverDn<type>heevdx()
    :outline:
 .. doxygenfunction:: hipsolverDnCheevdx
 
-.. _compat_syevj_bufferSize:
+.. _dense_syevj_bufferSize:
 
 hipsolverDn<type>syevj_bufferSize()
 ---------------------------------------------------
@@ -64,7 +64,7 @@ hipsolverDn<type>syevj_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSsyevj_bufferSize
 
-.. _compat_heevj_bufferSize:
+.. _dense_heevj_bufferSize:
 
 hipsolverDn<type>heevj_bufferSize()
 ---------------------------------------------------
@@ -72,7 +72,7 @@ hipsolverDn<type>heevj_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnCheevj_bufferSize
 
-.. _compat_syevj_batched_bufferSize:
+.. _dense_syevj_batched_bufferSize:
 
 hipsolverDn<type>syevjBatched_bufferSize()
 ---------------------------------------------------
@@ -80,7 +80,7 @@ hipsolverDn<type>syevjBatched_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSsyevjBatched_bufferSize
 
-.. _compat_heevj_batched_bufferSize:
+.. _dense_heevj_batched_bufferSize:
 
 hipsolverDn<type>heevjBatched_bufferSize()
 ---------------------------------------------------
@@ -88,7 +88,7 @@ hipsolverDn<type>heevjBatched_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnCheevjBatched_bufferSize
 
-.. _compat_syevj:
+.. _dense_syevj:
 
 hipsolverDn<type>syevj()
 ---------------------------------------------------
@@ -96,7 +96,7 @@ hipsolverDn<type>syevj()
    :outline:
 .. doxygenfunction:: hipsolverDnSsyevj
 
-.. _compat_heevj:
+.. _dense_heevj:
 
 hipsolverDn<type>heevj()
 ---------------------------------------------------
@@ -104,7 +104,7 @@ hipsolverDn<type>heevj()
    :outline:
 .. doxygenfunction:: hipsolverDnCheevj
 
-.. _compat_syevj_batched:
+.. _dense_syevj_batched:
 
 hipsolverDn<type>syevjBatched()
 ---------------------------------------------------
@@ -112,7 +112,7 @@ hipsolverDn<type>syevjBatched()
    :outline:
 .. doxygenfunction:: hipsolverDnSsyevjBatched
 
-.. _compat_heevj_batched:
+.. _dense_heevj_batched:
 
 hipsolverDn<type>heevjBatched()
 ---------------------------------------------------
@@ -120,7 +120,7 @@ hipsolverDn<type>heevjBatched()
    :outline:
 .. doxygenfunction:: hipsolverDnCheevjBatched
 
-.. _compat_sygvdx_bufferSize:
+.. _dense_sygvdx_bufferSize:
 
 hipsolverDn<type>sygvdx_bufferSize()
 ---------------------------------------------------
@@ -128,7 +128,7 @@ hipsolverDn<type>sygvdx_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSsygvdx_bufferSize
 
-.. _compat_hegvdx_bufferSize:
+.. _dense_hegvdx_bufferSize:
 
 hipsolverDn<type>hegvdx_bufferSize()
 ---------------------------------------------------
@@ -136,7 +136,7 @@ hipsolverDn<type>hegvdx_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnChegvdx_bufferSize
 
-.. _compat_sygvdx:
+.. _dense_sygvdx:
 
 hipsolverDn<type>sygvdx()
 ---------------------------------------------------
@@ -144,7 +144,7 @@ hipsolverDn<type>sygvdx()
    :outline:
 .. doxygenfunction:: hipsolverDnSsygvdx
 
-.. _compat_hegvdx:
+.. _dense_hegvdx:
 
 hipsolverDn<type>hegvdx()
 ---------------------------------------------------
@@ -152,7 +152,7 @@ hipsolverDn<type>hegvdx()
    :outline:
 .. doxygenfunction:: hipsolverDnChegvdx
 
-.. _compat_sygvj_bufferSize:
+.. _dense_sygvj_bufferSize:
 
 hipsolverDn<type>sygvj_bufferSize()
 ---------------------------------------------------
@@ -160,7 +160,7 @@ hipsolverDn<type>sygvj_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSsygvj_bufferSize
 
-.. _compat_hegvj_bufferSize:
+.. _dense_hegvj_bufferSize:
 
 hipsolverDn<type>hegvj_bufferSize()
 ---------------------------------------------------
@@ -168,7 +168,7 @@ hipsolverDn<type>hegvj_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnChegvj_bufferSize
 
-.. _compat_sygvj:
+.. _dense_sygvj:
 
 hipsolverDn<type>sygvj()
 ---------------------------------------------------
@@ -176,7 +176,7 @@ hipsolverDn<type>sygvj()
    :outline:
 .. doxygenfunction:: hipsolverDnSsygvj
 
-.. _compat_hegvj:
+.. _dense_hegvj:
 
 hipsolverDn<type>hegvj()
 ---------------------------------------------------
@@ -186,7 +186,7 @@ hipsolverDn<type>hegvj()
 
 
 
-.. _compat_likesvds:
+.. _dense_likesvds:
 
 Singular value decomposition
 ================================
@@ -195,7 +195,7 @@ Singular value decomposition
    :local:
    :backlinks: top
 
-.. _compat_gesvdj_bufferSize:
+.. _dense_gesvdj_bufferSize:
 
 hipsolverDn<type>gesvdj_bufferSize()
 ---------------------------------------------------
@@ -207,7 +207,7 @@ hipsolverDn<type>gesvdj_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSgesvdj_bufferSize
 
-.. _compat_gesvdj_batched_bufferSize:
+.. _dense_gesvdj_batched_bufferSize:
 
 hipsolverDn<type>gesvdjBatched_bufferSize()
 ---------------------------------------------------
@@ -219,7 +219,7 @@ hipsolverDn<type>gesvdjBatched_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSgesvdjBatched_bufferSize
 
-.. _compat_gesvdj:
+.. _dense_gesvdj:
 
 hipsolverDn<type>gesvdj()
 ---------------------------------------------------
@@ -231,7 +231,7 @@ hipsolverDn<type>gesvdj()
    :outline:
 .. doxygenfunction:: hipsolverDnSgesvdj
 
-.. _compat_gesvdj_batched:
+.. _dense_gesvdj_batched:
 
 hipsolverDn<type>gesvdjBatched()
 ---------------------------------------------------
@@ -243,7 +243,7 @@ hipsolverDn<type>gesvdjBatched()
    :outline:
 .. doxygenfunction:: hipsolverDnSgesvdjBatched
 
-.. _compat_gesvda_strided_batched_bufferSize:
+.. _dense_gesvda_strided_batched_bufferSize:
 
 hipsolverDn<type>gesvdaStridedBatched_bufferSize()
 ---------------------------------------------------
@@ -255,7 +255,7 @@ hipsolverDn<type>gesvdaStridedBatched_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSgesvdaStridedBatched_bufferSize
 
-.. _compat_gesvda_strided_batched:
+.. _dense_gesvda_strided_batched:
 
 hipsolverDn<type>gesvdaStridedBatched()
 ---------------------------------------------------

@@ -8,7 +8,7 @@
 Introduction to hipSOLVER API
 *******************************
 
-.. note:: 
+.. note::
     The hipSOLVER library remains in active development. New features are being continuously added, with new functionality documented at each release of the ROCm platform.
 
 The following tables summarize the wrapper functions that are implemented in the regular API for the different supported precisions in
@@ -136,10 +136,10 @@ LAPACK-like functions
 .. csv-table:: Singular value decomposition
     :header: "Function", "single", "double", "single complex", "double complex"
 
-    :ref:`hipsolverDnXgesvdj_bufferSize <compat_gesvdj_bufferSize>`, x, x, x, x
-    :ref:`hipsolverDnXgesvdj <compat_gesvdj>`, x, x, x, x
-    :ref:`hipsolverDnXgesvdjBatched_bufferSize <compat_gesvdj_batched_bufferSize>`, x, x, x, x
-    :ref:`hipsolverDnXgesvdjBatched <compat_gesvdj_batched>`, x, x, x, x
+    :ref:`hipsolverDnXgesvdj_bufferSize <dense_gesvdj_bufferSize>`, x, x, x, x
+    :ref:`hipsolverDnXgesvdj <dense_gesvdj>`, x, x, x, x
+    :ref:`hipsolverDnXgesvdjBatched_bufferSize <dense_gesvdj_batched_bufferSize>`, x, x, x, x
+    :ref:`hipsolverDnXgesvdjBatched <dense_gesvdj_batched>`, x, x, x, x
 
 
 Compatibility-only functions
@@ -158,14 +158,14 @@ Partial eigensolvers have been implemented in rocSOLVER, but at present they do 
 .. csv-table:: Symmetric eigensolvers
     :header: "Function", "single", "double", "single complex", "double complex"
 
-    :ref:`hipsolverDnXsyevdx_bufferSize <compat_syevdx_bufferSize>`, x, x, ,
-    :ref:`hipsolverDnXsyevdx <compat_syevdx>`, x, x, ,
-    :ref:`hipsolverDnXsygvdx_bufferSize <compat_sygvdx_bufferSize>`, x, x, ,
-    :ref:`hipsolverDnXsygvdx <compat_sygvdx>`, x, x, ,
-    :ref:`hipsolverDnXheevdx_bufferSize <compat_heevdx_bufferSize>`, , , x, x
-    :ref:`hipsolverDnXheevdx <compat_heevdx>`, , , x, x
-    :ref:`hipsolverDnXhegvdx_bufferSize <compat_hegvdx_bufferSize>`, , , x, x
-    :ref:`hipsolverDnXhegvdx <compat_hegvdx>`, , , x, x
+    :ref:`hipsolverDnXsyevdx_bufferSize <dense_syevdx_bufferSize>`, x, x, ,
+    :ref:`hipsolverDnXsyevdx <dense_syevdx>`, x, x, ,
+    :ref:`hipsolverDnXsygvdx_bufferSize <dense_sygvdx_bufferSize>`, x, x, ,
+    :ref:`hipsolverDnXsygvdx <dense_sygvdx>`, x, x, ,
+    :ref:`hipsolverDnXheevdx_bufferSize <dense_heevdx_bufferSize>`, , , x, x
+    :ref:`hipsolverDnXheevdx <dense_heevdx>`, , , x, x
+    :ref:`hipsolverDnXhegvdx_bufferSize <dense_hegvdx_bufferSize>`, , , x, x
+    :ref:`hipsolverDnXhegvdx <dense_hegvdx>`, , , x, x
 
 Partial SVD functions
 ------------------------------
@@ -175,15 +175,15 @@ Partial SVD has been implemented in rocSOLVER, but at present it does not use an
 .. csv-table:: Singular value decomposition
     :header: "Function", "single", "double", "single complex", "double complex"
 
-    :ref:`hipsolverDnXgesvdaStridedBatched_bufferSize <compat_gesvda_strided_batched_bufferSize>`, x, x, x, x
-    :ref:`hipsolverDnXgesvdaStridedBatched <compat_gesvda_strided_batched>`, x, x, x, x
+    :ref:`hipsolverDnXgesvdaStridedBatched_bufferSize <dense_gesvda_strided_batched_bufferSize>`, x, x, x, x
+    :ref:`hipsolverDnXgesvdaStridedBatched <dense_gesvda_strided_batched>`, x, x, x, x
 
 Sparse matrix routines
 ------------------------------
 
 Sparse matrix routines and direct solvers for sparse matrices are in the very earliest stages of development.
-Due to unsupported backend functionality, there are a number of intricacies and possible performance implications 
-that users will want to be aware of when using these routines. 
+Due to unsupported backend functionality, there are a number of intricacies and possible performance implications
+that users will want to be aware of when using these routines.
 Refer to the :ref:`hipsolverSp compatibility API <library_sparse>` for more details and a full listing of supported functions.
 
 .. csv-table:: Combined factorization and linear-system solvers

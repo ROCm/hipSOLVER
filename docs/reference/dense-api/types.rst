@@ -2,7 +2,7 @@
   :description: hipSOLVER documentation and API reference library
   :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
-.. _compat_types:
+.. _dense_types:
 
 ********************************************************************
 Dense matrix datatypes

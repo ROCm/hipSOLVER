@@ -8,6 +8,7 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 ### Optimized
 ### Changed
 - The numerical factorization in csrlsvchol will now be performed on the GPU. (The symbolic factorization is still performed on the CPU.)
+- Renamed hipsolver-compat.h to hipsolver-dense.h.
 
 ### Deprecated
 ### Removed

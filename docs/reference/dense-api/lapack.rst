@@ -2,7 +2,7 @@
   :description: hipSOLVER documentation and API reference library
   :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
-.. _compat_lapackfunc:
+.. _dense_lapackfunc:
 
 *********************************
 Dense matrix LAPACK functions
@@ -11,17 +11,17 @@ Dense matrix LAPACK functions
 LAPACK routines solve complex Numerical Linear Algebra problems. These functions are organized
 in the following categories:
 
-* :ref:`compat_triangular`. Based on Gaussian elimination.
-* :ref:`compat_orthogonal`. Based on Householder reflections.
-* :ref:`compat_reductions`. Transformation of matrices and problems into equivalent forms.
-* :ref:`compat_linears`. Based on triangular factorizations.
-* :ref:`compat_leastsqr`. Based on orthogonal factorizations.
-* :ref:`compat_eigens`. Eigenproblems for symmetric matrices.
-* :ref:`compat_svds`. Singular values and related problems for general matrices.
+* :ref:`dense_triangular`. Based on Gaussian elimination.
+* :ref:`dense_orthogonal`. Based on Householder reflections.
+* :ref:`dense_reductions`. Transformation of matrices and problems into equivalent forms.
+* :ref:`dense_linears`. Based on triangular factorizations.
+* :ref:`dense_leastsqr`. Based on orthogonal factorizations.
+* :ref:`dense_eigens`. Eigenproblems for symmetric matrices.
+* :ref:`dense_svds`. Singular values and related problems for general matrices.
 
 
 
-.. _compat_triangular:
+.. _dense_triangular:
 
 Triangular factorizations
 ================================
@@ -30,7 +30,7 @@ Triangular factorizations
    :local:
    :backlinks: top
 
-.. _compat_potrf_bufferSize:
+.. _dense_potrf_bufferSize:
 
 hipsolverDn<type>potrf_bufferSize()
 ---------------------------------------------------
@@ -42,7 +42,7 @@ hipsolverDn<type>potrf_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSpotrf_bufferSize
 
-.. _compat_potrf:
+.. _dense_potrf:
 
 hipsolverDn<type>potrf()
 ---------------------------------------------------
@@ -54,7 +54,7 @@ hipsolverDn<type>potrf()
    :outline:
 .. doxygenfunction:: hipsolverDnSpotrf
 
-.. _compat_potrf_batched:
+.. _dense_potrf_batched:
 
 hipsolverDn<type>potrfBatched()
 ---------------------------------------------------
@@ -66,7 +66,7 @@ hipsolverDn<type>potrfBatched()
    :outline:
 .. doxygenfunction:: hipsolverDnSpotrfBatched
 
-.. _compat_getrf_bufferSize:
+.. _dense_getrf_bufferSize:
 
 hipsolverDn<type>getrf_bufferSize()
 ---------------------------------------------------
@@ -78,7 +78,7 @@ hipsolverDn<type>getrf_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSgetrf_bufferSize
 
-.. _compat_getrf:
+.. _dense_getrf:
 
 hipsolverDn<type>getrf()
 ---------------------------------------------------
@@ -90,7 +90,7 @@ hipsolverDn<type>getrf()
    :outline:
 .. doxygenfunction:: hipsolverDnSgetrf
 
-.. _compat_sytrf_bufferSize:
+.. _dense_sytrf_bufferSize:
 
 hipsolverDn<type>sytrf_bufferSize()
 ---------------------------------------------------
@@ -102,7 +102,7 @@ hipsolverDn<type>sytrf_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSsytrf_bufferSize
 
-.. _compat_sytrf:
+.. _dense_sytrf:
 
 hipsolverDn<type>sytrf()
 ---------------------------------------------------
@@ -116,7 +116,7 @@ hipsolverDn<type>sytrf()
 
 
 
-.. _compat_orthogonal:
+.. _dense_orthogonal:
 
 Orthogonal factorizations
 ================================
@@ -125,7 +125,7 @@ Orthogonal factorizations
    :local:
    :backlinks: top
 
-.. _compat_geqrf_bufferSize:
+.. _dense_geqrf_bufferSize:
 
 hipsolverDn<type>geqrf_bufferSize()
 ---------------------------------------------------
@@ -137,7 +137,7 @@ hipsolverDn<type>geqrf_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSgeqrf_bufferSize
 
-.. _compat_geqrf:
+.. _dense_geqrf:
 
 hipsolverDn<type>geqrf()
 ---------------------------------------------------
@@ -151,7 +151,7 @@ hipsolverDn<type>geqrf()
 
 
 
-.. _compat_reductions:
+.. _dense_reductions:
 
 Problem and matrix reductions
 ================================
@@ -160,7 +160,7 @@ Problem and matrix reductions
    :local:
    :backlinks: top
 
-.. _compat_gebrd_bufferSize:
+.. _dense_gebrd_bufferSize:
 
 hipsolverDn<type>gebrd_bufferSize()
 ---------------------------------------------------
@@ -172,7 +172,7 @@ hipsolverDn<type>gebrd_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSgebrd_bufferSize
 
-.. _compat_gebrd:
+.. _dense_gebrd:
 
 hipsolverDn<type>gebrd()
 ---------------------------------------------------
@@ -184,7 +184,7 @@ hipsolverDn<type>gebrd()
    :outline:
 .. doxygenfunction:: hipsolverDnSgebrd
 
-.. _compat_sytrd_bufferSize:
+.. _dense_sytrd_bufferSize:
 
 hipsolverDn<type>sytrd_bufferSize()
 ---------------------------------------------------
@@ -192,7 +192,7 @@ hipsolverDn<type>sytrd_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSsytrd_bufferSize
 
-.. _compat_hetrd_bufferSize:
+.. _dense_hetrd_bufferSize:
 
 hipsolverDn<type>hetrd_bufferSize()
 ---------------------------------------------------
@@ -200,7 +200,7 @@ hipsolverDn<type>hetrd_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnChetrd_bufferSize
 
-.. _compat_sytrd:
+.. _dense_sytrd:
 
 hipsolverDn<type>sytrd()
 ---------------------------------------------------
@@ -208,7 +208,7 @@ hipsolverDn<type>sytrd()
    :outline:
 .. doxygenfunction:: hipsolverDnSsytrd
 
-.. _compat_hetrd:
+.. _dense_hetrd:
 
 hipsolverDn<type>hetrd()
 ---------------------------------------------------
@@ -218,7 +218,7 @@ hipsolverDn<type>hetrd()
 
 
 
-.. _compat_linears:
+.. _dense_linears:
 
 Linear-systems solvers
 ================================
@@ -227,7 +227,7 @@ Linear-systems solvers
    :local:
    :backlinks: top
 
-.. _compat_potri_bufferSize:
+.. _dense_potri_bufferSize:
 
 hipsolverDn<type>potri_bufferSize()
 ---------------------------------------------------
@@ -239,7 +239,7 @@ hipsolverDn<type>potri_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSpotri_bufferSize
 
-.. _compat_potri:
+.. _dense_potri:
 
 hipsolverDn<type>potri()
 ---------------------------------------------------
@@ -251,7 +251,7 @@ hipsolverDn<type>potri()
    :outline:
 .. doxygenfunction:: hipsolverDnSpotri
 
-.. _compat_potrs:
+.. _dense_potrs:
 
 hipsolverDn<type>potrs()
 ---------------------------------------------------
@@ -263,7 +263,7 @@ hipsolverDn<type>potrs()
    :outline:
 .. doxygenfunction:: hipsolverDnSpotrs
 
-.. _compat_potrs_batched:
+.. _dense_potrs_batched:
 
 hipsolverDn<type>potrsBatched()
 ---------------------------------------------------
@@ -275,7 +275,7 @@ hipsolverDn<type>potrsBatched()
    :outline:
 .. doxygenfunction:: hipsolverDnSpotrsBatched
 
-.. _compat_getrs:
+.. _dense_getrs:
 
 hipsolverDn<type>getrs()
 ---------------------------------------------------
@@ -287,7 +287,7 @@ hipsolverDn<type>getrs()
    :outline:
 .. doxygenfunction:: hipsolverDnSgetrs
 
-.. _compat_gesv_bufferSize:
+.. _dense_gesv_bufferSize:
 
 hipsolverDn<type><type>gesv_bufferSize()
 ---------------------------------------------------
@@ -299,7 +299,7 @@ hipsolverDn<type><type>gesv_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSSgesv_bufferSize
 
-.. _compat_gesv:
+.. _dense_gesv:
 
 hipsolverDn<type><type>gesv()
 ---------------------------------------------------
@@ -313,7 +313,7 @@ hipsolverDn<type><type>gesv()
 
 
 
-.. _compat_leastsqr:
+.. _dense_leastsqr:
 
 Least-squares solvers
 ================================
@@ -322,7 +322,7 @@ Least-squares solvers
    :local:
    :backlinks: top
 
-.. _compat_gels_bufferSize:
+.. _dense_gels_bufferSize:
 
 hipsolverDn<type><type>gels_bufferSize()
 ---------------------------------------------------
@@ -334,7 +334,7 @@ hipsolverDn<type><type>gels_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSSgels_bufferSize
 
-.. _compat_gels:
+.. _dense_gels:
 
 hipsolverDn<type><type>gels()
 ---------------------------------------------------
@@ -348,7 +348,7 @@ hipsolverDn<type><type>gels()
 
 
 
-.. _compat_eigens:
+.. _dense_eigens:
 
 Symmetric eigensolvers
 ================================
@@ -357,7 +357,7 @@ Symmetric eigensolvers
    :local:
    :backlinks: top
 
-.. _compat_syevd_bufferSize:
+.. _dense_syevd_bufferSize:
 
 hipsolverDn<type>syevd_bufferSize()
 ---------------------------------------------------
@@ -365,7 +365,7 @@ hipsolverDn<type>syevd_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSsyevd_bufferSize
 
-.. _compat_heevd_bufferSize:
+.. _dense_heevd_bufferSize:
 
 hipsolverDn<type>heevd_bufferSize()
 ---------------------------------------------------
@@ -373,7 +373,7 @@ hipsolverDn<type>heevd_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnCheevd_bufferSize
 
-.. _compat_syevd:
+.. _dense_syevd:
 
 hipsolverDn<type>syevd()
 ---------------------------------------------------
@@ -381,7 +381,7 @@ hipsolverDn<type>syevd()
    :outline:
 .. doxygenfunction:: hipsolverDnSsyevd
 
-.. _compat_heevd:
+.. _dense_heevd:
 
 hipsolverDn<type>heevd()
 ---------------------------------------------------
@@ -389,7 +389,7 @@ hipsolverDn<type>heevd()
    :outline:
 .. doxygenfunction:: hipsolverDnCheevd
 
-.. _compat_sygvd_bufferSize:
+.. _dense_sygvd_bufferSize:
 
 hipsolverDn<type>sygvd_bufferSize()
 ---------------------------------------------------
@@ -397,7 +397,7 @@ hipsolverDn<type>sygvd_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSsygvd_bufferSize
 
-.. _compat_hegvd_bufferSize:
+.. _dense_hegvd_bufferSize:
 
 hipsolverDn<type>hegvd_bufferSize()
 ---------------------------------------------------
@@ -405,7 +405,7 @@ hipsolverDn<type>hegvd_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnChegvd_bufferSize
 
-.. _compat_sygvd:
+.. _dense_sygvd:
 
 hipsolverDn<type>sygvd()
 ---------------------------------------------------
@@ -413,7 +413,7 @@ hipsolverDn<type>sygvd()
    :outline:
 .. doxygenfunction:: hipsolverDnSsygvd
 
-.. _compat_hegvd:
+.. _dense_hegvd:
 
 hipsolverDn<type>hegvd()
 ---------------------------------------------------
@@ -423,7 +423,7 @@ hipsolverDn<type>hegvd()
 
 
 
-.. _compat_svds:
+.. _dense_svds:
 
 Singular value decomposition
 ================================
@@ -432,7 +432,7 @@ Singular value decomposition
    :local:
    :backlinks: top
 
-.. _compat_gesvd_bufferSize:
+.. _dense_gesvd_bufferSize:
 
 hipsolverDn<type>gesvd_bufferSize()
 ---------------------------------------------------
@@ -444,7 +444,7 @@ hipsolverDn<type>gesvd_bufferSize()
    :outline:
 .. doxygenfunction:: hipsolverDnSgesvd_bufferSize
 
-.. _compat_gesvd:
+.. _dense_gesvd:
 
 hipsolverDn<type>gesvd()
 ---------------------------------------------------

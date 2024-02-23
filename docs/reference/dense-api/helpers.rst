@@ -2,7 +2,7 @@
   :description: hipSOLVER documentation and API reference library
   :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
 
-.. _compat_helpers:
+.. _dense_helpers:
 
 *****************************************
 Dense matrix helper functions
@@ -11,13 +11,13 @@ Dense matrix helper functions
 These are helper functions that control aspects of the hipSOLVER library. They are divided
 into the following categories:
 
-* :ref:`compat_initialize` functions used to initialize and cleanup the library handle
-* :ref:`compat_stream` functions provide functionality to manipulate streams
-* :ref:`compat_gesvdj_info` functions provide functionality to manipulate gesvdj parameters
-* :ref:`compat_syevj_info` functions provide functionality to manipulate syevj parameters
+* :ref:`dense_initialize` functions used to initialize and cleanup the library handle
+* :ref:`dense_stream` functions provide functionality to manipulate streams
+* :ref:`dense_gesvdj_info` functions provide functionality to manipulate gesvdj parameters
+* :ref:`dense_syevj_info` functions provide functionality to manipulate syevj parameters
 
 
-.. _compat_initialize:
+.. _dense_initialize:
 
 Handle set-up and tear-down
 ===============================
@@ -36,7 +36,7 @@ hipsolverDnDestroy()
 
 
 
-.. _compat_stream:
+.. _dense_stream:
 
 Stream manipulation
 ==============================
@@ -55,7 +55,7 @@ hipsolverDnGetStream()
 
 
 
-.. _compat_gesvdj_info:
+.. _dense_gesvdj_info:
 
 Gesvdj parameter manipulation
 ===============================
@@ -72,31 +72,31 @@ hipsolverDnDestroyGesvdjInfo()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnDestroyGesvdjInfo
 
-.. _compat_gesvdj_set_max_sweeps:
+.. _dense_gesvdj_set_max_sweeps:
 
 hipsolverDnXgesvdjSetMaxSweeps()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXgesvdjSetMaxSweeps
 
-.. _compat_gesvdj_set_sort_eig:
+.. _dense_gesvdj_set_sort_eig:
 
 hipsolverDnXgesvdjSetSortEig()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXgesvdjSetSortEig
 
-.. _compat_gesvdj_set_tolerance:
+.. _dense_gesvdj_set_tolerance:
 
 hipsolverDnXgesvdjSetTolerance()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXgesvdjSetTolerance
 
-.. _compat_gesvdj_get_residual:
+.. _dense_gesvdj_get_residual:
 
 hipsolverDnXgesvdjGetResidual()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXgesvdjGetResidual
 
-.. _compat_gesvdj_get_sweeps:
+.. _dense_gesvdj_get_sweeps:
 
 hipsolverDnXgesvdjGetSweeps()
 ---------------------------------
@@ -104,7 +104,7 @@ hipsolverDnXgesvdjGetSweeps()
 
 
 
-.. _compat_syevj_info:
+.. _dense_syevj_info:
 
 Syevj parameter manipulation
 ===============================
@@ -121,31 +121,31 @@ hipsolverDnDestroySyevjInfo()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnDestroySyevjInfo
 
-.. _compat_syevj_set_max_sweeps:
+.. _dense_syevj_set_max_sweeps:
 
 hipsolverDnXsyevjSetMaxSweeps()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXsyevjSetMaxSweeps
 
-.. _compat_syevj_set_sort_eig:
+.. _dense_syevj_set_sort_eig:
 
 hipsolverDnXsyevjSetSortEig()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXsyevjSetSortEig
 
-.. _compat_syevj_set_tolerance:
+.. _dense_syevj_set_tolerance:
 
 hipsolverDnXsyevjSetTolerance()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXsyevjSetTolerance
 
-.. _compat_syevj_get_residual:
+.. _dense_syevj_get_residual:
 
 hipsolverDnXsyevjGetResidual()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXsyevjGetResidual
 
-.. _compat_syevj_get_sweeps:
+.. _dense_syevj_get_sweeps:
 
 hipsolverDnXsyevjGetSweeps()
 ---------------------------------
