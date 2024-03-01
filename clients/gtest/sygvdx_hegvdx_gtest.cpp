@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -118,48 +118,48 @@ protected:
     }
 };
 
-class SYGVDX_COMPAT : public SYGVDX_HEGVDX<API_COMPAT>
+class SYGVDX : public SYGVDX_HEGVDX<API_NORMAL>
 {
 };
 
-class HEGVDX_COMPAT : public SYGVDX_HEGVDX<API_COMPAT>
+class HEGVDX : public SYGVDX_HEGVDX<API_NORMAL>
 {
 };
 
 // non-batch tests
 
-TEST_P(SYGVDX_COMPAT, __float)
+TEST_P(SYGVDX, __float)
 {
     run_tests<false, false, float>();
 }
 
-TEST_P(SYGVDX_COMPAT, __double)
+TEST_P(SYGVDX, __double)
 {
     run_tests<false, false, double>();
 }
 
-TEST_P(HEGVDX_COMPAT, __float_complex)
+TEST_P(HEGVDX, __float_complex)
 {
     run_tests<false, false, rocblas_float_complex>();
 }
 
-TEST_P(HEGVDX_COMPAT, __double_complex)
+TEST_P(HEGVDX, __double_complex)
 {
     run_tests<false, false, rocblas_double_complex>();
 }
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          SYGVDX_COMPAT,
+//                          SYGVDX,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         SYGVDX_COMPAT,
+                         SYGVDX,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          HEGVDX_COMPAT,
+//                          HEGVDX,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         HEGVDX_COMPAT,
+                         HEGVDX,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
