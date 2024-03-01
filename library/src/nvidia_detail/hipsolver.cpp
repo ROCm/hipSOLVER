@@ -6538,23 +6538,23 @@ catch(...)
 }
 
 /******************** SYGVDX/HEGVDX ********************/
-hipsolverStatus_t hipsolverDnSsygvdx_bufferSize(hipsolverHandle_t   handle,
-                                                hipsolverEigType_t  itype,
-                                                hipsolverEigMode_t  jobz,
-                                                hipsolverEigRange_t range,
-                                                hipsolverFillMode_t uplo,
-                                                int                 n,
-                                                const float*        A,
-                                                int                 lda,
-                                                const float*        B,
-                                                int                 ldb,
-                                                float               vl,
-                                                float               vu,
-                                                int                 il,
-                                                int                 iu,
-                                                int*                nev,
-                                                const float*        W,
-                                                int*                lwork)
+hipsolverStatus_t hipsolverSsygvdx_bufferSize(hipsolverHandle_t   handle,
+                                              hipsolverEigType_t  itype,
+                                              hipsolverEigMode_t  jobz,
+                                              hipsolverEigRange_t range,
+                                              hipsolverFillMode_t uplo,
+                                              int                 n,
+                                              const float*        A,
+                                              int                 lda,
+                                              const float*        B,
+                                              int                 ldb,
+                                              float               vl,
+                                              float               vu,
+                                              int                 il,
+                                              int                 iu,
+                                              int*                nev,
+                                              const float*        W,
+                                              int*                lwork)
 try
 {
     if(!handle)
@@ -6584,23 +6584,23 @@ catch(...)
     return hipsolver::exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnDsygvdx_bufferSize(hipsolverHandle_t   handle,
-                                                hipsolverEigType_t  itype,
-                                                hipsolverEigMode_t  jobz,
-                                                hipsolverEigRange_t range,
-                                                hipsolverFillMode_t uplo,
-                                                int                 n,
-                                                const double*       A,
-                                                int                 lda,
-                                                const double*       B,
-                                                int                 ldb,
-                                                double              vl,
-                                                double              vu,
-                                                int                 il,
-                                                int                 iu,
-                                                int*                nev,
-                                                const double*       W,
-                                                int*                lwork)
+hipsolverStatus_t hipsolverDsygvdx_bufferSize(hipsolverHandle_t   handle,
+                                              hipsolverEigType_t  itype,
+                                              hipsolverEigMode_t  jobz,
+                                              hipsolverEigRange_t range,
+                                              hipsolverFillMode_t uplo,
+                                              int                 n,
+                                              const double*       A,
+                                              int                 lda,
+                                              const double*       B,
+                                              int                 ldb,
+                                              double              vl,
+                                              double              vu,
+                                              int                 il,
+                                              int                 iu,
+                                              int*                nev,
+                                              const double*       W,
+                                              int*                lwork)
 try
 {
     if(!handle)
@@ -6630,23 +6630,23 @@ catch(...)
     return hipsolver::exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnChegvdx_bufferSize(hipsolverHandle_t      handle,
-                                                hipsolverEigType_t     itype,
-                                                hipsolverEigMode_t     jobz,
-                                                hipsolverEigRange_t    range,
-                                                hipsolverFillMode_t    uplo,
-                                                int                    n,
-                                                const hipFloatComplex* A,
-                                                int                    lda,
-                                                const hipFloatComplex* B,
-                                                int                    ldb,
-                                                float                  vl,
-                                                float                  vu,
-                                                int                    il,
-                                                int                    iu,
-                                                int*                   nev,
-                                                const float*           W,
-                                                int*                   lwork)
+hipsolverStatus_t hipsolverChegvdx_bufferSize(hipsolverHandle_t      handle,
+                                              hipsolverEigType_t     itype,
+                                              hipsolverEigMode_t     jobz,
+                                              hipsolverEigRange_t    range,
+                                              hipsolverFillMode_t    uplo,
+                                              int                    n,
+                                              const hipFloatComplex* A,
+                                              int                    lda,
+                                              const hipFloatComplex* B,
+                                              int                    ldb,
+                                              float                  vl,
+                                              float                  vu,
+                                              int                    il,
+                                              int                    iu,
+                                              int*                   nev,
+                                              const float*           W,
+                                              int*                   lwork)
 try
 {
     if(!handle)
@@ -6676,23 +6676,23 @@ catch(...)
     return hipsolver::exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnZhegvdx_bufferSize(hipsolverHandle_t       handle,
-                                                hipsolverEigType_t      itype,
-                                                hipsolverEigMode_t      jobz,
-                                                hipsolverEigRange_t     range,
-                                                hipsolverFillMode_t     uplo,
-                                                int                     n,
-                                                const hipDoubleComplex* A,
-                                                int                     lda,
-                                                const hipDoubleComplex* B,
-                                                int                     ldb,
-                                                double                  vl,
-                                                double                  vu,
-                                                int                     il,
-                                                int                     iu,
-                                                int*                    nev,
-                                                const double*           W,
-                                                int*                    lwork)
+hipsolverStatus_t hipsolverZhegvdx_bufferSize(hipsolverHandle_t       handle,
+                                              hipsolverEigType_t      itype,
+                                              hipsolverEigMode_t      jobz,
+                                              hipsolverEigRange_t     range,
+                                              hipsolverFillMode_t     uplo,
+                                              int                     n,
+                                              const hipDoubleComplex* A,
+                                              int                     lda,
+                                              const hipDoubleComplex* B,
+                                              int                     ldb,
+                                              double                  vl,
+                                              double                  vu,
+                                              int                     il,
+                                              int                     iu,
+                                              int*                    nev,
+                                              const double*           W,
+                                              int*                    lwork)
 try
 {
     if(!handle)
@@ -6722,25 +6722,25 @@ catch(...)
     return hipsolver::exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnSsygvdx(hipsolverHandle_t   handle,
-                                     hipsolverEigType_t  itype,
-                                     hipsolverEigMode_t  jobz,
-                                     hipsolverEigRange_t range,
-                                     hipsolverFillMode_t uplo,
-                                     int                 n,
-                                     float*              A,
-                                     int                 lda,
-                                     float*              B,
-                                     int                 ldb,
-                                     float               vl,
-                                     float               vu,
-                                     int                 il,
-                                     int                 iu,
-                                     int*                nev,
-                                     float*              W,
-                                     float*              work,
-                                     int                 lwork,
-                                     int*                devInfo)
+hipsolverStatus_t hipsolverSsygvdx(hipsolverHandle_t   handle,
+                                   hipsolverEigType_t  itype,
+                                   hipsolverEigMode_t  jobz,
+                                   hipsolverEigRange_t range,
+                                   hipsolverFillMode_t uplo,
+                                   int                 n,
+                                   float*              A,
+                                   int                 lda,
+                                   float*              B,
+                                   int                 ldb,
+                                   float               vl,
+                                   float               vu,
+                                   int                 il,
+                                   int                 iu,
+                                   int*                nev,
+                                   float*              W,
+                                   float*              work,
+                                   int                 lwork,
+                                   int*                devInfo)
 try
 {
     if(!handle)
@@ -6771,25 +6771,25 @@ catch(...)
     return hipsolver::exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnDsygvdx(hipsolverHandle_t   handle,
-                                     hipsolverEigType_t  itype,
-                                     hipsolverEigMode_t  jobz,
-                                     hipsolverEigRange_t range,
-                                     hipsolverFillMode_t uplo,
-                                     int                 n,
-                                     double*             A,
-                                     int                 lda,
-                                     double*             B,
-                                     int                 ldb,
-                                     double              vl,
-                                     double              vu,
-                                     int                 il,
-                                     int                 iu,
-                                     int*                nev,
-                                     double*             W,
-                                     double*             work,
-                                     int                 lwork,
-                                     int*                devInfo)
+hipsolverStatus_t hipsolverDsygvdx(hipsolverHandle_t   handle,
+                                   hipsolverEigType_t  itype,
+                                   hipsolverEigMode_t  jobz,
+                                   hipsolverEigRange_t range,
+                                   hipsolverFillMode_t uplo,
+                                   int                 n,
+                                   double*             A,
+                                   int                 lda,
+                                   double*             B,
+                                   int                 ldb,
+                                   double              vl,
+                                   double              vu,
+                                   int                 il,
+                                   int                 iu,
+                                   int*                nev,
+                                   double*             W,
+                                   double*             work,
+                                   int                 lwork,
+                                   int*                devInfo)
 try
 {
     if(!handle)
@@ -6820,25 +6820,25 @@ catch(...)
     return hipsolver::exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnChegvdx(hipsolverHandle_t   handle,
-                                     hipsolverEigType_t  itype,
-                                     hipsolverEigMode_t  jobz,
-                                     hipsolverEigRange_t range,
-                                     hipsolverFillMode_t uplo,
-                                     int                 n,
-                                     hipFloatComplex*    A,
-                                     int                 lda,
-                                     hipFloatComplex*    B,
-                                     int                 ldb,
-                                     float               vl,
-                                     float               vu,
-                                     int                 il,
-                                     int                 iu,
-                                     int*                nev,
-                                     float*              W,
-                                     hipFloatComplex*    work,
-                                     int                 lwork,
-                                     int*                devInfo)
+hipsolverStatus_t hipsolverChegvdx(hipsolverHandle_t   handle,
+                                   hipsolverEigType_t  itype,
+                                   hipsolverEigMode_t  jobz,
+                                   hipsolverEigRange_t range,
+                                   hipsolverFillMode_t uplo,
+                                   int                 n,
+                                   hipFloatComplex*    A,
+                                   int                 lda,
+                                   hipFloatComplex*    B,
+                                   int                 ldb,
+                                   float               vl,
+                                   float               vu,
+                                   int                 il,
+                                   int                 iu,
+                                   int*                nev,
+                                   float*              W,
+                                   hipFloatComplex*    work,
+                                   int                 lwork,
+                                   int*                devInfo)
 try
 {
     if(!handle)
@@ -6869,25 +6869,25 @@ catch(...)
     return hipsolver::exception2hip_status();
 }
 
-hipsolverStatus_t hipsolverDnZhegvdx(hipsolverHandle_t   handle,
-                                     hipsolverEigType_t  itype,
-                                     hipsolverEigMode_t  jobz,
-                                     hipsolverEigRange_t range,
-                                     hipsolverFillMode_t uplo,
-                                     int                 n,
-                                     hipDoubleComplex*   A,
-                                     int                 lda,
-                                     hipDoubleComplex*   B,
-                                     int                 ldb,
-                                     double              vl,
-                                     double              vu,
-                                     int                 il,
-                                     int                 iu,
-                                     int*                nev,
-                                     double*             W,
-                                     hipDoubleComplex*   work,
-                                     int                 lwork,
-                                     int*                devInfo)
+hipsolverStatus_t hipsolverZhegvdx(hipsolverHandle_t   handle,
+                                   hipsolverEigType_t  itype,
+                                   hipsolverEigMode_t  jobz,
+                                   hipsolverEigRange_t range,
+                                   hipsolverFillMode_t uplo,
+                                   int                 n,
+                                   hipDoubleComplex*   A,
+                                   int                 lda,
+                                   hipDoubleComplex*   B,
+                                   int                 ldb,
+                                   double              vl,
+                                   double              vu,
+                                   int                 il,
+                                   int                 iu,
+                                   int*                nev,
+                                   double*             W,
+                                   hipDoubleComplex*   work,
+                                   int                 lwork,
+                                   int*                devInfo)
 try
 {
     if(!handle)
