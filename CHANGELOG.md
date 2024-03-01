@@ -5,6 +5,14 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 
 ## (Unreleased) hipSOLVER
 ### Added
+- Added functions
+  - syevdx/heevdx
+    - hipsolverSsyevdx_bufferSize, hipsolverDsyevdx_bufferSize, hipsolverCheevdx_bufferSize, hipsolverZheevdx_bufferSize
+    - hipsolverSsyevdx, hipsolverDsyevdx, hipsolverCheevdx, hipsolverZheevdx
+  - sygvdx/hegvdx
+    - hipsolverSsygvdx_bufferSize, hipsolverDsygvdx_bufferSize, hipsolverChegvdx_bufferSize, hipsolverZhegvdx_bufferSize
+    - hipsolverSsygvdx, hipsolverDsygvdx, hipsolverChegvdx, hipsolverZhegvdx
+
 ### Optimized
 ### Changed
 - The numerical factorization in csrlsvchol will now be performed on the GPU. (The symbolic factorization is still performed on the CPU.)
