@@ -14,7 +14,6 @@ typedef enum
 {
     HIPSOLVER_ALG_0 = 231,
     HIPSOLVER_ALG_1 = 232,
-    HIPSOLVER_ALG_2 = 233,
 } hipsolverAlgMode_t;
 
 typedef enum

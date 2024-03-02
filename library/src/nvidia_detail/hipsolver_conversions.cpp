@@ -203,8 +203,6 @@ cusolverAlgMode_t hip2cuda_algmode(hipsolverAlgMode_t mode)
         return CUSOLVER_ALG_0;
     case HIPSOLVER_ALG_1:
         return CUSOLVER_ALG_1;
-    case HIPSOLVER_ALG_2:
-        return CUSOLVER_ALG_2;
     default:
         throw HIPSOLVER_STATUS_INVALID_ENUM;
     }
@@ -218,8 +216,6 @@ hipsolverAlgMode_t cuda2hip_algmode(cusolverAlgMode_t mode)
         return HIPSOLVER_ALG_0;
     case CUSOLVER_ALG_1:
         return HIPSOLVER_ALG_1;
-    case CUSOLVER_ALG_2:
-        return HIPSOLVER_ALG_2;
     default:
         throw HIPSOLVER_STATUS_INVALID_ENUM;
     }

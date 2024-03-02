@@ -26,7 +26,11 @@
  *  to hipSOLVER on the cuSOLVER side.
  */
 
+#include "exceptions.hpp"
 #include "hipsolver.h"
+#include "hipsolver_conversions.hpp"
+
+#include <cusolverDn.h>
 
 extern "C" {
 
