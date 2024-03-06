@@ -37,6 +37,9 @@ extern "C" {
 hipsolverStatus_t hipsolverDnCreateParams(hipsolverDnParams_t* params)
 try
 {
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnCreateParams((cusolverDnParams_t*)params));
 }
 catch(...)
@@ -47,6 +50,9 @@ catch(...)
 hipsolverStatus_t hipsolverDnDestroyParams(hipsolverDnParams_t params)
 try
 {
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnDestroyParams((cusolverDnParams_t)params));
 }
 catch(...)
@@ -59,6 +65,9 @@ hipsolverStatus_t hipsolverDnSetAdvOptions(hipsolverDnParams_t   params,
                                            hipsolverAlgMode_t    alg)
 try
 {
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
     return cuda2hip_status(cusolverDnSetAdvOptions(
         (cusolverDnParams_t)params, hip2cuda_function(func), hip2cuda_algmode(alg)));
 }
