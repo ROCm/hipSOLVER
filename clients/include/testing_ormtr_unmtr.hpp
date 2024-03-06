@@ -25,7 +25,7 @@
 
 #include "clientcommon.hpp"
 
-template <bool FORTRAN, bool COMPLEX, typename T, typename U>
+template <testAPI_t API, bool COMPLEX, typename T, typename U>
 void ormtr_unmtr_checkBadArgs(const hipsolverHandle_t    handle,
                               const hipsolverSideMode_t  side,
                               const hipsolverFillMode_t  uplo,
@@ -42,25 +42,13 @@ void ormtr_unmtr_checkBadArgs(const hipsolverHandle_t    handle,
                               U                          dInfo)
 {
     // handle
-    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
-                                                nullptr,
-                                                side,
-                                                uplo,
-                                                trans,
-                                                m,
-                                                n,
-                                                dA,
-                                                lda,
-                                                dIpiv,
-                                                dC,
-                                                ldc,
-                                                dWork,
-                                                lwork,
-                                                dInfo),
-                          HIPSOLVER_STATUS_NOT_INITIALIZED);
+    EXPECT_ROCBLAS_STATUS(
+        hipsolver_ormtr_unmtr(
+            API, nullptr, side, uplo, trans, m, n, dA, lda, dIpiv, dC, ldc, dWork, lwork, dInfo),
+        HIPSOLVER_STATUS_NOT_INITIALIZED);
 
     // values
-    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(API,
                                                 handle,
                                                 hipsolverSideMode_t(-1),
                                                 uplo,
@@ -76,7 +64,7 @@ void ormtr_unmtr_checkBadArgs(const hipsolverHandle_t    handle,
                                                 lwork,
                                                 dInfo),
                           HIPSOLVER_STATUS_INVALID_ENUM);
-    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(API,
                                                 handle,
                                                 side,
                                                 hipsolverFillMode_t(-1),
@@ -92,7 +80,7 @@ void ormtr_unmtr_checkBadArgs(const hipsolverHandle_t    handle,
                                                 lwork,
                                                 dInfo),
                           HIPSOLVER_STATUS_INVALID_ENUM);
-    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(API,
                                                 handle,
                                                 side,
                                                 uplo,
@@ -109,7 +97,7 @@ void ormtr_unmtr_checkBadArgs(const hipsolverHandle_t    handle,
                                                 dInfo),
                           HIPSOLVER_STATUS_INVALID_ENUM);
     if(COMPLEX)
-        EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+        EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(API,
                                                     handle,
                                                     side,
                                                     uplo,
@@ -126,7 +114,7 @@ void ormtr_unmtr_checkBadArgs(const hipsolverHandle_t    handle,
                                                     dInfo),
                               HIPSOLVER_STATUS_INVALID_VALUE);
     else
-        EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+        EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(API,
                                                     handle,
                                                     side,
                                                     uplo,
@@ -145,7 +133,7 @@ void ormtr_unmtr_checkBadArgs(const hipsolverHandle_t    handle,
 
 #if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // pointers
-    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(API,
                                                 handle,
                                                 side,
                                                 uplo,
@@ -161,7 +149,7 @@ void ormtr_unmtr_checkBadArgs(const hipsolverHandle_t    handle,
                                                 lwork,
                                                 dInfo),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(API,
                                                 handle,
                                                 side,
                                                 uplo,
@@ -177,7 +165,7 @@ void ormtr_unmtr_checkBadArgs(const hipsolverHandle_t    handle,
                                                 lwork,
                                                 dInfo),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(API,
                                                 handle,
                                                 side,
                                                 uplo,
@@ -193,7 +181,7 @@ void ormtr_unmtr_checkBadArgs(const hipsolverHandle_t    handle,
                                                 lwork,
                                                 dInfo),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(API,
                                                 handle,
                                                 side,
                                                 uplo,
@@ -212,7 +200,7 @@ void ormtr_unmtr_checkBadArgs(const hipsolverHandle_t    handle,
 #endif
 }
 
-template <bool FORTRAN, typename T, bool COMPLEX = is_complex<T>>
+template <testAPI_t API, typename T, bool COMPLEX = is_complex<T>>
 void testing_ormtr_unmtr_bad_arg()
 {
     // safe arguments
@@ -236,7 +224,7 @@ void testing_ormtr_unmtr_bad_arg()
     CHECK_HIP_ERROR(dInfo.memcheck());
 
     int size_W;
-    hipsolver_ormtr_unmtr_bufferSize(FORTRAN,
+    hipsolver_ormtr_unmtr_bufferSize(API,
                                      handle,
                                      side,
                                      uplo,
@@ -254,20 +242,20 @@ void testing_ormtr_unmtr_bad_arg()
         CHECK_HIP_ERROR(dWork.memcheck());
 
     // check bad arguments
-    ormtr_unmtr_checkBadArgs<FORTRAN, COMPLEX>(handle,
-                                               side,
-                                               uplo,
-                                               trans,
-                                               m,
-                                               n,
-                                               dA.data(),
-                                               lda,
-                                               dIpiv.data(),
-                                               dC.data(),
-                                               ldc,
-                                               dWork.data(),
-                                               size_W,
-                                               dInfo.data());
+    ormtr_unmtr_checkBadArgs<API, COMPLEX>(handle,
+                                           side,
+                                           uplo,
+                                           trans,
+                                           m,
+                                           n,
+                                           dA.data(),
+                                           lda,
+                                           dIpiv.data(),
+                                           dC.data(),
+                                           ldc,
+                                           dWork.data(),
+                                           size_W,
+                                           dInfo.data());
 }
 
 template <bool CPU, bool GPU, typename T, typename Td, typename Th>
@@ -324,7 +312,7 @@ void ormtr_unmtr_initData(const hipsolverHandle_t    handle,
     }
 }
 
-template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void ormtr_unmtr_getError(const hipsolverHandle_t    handle,
                           const hipsolverSideMode_t  side,
                           const hipsolverFillMode_t  uplo,
@@ -356,7 +344,7 @@ void ormtr_unmtr_getError(const hipsolverHandle_t    handle,
 
     // execute computations
     // GPU lapack
-    CHECK_ROCBLAS_ERROR(hipsolver_ormtr_unmtr(FORTRAN,
+    CHECK_ROCBLAS_ERROR(hipsolver_ormtr_unmtr(API,
                                               handle,
                                               side,
                                               uplo,
@@ -390,7 +378,7 @@ void ormtr_unmtr_getError(const hipsolverHandle_t    handle,
         *max_err += 1;
 }
 
-template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void ormtr_unmtr_getPerfData(const hipsolverHandle_t    handle,
                              const hipsolverSideMode_t  side,
                              const hipsolverFillMode_t  uplo,
@@ -438,7 +426,7 @@ void ormtr_unmtr_getPerfData(const hipsolverHandle_t    handle,
         ormtr_unmtr_initData<false, true, T>(
             handle, side, uplo, trans, m, n, dA, lda, dIpiv, dC, ldc, hA, hIpiv, hC, hW, size_W);
 
-        CHECK_ROCBLAS_ERROR(hipsolver_ormtr_unmtr(FORTRAN,
+        CHECK_ROCBLAS_ERROR(hipsolver_ormtr_unmtr(API,
                                                   handle,
                                                   side,
                                                   uplo,
@@ -466,7 +454,7 @@ void ormtr_unmtr_getPerfData(const hipsolverHandle_t    handle,
             handle, side, uplo, trans, m, n, dA, lda, dIpiv, dC, ldc, hA, hIpiv, hC, hW, size_W);
 
         start = get_time_us_sync(stream);
-        hipsolver_ormtr_unmtr(FORTRAN,
+        hipsolver_ormtr_unmtr(API,
                               handle,
                               side,
                               uplo,
@@ -486,7 +474,7 @@ void ormtr_unmtr_getPerfData(const hipsolverHandle_t    handle,
     *gpu_time_used /= hot_calls;
 }
 
-template <bool FORTRAN, typename T, bool COMPLEX = is_complex<T>>
+template <testAPI_t API, typename T, bool COMPLEX = is_complex<T>>
 void testing_ormtr_unmtr(Arguments& argus)
 {
     // get arguments
@@ -519,7 +507,7 @@ void testing_ormtr_unmtr(Arguments& argus)
         = ((COMPLEX && trans == HIPSOLVER_OP_T) || (!COMPLEX && trans == HIPSOLVER_OP_C));
     if(invalid_value)
     {
-        EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+        EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(API,
                                                     handle,
                                                     side,
                                                     uplo,
@@ -556,7 +544,7 @@ void testing_ormtr_unmtr(Arguments& argus)
     bool invalid_size = (m < 0 || n < 0 || ldc < m || lda < nq);
     if(invalid_size)
     {
-        EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(FORTRAN,
+        EXPECT_ROCBLAS_STATUS(hipsolver_ormtr_unmtr(API,
                                                     handle,
                                                     side,
                                                     uplo,
@@ -581,7 +569,7 @@ void testing_ormtr_unmtr(Arguments& argus)
 
     // memory size query is necessary
     int size_W;
-    hipsolver_ormtr_unmtr_bufferSize(FORTRAN,
+    hipsolver_ormtr_unmtr_bufferSize(API,
                                      handle,
                                      side,
                                      uplo,
@@ -625,52 +613,52 @@ void testing_ormtr_unmtr(Arguments& argus)
 
     // check computations
     if(argus.unit_check || argus.norm_check)
-        ormtr_unmtr_getError<FORTRAN, T>(handle,
-                                         side,
-                                         uplo,
-                                         trans,
-                                         m,
-                                         n,
-                                         dA,
-                                         lda,
-                                         dIpiv,
-                                         dC,
-                                         ldc,
-                                         dWork,
-                                         size_W,
-                                         dInfo,
-                                         hA,
-                                         hIpiv,
-                                         hC,
-                                         hCRes,
-                                         hInfo,
-                                         hInfoRes,
-                                         &max_error);
+        ormtr_unmtr_getError<API, T>(handle,
+                                     side,
+                                     uplo,
+                                     trans,
+                                     m,
+                                     n,
+                                     dA,
+                                     lda,
+                                     dIpiv,
+                                     dC,
+                                     ldc,
+                                     dWork,
+                                     size_W,
+                                     dInfo,
+                                     hA,
+                                     hIpiv,
+                                     hC,
+                                     hCRes,
+                                     hInfo,
+                                     hInfoRes,
+                                     &max_error);
 
     // collect performance data
     if(argus.timing)
-        ormtr_unmtr_getPerfData<FORTRAN, T>(handle,
-                                            side,
-                                            uplo,
-                                            trans,
-                                            m,
-                                            n,
-                                            dA,
-                                            lda,
-                                            dIpiv,
-                                            dC,
-                                            ldc,
-                                            dWork,
-                                            size_W,
-                                            dInfo,
-                                            hA,
-                                            hIpiv,
-                                            hC,
-                                            hInfo,
-                                            &gpu_time_used,
-                                            &cpu_time_used,
-                                            hot_calls,
-                                            argus.perf);
+        ormtr_unmtr_getPerfData<API, T>(handle,
+                                        side,
+                                        uplo,
+                                        trans,
+                                        m,
+                                        n,
+                                        dA,
+                                        lda,
+                                        dIpiv,
+                                        dC,
+                                        ldc,
+                                        dWork,
+                                        size_W,
+                                        dInfo,
+                                        hA,
+                                        hIpiv,
+                                        hC,
+                                        hInfo,
+                                        &gpu_time_used,
+                                        &cpu_time_used,
+                                        hot_calls,
+                                        argus.perf);
 
     // validate results for rocsolver-test
     // using s * machine_precision as tolerance

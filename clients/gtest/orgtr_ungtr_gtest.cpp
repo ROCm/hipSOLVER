@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -69,7 +69,7 @@ Arguments orgtr_setup_arguments(orgtr_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class ORGTR_UNGTR : public ::TestWithParam<orgtr_tuple>
 {
 protected:
@@ -83,25 +83,25 @@ protected:
         Arguments arg = orgtr_setup_arguments(GetParam());
 
         if(arg.peek<rocblas_int>("n") == -1 && arg.peek<char>("uplo") == 'U')
-            testing_orgtr_ungtr_bad_arg<FORTRAN, T>();
+            testing_orgtr_ungtr_bad_arg<API, T>();
 
-        testing_orgtr_ungtr<FORTRAN, T>(arg);
+        testing_orgtr_ungtr<API, T>(arg);
     }
 };
 
-class ORGTR : public ORGTR_UNGTR<false>
+class ORGTR : public ORGTR_UNGTR<API_NORMAL>
 {
 };
 
-class UNGTR : public ORGTR_UNGTR<false>
+class UNGTR : public ORGTR_UNGTR<API_NORMAL>
 {
 };
 
-class ORGTR_FORTRAN : public ORGTR_UNGTR<true>
+class ORGTR_FORTRAN : public ORGTR_UNGTR<API_FORTRAN>
 {
 };
 
-class UNGTR_FORTRAN : public ORGTR_UNGTR<true>
+class UNGTR_FORTRAN : public ORGTR_UNGTR<API_FORTRAN>
 {
 };
 

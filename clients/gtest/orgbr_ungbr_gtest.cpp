@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -99,7 +99,7 @@ Arguments orgbr_setup_arguments(orgbr_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class ORGBR_UNGBR : public ::TestWithParam<orgbr_tuple>
 {
 protected:
@@ -114,25 +114,25 @@ protected:
 
         if(arg.peek<rocblas_int>("m") == -1 && arg.peek<rocblas_int>("n") == 1
            && arg.get<char>("side") == 'L')
-            testing_orgbr_ungbr_bad_arg<FORTRAN, T>();
+            testing_orgbr_ungbr_bad_arg<API, T>();
 
-        testing_orgbr_ungbr<FORTRAN, T>(arg);
+        testing_orgbr_ungbr<API, T>(arg);
     }
 };
 
-class ORGBR : public ORGBR_UNGBR<false>
+class ORGBR : public ORGBR_UNGBR<API_NORMAL>
 {
 };
 
-class UNGBR : public ORGBR_UNGBR<false>
+class UNGBR : public ORGBR_UNGBR<API_NORMAL>
 {
 };
 
-class ORGBR_FORTRAN : public ORGBR_UNGBR<true>
+class ORGBR_FORTRAN : public ORGBR_UNGBR<API_FORTRAN>
 {
 };
 
-class UNGBR_FORTRAN : public ORGBR_UNGBR<true>
+class UNGBR_FORTRAN : public ORGBR_UNGBR<API_FORTRAN>
 {
 };
 

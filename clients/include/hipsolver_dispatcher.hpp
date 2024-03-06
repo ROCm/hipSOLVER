@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2021-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2021-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -73,9 +73,9 @@ class hipsolver_dispatcher
     {
         // Map for functions that support all precisions
         static const func_map map = {
-            {"gebrd", testing_gebrd<false, false, false, T>},
+            {"gebrd", testing_gebrd<API_NORMAL, false, false, T>},
             {"gels", testing_gels<API_NORMAL, false, false, false, T>},
-            {"geqrf", testing_geqrf<false, false, false, T>},
+            {"geqrf", testing_geqrf<API_NORMAL, false, false, T>},
             {"gesv", testing_gesv<API_NORMAL, false, false, false, T>},
             {"gesvd", testing_gesvd<API_NORMAL, false, false, false, T>},
             {"gesvda_strided_batched", testing_gesvda<API_COMPAT, false, true, T>},
@@ -85,10 +85,10 @@ class hipsolver_dispatcher
             {"getrs", testing_getrs<API_NORMAL, false, false, T>},
             {"potrf", testing_potrf<API_NORMAL, false, false, T>},
             {"potrf_batched", testing_potrf<API_NORMAL, true, false, T>},
-            {"potri", testing_potri<false, false, false, T>},
+            {"potri", testing_potri<API_NORMAL, false, false, T>},
             {"potrs", testing_potrs<API_NORMAL, false, false, T>},
             {"potrs_batched", testing_potrs<API_NORMAL, true, false, T>},
-            {"sytrf", testing_sytrf<false, false, false, T>},
+            {"sytrf", testing_sytrf<API_NORMAL, false, false, T>},
         };
 
         // Grab function from the map and execute
@@ -107,19 +107,19 @@ class hipsolver_dispatcher
     {
         // Map for functions that support single and double precisions
         static const func_map map_real = {
-            {"orgbr", testing_orgbr_ungbr<false, T>},
-            {"orgqr", testing_orgqr_ungqr<false, T>},
-            {"orgtr", testing_orgtr_ungtr<false, T>},
-            {"ormqr", testing_ormqr_unmqr<false, T>},
-            {"ormtr", testing_ormtr_unmtr<false, T>},
-            {"syevd", testing_syevd_heevd<false, false, false, T>},
+            {"orgbr", testing_orgbr_ungbr<API_NORMAL, T>},
+            {"orgqr", testing_orgqr_ungqr<API_NORMAL, T>},
+            {"orgtr", testing_orgtr_ungtr<API_NORMAL, T>},
+            {"ormqr", testing_ormqr_unmqr<API_NORMAL, T>},
+            {"ormtr", testing_ormtr_unmtr<API_NORMAL, T>},
+            {"syevd", testing_syevd_heevd<API_NORMAL, false, false, T>},
             {"syevdx", testing_syevdx_heevdx<API_COMPAT, false, false, T>},
             {"syevj", testing_syevj_heevj<API_NORMAL, false, false, T>},
             {"syevj_batched", testing_syevj_heevj<API_NORMAL, false, true, T>},
-            {"sygvd", testing_sygvd_hegvd<false, false, false, T>},
+            {"sygvd", testing_sygvd_hegvd<API_NORMAL, false, false, T>},
             {"sygvdx", testing_sygvdx_hegvdx<API_COMPAT, false, false, T>},
             {"sygvj", testing_sygvj_hegvj<API_NORMAL, false, false, T>},
-            {"sytrd", testing_sytrd_hetrd<false, false, false, T>},
+            {"sytrd", testing_sytrd_hetrd<API_NORMAL, false, false, T>},
             {"csrlsvchol", testing_csrlsvchol<false, T>},
             {"csrlsvcholHost", testing_csrlsvchol<true, T>},
         };
@@ -140,19 +140,19 @@ class hipsolver_dispatcher
     {
         // Map for functions that support single complex and double complex precisions
         static const func_map map_complex = {
-            {"ungbr", testing_orgbr_ungbr<false, T>},
-            {"ungqr", testing_orgqr_ungqr<false, T>},
-            {"ungtr", testing_orgtr_ungtr<false, T>},
-            {"unmqr", testing_ormqr_unmqr<false, T>},
-            {"unmtr", testing_ormtr_unmtr<false, T>},
-            {"heevd", testing_syevd_heevd<false, false, false, T>},
+            {"ungbr", testing_orgbr_ungbr<API_NORMAL, T>},
+            {"ungqr", testing_orgqr_ungqr<API_NORMAL, T>},
+            {"ungtr", testing_orgtr_ungtr<API_NORMAL, T>},
+            {"unmqr", testing_ormqr_unmqr<API_NORMAL, T>},
+            {"unmtr", testing_ormtr_unmtr<API_NORMAL, T>},
+            {"heevd", testing_syevd_heevd<API_NORMAL, false, false, T>},
             {"heevdx", testing_syevdx_heevdx<API_COMPAT, false, false, T>},
             {"heevj", testing_syevj_heevj<API_NORMAL, false, false, T>},
             {"heevj_batched", testing_syevj_heevj<API_NORMAL, false, true, T>},
-            {"hegvd", testing_sygvd_hegvd<false, false, false, T>},
+            {"hegvd", testing_sygvd_hegvd<API_NORMAL, false, false, T>},
             {"hegvdx", testing_sygvdx_hegvdx<API_COMPAT, false, false, T>},
             {"hegvj", testing_sygvj_hegvj<API_NORMAL, false, false, T>},
-            {"hetrd", testing_sytrd_hetrd<false, false, false, T>},
+            {"hetrd", testing_sytrd_hetrd<API_NORMAL, false, false, T>},
         };
 
         // Grab function from the map and execute

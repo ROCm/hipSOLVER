@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -84,7 +84,7 @@ Arguments sygvd_setup_arguments(sygvd_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class SYGVD_HEGVD : public ::TestWithParam<sygvd_tuple>
 {
 protected:
@@ -99,26 +99,26 @@ protected:
 
         if(arg.peek<char>("itype") == '1' && arg.peek<char>("jobz") == 'N'
            && arg.peek<char>("uplo") == 'U' && arg.peek<rocblas_int>("n") == -1)
-            testing_sygvd_hegvd_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
+            testing_sygvd_hegvd_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_sygvd_hegvd<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_sygvd_hegvd<API, BATCHED, STRIDED, T>(arg);
     }
 };
 
-class SYGVD : public SYGVD_HEGVD<false>
+class SYGVD : public SYGVD_HEGVD<API_NORMAL>
 {
 };
 
-class HEGVD : public SYGVD_HEGVD<false>
+class HEGVD : public SYGVD_HEGVD<API_NORMAL>
 {
 };
 
-class SYGVD_FORTRAN : public SYGVD_HEGVD<true>
+class SYGVD_FORTRAN : public SYGVD_HEGVD<API_FORTRAN>
 {
 };
 
-class HEGVD_FORTRAN : public SYGVD_HEGVD<true>
+class HEGVD_FORTRAN : public SYGVD_HEGVD<API_FORTRAN>
 {
 };
 

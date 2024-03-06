@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -108,7 +108,7 @@ Arguments ormqr_setup_arguments(ormqr_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class ORMQR_UNMQR : public ::TestWithParam<ormqr_tuple>
 {
 protected:
@@ -123,25 +123,25 @@ protected:
 
         if(arg.peek<rocblas_int>("m") == -1 && arg.peek<char>("side") == 'L'
            && arg.peek<char>("trans") == 'T')
-            testing_ormqr_unmqr_bad_arg<FORTRAN, T>();
+            testing_ormqr_unmqr_bad_arg<API, T>();
 
-        testing_ormqr_unmqr<FORTRAN, T>(arg);
+        testing_ormqr_unmqr<API, T>(arg);
     }
 };
 
-class ORMQR : public ORMQR_UNMQR<false>
+class ORMQR : public ORMQR_UNMQR<API_NORMAL>
 {
 };
 
-class UNMQR : public ORMQR_UNMQR<false>
+class UNMQR : public ORMQR_UNMQR<API_NORMAL>
 {
 };
 
-class ORMQR_FORTRAN : public ORMQR_UNMQR<true>
+class ORMQR_FORTRAN : public ORMQR_UNMQR<API_FORTRAN>
 {
 };
 
-class UNMQR_FORTRAN : public ORMQR_UNMQR<true>
+class UNMQR_FORTRAN : public ORMQR_UNMQR<API_FORTRAN>
 {
 };
 

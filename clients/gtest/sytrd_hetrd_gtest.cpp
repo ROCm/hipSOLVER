@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -75,7 +75,7 @@ Arguments sytrd_setup_arguments(sytrd_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class SYTRD_HETRD : public ::TestWithParam<sytrd_tuple>
 {
 protected:
@@ -89,26 +89,26 @@ protected:
         Arguments arg = sytrd_setup_arguments(GetParam());
 
         if(arg.peek<char>("uplo") == 'U' && arg.peek<rocblas_int>("n") == -1)
-            testing_sytrd_hetrd_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
+            testing_sytrd_hetrd_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_sytrd_hetrd<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_sytrd_hetrd<API, BATCHED, STRIDED, T>(arg);
     }
 };
 
-class SYTRD : public SYTRD_HETRD<false>
+class SYTRD : public SYTRD_HETRD<API_NORMAL>
 {
 };
 
-class HETRD : public SYTRD_HETRD<false>
+class HETRD : public SYTRD_HETRD<API_NORMAL>
 {
 };
 
-class SYTRD_FORTRAN : public SYTRD_HETRD<true>
+class SYTRD_FORTRAN : public SYTRD_HETRD<API_FORTRAN>
 {
 };
 
-class HETRD_FORTRAN : public SYTRD_HETRD<true>
+class HETRD_FORTRAN : public SYTRD_HETRD<API_FORTRAN>
 {
 };
 

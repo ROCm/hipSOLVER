@@ -25,7 +25,7 @@
 
 #include "clientcommon.hpp"
 
-template <bool FORTRAN, typename S, typename T, typename U, typename V>
+template <testAPI_t API, typename S, typename T, typename U, typename V>
 void gebrd_checkBadArgs(const hipsolverHandle_t handle,
                         const int               m,
                         const int               n,
@@ -46,7 +46,7 @@ void gebrd_checkBadArgs(const hipsolverHandle_t handle,
                         const int               bc)
 {
     // handle
-    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(API,
                                           nullptr,
                                           m,
                                           n,
@@ -72,7 +72,7 @@ void gebrd_checkBadArgs(const hipsolverHandle_t handle,
 
 #if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // pointers
-    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(API,
                                           handle,
                                           m,
                                           n,
@@ -92,7 +92,7 @@ void gebrd_checkBadArgs(const hipsolverHandle_t handle,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(API,
                                           handle,
                                           m,
                                           n,
@@ -112,7 +112,7 @@ void gebrd_checkBadArgs(const hipsolverHandle_t handle,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(API,
                                           handle,
                                           m,
                                           n,
@@ -132,7 +132,7 @@ void gebrd_checkBadArgs(const hipsolverHandle_t handle,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(API,
                                           handle,
                                           m,
                                           n,
@@ -152,7 +152,7 @@ void gebrd_checkBadArgs(const hipsolverHandle_t handle,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(API,
                                           handle,
                                           m,
                                           n,
@@ -172,7 +172,7 @@ void gebrd_checkBadArgs(const hipsolverHandle_t handle,
                                           dInfo,
                                           bc),
                           HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(FORTRAN,
+    EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(API,
                                           handle,
                                           m,
                                           n,
@@ -195,7 +195,7 @@ void gebrd_checkBadArgs(const hipsolverHandle_t handle,
 #endif
 }
 
-template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+template <testAPI_t API, bool BATCHED, bool STRIDED, typename T>
 void testing_gebrd_bad_arg()
 {
     using S = decltype(std::real(T{}));
@@ -229,13 +229,13 @@ void testing_gebrd_bad_arg()
         // CHECK_HIP_ERROR(dInfo.memcheck());
 
         // int size_W;
-        // hipsolver_gebrd_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        // hipsolver_gebrd_bufferSize(API, handle, m, n, dA.data(), lda, &size_W);
         // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check bad arguments
-        // gebrd_checkBadArgs<FORTRAN>(handle,
+        // gebrd_checkBadArgs<API>(handle,
         //                             m,
         //                             n,
         //                             dA.data(),
@@ -271,30 +271,30 @@ void testing_gebrd_bad_arg()
         CHECK_HIP_ERROR(dInfo.memcheck());
 
         int size_W;
-        hipsolver_gebrd_bufferSize(FORTRAN, handle, m, n, dA.data(), lda, &size_W);
+        hipsolver_gebrd_bufferSize(API, handle, m, n, dA.data(), lda, &size_W);
         device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
         // check bad arguments
-        gebrd_checkBadArgs<FORTRAN>(handle,
-                                    m,
-                                    n,
-                                    dA.data(),
-                                    lda,
-                                    stA,
-                                    dD.data(),
-                                    stD,
-                                    dE.data(),
-                                    stE,
-                                    dTauq.data(),
-                                    stQ,
-                                    dTaup.data(),
-                                    stP,
-                                    dWork.data(),
-                                    size_W,
-                                    dInfo.data(),
-                                    bc);
+        gebrd_checkBadArgs<API>(handle,
+                                m,
+                                n,
+                                dA.data(),
+                                lda,
+                                stA,
+                                dD.data(),
+                                stD,
+                                dE.data(),
+                                stE,
+                                dTauq.data(),
+                                stQ,
+                                dTaup.data(),
+                                stP,
+                                dWork.data(),
+                                size_W,
+                                dInfo.data(),
+                                bc);
     }
 }
 
@@ -355,7 +355,7 @@ void gebrd_initData(const hipsolverHandle_t handle,
     }
 }
 
-template <bool FORTRAN,
+template <testAPI_t API,
           typename T,
           typename Sd,
           typename Td,
@@ -426,7 +426,7 @@ void gebrd_getError(const hipsolverHandle_t handle,
     if(!VERIFY_IMPLICIT_TEST)
     {
         // GPU lapack
-        CHECK_ROCBLAS_ERROR(hipsolver_gebrd(FORTRAN,
+        CHECK_ROCBLAS_ERROR(hipsolver_gebrd(API,
                                             handle,
                                             m,
                                             n,
@@ -592,7 +592,7 @@ void gebrd_getError(const hipsolverHandle_t handle,
     *max_err += err;
 }
 
-template <bool FORTRAN,
+template <testAPI_t API,
           typename T,
           typename Sd,
           typename Td,
@@ -709,7 +709,7 @@ void gebrd_getPerfData(const hipsolverHandle_t handle,
                                        hTauq,
                                        hTaup);
 
-        CHECK_ROCBLAS_ERROR(hipsolver_gebrd(FORTRAN,
+        CHECK_ROCBLAS_ERROR(hipsolver_gebrd(API,
                                             handle,
                                             m,
                                             n,
@@ -759,7 +759,7 @@ void gebrd_getPerfData(const hipsolverHandle_t handle,
                                        hTaup);
 
         start = get_time_us_sync(stream);
-        hipsolver_gebrd(FORTRAN,
+        hipsolver_gebrd(API,
                         handle,
                         m,
                         n,
@@ -783,7 +783,7 @@ void gebrd_getPerfData(const hipsolverHandle_t handle,
     *gpu_time_used /= hot_calls;
 }
 
-template <bool FORTRAN, bool BATCHED, bool STRIDED, typename T>
+template <testAPI_t API, bool BATCHED, bool STRIDED, typename T>
 void testing_gebrd(Arguments& argus)
 {
     using S = decltype(std::real(T{}));
@@ -823,7 +823,7 @@ void testing_gebrd(Arguments& argus)
     {
         if(BATCHED)
         {
-            // EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(FORTRAN,
+            // EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(API,
             //                                       handle,
             //                                       m,
             //                                       n,
@@ -846,7 +846,7 @@ void testing_gebrd(Arguments& argus)
         }
         else
         {
-            EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(FORTRAN,
+            EXPECT_ROCBLAS_STATUS(hipsolver_gebrd(API,
                                                   handle,
                                                   m,
                                                   n,
@@ -876,7 +876,7 @@ void testing_gebrd(Arguments& argus)
 
     // memory size query is necessary
     int size_W;
-    hipsolver_gebrd_bufferSize(FORTRAN, handle, m, n, (T*)nullptr, lda, &size_W);
+    hipsolver_gebrd_bufferSize(API, handle, m, n, (T*)nullptr, lda, &size_W);
 
     if(argus.mem_query)
     {
@@ -918,7 +918,7 @@ void testing_gebrd(Arguments& argus)
 
         // // check computations
         // if(argus.unit_check || argus.norm_check)
-        //     gebrd_getError<FORTRAN, T>(handle,
+        //     gebrd_getError<API, T>(handle,
         //                                m,
         //                                n,
         //                                dA,
@@ -948,7 +948,7 @@ void testing_gebrd(Arguments& argus)
 
         // // collect performance data
         // if(argus.timing)
-        //     gebrd_getPerfData<FORTRAN, T>(handle,
+        //     gebrd_getPerfData<API, T>(handle,
         //                                   m,
         //                                   n,
         //                                   dA,
@@ -1012,64 +1012,64 @@ void testing_gebrd(Arguments& argus)
 
         // check computations
         if(argus.unit_check || argus.norm_check)
-            gebrd_getError<FORTRAN, T>(handle,
-                                       m,
-                                       n,
-                                       dA,
-                                       lda,
-                                       stA,
-                                       dD,
-                                       stD,
-                                       dE,
-                                       stE,
-                                       dTauq,
-                                       stQ,
-                                       dTaup,
-                                       stP,
-                                       dWork,
-                                       size_W,
-                                       dInfo,
-                                       bc,
-                                       hA,
-                                       hARes,
-                                       hD,
-                                       hE,
-                                       hTauq,
-                                       hTaup,
-                                       hInfo,
-                                       hInfoRes,
-                                       &max_error);
+            gebrd_getError<API, T>(handle,
+                                   m,
+                                   n,
+                                   dA,
+                                   lda,
+                                   stA,
+                                   dD,
+                                   stD,
+                                   dE,
+                                   stE,
+                                   dTauq,
+                                   stQ,
+                                   dTaup,
+                                   stP,
+                                   dWork,
+                                   size_W,
+                                   dInfo,
+                                   bc,
+                                   hA,
+                                   hARes,
+                                   hD,
+                                   hE,
+                                   hTauq,
+                                   hTaup,
+                                   hInfo,
+                                   hInfoRes,
+                                   &max_error);
 
         // collect performance data
         if(argus.timing)
-            gebrd_getPerfData<FORTRAN, T>(handle,
-                                          m,
-                                          n,
-                                          dA,
-                                          lda,
-                                          stA,
-                                          dD,
-                                          stD,
-                                          dE,
-                                          stE,
-                                          dTauq,
-                                          stQ,
-                                          dTaup,
-                                          stP,
-                                          dWork,
-                                          size_W,
-                                          dInfo,
-                                          bc,
-                                          hA,
-                                          hD,
-                                          hE,
-                                          hTauq,
-                                          hTaup,
-                                          hInfo,
-                                          &gpu_time_used,
-                                          &cpu_time_used,
-                                          hot_calls,
-                                          argus.perf);
+            gebrd_getPerfData<API, T>(handle,
+                                      m,
+                                      n,
+                                      dA,
+                                      lda,
+                                      stA,
+                                      dD,
+                                      stD,
+                                      dE,
+                                      stE,
+                                      dTauq,
+                                      stQ,
+                                      dTaup,
+                                      stP,
+                                      dWork,
+                                      size_W,
+                                      dInfo,
+                                      bc,
+                                      hA,
+                                      hD,
+                                      hE,
+                                      hTauq,
+                                      hTaup,
+                                      hInfo,
+                                      &gpu_time_used,
+                                      &cpu_time_used,
+                                      hot_calls,
+                                      argus.perf);
     }
 
     // validate results for rocsolver-test

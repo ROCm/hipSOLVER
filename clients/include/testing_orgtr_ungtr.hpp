@@ -25,7 +25,7 @@
 
 #include "clientcommon.hpp"
 
-template <bool FORTRAN, typename T, typename U>
+template <testAPI_t API, typename T, typename U>
 void orgtr_ungtr_checkBadArgs(const hipsolverHandle_t   handle,
                               const hipsolverFillMode_t uplo,
                               const int                 n,
@@ -38,31 +38,30 @@ void orgtr_ungtr_checkBadArgs(const hipsolverHandle_t   handle,
 {
     // handle
     EXPECT_ROCBLAS_STATUS(
-        hipsolver_orgtr_ungtr(FORTRAN, nullptr, uplo, n, dA, lda, dIpiv, dWork, lwork, dInfo),
+        hipsolver_orgtr_ungtr(API, nullptr, uplo, n, dA, lda, dIpiv, dWork, lwork, dInfo),
         HIPSOLVER_STATUS_NOT_INITIALIZED);
 
     // values
     EXPECT_ROCBLAS_STATUS(
         hipsolver_orgtr_ungtr(
-            FORTRAN, handle, hipsolverFillMode_t(-1), n, dA, lda, dIpiv, dWork, lwork, dInfo),
+            API, handle, hipsolverFillMode_t(-1), n, dA, lda, dIpiv, dWork, lwork, dInfo),
         HIPSOLVER_STATUS_INVALID_ENUM);
 
 #if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // pointers
     EXPECT_ROCBLAS_STATUS(
-        hipsolver_orgtr_ungtr(
-            FORTRAN, handle, uplo, n, (T) nullptr, lda, dIpiv, dWork, lwork, dInfo),
+        hipsolver_orgtr_ungtr(API, handle, uplo, n, (T) nullptr, lda, dIpiv, dWork, lwork, dInfo),
         HIPSOLVER_STATUS_INVALID_VALUE);
     EXPECT_ROCBLAS_STATUS(
-        hipsolver_orgtr_ungtr(FORTRAN, handle, uplo, n, dA, lda, (T) nullptr, dWork, lwork, dInfo),
+        hipsolver_orgtr_ungtr(API, handle, uplo, n, dA, lda, (T) nullptr, dWork, lwork, dInfo),
         HIPSOLVER_STATUS_INVALID_VALUE);
     EXPECT_ROCBLAS_STATUS(
-        hipsolver_orgtr_ungtr(FORTRAN, handle, uplo, n, dA, lda, dIpiv, dWork, lwork, (U) nullptr),
+        hipsolver_orgtr_ungtr(API, handle, uplo, n, dA, lda, dIpiv, dWork, lwork, (U) nullptr),
         HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
 }
 
-template <bool FORTRAN, typename T>
+template <testAPI_t API, typename T>
 void testing_orgtr_ungtr_bad_arg()
 {
     // safe arguments
@@ -80,14 +79,13 @@ void testing_orgtr_ungtr_bad_arg()
     CHECK_HIP_ERROR(dInfo.memcheck());
 
     int size_W;
-    hipsolver_orgtr_ungtr_bufferSize(
-        FORTRAN, handle, uplo, n, dA.data(), lda, dIpiv.data(), &size_W);
+    hipsolver_orgtr_ungtr_bufferSize(API, handle, uplo, n, dA.data(), lda, dIpiv.data(), &size_W);
     device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
     if(size_W)
         CHECK_HIP_ERROR(dWork.memcheck());
 
     // check bad arguments
-    orgtr_ungtr_checkBadArgs<FORTRAN>(
+    orgtr_ungtr_checkBadArgs<API>(
         handle, uplo, n, dA.data(), lda, dIpiv.data(), dWork.data(), size_W, dInfo.data());
 }
 
@@ -137,7 +135,7 @@ void orgtr_ungtr_initData(const hipsolverHandle_t   handle,
     }
 }
 
-template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void orgtr_ungtr_getError(const hipsolverHandle_t   handle,
                           const hipsolverFillMode_t uplo,
                           const int                 n,
@@ -163,7 +161,7 @@ void orgtr_ungtr_getError(const hipsolverHandle_t   handle,
     // execute computations
     // GPU lapack
     CHECK_ROCBLAS_ERROR(hipsolver_orgtr_ungtr(
-        FORTRAN, handle, uplo, n, dA.data(), lda, dIpiv.data(), dWork.data(), lwork, dInfo.data()));
+        API, handle, uplo, n, dA.data(), lda, dIpiv.data(), dWork.data(), lwork, dInfo.data()));
     CHECK_HIP_ERROR(hARes.transfer_from(dA));
     CHECK_HIP_ERROR(hInfoRes.transfer_from(dInfo));
 
@@ -182,7 +180,7 @@ void orgtr_ungtr_getError(const hipsolverHandle_t   handle,
         *max_err += 1;
 }
 
-template <bool FORTRAN, typename T, typename Td, typename Ud, typename Th, typename Uh>
+template <testAPI_t API, typename T, typename Td, typename Ud, typename Th, typename Uh>
 void orgtr_ungtr_getPerfData(const hipsolverHandle_t   handle,
                              const hipsolverFillMode_t uplo,
                              const int                 n,
@@ -222,16 +220,8 @@ void orgtr_ungtr_getPerfData(const hipsolverHandle_t   handle,
         orgtr_ungtr_initData<false, true, T>(
             handle, uplo, n, dA, lda, dIpiv, hA, hIpiv, hW, size_W);
 
-        CHECK_ROCBLAS_ERROR(hipsolver_orgtr_ungtr(FORTRAN,
-                                                  handle,
-                                                  uplo,
-                                                  n,
-                                                  dA.data(),
-                                                  lda,
-                                                  dIpiv.data(),
-                                                  dWork.data(),
-                                                  lwork,
-                                                  dInfo.data()));
+        CHECK_ROCBLAS_ERROR(hipsolver_orgtr_ungtr(
+            API, handle, uplo, n, dA.data(), lda, dIpiv.data(), dWork.data(), lwork, dInfo.data()));
     }
 
     // gpu-lapack performance
@@ -245,22 +235,14 @@ void orgtr_ungtr_getPerfData(const hipsolverHandle_t   handle,
             handle, uplo, n, dA, lda, dIpiv, hA, hIpiv, hW, size_W);
 
         start = get_time_us_sync(stream);
-        hipsolver_orgtr_ungtr(FORTRAN,
-                              handle,
-                              uplo,
-                              n,
-                              dA.data(),
-                              lda,
-                              dIpiv.data(),
-                              dWork.data(),
-                              lwork,
-                              dInfo.data());
+        hipsolver_orgtr_ungtr(
+            API, handle, uplo, n, dA.data(), lda, dIpiv.data(), dWork.data(), lwork, dInfo.data());
         *gpu_time_used += get_time_us_sync(stream) - start;
     }
     *gpu_time_used /= hot_calls;
 }
 
-template <bool FORTRAN, typename T>
+template <testAPI_t API, typename T>
 void testing_orgtr_ungtr(Arguments& argus)
 {
     // get arguments
@@ -290,17 +272,10 @@ void testing_orgtr_ungtr(Arguments& argus)
     bool invalid_size = (n < 0 || lda < n);
     if(invalid_size)
     {
-        EXPECT_ROCBLAS_STATUS(hipsolver_orgtr_ungtr(FORTRAN,
-                                                    handle,
-                                                    uplo,
-                                                    n,
-                                                    (T*)nullptr,
-                                                    lda,
-                                                    (T*)nullptr,
-                                                    (T*)nullptr,
-                                                    0,
-                                                    (int*)nullptr),
-                              HIPSOLVER_STATUS_INVALID_VALUE);
+        EXPECT_ROCBLAS_STATUS(
+            hipsolver_orgtr_ungtr(
+                API, handle, uplo, n, (T*)nullptr, lda, (T*)nullptr, (T*)nullptr, 0, (int*)nullptr),
+            HIPSOLVER_STATUS_INVALID_VALUE);
 
         if(argus.timing)
             rocsolver_bench_inform(inform_invalid_size);
@@ -310,8 +285,7 @@ void testing_orgtr_ungtr(Arguments& argus)
 
     // memory size query is necessary
     int size_W;
-    hipsolver_orgtr_ungtr_bufferSize(
-        FORTRAN, handle, uplo, n, (T*)nullptr, lda, (T*)nullptr, &size_W);
+    hipsolver_orgtr_ungtr_bufferSize(API, handle, uplo, n, (T*)nullptr, lda, (T*)nullptr, &size_W);
 
     if(argus.mem_query)
     {
@@ -339,40 +313,40 @@ void testing_orgtr_ungtr(Arguments& argus)
 
     // check computations
     if(argus.unit_check || argus.norm_check)
-        orgtr_ungtr_getError<FORTRAN, T>(handle,
-                                         uplo,
-                                         n,
-                                         dA,
-                                         lda,
-                                         dIpiv,
-                                         dWork,
-                                         size_W,
-                                         dInfo,
-                                         hA,
-                                         hARes,
-                                         hIpiv,
-                                         hInfo,
-                                         hInfoRes,
-                                         &max_error);
+        orgtr_ungtr_getError<API, T>(handle,
+                                     uplo,
+                                     n,
+                                     dA,
+                                     lda,
+                                     dIpiv,
+                                     dWork,
+                                     size_W,
+                                     dInfo,
+                                     hA,
+                                     hARes,
+                                     hIpiv,
+                                     hInfo,
+                                     hInfoRes,
+                                     &max_error);
 
     // collect performance data
     if(argus.timing)
-        orgtr_ungtr_getPerfData<FORTRAN, T>(handle,
-                                            uplo,
-                                            n,
-                                            dA,
-                                            lda,
-                                            dIpiv,
-                                            dWork,
-                                            size_W,
-                                            dInfo,
-                                            hA,
-                                            hIpiv,
-                                            hInfo,
-                                            &gpu_time_used,
-                                            &cpu_time_used,
-                                            hot_calls,
-                                            argus.perf);
+        orgtr_ungtr_getPerfData<API, T>(handle,
+                                        uplo,
+                                        n,
+                                        dA,
+                                        lda,
+                                        dIpiv,
+                                        dWork,
+                                        size_W,
+                                        dInfo,
+                                        hA,
+                                        hIpiv,
+                                        hInfo,
+                                        &gpu_time_used,
+                                        &cpu_time_used,
+                                        hot_calls,
+                                        argus.perf);
 
     // validate results for rocsolver-test
     // using n * machine_precision as tolerance

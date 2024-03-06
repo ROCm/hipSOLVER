@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -85,7 +85,7 @@ Arguments orgqr_setup_arguments(orgqr_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class ORGQR_UNGQR : public ::TestWithParam<orgqr_tuple>
 {
 protected:
@@ -99,25 +99,25 @@ protected:
         Arguments arg = orgqr_setup_arguments(GetParam());
 
         if(arg.peek<rocblas_int>("m") == -1 && arg.peek<rocblas_int>("n") == -1)
-            testing_orgqr_ungqr_bad_arg<FORTRAN, T>();
+            testing_orgqr_ungqr_bad_arg<API, T>();
 
-        testing_orgqr_ungqr<FORTRAN, T>(arg);
+        testing_orgqr_ungqr<API, T>(arg);
     }
 };
 
-class ORGQR : public ORGQR_UNGQR<false>
+class ORGQR : public ORGQR_UNGQR<API_NORMAL>
 {
 };
 
-class UNGQR : public ORGQR_UNGQR<false>
+class UNGQR : public ORGQR_UNGQR<API_NORMAL>
 {
 };
 
-class ORGQR_FORTRAN : public ORGQR_UNGQR<true>
+class ORGQR_FORTRAN : public ORGQR_UNGQR<API_FORTRAN>
 {
 };
 
-class UNGQR_FORTRAN : public ORGQR_UNGQR<true>
+class UNGQR_FORTRAN : public ORGQR_UNGQR<API_FORTRAN>
 {
 };
 

@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2021-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2021-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -75,7 +75,7 @@ Arguments syevd_heevd_setup_arguments(syevd_heevd_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class SYEVD_HEEVD : public ::TestWithParam<syevd_heevd_tuple>
 {
 protected:
@@ -90,26 +90,26 @@ protected:
 
         if(arg.peek<rocblas_int>("n") == -1 && arg.peek<char>("jobz") == 'N'
            && arg.peek<char>("uplo") == 'L')
-            testing_syevd_heevd_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
+            testing_syevd_heevd_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_syevd_heevd<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_syevd_heevd<API, BATCHED, STRIDED, T>(arg);
     }
 };
 
-class SYEVD : public SYEVD_HEEVD<false>
+class SYEVD : public SYEVD_HEEVD<API_NORMAL>
 {
 };
 
-class HEEVD : public SYEVD_HEEVD<false>
+class HEEVD : public SYEVD_HEEVD<API_NORMAL>
 {
 };
 
-class SYEVD_FORTRAN : public SYEVD_HEEVD<true>
+class SYEVD_FORTRAN : public SYEVD_HEEVD<API_FORTRAN>
 {
 };
 
-class HEEVD_FORTRAN : public SYEVD_HEEVD<true>
+class HEEVD_FORTRAN : public SYEVD_HEEVD<API_FORTRAN>
 {
 };
 
