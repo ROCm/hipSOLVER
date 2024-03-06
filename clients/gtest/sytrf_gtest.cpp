@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -78,7 +78,7 @@ Arguments sytrf_setup_arguments(sytrf_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class SYTRF_BASE : public ::TestWithParam<sytrf_tuple>
 {
 protected:
@@ -92,18 +92,18 @@ protected:
         Arguments arg = sytrf_setup_arguments(GetParam());
 
         if(arg.peek<char>("uplo") == 'L' && arg.peek<rocblas_int>("n") == -1)
-            testing_sytrf_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
+            testing_sytrf_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_sytrf<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_sytrf<API, BATCHED, STRIDED, T>(arg);
     }
 };
 
-class SYTRF : public SYTRF_BASE<false>
+class SYTRF : public SYTRF_BASE<API_NORMAL>
 {
 };
 
-class SYTRF_FORTRAN : public SYTRF_BASE<true>
+class SYTRF_FORTRAN : public SYTRF_BASE<API_FORTRAN>
 {
 };
 

@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -83,7 +83,7 @@ Arguments geqrf_setup_arguments(geqrf_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class GEQRF_BASE : public ::TestWithParam<geqrf_tuple>
 {
 protected:
@@ -97,18 +97,18 @@ protected:
         Arguments arg = geqrf_setup_arguments(GetParam());
 
         if(arg.peek<rocblas_int>("m") == -1 && arg.peek<rocblas_int>("n") == -1)
-            testing_geqrf_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
+            testing_geqrf_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_geqrf<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_geqrf<API, BATCHED, STRIDED, T>(arg);
     }
 };
 
-class GEQRF : public GEQRF_BASE<false>
+class GEQRF : public GEQRF_BASE<API_NORMAL>
 {
 };
 
-class GEQRF_FORTRAN : public GEQRF_BASE<true>
+class GEQRF_FORTRAN : public GEQRF_BASE<API_FORTRAN>
 {
 };
 

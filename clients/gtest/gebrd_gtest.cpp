@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -83,7 +83,7 @@ Arguments gebrd_setup_arguments(gebrd_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class GEBRD_BASE : public ::TestWithParam<gebrd_tuple>
 {
 protected:
@@ -97,18 +97,18 @@ protected:
         Arguments arg = gebrd_setup_arguments(GetParam());
 
         if(arg.peek<rocblas_int>("m") == -1 && arg.peek<rocblas_int>("n") == -1)
-            testing_gebrd_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
+            testing_gebrd_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_gebrd<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_gebrd<API, BATCHED, STRIDED, T>(arg);
     }
 };
 
-class GEBRD : public GEBRD_BASE<false>
+class GEBRD : public GEBRD_BASE<API_NORMAL>
 {
 };
 
-class GEBRD_FORTRAN : public GEBRD_BASE<true>
+class GEBRD_FORTRAN : public GEBRD_BASE<API_FORTRAN>
 {
 };
 
