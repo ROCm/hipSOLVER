@@ -15,6 +15,7 @@ into the following categories:
 * :ref:`dense_stream` functions provide functionality to manipulate streams
 * :ref:`dense_gesvdj_info` functions provide functionality to manipulate gesvdj parameters
 * :ref:`dense_syevj_info` functions provide functionality to manipulate syevj parameters
+* :ref:`dense_params` functions provide functionality to manipulate other parameters
 
 
 .. _dense_initialize:
@@ -150,4 +151,27 @@ hipsolverDnXsyevjGetResidual()
 hipsolverDnXsyevjGetSweeps()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnXsyevjGetSweeps
+
+
+
+.. _dense_params:
+
+Other parameter manipulation
+===============================
+
+.. contents:: List of other parameter functions
+   :local:
+   :backlinks: top
+
+hipsolverDnCreateParams()
+---------------------------------
+.. doxygenfunction:: hipsolverDnCreateParams
+
+hipsolverDnDestroyParams()
+---------------------------------
+.. doxygenfunction:: hipsolverDnDestroyParams
+
+hipsolverDnSetAdvOptions()
+---------------------------------
+.. doxygenfunction:: hipsolverDnSetAdvOptions
 

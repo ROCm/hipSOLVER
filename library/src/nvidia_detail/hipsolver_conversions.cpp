@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2023-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -195,6 +195,90 @@ hipsolverEigRange_t cuda2hip_erange(cusolverEigRange_t eig)
     }
 }
 
+cusolverAlgMode_t hip2cuda_algmode(hipsolverAlgMode_t mode)
+{
+    switch(mode)
+    {
+    case HIPSOLVER_ALG_0:
+        return CUSOLVER_ALG_0;
+    case HIPSOLVER_ALG_1:
+        return CUSOLVER_ALG_1;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+hipsolverAlgMode_t cuda2hip_algmode(cusolverAlgMode_t mode)
+{
+    switch(mode)
+    {
+    case CUSOLVER_ALG_0:
+        return HIPSOLVER_ALG_0;
+    case CUSOLVER_ALG_1:
+        return HIPSOLVER_ALG_1;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
+{
+    switch(cuStatus)
+    {
+    case CUSOLVER_STATUS_SUCCESS:
+        return HIPSOLVER_STATUS_SUCCESS;
+    case CUSOLVER_STATUS_NOT_INITIALIZED:
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    case CUSOLVER_STATUS_ALLOC_FAILED:
+        return HIPSOLVER_STATUS_ALLOC_FAILED;
+    case CUSOLVER_STATUS_INVALID_VALUE:
+    case CUSOLVER_STATUS_IRS_PARAMS_INVALID:
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    case CUSOLVER_STATUS_MAPPING_ERROR:
+        return HIPSOLVER_STATUS_MAPPING_ERROR;
+    case CUSOLVER_STATUS_EXECUTION_FAILED:
+        return HIPSOLVER_STATUS_EXECUTION_FAILED;
+    case CUSOLVER_STATUS_INTERNAL_ERROR:
+    case CUSOLVER_STATUS_IRS_INTERNAL_ERROR:
+        return HIPSOLVER_STATUS_INTERNAL_ERROR;
+    case CUSOLVER_STATUS_NOT_SUPPORTED:
+    case CUSOLVER_STATUS_IRS_NOT_SUPPORTED:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    case CUSOLVER_STATUS_ARCH_MISMATCH:
+        return HIPSOLVER_STATUS_ARCH_MISMATCH;
+    case CUSOLVER_STATUS_ZERO_PIVOT:
+        return HIPSOLVER_STATUS_ZERO_PIVOT;
+    case CUSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED:
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
+    default:
+        return HIPSOLVER_STATUS_UNKNOWN;
+    }
+}
+
+/******************** DENSE API ********************/
+cusolverDnFunction_t hip2cuda_function(hipsolverDnFunction_t func)
+{
+    switch(func)
+    {
+    case HIPSOLVERDN_GETRF:
+        return CUSOLVERDN_GETRF;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+hipsolverDnFunction_t cuda2hip_function(cusolverDnFunction_t func)
+{
+    switch(func)
+    {
+    case CUSOLVERDN_GETRF:
+        return HIPSOLVERDN_GETRF;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+/******************** REFACTOR API ********************/
 cusolverRfFactorization_t hip2cuda_factorization(hipsolverRfFactorization_t alg)
 {
     switch(alg)
@@ -364,39 +448,5 @@ hipsolverRfUnitDiagonal_t cuda2hip_unitdiag(cusolverRfUnitDiagonal_t diag)
         return HIPSOLVERRF_UNIT_DIAGONAL_ASSUMED_U;
     default:
         throw HIPSOLVER_STATUS_INVALID_ENUM;
-    }
-}
-
-hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
-{
-    switch(cuStatus)
-    {
-    case CUSOLVER_STATUS_SUCCESS:
-        return HIPSOLVER_STATUS_SUCCESS;
-    case CUSOLVER_STATUS_NOT_INITIALIZED:
-        return HIPSOLVER_STATUS_NOT_INITIALIZED;
-    case CUSOLVER_STATUS_ALLOC_FAILED:
-        return HIPSOLVER_STATUS_ALLOC_FAILED;
-    case CUSOLVER_STATUS_INVALID_VALUE:
-    case CUSOLVER_STATUS_IRS_PARAMS_INVALID:
-        return HIPSOLVER_STATUS_INVALID_VALUE;
-    case CUSOLVER_STATUS_MAPPING_ERROR:
-        return HIPSOLVER_STATUS_MAPPING_ERROR;
-    case CUSOLVER_STATUS_EXECUTION_FAILED:
-        return HIPSOLVER_STATUS_EXECUTION_FAILED;
-    case CUSOLVER_STATUS_INTERNAL_ERROR:
-    case CUSOLVER_STATUS_IRS_INTERNAL_ERROR:
-        return HIPSOLVER_STATUS_INTERNAL_ERROR;
-    case CUSOLVER_STATUS_NOT_SUPPORTED:
-    case CUSOLVER_STATUS_IRS_NOT_SUPPORTED:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    case CUSOLVER_STATUS_ARCH_MISMATCH:
-        return HIPSOLVER_STATUS_ARCH_MISMATCH;
-    case CUSOLVER_STATUS_ZERO_PIVOT:
-        return HIPSOLVER_STATUS_ZERO_PIVOT;
-    case CUSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED:
-        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
-    default:
-        return HIPSOLVER_STATUS_UNKNOWN;
     }
 }
