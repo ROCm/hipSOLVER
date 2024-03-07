@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2023 Advanced Micro Devices, Inc.
+ * Copyright (C) 2023-2024 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #ifndef HIPSOLVER_REFACTOR_H
@@ -8,10 +8,6 @@
 #include "hipsolver-types.h"
 
 typedef void* hipsolverRfHandle_t;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 typedef enum
 {
@@ -52,6 +48,10 @@ typedef enum
     HIPSOLVERRF_UNIT_DIAGONAL_ASSUMED_L = 2,
     HIPSOLVERRF_UNIT_DIAGONAL_ASSUMED_U = 3,
 } hipsolverRfUnitDiagonal_t;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverRfCreate(hipsolverRfHandle_t* handle);
 

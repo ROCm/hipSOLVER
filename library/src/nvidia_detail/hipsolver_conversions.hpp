@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2023-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,6 +51,18 @@ cusolverEigRange_t hip2cuda_erange(hipsolverEigRange_t eig);
 
 hipsolverEigRange_t cuda2hip_erange(cusolverEigRange_t eig);
 
+cusolverAlgMode_t hip2cuda_algmode(hipsolverAlgMode_t mode);
+
+hipsolverAlgMode_t cuda2hip_algmode(cusolverAlgMode_t mode);
+
+hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus);
+
+// Dense API
+cusolverDnFunction_t hip2cuda_function(hipsolverDnFunction_t func);
+
+hipsolverDnFunction_t cuda2hip_function(cusolverDnFunction_t func);
+
+// Refactor API
 cusolverRfFactorization_t hip2cuda_factorization(hipsolverRfFactorization_t alg);
 
 hipsolverRfFactorization_t cuda2hip_factorization(cusolverRfFactorization_t alg);
@@ -74,5 +86,3 @@ hipsolverRfTriangularSolve_t cuda2hip_trisolve(cusolverRfTriangularSolve_t alg);
 cusolverRfUnitDiagonal_t hip2cuda_unitdiag(hipsolverRfUnitDiagonal_t diag);
 
 hipsolverRfUnitDiagonal_t cuda2hip_unitdiag(cusolverRfUnitDiagonal_t diag);
-
-hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus);
