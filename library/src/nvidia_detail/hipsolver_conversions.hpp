@@ -23,9 +23,11 @@
 
 #pragma once
 
+#include "lib_macros.hpp"
 #include "hipsolver.h"
 #include <cusolverDn.h>
 #include <cusolverRf.h>
+HIPSOLVER_BEGIN_NAMESPACE
 
 cublasOperation_t hip2cuda_operation(hipsolverOperation_t op);
 
@@ -86,3 +88,5 @@ hipsolverRfTriangularSolve_t cuda2hip_trisolve(cusolverRfTriangularSolve_t alg);
 cusolverRfUnitDiagonal_t hip2cuda_unitdiag(hipsolverRfUnitDiagonal_t diag);
 
 hipsolverRfUnitDiagonal_t cuda2hip_unitdiag(cusolverRfUnitDiagonal_t diag);
+
+HIPSOLVER_END_NAMESPACE

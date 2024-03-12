@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
  */
 
 #include "hipsolver.h"
-#include "error_macros.hpp"
+#include "lib_macros.hpp"
 #include "exceptions.hpp"
 #include "hipsolver_conversions.hpp"
 
@@ -39,7 +39,7 @@
 #include <iostream>
 #include <math.h>
 
-using namespace std;
+using namespace hipsolver;
 
 extern "C" {
 
@@ -3953,16 +3953,16 @@ try
                                                                    m,
                                                                    nullptr,
                                                                    nullptr,
-                                                                   max(m, 1),
+                                                                   std::max(m, 1),
                                                                    nullptr,
-                                                                   max(n, 1),
+                                                                   std::max(n, 1),
                                                                    nullptr,
                                                                    rocblas_outofplace,
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array (aka rwork)
-    size_t size_E = min(m, n) > 0 ? sizeof(float) * min(m, n) : 0;
+    size_t size_E = std::min(m, n) > 0 ? sizeof(float) * std::min(m, n) : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4004,16 +4004,16 @@ try
                                                                    m,
                                                                    nullptr,
                                                                    nullptr,
-                                                                   max(m, 1),
+                                                                   std::max(m, 1),
                                                                    nullptr,
-                                                                   max(n, 1),
+                                                                   std::max(n, 1),
                                                                    nullptr,
                                                                    rocblas_outofplace,
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array (aka rwork)
-    size_t size_E = min(m, n) > 0 ? sizeof(double) * min(m, n) : 0;
+    size_t size_E = std::min(m, n) > 0 ? sizeof(double) * std::min(m, n) : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4055,16 +4055,16 @@ try
                                                                    m,
                                                                    nullptr,
                                                                    nullptr,
-                                                                   max(m, 1),
+                                                                   std::max(m, 1),
                                                                    nullptr,
-                                                                   max(n, 1),
+                                                                   std::max(n, 1),
                                                                    nullptr,
                                                                    rocblas_outofplace,
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array (aka rwork)
-    size_t size_E = min(m, n) > 0 ? sizeof(float) * min(m, n) : 0;
+    size_t size_E = std::min(m, n) > 0 ? sizeof(float) * std::min(m, n) : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4106,16 +4106,16 @@ try
                                                                    m,
                                                                    nullptr,
                                                                    nullptr,
-                                                                   max(m, 1),
+                                                                   std::max(m, 1),
                                                                    nullptr,
-                                                                   max(n, 1),
+                                                                   std::max(n, 1),
                                                                    nullptr,
                                                                    rocblas_outofplace,
                                                                    nullptr));
     rocblas_stop_device_memory_size_query((rocblas_handle)handle, &sz);
 
     // space for E array (aka rwork)
-    size_t size_E = min(m, n) > 0 ? sizeof(double) * min(m, n) : 0;
+    size_t size_E = std::min(m, n) > 0 ? sizeof(double) * std::min(m, n) : 0;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -4157,10 +4157,10 @@ try
 
     if(work && lwork)
     {
-        if(!rwork && min(m, n) > 1)
+        if(!rwork && std::min(m, n) > 1)
         {
             rwork = work;
-            work  = rwork + min(m, n);
+            work  = rwork + std::min(m, n);
         }
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
@@ -4171,9 +4171,9 @@ try
             hipsolverSgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        if(!rwork && min(m, n) > 1)
+        if(!rwork && std::min(m, n) > 1)
         {
-            mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * min(m, n));
+            mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * std::min(m, n));
             if(!mem)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
             rwork = (float*)mem[0];
@@ -4223,10 +4223,10 @@ try
 
     if(work && lwork)
     {
-        if(!rwork && min(m, n) > 1)
+        if(!rwork && std::min(m, n) > 1)
         {
             rwork = work;
-            work  = rwork + min(m, n);
+            work  = rwork + std::min(m, n);
         }
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
@@ -4237,9 +4237,9 @@ try
             hipsolverDgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        if(!rwork && min(m, n) > 1)
+        if(!rwork && std::min(m, n) > 1)
         {
-            mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * min(m, n));
+            mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * std::min(m, n));
             if(!mem)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
             rwork = (double*)mem[0];
@@ -4289,10 +4289,10 @@ try
 
     if(work && lwork)
     {
-        if(!rwork && min(m, n) > 1)
+        if(!rwork && std::min(m, n) > 1)
         {
             rwork = (float*)work;
-            work  = (hipFloatComplex*)(rwork + min(m, n));
+            work  = (hipFloatComplex*)(rwork + std::min(m, n));
         }
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
@@ -4303,9 +4303,9 @@ try
             hipsolverCgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        if(!rwork && min(m, n) > 1)
+        if(!rwork && std::min(m, n) > 1)
         {
-            mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * min(m, n));
+            mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(float) * std::min(m, n));
             if(!mem)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
             rwork = (float*)mem[0];
@@ -4355,10 +4355,10 @@ try
 
     if(work && lwork)
     {
-        if(!rwork && min(m, n) > 1)
+        if(!rwork && std::min(m, n) > 1)
         {
             rwork = (double*)work;
-            work  = (hipDoubleComplex*)(rwork + min(m, n));
+            work  = (hipDoubleComplex*)(rwork + std::min(m, n));
         }
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
@@ -4369,9 +4369,9 @@ try
             hipsolverZgesvd_bufferSize((rocblas_handle)handle, jobu, jobv, m, n, &lwork));
         CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lwork));
 
-        if(!rwork && min(m, n) > 1)
+        if(!rwork && std::min(m, n) > 1)
         {
-            mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * min(m, n));
+            mem = rocblas_device_malloc((rocblas_handle)handle, sizeof(double) * std::min(m, n));
             if(!mem)
                 return HIPSOLVER_STATUS_ALLOC_FAILED;
             rwork = (double*)mem[0];
@@ -4955,7 +4955,7 @@ try
                                                    params->max_sweeps,
                                                    nullptr,
                                                    nullptr,
-                                                   min(m, n),
+                                                   std::min(m, n),
                                                    nullptr,
                                                    ldu,
                                                    ldu * m,
@@ -5026,7 +5026,7 @@ try
                                                    params->max_sweeps,
                                                    nullptr,
                                                    nullptr,
-                                                   min(m, n),
+                                                   std::min(m, n),
                                                    nullptr,
                                                    ldu,
                                                    ldu * m,
@@ -5097,7 +5097,7 @@ try
                                                    params->max_sweeps,
                                                    nullptr,
                                                    nullptr,
-                                                   min(m, n),
+                                                   std::min(m, n),
                                                    nullptr,
                                                    ldu,
                                                    ldu * m,
@@ -5168,7 +5168,7 @@ try
                                                    params->max_sweeps,
                                                    nullptr,
                                                    nullptr,
-                                                   min(m, n),
+                                                   std::min(m, n),
                                                    nullptr,
                                                    ldu,
                                                    ldu * m,
@@ -5262,7 +5262,7 @@ try
                                                    params->max_sweeps,
                                                    params->n_sweeps,
                                                    S,
-                                                   min(m, n),
+                                                   std::min(m, n),
                                                    U,
                                                    ldu,
                                                    ldu * m,
@@ -5342,7 +5342,7 @@ try
                                                    params->max_sweeps,
                                                    params->n_sweeps,
                                                    S,
-                                                   min(m, n),
+                                                   std::min(m, n),
                                                    U,
                                                    ldu,
                                                    ldu * m,
@@ -5422,7 +5422,7 @@ try
                                                    params->max_sweeps,
                                                    params->n_sweeps,
                                                    S,
-                                                   min(m, n),
+                                                   std::min(m, n),
                                                    (rocblas_float_complex*)U,
                                                    ldu,
                                                    ldu * m,
@@ -5502,7 +5502,7 @@ try
                                                    params->max_sweeps,
                                                    params->n_sweeps,
                                                    S,
-                                                   min(m, n),
+                                                   std::min(m, n),
                                                    (rocblas_double_complex*)U,
                                                    ldu,
                                                    ldu * m,
@@ -5580,7 +5580,7 @@ try
     size_t size_nsv = sizeof(int) * batch_count;
 
     // space for ifail array
-    size_t size_ifail = sizeof(int) * min(m, n) * batch_count;
+    size_t size_ifail = sizeof(int) * std::min(m, n) * batch_count;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -5662,7 +5662,7 @@ try
     size_t size_nsv = sizeof(int) * batch_count;
 
     // space for ifail array
-    size_t size_ifail = sizeof(int) * min(m, n) * batch_count;
+    size_t size_ifail = sizeof(int) * std::min(m, n) * batch_count;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -5744,7 +5744,7 @@ try
     size_t size_nsv = sizeof(int) * batch_count;
 
     // space for ifail array
-    size_t size_ifail = sizeof(int) * min(m, n) * batch_count;
+    size_t size_ifail = sizeof(int) * std::min(m, n) * batch_count;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -5825,7 +5825,7 @@ try
     size_t size_nsv = sizeof(int) * batch_count;
 
     // space for ifail array
-    size_t size_ifail = sizeof(int) * min(m, n) * batch_count;
+    size_t size_ifail = sizeof(int) * std::min(m, n) * batch_count;
 
     // update size
     rocblas_start_device_memory_size_query((rocblas_handle)handle);
@@ -5883,8 +5883,8 @@ try
             work = (float*)(nsv + batch_count);
 
         ifail = (int*)work;
-        if(min(m, n) * batch_count > 0)
-            work = (float*)(ifail + min(m, n) * batch_count);
+        if(std::min(m, n) * batch_count > 0)
+            work = (float*)(ifail + std::min(m, n) * batch_count);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     }
@@ -5912,7 +5912,7 @@ try
 
         mem = rocblas_device_malloc((rocblas_handle)handle,
                                     sizeof(int) * batch_count,
-                                    sizeof(int) * min(m, n) * batch_count);
+                                    sizeof(int) * std::min(m, n) * batch_count);
         if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
         nsv   = (int*)mem[0];
@@ -5944,7 +5944,7 @@ try
                                                     ldv,
                                                     strideV,
                                                     ifail,
-                                                    min(m, n),
+                                                    std::min(m, n),
                                                     devInfo,
                                                     batch_count)));
 }
@@ -5991,8 +5991,8 @@ try
             work = (double*)(nsv + batch_count);
 
         ifail = (int*)work;
-        if(min(m, n) * batch_count > 0)
-            work = (double*)(ifail + min(m, n) * batch_count);
+        if(std::min(m, n) * batch_count > 0)
+            work = (double*)(ifail + std::min(m, n) * batch_count);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     }
@@ -6020,7 +6020,7 @@ try
 
         mem = rocblas_device_malloc((rocblas_handle)handle,
                                     sizeof(int) * batch_count,
-                                    sizeof(int) * min(m, n) * batch_count);
+                                    sizeof(int) * std::min(m, n) * batch_count);
         if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
         nsv   = (int*)mem[0];
@@ -6052,7 +6052,7 @@ try
                                                     ldv,
                                                     strideV,
                                                     ifail,
-                                                    min(m, n),
+                                                    std::min(m, n),
                                                     devInfo,
                                                     batch_count)));
 }
@@ -6099,8 +6099,8 @@ try
             work = (hipFloatComplex*)(nsv + batch_count);
 
         ifail = (int*)work;
-        if(min(m, n) * batch_count > 0)
-            work = (hipFloatComplex*)(ifail + min(m, n) * batch_count);
+        if(std::min(m, n) * batch_count > 0)
+            work = (hipFloatComplex*)(ifail + std::min(m, n) * batch_count);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     }
@@ -6128,7 +6128,7 @@ try
 
         mem = rocblas_device_malloc((rocblas_handle)handle,
                                     sizeof(int) * batch_count,
-                                    sizeof(int) * min(m, n) * batch_count);
+                                    sizeof(int) * std::min(m, n) * batch_count);
         if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
         nsv   = (int*)mem[0];
@@ -6160,7 +6160,7 @@ try
         ldv,
         strideV,
         ifail,
-        min(m, n),
+        std::min(m, n),
         devInfo,
         batch_count)));
 }
@@ -6207,8 +6207,8 @@ try
             work = (hipDoubleComplex*)(nsv + batch_count);
 
         ifail = (int*)work;
-        if(min(m, n) * batch_count > 0)
-            work = (hipDoubleComplex*)(ifail + min(m, n) * batch_count);
+        if(std::min(m, n) * batch_count > 0)
+            work = (hipDoubleComplex*)(ifail + std::min(m, n) * batch_count);
 
         CHECK_ROCBLAS_ERROR(rocblas_set_workspace((rocblas_handle)handle, work, lwork));
     }
@@ -6236,7 +6236,7 @@ try
 
         mem = rocblas_device_malloc((rocblas_handle)handle,
                                     sizeof(int) * batch_count,
-                                    sizeof(int) * min(m, n) * batch_count);
+                                    sizeof(int) * std::min(m, n) * batch_count);
         if(!mem)
             return HIPSOLVER_STATUS_ALLOC_FAILED;
         nsv   = (int*)mem[0];
@@ -6268,7 +6268,7 @@ try
         ldv,
         strideV,
         ifail,
-        min(m, n),
+        std::min(m, n),
         devInfo,
         batch_count)));
 }
