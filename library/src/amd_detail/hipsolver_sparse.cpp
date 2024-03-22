@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2023-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,9 +31,9 @@
 #include "hipsolver.h"
 #include "hipsolver_conversions.hpp"
 
-#include "rocblas/internal/rocblas_device_malloc.hpp"
-#include "rocblas/rocblas.h"
-#include "rocsolver/rocsolver.h"
+#include <rocblas/internal/rocblas_device_malloc.hpp>
+#include <rocblas/rocblas.h>
+#include <rocsolver/rocsolver.h>
 #include <algorithm>
 #include <climits>
 #include <functional>
@@ -44,8 +44,8 @@
 #include <vector>
 
 #ifdef HAVE_ROCSPARSE
-#include "cholmod.h"
-#include "rocsparse/rocsparse.h"
+#include <suitesparse/cholmod.h>
+#include <rocsparse/rocsparse.h>
 #endif
 
 #undef TRUE
