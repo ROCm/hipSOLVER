@@ -31,21 +31,21 @@
 #include "hipsolver.h"
 #include "hipsolver_conversions.hpp"
 
-#include <rocblas/internal/rocblas_device_malloc.hpp>
-#include <rocblas/rocblas.h>
-#include <rocsolver/rocsolver.h>
 #include <algorithm>
 #include <climits>
 #include <functional>
 #include <iostream>
 #include <math.h>
-
 #include <set>
 #include <vector>
 
+#include <rocblas/internal/rocblas_device_malloc.hpp>
+#include <rocblas/rocblas.h>
+#include <rocsolver/rocsolver.h>
+
 #ifdef HAVE_ROCSPARSE
-#include <suitesparse/cholmod.h>
 #include <rocsparse/rocsparse.h>
+#include <suitesparse/cholmod.h>
 #endif
 
 #undef TRUE
