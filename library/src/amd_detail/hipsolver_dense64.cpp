@@ -26,7 +26,7 @@
  *  to hipSOLVER on the rocSOLVER side.
  */
 
-#include "error_macros.hpp"
+#include "lib_macros.hpp"
 #include "exceptions.hpp"
 #include "hipsolver.h"
 #include "hipsolver_conversions.hpp"
@@ -40,7 +40,7 @@
 #include <iostream>
 #include <math.h>
 
-using namespace std;
+using namespace hipsolver;
 
 extern "C" {
 

@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2023-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,12 @@
 
 #pragma once
 
+#include "lib_macros.hpp"
 #include "hipsolver.h"
 #include "rocblas/rocblas.h"
 #include "rocsolver/rocsolver.h"
 
+HIPSOLVER_BEGIN_NAMESPACE
 rocblas_operation_ hip2rocblas_operation(hipsolverOperation_t op);
 
 hipsolverOperation_t rocblas2hip_operation(rocblas_operation_ op);
@@ -60,3 +62,5 @@ rocblas_svect_ hip2rocblas_evect2overwrite(hipsolverEigMode_t eig, int econ);
 rocblas_svect_ char2rocblas_svect(signed char svect);
 
 hipsolverStatus_t rocblas2hip_status(rocblas_status_ error);
+
+HIPSOLVER_END_NAMESPACE
