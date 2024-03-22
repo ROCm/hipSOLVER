@@ -27,7 +27,6 @@
 #include <map>
 #include <string>
 
-#include "testing_csrlsvchol.hpp"
 #include "testing_gebrd.hpp"
 #include "testing_gels.hpp"
 #include "testing_geqrf.hpp"
@@ -53,6 +52,10 @@
 #include "testing_sygvj_hegvj.hpp"
 #include "testing_sytrd_hetrd.hpp"
 #include "testing_sytrf.hpp"
+
+#ifdef HAVE_HIPSPARSE
+#include "testing_csrlsvchol.hpp"
+#endif
 
 struct str_less
 {
@@ -120,8 +123,11 @@ class hipsolver_dispatcher
             {"sygvdx", testing_sygvdx_hegvdx<API_COMPAT, false, false, T>},
             {"sygvj", testing_sygvj_hegvj<API_NORMAL, false, false, T>},
             {"sytrd", testing_sytrd_hetrd<API_NORMAL, false, false, T>},
+
+#ifdef HAVE_HIPSPARSE
             {"csrlsvchol", testing_csrlsvchol<false, T>},
             {"csrlsvcholHost", testing_csrlsvchol<true, T>},
+#endif
         };
 
         // Grab function from the map and execute
