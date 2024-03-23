@@ -143,10 +143,6 @@ if( NOT USE_CUDA )
     endif( )
 
     target_link_libraries( hipsolver PRIVATE roc::rocsparse suitesparseconfig cholmod )
-    target_include_directories( hipsolver
-      SYSTEM PRIVATE
-      $<BUILD_INTERFACE:/usr/include/suitesparse/>
-    )
     set_source_files_properties(${hipsolver_source}
       PROPERTIES
         COMPILE_DEFINITIONS HAVE_ROCSPARSE
