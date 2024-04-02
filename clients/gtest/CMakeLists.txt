@@ -125,9 +125,6 @@ if( UNIX )
   target_sources( hipsolver-test PRIVATE ${hipsolver_f90_source} )
 endif( )
 
-# need mf16c flag for float->half convertion
-target_compile_options( hipsolver-test PRIVATE -mf16c )
-
 if( NOT USE_CUDA )
   target_link_libraries( hipsolver-test PRIVATE hip::host )
 
