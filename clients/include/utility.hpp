@@ -30,7 +30,6 @@
 #include "hipsolver_datatype2string.hpp"
 #include <cassert>
 #include <cmath>
-#include <immintrin.h>
 #include <random>
 #include <type_traits>
 #include <vector>
