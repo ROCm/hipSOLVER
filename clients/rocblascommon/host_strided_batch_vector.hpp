@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2018-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2018-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -185,6 +185,30 @@ public:
     //! @return A non-mutable mutable pointer to the batch_index'th vector.
     //!
     const T* operator[](rocblas_int batch_index) const
+    {
+        return (this->m_stride >= 0)
+                   ? this->m_data + this->m_stride * batch_index
+                   : this->m_data + (batch_index + 1 - this->m_batch_count) * this->m_stride;
+    }
+
+    //!
+    //! @brief Returns pointer.
+    //! @param batch_index The batch index.
+    //! @return A mutable pointer to the batch_index'th vector.
+    //!
+    T* operator[](int64_t batch_index)
+    {
+        return (this->m_stride >= 0)
+                   ? this->m_data + this->m_stride * batch_index
+                   : this->m_data + (batch_index + 1 - this->m_batch_count) * this->m_stride;
+    }
+
+    //!
+    //! @brief Returns non-mutable pointer.
+    //! @param batch_index The batch index.
+    //! @return A non-mutable mutable pointer to the batch_index'th vector.
+    //!
+    const T* operator[](int64_t batch_index) const
     {
         return (this->m_stride >= 0)
                    ? this->m_data + this->m_stride * batch_index

@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2018-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2018-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -136,6 +136,26 @@ public:
     //! @return The non-mutable pointer.
     //!
     const T* operator[](rocblas_int batch_index) const
+    {
+        return this->m_data[batch_index];
+    }
+
+    //!
+    //! @brief Random access to the vectors.
+    //! @param batch_index the batch index.
+    //! @return The mutable pointer.
+    //!
+    T* operator[](int64_t batch_index)
+    {
+        return this->m_data[batch_index];
+    }
+
+    //!
+    //! @brief Constant random access to the vectors.
+    //! @param batch_index the batch index.
+    //! @return The non-mutable pointer.
+    //!
+    const T* operator[](int64_t batch_index) const
     {
         return this->m_data[batch_index];
     }
