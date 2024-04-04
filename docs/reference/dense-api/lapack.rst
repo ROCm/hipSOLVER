@@ -279,6 +279,8 @@ hipsolverDn<type>potrsBatched()
 
 hipsolverDn<type>getrs()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXgetrs
+   :outline:
 .. doxygenfunction:: hipsolverDnZgetrs
    :outline:
 .. doxygenfunction:: hipsolverDnCgetrs
