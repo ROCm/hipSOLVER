@@ -124,7 +124,8 @@ if( NOT USE_CUDA )
     list( APPEND static_depends PACKAGE rocsolver )
   endif( )
 
-  target_link_libraries( hipsolver PRIVATE roc::rocblas roc::rocsolver hip::host )
+  target_link_libraries( hipsolver PRIVATE roc::rocblas roc::rocsolver )
+  target_link_libraries( hipsolver PUBLIC hip::host )
 
   if( CUSTOM_TARGET )
     target_link_libraries( hipsolver PRIVATE hip::${CUSTOM_TARGET} )
