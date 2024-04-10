@@ -186,8 +186,8 @@ void testing_sytrd_hetrd_bad_arg()
     // safe arguments
     hipsolver_local_handle handle;
     hipsolverFillMode_t    uplo = HIPSOLVER_FILL_MODE_UPPER;
-    int                    n    = 1;
-    int                    lda  = 1;
+    int                    n    = 2;
+    int                    lda  = 2;
     int                    stA  = 1;
     int                    stD  = 1;
     int                    stE  = 1;
