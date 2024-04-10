@@ -208,10 +208,10 @@ void testing_ormtr_unmtr_bad_arg()
     hipsolverSideMode_t    side  = HIPSOLVER_SIDE_LEFT;
     hipsolverFillMode_t    uplo  = HIPSOLVER_FILL_MODE_UPPER;
     hipsolverOperation_t   trans = HIPSOLVER_OP_N;
-    int                    m     = 1;
-    int                    n     = 1;
-    int                    lda   = 1;
-    int                    ldc   = 1;
+    int                    m     = 2;
+    int                    n     = 2;
+    int                    lda   = 2;
+    int                    ldc   = 2;
 
     // memory allocation
     device_strided_batch_vector<T>   dA(1, 1, 1, 1);
