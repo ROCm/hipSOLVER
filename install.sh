@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (C) 2022-2023 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2022-2024 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -206,7 +206,7 @@ install_packages( )
 
       # Custom rocblas installation
       # Do not install rocblas if --rocblas_path flag is set,
-      # as we will be building against our own rocblas intead.
+      # as we will be building against our own rocblas instead.
       if [[ -z ${rocblas_path+foo} ]]; then
         if [[ -z ${custom_rocblas+foo} ]]; then
           # Install base rocblas package unless -b/--rocblas flag is passed
@@ -225,7 +225,7 @@ install_packages( )
 
       # Custom rocsolver installation
       # Do not install rocsolver if --rocsolver_path flag is set,
-      # as we will be building against our own rocsolver intead.
+      # as we will be building against our own rocsolver instead.
       if [[ -z ${rocsolver_path+foo} ]]; then
         if [[ -z ${custom_rocsolver+foo} ]]; then
           # Install base rocsolver package unless -s/--rocsolver flag is passed
@@ -330,7 +330,7 @@ make_absolute_path( ) {
 # #################################################
 # Pre-requisites check
 # #################################################
-# Exit code 0: alls well
+# Exit code 0: all is well
 # Exit code 1: problems with getopt
 # Exit code 2: problems with supported platforms
 
