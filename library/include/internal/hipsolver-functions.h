@@ -5,7 +5,7 @@
 /*! \file
  *  \brief hipsolver-functions.h provides function wrappers around cuSOLVER
  *  and rocSOLVER functions. Some differences with the cuSOLVER API are
- *  present in order to accomodate the needs of rocSOLVER.
+ *  present in order to accommodate the needs of rocSOLVER.
  */
 
 #ifndef HIPSOLVER_FUNCTIONS_H
