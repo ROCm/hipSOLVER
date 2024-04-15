@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (C) 2022-2023 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2022-2024 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,9 @@ function display_help()
   echo "    [-g|--debug] -DCMAKE_BUILD_TYPE=Debug (default is =Release)"
   echo "    [-k|--relwithdebinfo] -DCMAKE_BUILD_TYPE=RelWithDebInfo."
   echo "    [-r]--relocatable] Create a package to support relocatable ROCm"
-  echo "    [--cuda|--use-cuda] Build library for cuda backend"
+  echo "    [--cuda|--use-cuda] Build library for CUDA backend (deprecated)."
+  echo "                        The target HIP platform is determined by \`hipconfig --platform\`."
+  echo "                        To explicitly specify a platform, set the \`HIP_PLATFORM\` environment variable."
   echo "    [--cudapath] Set specific path to custom built cuda"
   echo "    [--[no-]hip-clang] Whether to build library with hip-clang"
   echo "    [--compiler] Specify host compiler"
@@ -173,7 +175,7 @@ install_packages( )
   local library_dependencies_fedora=( "make" "cmake" "gcc-c++" "libcxx-devel" "rpm-build" )
   local library_dependencies_sles=( "make" "cmake" "gcc-c++" "libcxxtools9" "rpm-build" )
 
-  if [[ "${build_cuda}" == true ]]; then
+  if [[ $HIP_PLATFORM == "nvidia" ]]; then
     # Ideally, this could be cuda-cublas-dev, but the package name has a version number in it
     library_dependencies_ubuntu+=( "cuda" )
     library_dependencies_centos+=( "" ) # how to install cuda on centos?
@@ -434,6 +436,8 @@ while true; do
         compiler=${2}
         shift 2 ;;
     --cuda|--use-cuda)
+        echo "--cuda option is deprecated (use environment variable HIP_PLATFORM=nvidia)"
+        export HIP_PLATFORM="nvidia"
         build_cuda=true
         shift ;;
     --cudapath)
@@ -516,6 +520,7 @@ printf "\033[32mCreating project build directory in: \033[33m${build_dir}\033[0m
 # #################################################
 # prep
 # #################################################
+
 # ensure a clean build environment
 if [[ "${build_docs}" == true ]]; then
   rm -rf -- "${build_dir}/html"
@@ -621,10 +626,9 @@ fi
   fi
 
   # cuda
-  if [[ "${build_cuda}" == true ]]; then
-    cmake_common_options+=("-DUSE_CUDA=ON")
-  else
-    cmake_common_options+=("-DUSE_CUDA=OFF")
+  # this can be removed and be done in rmake.py once --cuda flag support is gone
+  if [[ "${build_cuda}" != true ]]; then
+    export HIP_PLATFORM="$(hipconfig --platform)"
   fi
 
   # clients

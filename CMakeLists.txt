@@ -39,14 +39,14 @@ if( NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT DEFINED CMAKE_BUILD_TYPE )
   set( CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel." )
 endif()
 
-if ( NOT DEFINED CMAKE_Fortran_COMPILER AND NOT DEFINED ENV{FC} )
-  set( CMAKE_Fortran_COMPILER  "gfortran" )
-endif()
-
-project( hipsolver LANGUAGES CXX )
-if( UNIX )
-  enable_language( Fortran )
+if (NOT WIN32)
+    if ( NOT DEFINED CMAKE_Fortran_COMPILER AND NOT DEFINED ENV{FC} )
+      set( CMAKE_Fortran_COMPILER  "gfortran" )
+    endif()
+    set( fortran_language "Fortran" )
 endif( )
+
+project( hipsolver LANGUAGES CXX ${fortran_language} )
 
 # This finds the rocm-cmake project, and installs it if not found
 # rocm-cmake contains common cmake code for rocm projects to help setup and install
@@ -100,10 +100,10 @@ endif( )
 
 # Append our library helper cmake path and the cmake path for hip (for convenience)
 # Users may override HIP path by specifying their own in CMAKE_MODULE_PATH
-list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ROCM_PATH}/lib/cmake/hip ${HIP_PATH}/cmake )
+list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ROCM_PATH}/lib/cmake/hip /opt/rocm/lib/cmake/hip ${HIP_PATH}/cmake )
 
 # NOTE:  workaround until hip cmake modules fixes symlink logic in their config files; remove when fixed
-list( APPEND CMAKE_PREFIX_PATH /opt/rocm /opt/rocm/llvm /opt/rocm/hip )
+list( APPEND CMAKE_PREFIX_PATH ${ROCM_PATH}/lib/cmake/hip /opt/rocm /opt/rocm/llvm /opt/rocm/hip )
 
 option( BUILD_ADDRESS_SANITIZER "Build with address sanitizer enabled" OFF )
 option( BUILD_CODE_COVERAGE "Build hipSOLVER with code coverage enabled" OFF )
@@ -112,14 +112,62 @@ option( BUILD_HIPBLAS_TESTS "Build additional tests to ensure hipBLAS and hipSOL
 option( BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON )
 option( BUILD_WITH_SPARSE "Build hipSOLVER with sparse functionality and tests enabled (requires additional dependencies)" "${UNIX}" )
 option( BUILD_VERBOSE "Output additional build information" OFF )
-option( USE_CUDA "Look for CUDA and use that as a backend if found" OFF )
 option( HIPSOLVER_FIND_PACKAGE_LAPACK_CONFIG "Skip module mode search for LAPACK" ON )
+option( BUILD_FILE_REORG_BACKWARD_COMPATIBILITY "Build with file/folder reorg backward compatibility enabled" OFF )
 
-add_library(hipsolver-common INTERFACE)
+add_library( hipsolver-common INTERFACE )
 target_compile_options(hipsolver-common INTERFACE
   -Wno-unused-result # TODO: address [[nodiscard]] warnings
 )
-if(BUILD_ADDRESS_SANITIZER)
+
+if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+  set( DEFAULT_ARMOR_LEVEL 1 )
+else( )
+  set( DEFAULT_ARMOR_LEVEL 0 )
+endif( )
+set( ARMOR_LEVEL "${DEFAULT_ARMOR_LEVEL}" CACHE STRING "Enables increasingly expensive runtime correctness checks" )
+include( armor-config )
+
+# Deprecated USE_CUDA option
+if( DEFINED USE_CUDA )
+  if( USE_CUDA )
+    set( ENV{HIP_PLATFORM} nvidia )
+    message( DEPRECATED "USE_CUDA is deprecated (use environment variable HIP_PLATFORM=nvidia)" )
+  else( )
+    set( ENV{HIP_PLATFORM} amd )
+    message( DEPRECATION "USE_CUDA is deprecated (use environment variable HIP_PLATFORM=amd)" )
+  endif( )
+endif( )
+
+# Hip headers required of all clients; clients use hip to allocate device memory
+find_package( hip CONFIG PATHS ${HIP_PATH} ${ROCM_PATH} /opt/rocm )
+
+# support for cuda backend with hip < 6.0
+if( NOT hip_FOUND )
+    find_package( HIP MODULE REQUIRED )
+    list( APPEND HIP_INCLUDE_DIRS "${HIP_ROOT_DIR}/include" )
+    set( ENV{HIP_PLATFORM} nvidia )
+    if( NOT HIP_PLATFORM )
+      set( HIP_PLATFORM nvidia )
+    endif( )
+else( )
+    if( NOT HIP_PLATFORM )
+      set( HIP_PLATFORM amd )
+    endif( )
+endif( )
+
+if( HIP_PLATFORM STREQUAL nvidia )
+  find_package( CUDA REQUIRED )
+endif()
+
+# FOR OPTIONAL CODE COVERAGE
+if( BUILD_CODE_COVERAGE )
+  add_compile_options( -fprofile-arcs -ftest-coverage )
+  add_link_options( --coverage )
+endif()
+
+# FOR OPTIONAL ADDRESS SANITIZER
+if( BUILD_ADDRESS_SANITIZER )
   target_compile_options(hipsolver-common INTERFACE
     -fsanitize=address
     -shared-libasan
@@ -131,40 +179,8 @@ if(BUILD_ADDRESS_SANITIZER)
   )
 endif()
 
-if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-  set( DEFAULT_ARMOR_LEVEL 1 )
-else( )
-  set( DEFAULT_ARMOR_LEVEL 0 )
-endif( )
-set( ARMOR_LEVEL "${DEFAULT_ARMOR_LEVEL}" CACHE STRING "Enables increasingly expensive runtime correctness checks" )
-include( armor-config )
-
-# Find CUDA if the user wants a CUDA version.
-if (USE_CUDA)
-    find_package( CUDA REQUIRED )
-endif()
-
-# Hip headers required of all clients; clients use hip to allocate device memory
-if( USE_CUDA)
-    find_package( HIP MODULE REQUIRED )
-else( )
-    find_package( hip REQUIRED CONFIG PATHS ${HIP_PATH} ${ROCM_PATH} /opt/rocm )
-endif( )
-
-if( USE_CUDA )
-    list( APPEND HIP_INCLUDE_DIRS "${HIP_ROOT_DIR}/include" )
-endif( )
-
-# FOR OPTIONAL CODE COVERAGE
-if(BUILD_CODE_COVERAGE)
-  add_compile_options(-fprofile-arcs -ftest-coverage)
-  add_link_options(--coverage)
-endif()
-
-include(CMakeDependentOption)
-cmake_dependent_option(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY
-  "Build with file/folder reorg backward compatibility enabled" OFF "NOT WIN32" OFF)
-if(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY)
+# BACKWARDS COMPATIBILITY FOR FILE REORG
+if(BUILD_FILE_REORG_BACKWARD_COMPATIBILITY AND NOT WIN32)
   rocm_wrap_header_dir(
     ${CMAKE_SOURCE_DIR}/library/include
     PATTERNS "*.h"
@@ -185,75 +201,75 @@ add_subdirectory( library )
 
 include( clients/cmake/build-options.cmake )
 
-if(NOT SYSTEM_OS)
-  rocm_set_os_id(SYSTEM_OS)
-  string(TOLOWER "${SYSTEM_OS}" SYSTEM_OS)
-  rocm_read_os_release(SYSTEM_OS_VERSION VERSION_ID)
-endif()
+if( NOT SYSTEM_OS )
+  rocm_set_os_id( SYSTEM_OS )
+  string( TOLOWER "${SYSTEM_OS}" SYSTEM_OS )
+  rocm_read_os_release( SYSTEM_OS_VERSION VERSION_ID )
+endif( )
 
 # Build clients of the library
 if( BUILD_CLIENTS_SAMPLES OR BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
-  set(GFORTRAN_RPM "libgfortran4")
-  set(GFORTRAN_DEB "libgfortran4")
-  if(SYSTEM_OS STREQUAL "centos" OR SYSTEM_OS STREQUAL "rhel")
-    if(SYSTEM_OS_VERSION VERSION_GREATER_EQUAL "8")
-      set(GFORTRAN_RPM "libgfortran")
-    endif()
-  elseif(SYSTEM_OS STREQUAL "ubuntu" AND SYSTEM_OS_VERSION VERSION_GREATER_EQUAL "20.04")
-    set(GFORTRAN_DEB "libgfortran5")
-  endif()
-  rocm_package_setup_component(clients)
+  set( GFORTRAN_RPM "libgfortran4" )
+  set( GFORTRAN_DEB "libgfortran4" )
+  if( SYSTEM_OS STREQUAL "centos" OR SYSTEM_OS STREQUAL "rhel" )
+    if( SYSTEM_OS_VERSION VERSION_GREATER_EQUAL "8" )
+      set( GFORTRAN_RPM "libgfortran" )
+    endif( )
+  elseif( SYSTEM_OS STREQUAL "ubuntu" AND SYSTEM_OS_VERSION VERSION_GREATER_EQUAL "20.04" )
+    set( GFORTRAN_DEB "libgfortran5" )
+  endif( )
+  rocm_package_setup_component( clients )
   if( UNIX )
-    set(DEP_ARGS DEPENDS RPM "${GFORTRAN_RPM}" DEB "${GFORTRAN_DEB}")
-  endif()
+    set( DEP_ARGS DEPENDS RPM "${GFORTRAN_RPM}" DEB "${GFORTRAN_DEB}" )
+  endif( )
   if( BUILD_CLIENTS_TESTS )
-    rocm_package_setup_client_component(tests ${DEP_ARGS})
-  endif()
+    rocm_package_setup_client_component( tests ${DEP_ARGS} )
+  endif( )
   if( BUILD_CLIENTS_BENCHMARKS )
-    rocm_package_setup_client_component(benchmarks ${DEP_ARGS})
-  endif()
+    rocm_package_setup_client_component( benchmarks ${DEP_ARGS} )
+  endif( )
   add_subdirectory( clients )
 endif( )
 
 # Package specific CPACK vars
-if( NOT USE_CUDA )
-  set(hipsolver_pkgdeps "rocblas >= 4.2.0" "rocsolver >= 3.26.0")
+if( HIP_PLATFORM STREQUAL amd )
+  set( hipsolver_pkgdeps "rocblas >= 4.2.0" "rocsolver >= 3.26.0" )
 
   if( BUILD_WITH_SPARSE )
-    list(APPEND hipsolver_pkgdeps "rocsparse >= 2.3.0")
+    list( APPEND hipsolver_pkgdeps "rocsparse >= 2.3.0" )
 
     if( SYSTEM_OS STREQUAL "centos" OR SYSTEM_OS STREQUAL "rhel" )
-      list(APPEND hipsolver_pkgdeps "suitesparse")
+      list( APPEND hipsolver_pkgdeps "suitesparse" )
     else()
-      list(APPEND hipsolver_pkgdeps "libcholmod3" "libsuitesparseconfig5")
+      list( APPEND hipsolver_pkgdeps "libcholmod3" "libsuitesparseconfig5" )
     endif()
   endif( )
 
-  rocm_package_add_dependencies(DEPENDS ${hipsolver_pkgdeps})
+  rocm_package_add_dependencies( DEPENDS ${hipsolver_pkgdeps} )
 endif( )
 
 set( CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.md" )
 set( CPACK_RPM_PACKAGE_LICENSE "MIT" )
 
-if(WIN32)
-  set(CPACK_SOURCE_GENERATOR "ZIP")
-  set(CPACK_GENERATOR "ZIP")
-  set(CMAKE_INSTALL_PREFIX "C:/hipSDK" CACHE PATH "Install path" FORCE)
-  set(INSTALL_PREFIX "C:/hipSDK")
-  set(CPACK_SET_DESTDIR OFF)
-  set(CPACK_PACKAGE_INSTALL_DIRECTORY "C:/hipSDK")
-  set(CPACK_PACKAGING_INSTALL_PREFIX "")
-  set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY OFF)
-else()
-  if(NOT CPACK_PACKAGING_INSTALL_PREFIX)
-    set(CPACK_PACKAGING_INSTALL_PREFIX "${ROCM_PATH}")
-  endif()
-endif()
+if( WIN32 )
+  set( CPACK_SOURCE_GENERATOR "ZIP" )
+  set( CPACK_GENERATOR "ZIP" )
+  set( CMAKE_INSTALL_PREFIX "C:/hipSDK" CACHE PATH "Install path" FORCE )
+  set( INSTALL_PREFIX "C:/hipSDK" )
+  set( CPACK_SET_DESTDIR OFF )
+  set( CPACK_PACKAGE_INSTALL_DIRECTORY "C:/hipSDK" )
+  set( CPACK_PACKAGING_INSTALL_PREFIX "" )
+  set( CPACK_INCLUDE_TOPLEVEL_DIRECTORY OFF )
+else( )
+  if( NOT CPACK_PACKAGING_INSTALL_PREFIX )
+    set( CPACK_PACKAGING_INSTALL_PREFIX "${ROCM_PATH}" )
+  endif( )
+endif( )
 
 set( CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION "\${CPACK_PACKAGING_INSTALL_PREFIX}" )
 
 # Give hipsolver compiled for CUDA backend a different name
-if( NOT USE_CUDA )
+if( HIP_PLATFORM STREQUAL amd )
     set( package_name hipsolver )
 else( )
     set( package_name hipsolver-alt )
@@ -272,61 +288,61 @@ rocm_create_package(
 # ADDITIONAL TARGETS FOR CODE COVERAGE
 if(BUILD_CODE_COVERAGE)
 
-#
-# > make coverage_cleanup (clean coverage related files.)
-# > make coverage GTEST_FILTER=<>
-# will run:
-#  > make coverage_analysis GTEST_FILTER=<> (analyze tests)
-#  > make coverage_output (generate html documentation)
-#
-#
+  #
+  # > make coverage_cleanup (clean coverage related files.)
+  # > make coverage GTEST_FILTER=<>
+  # will run:
+  #  > make coverage_analysis GTEST_FILTER=<> (analyze tests)
+  #  > make coverage_output (generate html documentation)
+  #
+  #
 
-set(coverage_test ./clients/staging/hipsolver-test)
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(coverage_test ./clients/staging/hipsolver-test-d)
-endif()
+  set(coverage_test ./clients/staging/hipsolver-test)
+  if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(coverage_test ./clients/staging/hipsolver-test-d)
+  endif()
 
-#
-# Run coverage analysis
-#
-add_custom_target(coverage_analysis
-   COMMAND echo Coverage GTEST_FILTER=\${GTEST_FILTER}
-   COMMAND ${coverage_test} --gtest_filter=\"\${GTEST_FILTER}\"
-   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
- )
-
-add_dependencies(coverage_analysis hipsolver)
-
-#
-# Prepare coverage output
-# This little script is generated because the option '--gcov-tool <program name>' of lcov cannot take arguments.
-#
-add_custom_target(coverage_output
-    DEPENDS coverage_analysis
-    COMMAND mkdir -p lcoverage
-    COMMAND echo "\\#!/bin/bash" > llvm-gcov.sh
-    COMMAND echo "\\# THIS FILE HAS BEEN GENERATED" >> llvm-gcov.sh
-    COMMAND printf "exec /opt/rocm/llvm/bin/llvm-cov gcov $$\\@" >> llvm-gcov.sh
-    COMMAND chmod +x llvm-gcov.sh
-    )
-
-#
-# Generate coverage output.
-#
-add_custom_command(TARGET coverage_output
-  COMMAND lcov --directory . --base-directory . --gcov-tool ${CMAKE_BINARY_DIR}/llvm-gcov.sh --capture -o lcoverage/raw_main_coverage.info
-  COMMAND lcov --remove lcoverage/raw_main_coverage.info "'/opt/*'" "'/usr/*'" -o lcoverage/main_coverage.info
-  COMMAND genhtml --ignore-errors source lcoverage/main_coverage.info --output-directory lcoverage
-    )
-
-add_custom_target(coverage DEPENDS coverage_output)
-
-#
-# Coverage cleanup
-#
-add_custom_target(coverage_cleanup
-    COMMAND find ${CMAKE_BINARY_DIR} -name *.gcda -delete
+  #
+  # Run coverage analysis
+  #
+  add_custom_target(coverage_analysis
+    COMMAND echo Coverage GTEST_FILTER=\${GTEST_FILTER}
+    COMMAND ${coverage_test} --gtest_filter=\"\${GTEST_FILTER}\"
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    )
+  )
+
+  add_dependencies(coverage_analysis hipsolver)
+
+  #
+  # Prepare coverage output
+  # This little script is generated because the option '--gcov-tool <program name>' of lcov cannot take arguments.
+  #
+  add_custom_target(coverage_output
+      DEPENDS coverage_analysis
+      COMMAND mkdir -p lcoverage
+      COMMAND echo "\\#!/bin/bash" > llvm-gcov.sh
+      COMMAND echo "\\# THIS FILE HAS BEEN GENERATED" >> llvm-gcov.sh
+      COMMAND printf "exec /opt/rocm/llvm/bin/llvm-cov gcov $$\\@" >> llvm-gcov.sh
+      COMMAND chmod +x llvm-gcov.sh
+      )
+
+  #
+  # Generate coverage output.
+  #
+  add_custom_command(TARGET coverage_output
+    COMMAND lcov --directory . --base-directory . --gcov-tool ${CMAKE_BINARY_DIR}/llvm-gcov.sh --capture -o lcoverage/raw_main_coverage.info
+    COMMAND lcov --remove lcoverage/raw_main_coverage.info "'/opt/*'" "'/usr/*'" -o lcoverage/main_coverage.info
+    COMMAND genhtml --ignore-errors source lcoverage/main_coverage.info --output-directory lcoverage
+      )
+
+  add_custom_target(coverage DEPENDS coverage_output)
+
+  #
+  # Coverage cleanup
+  #
+  add_custom_target(coverage_cleanup
+      COMMAND find ${CMAKE_BINARY_DIR} -name *.gcda -delete
+      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+      )
 
 endif()

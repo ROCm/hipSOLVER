@@ -125,7 +125,7 @@ if( UNIX )
   target_sources( hipsolver-test PRIVATE ${hipsolver_f90_source} )
 endif( )
 
-if( NOT USE_CUDA )
+if( HIP_PLATFORM STREQUAL amd )
   target_link_libraries( hipsolver-test PRIVATE hip::host )
 
   if( CUSTOM_TARGET )
@@ -135,7 +135,7 @@ if( NOT USE_CUDA )
   if( CMAKE_CXX_COMPILER MATCHES ".*/hipcc$" )
     # hip-clang needs specific flag to turn on pthread and m
     target_link_libraries( hipsolver-test PRIVATE -lpthread -lm )
-  endif()
+  endif( )
 else( )
   target_compile_definitions( hipsolver-test PRIVATE __HIP_PLATFORM_NVIDIA__ )
 

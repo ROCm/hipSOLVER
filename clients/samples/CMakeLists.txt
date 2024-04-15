@@ -42,13 +42,12 @@ foreach( exe example-c-basic;example-cpp-basic; )
 
   target_link_libraries( ${exe} PRIVATE roc::hipsolver )
 
-  if( NOT USE_CUDA )
+  if( HIP_PLATFORM STREQUAL amd )
     target_link_libraries( ${exe} PRIVATE hip::host )
 
     if( CUSTOM_TARGET )
       target_link_libraries( ${exe} PRIVATE hip::${CUSTOM_TARGET} )
     endif( )
-
   else( )
     target_compile_definitions( ${exe} PRIVATE __HIP_PLATFORM_NVIDIA__ )
 
