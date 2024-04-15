@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2018-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2018-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -125,7 +125,7 @@ inline void rocsolver_bench_output(T arg, Ts... args)
 //     return std::conj(scalar);
 // }
 
-// // A struct implicity convertable to and from char, used so we can customize
+// // A struct implicitly convertible to and from char, used so we can customize
 // // Google Test printing for LAPACK char arguments without affecting the default
 // // char output.
 // struct rocsolver_op_char
