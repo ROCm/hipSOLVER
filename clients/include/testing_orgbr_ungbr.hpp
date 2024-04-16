@@ -116,9 +116,10 @@ void orgbr_ungbr_initData(const hipsolverHandle_t   handle,
         using S = decltype(std::real(T{}));
 
         int            info;
-        std::vector<S> E(n - 1);
-        std::vector<S> D(n);
-        std::vector<T> P(n);
+        size_t         s = max(hIpiv.n(), int64_t(2));
+        std::vector<S> E(s - 1);
+        std::vector<S> D(s);
+        std::vector<T> P(s);
 
         rocblas_init<T>(hA, true);
         rocblas_init<T>(hIpiv, true);
