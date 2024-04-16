@@ -92,15 +92,9 @@ include( ROCMHeaderWrapper )
 set ( VERSION_STRING "2.2.0" )
 rocm_setup_version( VERSION ${VERSION_STRING} )
 
-if( NOT DEFINED ENV{HIP_PATH})
-    set( HIP_PATH "/opt/rocm/hip" )
-else( )
-    set (HIP_PATH $ENV{HIP_PATH} )
-endif( )
-
 # Append our library helper cmake path and the cmake path for hip (for convenience)
 # Users may override HIP path by specifying their own in CMAKE_MODULE_PATH
-list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ROCM_PATH}/lib/cmake/hip /opt/rocm/lib/cmake/hip ${HIP_PATH}/cmake )
+list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ROCM_PATH}/lib/cmake/hip /opt/rocm/lib/cmake/hip )
 
 # NOTE:  workaround until hip cmake modules fixes symlink logic in their config files; remove when fixed
 list( APPEND CMAKE_PREFIX_PATH ${ROCM_PATH}/lib/cmake/hip /opt/rocm /opt/rocm/llvm /opt/rocm/hip )
@@ -140,7 +134,7 @@ if( DEFINED USE_CUDA )
 endif( )
 
 # Hip headers required of all clients; clients use hip to allocate device memory
-find_package( hip CONFIG PATHS ${HIP_PATH} ${ROCM_PATH} /opt/rocm )
+find_package( hip CONFIG PATHS ${ROCM_PATH} /opt/rocm )
 
 # support for cuda backend with hip < 6.0
 if( NOT hip_FOUND )
