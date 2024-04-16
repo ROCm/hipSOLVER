@@ -186,7 +186,7 @@ void sytrf_initData(const hipsolverHandle_t   handle,
             }
 
             // shuffle rows to test pivoting
-            // always the same permuation for debugging purposes
+            // always the same permutation for debugging purposes
             for(int i = 0; i < n / 2; i++)
             {
                 for(int j = 0; j < n; j++)

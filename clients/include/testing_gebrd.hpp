@@ -202,9 +202,9 @@ void testing_gebrd_bad_arg()
 
     // safe arguments
     hipsolver_local_handle handle;
-    int                    m   = 1;
-    int                    n   = 1;
-    int                    lda = 1;
+    int                    m   = 2;
+    int                    n   = 2;
+    int                    lda = 2;
     int                    stA = 1;
     int                    stD = 1;
     int                    stE = 1;
