@@ -59,7 +59,7 @@ public:
     //! @param inc         The increment.
     //! @param batch_count The batch count.
     //!
-    explicit device_batch_vector(rocblas_int n, rocblas_int inc, rocblas_int batch_count)
+    explicit device_batch_vector(int64_t n, int64_t inc, int64_t batch_count)
         : m_n(n)
         , m_inc(inc)
         , m_batch_count(batch_count)
@@ -78,10 +78,7 @@ public:
     //! @param stride      (UNUSED) The stride.
     //! @param batch_count The batch count.
     //!
-    explicit device_batch_vector(rocblas_int    n,
-                                 rocblas_int    inc,
-                                 rocblas_stride stride,
-                                 rocblas_int    batch_count)
+    explicit device_batch_vector(int64_t n, int64_t inc, rocblas_stride stride, int64_t batch_count)
         : device_batch_vector(n, inc, batch_count)
     {
     }
@@ -91,7 +88,7 @@ public:
     //! @param batch_count The number of vectors.
     //! @param size_vector The size of each vectors.
     //!
-    explicit device_batch_vector(rocblas_int batch_count, size_t size_vector)
+    explicit device_batch_vector(int64_t batch_count, size_t size_vector)
         : device_batch_vector(size_vector, 1, batch_count)
     {
     }
@@ -107,7 +104,7 @@ public:
     //!
     //! @brief Returns the length of the vector.
     //!
-    rocblas_int n() const
+    int64_t n() const
     {
         return this->m_n;
     }
@@ -115,7 +112,7 @@ public:
     //!
     //! @brief Returns the increment of the vector.
     //!
-    rocblas_int inc() const
+    int64_t inc() const
     {
         return this->m_inc;
     }
@@ -123,7 +120,7 @@ public:
     //!
     //! @brief Returns the value of batch_count.
     //!
-    rocblas_int batch_count() const
+    int64_t batch_count() const
     {
         return this->m_batch_count;
     }
@@ -162,26 +159,6 @@ public:
     const T* const* data() const
     {
         return this->m_device_data;
-    }
-
-    //!
-    //! @brief Random access.
-    //! @param batch_index The batch index.
-    //! @return Pointer to the array on device.
-    //!
-    T* operator[](rocblas_int batch_index)
-    {
-        return this->m_data[batch_index];
-    }
-
-    //!
-    //! @brief Constant random access.
-    //! @param batch_index The batch index.
-    //! @return Constant pointer to the array on device.
-    //!
-    const T* operator[](rocblas_int batch_index) const
-    {
-        return this->m_data[batch_index];
     }
 
     //!
@@ -240,7 +217,7 @@ public:
         //
         // Copy each vector.
         //
-        for(rocblas_int batch_index = 0; batch_index < this->m_batch_count; ++batch_index)
+        for(int64_t batch_index = 0; batch_index < this->m_batch_count; ++batch_index)
         {
             if(hipSuccess
                != (hip_err = hipMemcpy((*this)[batch_index],
@@ -268,14 +245,14 @@ public:
     }
 
 private:
-    rocblas_int m_n{};
-    rocblas_int m_inc{};
-    rocblas_int m_batch_count{};
-    T**         m_data{};
-    T**         m_device_data{};
+    int64_t m_n{};
+    int64_t m_inc{};
+    int64_t m_batch_count{};
+    T**     m_data{};
+    T**     m_device_data{};
 
     //!
-    //! @brief Try to allocate the ressources.
+    //! @brief Try to allocate the resources.
     //! @return true if success false otherwise.
     //!
     bool try_initialize_memory()
@@ -289,7 +266,7 @@ private:
             success = (nullptr != (this->m_data = (T**)calloc(this->m_batch_count, sizeof(T*))));
             if(success)
             {
-                for(rocblas_int batch_index = 0; batch_index < this->m_batch_count; ++batch_index)
+                for(int64_t batch_index = 0; batch_index < this->m_batch_count; ++batch_index)
                 {
                     success
                         = (nullptr != (this->m_data[batch_index] = this->device_vector_setup()));
@@ -313,13 +290,13 @@ private:
     }
 
     //!
-    //! @brief Free the ressources, as much as we can.
+    //! @brief Free the resources, as much as we can.
     //!
     void free_memory()
     {
         if(nullptr != this->m_data)
         {
-            for(rocblas_int batch_index = 0; batch_index < this->m_batch_count; ++batch_index)
+            for(int64_t batch_index = 0; batch_index < this->m_batch_count; ++batch_index)
             {
                 if(nullptr != this->m_data[batch_index])
                 {

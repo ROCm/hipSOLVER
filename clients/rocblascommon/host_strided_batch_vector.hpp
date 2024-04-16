@@ -65,10 +65,10 @@ public:
     //! @param batch_count The batch count.
     //! @param stg The storage format to use.
     //!
-    explicit host_strided_batch_vector(rocblas_int    n,
-                                       rocblas_int    inc,
+    explicit host_strided_batch_vector(int64_t        n,
+                                       int64_t        inc,
                                        rocblas_stride stride,
-                                       rocblas_int    batch_count,
+                                       int64_t        batch_count,
                                        storage        stg = storage::block)
         : m_storage(stg)
         , m_n(n)
@@ -138,7 +138,7 @@ public:
     //!
     //! @brief Returns the length.
     //!
-    rocblas_int n() const
+    int64_t n() const
     {
         return this->m_n;
     }
@@ -146,7 +146,7 @@ public:
     //!
     //! @brief Returns the increment.
     //!
-    rocblas_int inc() const
+    int64_t inc() const
     {
         return this->m_inc;
     }
@@ -154,7 +154,7 @@ public:
     //!
     //! @brief Returns the batch count.
     //!
-    rocblas_int batch_count() const
+    int64_t batch_count() const
     {
         return this->m_batch_count;
     }
@@ -168,33 +168,9 @@ public:
     }
 
     //!
-    //! @brief Returns pointer.
+    //! @brief Random access.
     //! @param batch_index The batch index.
-    //! @return A mutable pointer to the batch_index'th vector.
-    //!
-    T* operator[](rocblas_int batch_index)
-    {
-        return (this->m_stride >= 0)
-                   ? this->m_data + this->m_stride * batch_index
-                   : this->m_data + (batch_index + 1 - this->m_batch_count) * this->m_stride;
-    }
-
-    //!
-    //! @brief Returns non-mutable pointer.
-    //! @param batch_index The batch index.
-    //! @return A non-mutable mutable pointer to the batch_index'th vector.
-    //!
-    const T* operator[](rocblas_int batch_index) const
-    {
-        return (this->m_stride >= 0)
-                   ? this->m_data + this->m_stride * batch_index
-                   : this->m_data + (batch_index + 1 - this->m_batch_count) * this->m_stride;
-    }
-
-    //!
-    //! @brief Returns pointer.
-    //! @param batch_index The batch index.
-    //! @return A mutable pointer to the batch_index'th vector.
+    //! @return Pointer to the array on host.
     //!
     T* operator[](int64_t batch_index)
     {
@@ -204,9 +180,9 @@ public:
     }
 
     //!
-    //! @brief Returns non-mutable pointer.
+    //! @brief Constant random access.
     //! @param batch_index The batch index.
-    //! @return A non-mutable mutable pointer to the batch_index'th vector.
+    //! @return Constant pointer to the array on host.
     //!
     const T* operator[](int64_t batch_index) const
     {
@@ -274,15 +250,15 @@ public:
 
 private:
     storage        m_storage{storage::block};
-    rocblas_int    m_n{};
-    rocblas_int    m_inc{};
+    int64_t        m_n{};
+    int64_t        m_inc{};
     rocblas_stride m_stride{};
-    rocblas_int    m_batch_count{};
+    int64_t        m_batch_count{};
     size_t         m_nmemb{};
     T*             m_data{};
 
     static size_t calculate_nmemb(
-        rocblas_int n, rocblas_int inc, rocblas_stride stride, rocblas_int batch_count, storage st)
+        int64_t n, int64_t inc, rocblas_stride stride, int64_t batch_count, storage st)
     {
         switch(st)
         {
