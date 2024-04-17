@@ -224,6 +224,8 @@ if( NOT USE_CUDA )
 
     if( SYSTEM_OS STREQUAL "centos" OR SYSTEM_OS STREQUAL "rhel" )
       list(APPEND hipsolver_pkgdeps "suitesparse")
+    elseif(SYSTEM_OS STREQUAL "ubuntu" AND SYSTEM_OS_VERSION VERSION_GREATER_EQUAL "24.04")
+      list(APPEND hipsolver_pkgdeps "libcholmod4" "libsuitesparseconfig7")
     else()
       list(APPEND hipsolver_pkgdeps "libcholmod3" "libsuitesparseconfig5")
     endif()
