@@ -328,6 +328,7 @@ void testing_potrf(Arguments& argus)
     bool invalid_size = (n < 0 || lda < n || bc < 0);
     if(invalid_size)
     {
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
         if(BATCHED)
         {
             EXPECT_ROCBLAS_STATUS(hipsolver_potrf(API,
@@ -350,6 +351,7 @@ void testing_potrf(Arguments& argus)
                     API, handle, uplo, n, (T*)nullptr, lda, stA, (T*)nullptr, 0, (int*)nullptr, bc),
                 HIPSOLVER_STATUS_INVALID_VALUE);
         }
+#endif
 
         if(argus.timing)
             rocsolver_bench_inform(inform_invalid_size);

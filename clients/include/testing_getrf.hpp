@@ -23,101 +23,177 @@
 
 #include "clientcommon.hpp"
 
-template <testAPI_t API, typename T, typename U, typename V>
-void getrf_checkBadArgs(const hipsolverHandle_t handle,
-                        const int               m,
-                        const int               n,
-                        T                       dA,
-                        const int               lda,
-                        const int               stA,
-                        U                       dWork,
-                        const int               lwork,
-                        V                       dIpiv,
-                        const int               stP,
-                        V                       dinfo,
-                        const int               bc)
+template <testAPI_t API,
+          typename I,
+          typename SIZE,
+          typename Td,
+          typename Id,
+          typename INTd,
+          typename Th>
+void getrf_checkBadArgs(const hipsolverHandle_t   handle,
+                        const hipsolverDnParams_t params,
+                        const I                   m,
+                        const I                   n,
+                        Td                        dA,
+                        const I                   lda,
+                        const I                   stA,
+                        Id                        dIpiv,
+                        const I                   stP,
+                        Td                        dWork,
+                        const SIZE                dlwork,
+                        Th                        hWork,
+                        const SIZE                hlwork,
+                        INTd                      dinfo,
+                        const int                 bc)
 {
     // handle
-    EXPECT_ROCBLAS_STATUS(
-        hipsolver_getrf(
-            API, false, nullptr, m, n, dA, lda, stA, dWork, lwork, dIpiv, stP, dinfo, bc),
-        HIPSOLVER_STATUS_NOT_INITIALIZED);
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrf(API,
+                                          false,
+                                          nullptr,
+                                          params,
+                                          m,
+                                          n,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dIpiv,
+                                          stP,
+                                          dWork,
+                                          dlwork,
+                                          hWork,
+                                          hlwork,
+                                          dinfo,
+                                          bc),
+                          HIPSOLVER_STATUS_NOT_INITIALIZED);
 
     // values
     // N/A
 
 #if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
     // pointers
-    EXPECT_ROCBLAS_STATUS(
-        hipsolver_getrf(
-            API, false, handle, m, n, (T) nullptr, lda, stA, dWork, lwork, dIpiv, stP, dinfo, bc),
-        HIPSOLVER_STATUS_INVALID_VALUE);
-    EXPECT_ROCBLAS_STATUS(
-        hipsolver_getrf(
-            API, false, handle, m, n, dA, lda, stA, dWork, lwork, dIpiv, stP, (V) nullptr, bc),
-        HIPSOLVER_STATUS_INVALID_VALUE);
+    if constexpr(!std::is_same<I, int>::value)
+        EXPECT_ROCBLAS_STATUS(hipsolver_getrf(API,
+                                              false,
+                                              handle,
+                                              (hipsolverDnParams_t) nullptr,
+                                              m,
+                                              n,
+                                              dA,
+                                              lda,
+                                              stA,
+                                              dIpiv,
+                                              stP,
+                                              dWork,
+                                              dlwork,
+                                              hWork,
+                                              hlwork,
+                                              dinfo,
+                                              bc),
+                              HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrf(API,
+                                          false,
+                                          handle,
+                                          params,
+                                          m,
+                                          n,
+                                          (Td) nullptr,
+                                          lda,
+                                          stA,
+                                          dIpiv,
+                                          stP,
+                                          dWork,
+                                          dlwork,
+                                          hWork,
+                                          hlwork,
+                                          dinfo,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
+    EXPECT_ROCBLAS_STATUS(hipsolver_getrf(API,
+                                          false,
+                                          handle,
+                                          params,
+                                          m,
+                                          n,
+                                          dA,
+                                          lda,
+                                          stA,
+                                          dIpiv,
+                                          stP,
+                                          dWork,
+                                          dlwork,
+                                          hWork,
+                                          hlwork,
+                                          (INTd) nullptr,
+                                          bc),
+                          HIPSOLVER_STATUS_INVALID_VALUE);
 #endif
 }
 
-template <testAPI_t API, bool BATCHED, bool STRIDED, typename T>
+template <testAPI_t API, bool BATCHED, bool STRIDED, typename T, typename I, typename SIZE>
 void testing_getrf_bad_arg()
 {
     // safe arguments
     hipsolver_local_handle handle;
-    int                    m   = 1;
-    int                    n   = 1;
-    int                    lda = 1;
-    int                    stA = 1;
-    int                    stP = 1;
+    hipsolver_local_params params;
+    I                      m   = 1;
+    I                      n   = 1;
+    I                      lda = 1;
+    I                      stA = 1;
+    I                      stP = 1;
     int                    bc  = 1;
 
     if(BATCHED)
     {
         // // memory allocations
         // device_batch_vector<T>           dA(1, 1, 1);
-        // device_strided_batch_vector<int> dIpiv(1, 1, 1, 1);
+        // device_strided_batch_vector<I>   dIpiv(1, 1, 1, 1);
         // device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
         // CHECK_HIP_ERROR(dA.memcheck());
         // CHECK_HIP_ERROR(dIpiv.memcheck());
         // CHECK_HIP_ERROR(dInfo.memcheck());
 
-        // int size_W;
-        // hipsolver_getrf_bufferSize(API, handle, m, n, dA.data(), lda, &size_W);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        // if(size_W)
+        // SIZE size_dW, size_hW;
+        // hipsolver_getrf_bufferSize(API, handle, params, m, n, dA.data(), lda, &size_dW, &size_hW);
+        // host_strided_batch_vector<T>   hWork(size_hW, 1, size_hW, bc);
+        // device_strided_batch_vector<T> dWork(size_dW, 1, size_dW, bc);
+        // if(size_dW)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check bad arguments
         // getrf_checkBadArgs<API>(
-        //     handle, m, n, dA.data(), lda, stA, dWork.data(), size_W, dIpiv.data(), stP, dInfo.data(), bc);
+        //     handle, params, m, n, dA.data(), lda, stA, dIpiv.data(), stP, dWork.data(), size_dW, hWork.data(), size_hW, dInfo.data(), bc);
     }
     else
     {
         // memory allocations
         device_strided_batch_vector<T>   dA(1, 1, 1, 1);
-        device_strided_batch_vector<int> dIpiv(1, 1, 1, 1);
+        device_strided_batch_vector<I>   dIpiv(1, 1, 1, 1);
         device_strided_batch_vector<int> dInfo(1, 1, 1, 1);
         CHECK_HIP_ERROR(dA.memcheck());
         CHECK_HIP_ERROR(dIpiv.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());
 
-        int size_W;
-        hipsolver_getrf_bufferSize(API, handle, m, n, dA.data(), lda, &size_W);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
-        if(size_W)
+        SIZE size_dW, size_hW;
+        hipsolver_getrf_bufferSize(API, handle, params, m, n, dA.data(), lda, &size_dW, &size_hW);
+        host_strided_batch_vector<T>   hWork(size_hW, 1, size_hW, bc);
+        device_strided_batch_vector<T> dWork(size_dW, 1, size_dW, bc);
+        if(size_dW)
             CHECK_HIP_ERROR(dWork.memcheck());
 
         // check bad arguments
         getrf_checkBadArgs<API>(handle,
+                                params,
                                 m,
                                 n,
                                 dA.data(),
                                 lda,
                                 stA,
-                                dWork.data(),
-                                size_W,
                                 dIpiv.data(),
                                 stP,
+                                dWork.data(),
+                                size_dW,
+                                hWork.data(),
+                                size_hW,
                                 dInfo.data(),
                                 bc);
     }
@@ -127,23 +203,27 @@ template <bool NPVT,
           bool CPU,
           bool GPU,
           typename T,
+          typename I,
           typename Td,
-          typename Ud,
+          typename Id,
+          typename INTd,
           typename Th,
-          typename Uh>
-void getrf_initData(const hipsolverHandle_t handle,
-                    const int               m,
-                    const int               n,
-                    Td&                     dA,
-                    const int               lda,
-                    const int               stA,
-                    Ud&                     dIpiv,
-                    const int               stP,
-                    Ud&                     dInfo,
-                    const int               bc,
-                    Th&                     hA,
-                    Uh&                     hIpiv,
-                    Uh&                     hInfo)
+          typename Ih,
+          typename INTh>
+void getrf_initData(const hipsolverHandle_t   handle,
+                    const hipsolverDnParams_t params,
+                    const I                   m,
+                    const I                   n,
+                    Td&                       dA,
+                    const I                   lda,
+                    const I                   stA,
+                    Id&                       dIpiv,
+                    const I                   stP,
+                    INTd&                     dInfo,
+                    const int                 bc,
+                    Th&                       hA,
+                    Ih&                       hIpiv,
+                    INTh&                     hInfo)
 {
     if(CPU)
     {
@@ -153,9 +233,9 @@ void getrf_initData(const hipsolverHandle_t handle,
         for(int b = 0; b < bc; ++b)
         {
             // scale A to avoid singularities
-            for(int i = 0; i < m; i++)
+            for(I i = 0; i < m; i++)
             {
-                for(int j = 0; j < n; j++)
+                for(I j = 0; j < n; j++)
                 {
                     if(i == j)
                         hA[b][i + j * lda] += 400;
@@ -168,9 +248,9 @@ void getrf_initData(const hipsolverHandle_t handle,
             {
                 // shuffle rows to test pivoting
                 // always the same permuation for debugging purposes
-                for(int i = 0; i < m / 2; i++)
+                for(I i = 0; i < m / 2; i++)
                 {
-                    for(int j = 0; j < n; j++)
+                    for(I j = 0; j < n; j++)
                     {
                         tmp                        = hA[b][i + j * lda];
                         hA[b][i + j * lda]         = hA[b][m - 1 - i + j * lda];
@@ -188,45 +268,61 @@ void getrf_initData(const hipsolverHandle_t handle,
     }
 }
 
-template <testAPI_t API, bool NPVT, typename T, typename Td, typename Ud, typename Th, typename Uh>
-void getrf_getError(const hipsolverHandle_t handle,
-                    const int               m,
-                    const int               n,
-                    Td&                     dA,
-                    const int               lda,
-                    const int               stA,
-                    Td&                     dWork,
-                    const int               lwork,
-                    Ud&                     dIpiv,
-                    const int               stP,
-                    Ud&                     dInfo,
-                    const int               bc,
-                    Th&                     hA,
-                    Th&                     hARes,
-                    Uh&                     hIpiv,
-                    Uh&                     hIpivRes,
-                    Uh&                     hInfo,
-                    Uh&                     hInfoRes,
-                    double*                 max_err)
+template <testAPI_t API,
+          bool      NPVT,
+          typename T,
+          typename I,
+          typename SIZE,
+          typename Td,
+          typename Id,
+          typename INTd,
+          typename Th,
+          typename Ih,
+          typename INTh>
+void getrf_getError(const hipsolverHandle_t   handle,
+                    const hipsolverDnParams_t params,
+                    const I                   m,
+                    const I                   n,
+                    Td&                       dA,
+                    const I                   lda,
+                    const I                   stA,
+                    Id&                       dIpiv,
+                    const I                   stP,
+                    Td&                       dWork,
+                    const SIZE                dlwork,
+                    Th&                       hWork,
+                    const SIZE                hlwork,
+                    INTd&                     dInfo,
+                    const int                 bc,
+                    Th&                       hA,
+                    Th&                       hARes,
+                    INTh&                     hIpiv,
+                    Ih&                       hIpivRes,
+                    INTh&                     hInfo,
+                    INTh&                     hInfoRes,
+                    double*                   max_err)
 {
     // input data initialization
     getrf_initData<NPVT, true, true, T>(
-        handle, m, n, dA, lda, stA, dIpiv, stP, dInfo, bc, hA, hIpiv, hInfo);
+        handle, params, m, n, dA, lda, stA, dIpiv, stP, dInfo, bc, hA, hIpiv, hInfo);
 
     // execute computations
     // GPU lapack
     CHECK_ROCBLAS_ERROR(hipsolver_getrf(API,
                                         NPVT,
                                         handle,
+                                        params,
                                         m,
                                         n,
                                         dA.data(),
                                         lda,
                                         stA,
-                                        dWork.data(),
-                                        lwork,
                                         dIpiv.data(),
                                         stP,
+                                        dWork.data(),
+                                        dlwork,
+                                        hWork.data(),
+                                        hlwork,
                                         dInfo.data(),
                                         bc));
     CHECK_HIP_ERROR(hARes.transfer_from(dA));
@@ -253,7 +349,7 @@ void getrf_getError(const hipsolverHandle_t handle,
         if(!NPVT)
         {
             err = 0;
-            for(int i = 0; i < min(m, n); ++i)
+            for(I i = 0; i < min(m, n); ++i)
             {
                 EXPECT_EQ(hIpiv[b][i], hIpivRes[b][i]) << "where b = " << b << ", i = " << i;
                 if(hIpiv[b][i] != hIpivRes[b][i])
@@ -274,31 +370,43 @@ void getrf_getError(const hipsolverHandle_t handle,
     *max_err += err;
 }
 
-template <testAPI_t API, bool NPVT, typename T, typename Td, typename Ud, typename Th, typename Uh>
-void getrf_getPerfData(const hipsolverHandle_t handle,
-                       const int               m,
-                       const int               n,
-                       Td&                     dA,
-                       const int               lda,
-                       const int               stA,
-                       Td&                     dWork,
-                       const int               lwork,
-                       Ud&                     dIpiv,
-                       const int               stP,
-                       Ud&                     dInfo,
-                       const int               bc,
-                       Th&                     hA,
-                       Uh&                     hIpiv,
-                       Uh&                     hInfo,
-                       double*                 gpu_time_used,
-                       double*                 cpu_time_used,
-                       const int               hot_calls,
-                       const bool              perf)
+template <testAPI_t API,
+          bool      NPVT,
+          typename T,
+          typename I,
+          typename SIZE,
+          typename Td,
+          typename Id,
+          typename INTd,
+          typename Th,
+          typename INTh>
+void getrf_getPerfData(const hipsolverHandle_t   handle,
+                       const hipsolverDnParams_t params,
+                       const I                   m,
+                       const I                   n,
+                       Td&                       dA,
+                       const I                   lda,
+                       const I                   stA,
+                       Id&                       dIpiv,
+                       const I                   stP,
+                       Td&                       dWork,
+                       const SIZE                dlwork,
+                       Th&                       hWork,
+                       const SIZE                hlwork,
+                       INTd&                     dInfo,
+                       const int                 bc,
+                       Th&                       hA,
+                       INTh&                     hIpiv,
+                       INTh&                     hInfo,
+                       double*                   gpu_time_used,
+                       double*                   cpu_time_used,
+                       const int                 hot_calls,
+                       const bool                perf)
 {
     if(!perf)
     {
         getrf_initData<NPVT, true, false, T>(
-            handle, m, n, dA, lda, stA, dIpiv, stP, dInfo, bc, hA, hIpiv, hInfo);
+            handle, params, m, n, dA, lda, stA, dIpiv, stP, dInfo, bc, hA, hIpiv, hInfo);
 
         // cpu-lapack performance (only if not in perf mode)
         *cpu_time_used = get_time_us_no_sync();
@@ -308,26 +416,29 @@ void getrf_getPerfData(const hipsolverHandle_t handle,
     }
 
     getrf_initData<NPVT, true, false, T>(
-        handle, m, n, dA, lda, stA, dIpiv, stP, dInfo, bc, hA, hIpiv, hInfo);
+        handle, params, m, n, dA, lda, stA, dIpiv, stP, dInfo, bc, hA, hIpiv, hInfo);
 
     // cold calls
     for(int iter = 0; iter < 2; iter++)
     {
         getrf_initData<NPVT, false, true, T>(
-            handle, m, n, dA, lda, stA, dIpiv, stP, dInfo, bc, hA, hIpiv, hInfo);
+            handle, params, m, n, dA, lda, stA, dIpiv, stP, dInfo, bc, hA, hIpiv, hInfo);
 
         CHECK_ROCBLAS_ERROR(hipsolver_getrf(API,
                                             NPVT,
                                             handle,
+                                            params,
                                             m,
                                             n,
                                             dA.data(),
                                             lda,
                                             stA,
-                                            dWork.data(),
-                                            lwork,
                                             dIpiv.data(),
                                             stP,
+                                            dWork.data(),
+                                            dlwork,
+                                            hWork.data(),
+                                            hlwork,
                                             dInfo.data(),
                                             bc));
     }
@@ -340,21 +451,24 @@ void getrf_getPerfData(const hipsolverHandle_t handle,
     for(int iter = 0; iter < hot_calls; iter++)
     {
         getrf_initData<NPVT, false, true, T>(
-            handle, m, n, dA, lda, stA, dIpiv, stP, dInfo, bc, hA, hIpiv, hInfo);
+            handle, params, m, n, dA, lda, stA, dIpiv, stP, dInfo, bc, hA, hIpiv, hInfo);
 
         start = get_time_us_sync(stream);
         hipsolver_getrf(API,
                         NPVT,
                         handle,
+                        params,
                         m,
                         n,
                         dA.data(),
                         lda,
                         stA,
-                        dWork.data(),
-                        lwork,
                         dIpiv.data(),
                         stP,
+                        dWork.data(),
+                        dlwork,
+                        hWork.data(),
+                        hlwork,
                         dInfo.data(),
                         bc);
         *gpu_time_used += get_time_us_sync(stream) - start;
@@ -362,22 +476,29 @@ void getrf_getPerfData(const hipsolverHandle_t handle,
     *gpu_time_used /= hot_calls;
 }
 
-template <testAPI_t API, bool BATCHED, bool STRIDED, bool NPVT, typename T>
+template <testAPI_t API,
+          bool      BATCHED,
+          bool      STRIDED,
+          bool      NPVT,
+          typename T,
+          typename I,
+          typename SIZE>
 void testing_getrf(Arguments& argus)
 {
     // get arguments
     hipsolver_local_handle handle;
-    int                    m   = argus.get<int>("m");
-    int                    n   = argus.get<int>("n", m);
-    int                    lda = argus.get<int>("lda", m);
-    int                    stA = argus.get<int>("strideA", lda * n);
-    int                    stP = argus.get<int>("strideP", min(m, n));
+    hipsolver_local_params params;
+    I                      m   = argus.get<int>("m");
+    I                      n   = argus.get<int>("n", m);
+    I                      lda = argus.get<int>("lda", m);
+    I                      stA = argus.get<int>("strideA", lda * n);
+    I                      stP = argus.get<int>("strideP", min(m, n));
 
     int bc        = argus.batch_count;
     int hot_calls = argus.iters;
 
-    int stARes = (argus.unit_check || argus.norm_check) ? stA : 0;
-    int stPRes = (argus.unit_check || argus.norm_check) ? stP : 0;
+    I stARes = (argus.unit_check || argus.norm_check) ? stA : 0;
+    I stPRes = (argus.unit_check || argus.norm_check) ? stP : 0;
 
     // check non-supported values
     // N/A
@@ -394,20 +515,24 @@ void testing_getrf(Arguments& argus)
     bool invalid_size = (m <= 0 || n <= 0 || lda < m || bc <= 0);
     if(invalid_size)
     {
+#if defined(__HIP_PLATFORM_HCC__) || defined(__HIP_PLATFORM_AMD__)
         if(BATCHED)
         {
             // EXPECT_ROCBLAS_STATUS(hipsolver_getrf(API,
             //                                       NPVT,
             //                                       handle,
+            //                                       params,
             //                                       m,
             //                                       n,
             //                                       (T* const*)nullptr,
             //                                       lda,
             //                                       stA,
+            //                                       (I*)nullptr,
+            //                                       stP,
             //                                       (T*)nullptr,
             //                                       0,
-            //                                       (int*)nullptr,
-            //                                       stP,
+            //                                       (T*)nullptr,
+            //                                       0,
             //                                       (int*)nullptr,
             //                                       bc),
             //                       HIPSOLVER_STATUS_INVALID_VALUE);
@@ -417,19 +542,23 @@ void testing_getrf(Arguments& argus)
             EXPECT_ROCBLAS_STATUS(hipsolver_getrf(API,
                                                   NPVT,
                                                   handle,
+                                                  params,
                                                   m,
                                                   n,
                                                   (T*)nullptr,
                                                   lda,
                                                   stA,
+                                                  (I*)nullptr,
+                                                  stP,
                                                   (T*)nullptr,
                                                   0,
-                                                  (int*)nullptr,
-                                                  stP,
+                                                  (T*)nullptr,
+                                                  0,
                                                   (int*)nullptr,
                                                   bc),
                                   HIPSOLVER_STATUS_INVALID_VALUE);
         }
+#endif
 
         if(argus.timing)
             rocsolver_bench_inform(inform_invalid_size);
@@ -438,12 +567,12 @@ void testing_getrf(Arguments& argus)
     }
 
     // memory size query is necessary
-    int size_W;
-    hipsolver_getrf_bufferSize(API, handle, m, n, (T*)nullptr, lda, &size_W);
+    SIZE size_dW, size_hW;
+    hipsolver_getrf_bufferSize(API, handle, params, m, n, (T*)nullptr, lda, &size_dW, &size_hW);
 
     if(argus.mem_query)
     {
-        rocsolver_bench_inform(inform_mem_query, size_W);
+        rocsolver_bench_inform(inform_mem_query, size_dW);
         return;
     }
 
@@ -453,33 +582,37 @@ void testing_getrf(Arguments& argus)
         // host_batch_vector<T>             hA(size_A, 1, bc);
         // host_batch_vector<T>             hARes(size_ARes, 1, bc);
         // host_strided_batch_vector<int>   hIpiv(size_P, 1, stP, bc);
-        // host_strided_batch_vector<int>   hIpivRes(size_PRes, 1, stPRes, bc);
+        // host_strided_batch_vector<I>     hIpivRes(size_PRes, 1, stPRes, bc);
         // host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
         // host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
+        // host_strided_batch_vector<T>     hWork(size_hW, 1, size_hW, bc);
         // device_batch_vector<T>           dA(size_A, 1, bc);
-        // device_strided_batch_vector<int> dIpiv(size_P, 1, stP, bc);
+        // device_strided_batch_vector<I>   dIpiv(size_P, 1, stP, bc);
         // device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
+        // device_strided_batch_vector<T>   dWork(size_dW, 1, size_dW, bc);
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
         // CHECK_HIP_ERROR(dInfo.memcheck());
         // if(size_P)
         //     CHECK_HIP_ERROR(dIpiv.memcheck());
-        // if(size_W)
+        // if(size_dW)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
         // // check computations
         // if(argus.unit_check || argus.norm_check)
         //     getrf_getError<API, NPVT, T>(handle,
+        //                                  params,
         //                                  m,
         //                                  n,
         //                                  dA,
         //                                  lda,
         //                                  stA,
-        //                                  dWork,
-        //                                  size_W,
         //                                  dIpiv,
         //                                  stP,
+        //                                  dWork,
+        //                                  size_dW,
+        //                                  hWork,
+        //                                  size_hW,
         //                                  dInfo,
         //                                  bc,
         //                                  hA,
@@ -493,15 +626,18 @@ void testing_getrf(Arguments& argus)
         // // collect performance data
         // if(argus.timing)
         //     getrf_getPerfData<API, NPVT, T>(handle,
+        //                                     params,
         //                                     m,
         //                                     n,
         //                                     dA,
         //                                     lda,
         //                                     stA,
-        //                                     dWork,
-        //                                     size_W,
         //                                     dIpiv,
         //                                     stP,
+        //                                     dWork,
+        //                                     size_dW,
+        //                                     hWork,
+        //                                     size_hW,
         //                                     dInfo,
         //                                     bc,
         //                                     hA,
@@ -519,33 +655,37 @@ void testing_getrf(Arguments& argus)
         host_strided_batch_vector<T>     hA(size_A, 1, stA, bc);
         host_strided_batch_vector<T>     hARes(size_ARes, 1, stARes, bc);
         host_strided_batch_vector<int>   hIpiv(size_P, 1, stP, bc);
-        host_strided_batch_vector<int>   hIpivRes(size_PRes, 1, stPRes, bc);
+        host_strided_batch_vector<I>     hIpivRes(size_PRes, 1, stPRes, bc);
         host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
         host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
+        host_strided_batch_vector<T>     hWork(size_hW, 1, size_hW, bc);
         device_strided_batch_vector<T>   dA(size_A, 1, stA, bc);
-        device_strided_batch_vector<int> dIpiv(size_P, 1, stP, bc);
+        device_strided_batch_vector<I>   dIpiv(size_P, 1, stP, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
+        device_strided_batch_vector<T>   dWork(size_dW, 1, size_dW, bc);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());
         if(size_P)
             CHECK_HIP_ERROR(dIpiv.memcheck());
-        if(size_W)
+        if(size_dW)
             CHECK_HIP_ERROR(dWork.memcheck());
 
         // check computations
         if(argus.unit_check || argus.norm_check)
             getrf_getError<API, NPVT, T>(handle,
+                                         params,
                                          m,
                                          n,
                                          dA,
                                          lda,
                                          stA,
-                                         dWork,
-                                         size_W,
                                          dIpiv,
                                          stP,
+                                         dWork,
+                                         size_dW,
+                                         hWork,
+                                         size_hW,
                                          dInfo,
                                          bc,
                                          hA,
@@ -559,15 +699,18 @@ void testing_getrf(Arguments& argus)
         // collect performance data
         if(argus.timing)
             getrf_getPerfData<API, NPVT, T>(handle,
+                                            params,
                                             m,
                                             n,
                                             dA,
                                             lda,
                                             stA,
-                                            dWork,
-                                            size_W,
                                             dIpiv,
                                             stP,
+                                            dWork,
+                                            size_dW,
+                                            hWork,
+                                            size_hW,
                                             dInfo,
                                             bc,
                                             hA,
