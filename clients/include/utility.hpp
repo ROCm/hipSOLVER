@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -286,6 +286,43 @@ public:
         return m_info;
     }
     operator const hipsolverSyevjInfo_t&() const
+    {
+        return m_info;
+    }
+};
+
+/* ============================================================================================
+ */
+/*! \brief  local params which is automatically created and destroyed  */
+class hipsolver_local_params
+{
+    hipsolverDnParams_t m_info;
+
+public:
+    hipsolver_local_params()
+    {
+        if(hipsolverDnCreateParams(&m_info) != HIPSOLVER_STATUS_SUCCESS)
+            throw std::runtime_error("ERROR: Could not create hipsolverDnParams_t");
+    }
+    ~hipsolver_local_params()
+    {
+        hipsolverDnDestroyParams(m_info);
+    }
+
+    hipsolver_local_params(const hipsolver_local_params&) = delete;
+
+    hipsolver_local_params(hipsolver_local_params&&) = delete;
+
+    hipsolver_local_params& operator=(const hipsolver_local_params&) = delete;
+
+    hipsolver_local_params& operator=(hipsolver_local_params&&) = delete;
+
+    // Allow hipsolver_local_params to be used anywhere hipsolverDnParams_t is expected
+    operator hipsolverDnParams_t&()
+    {
+        return m_info;
+    }
+    operator const hipsolverDnParams_t&() const
     {
         return m_info;
     }

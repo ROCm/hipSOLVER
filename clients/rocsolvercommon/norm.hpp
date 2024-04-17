@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,8 @@
 
 #pragma once
 
-// #include "clientcommon.hpp"
-// #include "rocblas.h"
+#include <vector>
+
 #include "../include/complex.hpp"
 #include "hipsolver.h"
 
@@ -102,8 +102,8 @@ double norm_error(char        norm_type,
     rocblas_int lda = M;
     lda_comp        = lda_comp > 0 ? lda_comp : lda_gold;
 
-    host_vector<double> gold_double(N * lda);
-    host_vector<double> comp_double(N * lda);
+    std::vector<double> gold_double(N * lda);
+    std::vector<double> comp_double(N * lda);
 
     for(rocblas_int i = 0; i < M; i++)
     {
@@ -144,8 +144,8 @@ double norm_error(char        norm_type,
     rocblas_int lda = M;
     lda_comp        = lda_comp > 0 ? lda_comp : lda_gold;
 
-    host_vector<rocblas_double_complex> gold_double(N * lda);
-    host_vector<rocblas_double_complex> comp_double(N * lda);
+    std::vector<rocblas_double_complex> gold_double(N * lda);
+    std::vector<rocblas_double_complex> comp_double(N * lda);
 
     for(rocblas_int i = 0; i < M; i++)
     {

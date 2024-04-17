@@ -33,6 +33,21 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSetAdvOptions(hipsolverDnParams_t 
                                                             hipsolverDnFunction_t func,
                                                             hipsolverAlgMode_t    alg);
 
+// getrs
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXgetrs(hipsolverDnHandle_t  handle,
+                                                     hipsolverDnParams_t  params,
+                                                     hipsolverOperation_t trans,
+                                                     int64_t              n,
+                                                     int64_t              nrhs,
+                                                     hipDataType          dataTypeA,
+                                                     const void*          A,
+                                                     int64_t              lda,
+                                                     const int64_t*       devIpiv,
+                                                     hipDataType          dataTypeB,
+                                                     void*                B,
+                                                     int64_t              ldb,
+                                                     int*                 devInfo);
+
 #ifdef __cplusplus
 }
 #endif

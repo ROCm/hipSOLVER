@@ -8,6 +8,8 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 - Added compatibility-only functions
   - auxiliary
     - hipsolverDnCreateParams, hipsolverDnDestroyParams, hipsolverDnSetAdvOptions
+  - getrs
+    - hipsolverDnXgetrs
 
 ### Optimized
 ### Changed
