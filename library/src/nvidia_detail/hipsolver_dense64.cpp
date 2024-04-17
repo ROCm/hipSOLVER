@@ -76,4 +76,44 @@ catch(...)
     return exception2hip_status();
 }
 
+/******************** GETRS ********************/
+hipsolverStatus_t hipsolverDnXgetrs(hipsolverDnHandle_t  handle,
+                                    hipsolverDnParams_t  params,
+                                    hipsolverOperation_t trans,
+                                    int64_t              n,
+                                    int64_t              nrhs,
+                                    hipDataType          dataTypeA,
+                                    const void*          A,
+                                    int64_t              lda,
+                                    const int64_t*       devIpiv,
+                                    hipDataType          dataTypeB,
+                                    void*                B,
+                                    int64_t              ldb,
+                                    int*                 devInfo)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return cuda2hip_status(cusolverDnXgetrs((cusolverDnHandle_t)handle,
+                                            (cusolverDnParams_t)params,
+                                            hip2cuda_operation(trans),
+                                            n,
+                                            nrhs,
+                                            dataTypeA,
+                                            A,
+                                            lda,
+                                            devIpiv,
+                                            dataTypeB,
+                                            B,
+                                            ldb,
+                                            devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
 } //extern C

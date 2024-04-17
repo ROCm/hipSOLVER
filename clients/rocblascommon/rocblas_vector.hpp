@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2018-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2018-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +26,9 @@
 
 #include "device_batch_vector.hpp"
 #include "device_strided_batch_vector.hpp"
-#include "device_vector.hpp"
 
 #include "host_batch_vector.hpp"
-// #include "host_pinned_vector.hpp"
 #include "host_strided_batch_vector.hpp"
-#include "host_vector.hpp"
 
 //!
 //! @brief Random number with type deductions.
@@ -136,21 +133,6 @@ void rocblas_init(host_batch_vector<T>& that, bool seedReset = false)
 }
 
 //!
-//! @brief Initialize a host_vector.
-//! @param that The host vector.
-//! @param seedReset reset the seed if true, do not reset the seed otherwise.
-//!
-template <typename T>
-void rocblas_init(host_vector<T>& that, bool seedReset = false)
-{
-    if(seedReset)
-    {
-        hipsolver_seedrand();
-    }
-    rocblas_init(that, 1, that.size(), 1);
-}
-
-//!
 //! @brief Initialize a host_strided_batch_vector with NaNs.
 //! @param that The host strided batch vector to be initialized.
 //! @param seedReset reset the seed if true, do not reset the seed otherwise.
@@ -168,17 +150,6 @@ void rocblas_init_nan(host_strided_batch_vector<T>& that, bool seedReset = false
 //!
 template <typename T>
 void rocblas_init_nan(host_batch_vector<T>& that, bool seedReset = false)
-{
-    rocblas_init_nan_template(that, seedReset);
-}
-
-//!
-//! @brief Initialize a host_strided_batch_vector with NaNs.
-//! @param that The host strided batch vector to be initialized.
-//! @param seedReset reset he seed if true, do not reset the seed otherwise.
-//!
-template <typename T>
-void rocblas_init_nan(host_vector<T>& that, bool seedReset = false)
 {
     rocblas_init_nan_template(that, seedReset);
 }

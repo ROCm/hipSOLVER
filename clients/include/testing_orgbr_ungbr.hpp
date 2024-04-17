@@ -116,7 +116,7 @@ void orgbr_ungbr_initData(const hipsolverHandle_t   handle,
         using S = decltype(std::real(T{}));
 
         int            info;
-        size_t         s = max(hIpiv.n(), 2);
+        size_t         s = max(hIpiv.n(), int64_t(2));
         std::vector<S> E(s - 1);
         std::vector<S> D(s);
         std::vector<T> P(s);
