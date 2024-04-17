@@ -293,32 +293,22 @@ try
         if(dataTypeA == HIP_R_32F && computeType == HIP_R_32F)
         {
             return rocblas2hip_status(rocsolver_sgetrf_npvt_info32(
-                (rocblas_handle)handle, m, n, (float*)const_cast<void*>(A), lda, devInfo));
+                (rocblas_handle)handle, m, n, (float*)A, lda, devInfo));
         }
         else if(dataTypeA == HIP_R_64F && computeType == HIP_R_64F)
         {
             return rocblas2hip_status(rocsolver_dgetrf_npvt_info32(
-                (rocblas_handle)handle, m, n, (double*)const_cast<void*>(A), lda, devInfo));
+                (rocblas_handle)handle, m, n, (double*)A, lda, devInfo));
         }
         else if(dataTypeA == HIP_C_32F && computeType == HIP_C_32F)
         {
-            return rocblas2hip_status(
-                rocsolver_cgetrf_npvt_info32((rocblas_handle)handle,
-                                             m,
-                                             n,
-                                             (rocblas_float_complex*)const_cast<void*>(A),
-                                             lda,
-                                             devInfo));
+            return rocblas2hip_status(rocsolver_cgetrf_npvt_info32(
+                (rocblas_handle)handle, m, n, (rocblas_float_complex*)A, lda, devInfo));
         }
         else if(dataTypeA == HIP_C_64F && computeType == HIP_C_64F)
         {
-            return rocblas2hip_status(
-                rocsolver_zgetrf_npvt_info32((rocblas_handle)handle,
-                                             m,
-                                             n,
-                                             (rocblas_double_complex*)const_cast<void*>(A),
-                                             lda,
-                                             devInfo));
+            return rocblas2hip_status(rocsolver_zgetrf_npvt_info32(
+                (rocblas_handle)handle, m, n, (rocblas_double_complex*)A, lda, devInfo));
         }
         else
             return HIPSOLVER_STATUS_INVALID_ENUM;
