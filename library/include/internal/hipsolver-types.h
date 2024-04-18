@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2023 Advanced Micro Devices, Inc.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 /*! \file
@@ -9,7 +9,13 @@
 #ifndef HIPSOLVER_TYPES_H
 #define HIPSOLVER_TYPES_H
 
+#if defined(__HIP_PLATFORM_NVCC__) || defined(__HIP_PLATFORM_NVIDIA__)
+#include <cusolver_common.h>
+#endif
+
 #include <hip/hip_complex.h>
+#include <hip/hip_runtime_api.h>
+#include <hip/library_types.h>
 
 typedef void* hipsolverHandle_t;
 

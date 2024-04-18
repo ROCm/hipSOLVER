@@ -1,6 +1,29 @@
 # Change Log for hipSOLVER
 
-Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](https://hipsolver.readthedocs.io/en/latest/).
+Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html).
+
+
+## (Unreleased) hipSOLVER
+### Added
+- Added compatibility-only functions
+  - auxiliary
+    - hipsolverDnCreateParams, hipsolverDnDestroyParams, hipsolverDnSetAdvOptions
+  - getrf
+    - hipsolverDnXgetrf_bufferSize
+    - hipsolverDnXgetrf
+  - getrs
+    - hipsolverDnXgetrs
+
+### Optimized
+### Changed
+- The numerical factorization in csrlsvchol will now be performed on the GPU. (The symbolic factorization is still performed on the CPU.)
+- Renamed hipsolver-compat.h to hipsolver-dense.h.
+
+### Deprecated
+### Removed
+### Fixed
+### Known Issues
+### Security
 
 
 ## hipSOLVER 2.1.1 for ROCm 6.1.1
@@ -234,4 +257,3 @@ Full documentation for hipSOLVER is available at [hipsolver.readthedocs.io](http
 ### Removed
 - Removed unused HIPSOLVER_FILL_MODE_FULL enum value.
 - Removed hipsolverComplex and hipsolverDoubleComplex from the library. Use hipFloatComplex and hipDoubleComplex instead.
-

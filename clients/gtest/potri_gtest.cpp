@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -74,7 +74,7 @@ Arguments potri_setup_arguments(potri_tuple tup)
     return arg;
 }
 
-template <bool FORTRAN>
+template <testAPI_t API>
 class POTRI_BASE : public ::TestWithParam<potri_tuple>
 {
 protected:
@@ -88,18 +88,18 @@ protected:
         Arguments arg = potri_setup_arguments(GetParam());
 
         if(arg.peek<char>("uplo") == 'L' && arg.peek<rocblas_int>("n") == -1)
-            testing_potri_bad_arg<FORTRAN, BATCHED, STRIDED, T>();
+            testing_potri_bad_arg<API, BATCHED, STRIDED, T>();
 
         arg.batch_count = 1;
-        testing_potri<FORTRAN, BATCHED, STRIDED, T>(arg);
+        testing_potri<API, BATCHED, STRIDED, T>(arg);
     }
 };
 
-class POTRI : public POTRI_BASE<false>
+class POTRI : public POTRI_BASE<API_NORMAL>
 {
 };
 
-class POTRI_FORTRAN : public POTRI_BASE<true>
+class POTRI_FORTRAN : public POTRI_BASE<API_FORTRAN>
 {
 };
 

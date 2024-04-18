@@ -89,7 +89,7 @@ include( ROCMInstallSymlinks )
 include( ROCMClients )
 include( ROCMHeaderWrapper )
 
-set ( VERSION_STRING "2.1.1" )
+set ( VERSION_STRING "2.2.0" )
 rocm_setup_version( VERSION ${VERSION_STRING} )
 
 if( NOT DEFINED ENV{HIP_PATH})
@@ -113,6 +113,7 @@ option( BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON )
 option( BUILD_WITH_SPARSE "Build hipSOLVER with sparse functionality and tests enabled (requires additional dependencies)" "${UNIX}" )
 option( BUILD_VERBOSE "Output additional build information" OFF )
 option( USE_CUDA "Look for CUDA and use that as a backend if found" OFF )
+option( HIPSOLVER_FIND_PACKAGE_LAPACK_CONFIG "Skip module mode search for LAPACK" ON )
 
 add_library(hipsolver-common INTERFACE)
 target_compile_options(hipsolver-common INTERFACE
@@ -216,13 +217,15 @@ endif( )
 
 # Package specific CPACK vars
 if( NOT USE_CUDA )
-  set(hipsolver_pkgdeps "rocblas >= 4.1.0" "rocsolver >= 3.25.0")
+  set(hipsolver_pkgdeps "rocblas >= 4.2.0" "rocsolver >= 3.26.0")
 
   if( BUILD_WITH_SPARSE )
     list(APPEND hipsolver_pkgdeps "rocsparse >= 2.3.0")
 
     if( SYSTEM_OS STREQUAL "centos" OR SYSTEM_OS STREQUAL "rhel" )
       list(APPEND hipsolver_pkgdeps "suitesparse")
+    elseif(SYSTEM_OS STREQUAL "ubuntu" AND SYSTEM_OS_VERSION VERSION_GREATER_EQUAL "24.04")
+      list(APPEND hipsolver_pkgdeps "libcholmod4" "libsuitesparseconfig7")
     else()
       list(APPEND hipsolver_pkgdeps "libcholmod3" "libsuitesparseconfig5")
     endif()

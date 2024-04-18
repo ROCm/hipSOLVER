@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2024 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -82,7 +82,11 @@ set(hipsolverRf_test_source
   csrrf_solve_gtest.cpp
 )
 
-add_executable( hipsolver-test ${hipsolverDn_test_source} ${hipsolverRf_test_source} )
+set(others_test_source
+  params_gtest.cpp
+)
+
+add_executable( hipsolver-test ${others_test_source} ${hipsolverDn_test_source} ${hipsolverRf_test_source} )
 
 target_include_directories( hipsolver-test
   PRIVATE
@@ -101,9 +105,7 @@ target_include_directories( hipsolver-test
 )
 
 target_link_libraries( hipsolver-test PRIVATE
-  cblas
-  lapack
-  blas
+  ${LAPACK_LIBRARIES}
   hipsolver-common
   clients-common
   GTest::GTest
@@ -123,9 +125,6 @@ if( UNIX )
   target_sources( hipsolver-test PRIVATE ${hipsolver_f90_source} )
 endif( )
 
-# need mf16c flag for float->half convertion
-target_compile_options( hipsolver-test PRIVATE -mf16c )
-
 if( NOT USE_CUDA )
   target_link_libraries( hipsolver-test PRIVATE hip::host )
 
@@ -138,7 +137,7 @@ if( NOT USE_CUDA )
     target_link_libraries( hipsolver-test PRIVATE -lpthread -lm )
   endif()
 else( )
-  target_compile_definitions( hipsolver-test PRIVATE __HIP_PLATFORM_NVCC__ )
+  target_compile_definitions( hipsolver-test PRIVATE __HIP_PLATFORM_NVIDIA__ )
 
   target_include_directories( hipsolver-test
     PRIVATE

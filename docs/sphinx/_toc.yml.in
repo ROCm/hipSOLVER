@@ -1,43 +1,38 @@
-# Anywhere {branch} is used, the branch name will be substituted.
-# These comments will also be removed.
+defaults:
+  numbered: False
 root: index
-subtrees:
-  - numbered: False
+entries:
+- file: installation/index.rst
+  entries:
+  - file: installation/install.rst
+- file: howto/index.rst
+  entries:
+  - file: howto/usage.rst
+- file: reference/index.rst
+  entries:
+  - file: reference/intro.rst
+  - file: reference/api/index.rst
     entries:
-    - file: userguide/index
-      subtrees:
-      - entries:
-        - file: userguide/intro
-        - file: userguide/install
-        - file: userguide/usage
-    - file: api/index
-      subtrees:
-      - entries:
-        - file: api/types
-        - file: api/helpers
-        - file: api/auxiliary
-        - file: api/lapack
-        - file: api/lapacklike
-    - file: compat-api/index
-      subtrees:
-      - entries:
-        - file: compat-api/types
-        - file: compat-api/helpers
-        - file: compat-api/auxiliary
-        - file: compat-api/lapack
-        - file: compat-api/lapacklike
-    - file: sparse-api/index
-      subtrees:
-      - entries:
-        - file: sparse-api/types
-        - file: sparse-api/helpers
-        - file: sparse-api/sparse
-    - file: refactor-api/index
-      subtrees:
-      - entries:
-        - file: refactor-api/types
-        - file: refactor-api/helpers
-        - file: refactor-api/refactor
-  - caption: About
+    - file: reference/api/types.rst
+    - file: reference/api/helpers.rst
+    - file: reference/api/auxiliary.rst
+    - file: reference/api/lapack.rst
+    - file: reference/api/lapacklike.rst
+  - file: reference/dense-api/index.rst
     entries:
-      - file: license
+    - file: reference/dense-api/types.rst
+    - file: reference/dense-api/helpers.rst
+    - file: reference/dense-api/auxiliary.rst
+    - file: reference/dense-api/lapack.rst
+    - file: reference/dense-api/lapacklike.rst
+  - file: reference/sparse-api/index.rst
+    entries:
+    - file: reference/sparse-api/types.rst
+    - file: reference/sparse-api/helpers.rst
+    - file: reference/sparse-api/sparse.rst
+  - file: reference/refactor-api/index.rst
+    entries:
+    - file: reference/refactor-api/types.rst
+    - file: reference/refactor-api/helpers.rst
+    - file: reference/refactor-api/refactor.rst
+- file: license.rst

@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2023 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2024 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -44,19 +44,21 @@ if( NOT USE_CUDA )
   set( hipsolver_source
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_conversions.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_compat.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_dense.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_dense64.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_refactor.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_sparse.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_dense_common.cpp"
   )
 else( )
   set( hipsolver_source
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_conversions.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_compat.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_dense.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_dense64.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_refactor.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_sparse.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_compat_common.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_dense_common.cpp"
   )
 endif( )
 
@@ -96,6 +98,8 @@ if( WIN32 )
   endif( )
 endif( )
 
+set( static_depends )
+
 # Build hipsolver from source on AMD platform
 if( NOT USE_CUDA )
   # Find rocBLAS
@@ -106,6 +110,7 @@ if( NOT USE_CUDA )
     else( )
       find_package( rocblas REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocblas )
     endif( )
+    list( APPEND static_depends PACKAGE rocblas )
   endif( )
 
   # Find rocSOLVER
@@ -116,9 +121,11 @@ if( NOT USE_CUDA )
     else( )
       find_package( rocsolver REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocsolver /usr/local/rocsolver )
     endif( )
+    list( APPEND static_depends PACKAGE rocsolver )
   endif( )
 
-  target_link_libraries( hipsolver PRIVATE roc::rocblas roc::rocsolver hip::host )
+  target_link_libraries( hipsolver PRIVATE roc::rocblas roc::rocsolver )
+  target_link_libraries( hipsolver PUBLIC hip::host )
 
   if( CUSTOM_TARGET )
     target_link_libraries( hipsolver PRIVATE hip::${CUSTOM_TARGET} )
@@ -133,6 +140,7 @@ if( NOT USE_CUDA )
       else( )
         find_package( rocsparse REQUIRED CONFIG PATHS /opt/rocm /opt/rocm/rocsparse )
       endif( )
+      list( APPEND static_depends PACKAGE rocsparse )
     endif( )
 
     target_link_libraries( hipsolver PRIVATE roc::rocsparse suitesparseconfig cholmod )
@@ -143,7 +151,7 @@ if( NOT USE_CUDA )
   endif( )
 
 else( )
-  target_compile_definitions( hipsolver PRIVATE __HIP_PLATFORM_NVCC__ )
+  target_compile_definitions( hipsolver PRIVATE __HIP_PLATFORM_NVIDIA__ )
 
   target_link_libraries( hipsolver PRIVATE ${CUDA_cusolver_LIBRARY} )
 
@@ -207,6 +215,8 @@ if ( NOT USE_CUDA )
   rocm_export_targets(
     TARGETS roc::hipsolver
     DEPENDS PACKAGE hip
+    STATIC_DEPENDS
+      ${static_depends}
     NAMESPACE roc::
   )
 else( )

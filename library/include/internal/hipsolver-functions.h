@@ -1,19 +1,17 @@
 /* ************************************************************************
- * Copyright (C) 2020-2022 Advanced Micro Devices, Inc.
+ * Copyright (C) 2020-2024 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 /*! \file
  *  \brief hipsolver-functions.h provides function wrappers around cuSOLVER
  *  and rocSOLVER functions. Some differences with the cuSOLVER API are
- *  present in order to accomodate the needs of rocSOLVER.
+ *  present in order to accommodate the needs of rocSOLVER.
  */
 
 #ifndef HIPSOLVER_FUNCTIONS_H
 #define HIPSOLVER_FUNCTIONS_H
 
 #include "hipsolver-types.h"
-#include <hip/hip_runtime_api.h>
-#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
