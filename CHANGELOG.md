@@ -26,6 +26,14 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 ### Security
 
 
+## hipSOLVER 2.1.1 for ROCm 6.1.1
+### Changed
+- `BUILD_WITH_SPARSE` now defaults to OFF on Windows.
+
+### Fixed
+- Fixed benchmark client build when `BUILD_WITH_SPARSE` is OFF.
+
+
 ## hipSOLVER 2.1.0 for ROCm 6.1.0
 ### Added
 - Added compatibility API with hipsolverSp prefix
