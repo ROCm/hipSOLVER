@@ -217,10 +217,10 @@ endif( )
 
 # Package specific CPACK vars
 if( NOT USE_CUDA )
-  set(hipsolver_pkgdeps "rocblas >= 4.3.0" "rocsolver >= 3.27.0")
+  set(hipsolver_pkgdeps "rocblas >= 4.2.0" "rocsolver >= 3.27.0")
 
   if( BUILD_WITH_SPARSE )
-    list(APPEND hipsolver_pkgdeps "rocsparse >= 2.3.0")
+    list(APPEND hipsolver_pkgdeps "rocsparse >= 2.2.0")
 
     if( SYSTEM_OS STREQUAL "centos" OR SYSTEM_OS STREQUAL "rhel" )
       list(APPEND hipsolver_pkgdeps "suitesparse")
