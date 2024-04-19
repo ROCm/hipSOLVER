@@ -21,7 +21,7 @@ in the user code, and the shared library will become link-time and run-time depe
 user code can be ported, with no changes, to any system with hipSOLVER installed regardless of the backend library.
 
 For more details on how to use the API methods, see the code samples on
-`hipSOLVER's Clients github page <https://github.com/ROCm/hipSOLVER/tree/develop/clients/samples>`_, or
+`hipSOLVER's clients' GitHub page <https://github.com/ROCm/hipSOLVER/tree/develop/clients/samples>`_, or
 the documentation of the corresponding backend libraries.
 
 .. _porting:
@@ -30,7 +30,7 @@ Porting cuSOLVER applications to hipSOLVER
 ============================================
 
 Another purpose of hipSOLVER is to facilitate the translation of cuSOLVER applications to
-`AMD's open source ROCm platform <https://rocmdocs.amd.com/en/latest/index.html>`_ ecosystem.
+:doc:`AMD's open-source ROCm platform <rocm:index>` ecosystem.
 hipSOLVER is designed to make it easy for users of cuSOLVER to port their existing applications to hipSOLVER, and provides two
 separate but interchangeable API patterns in order to facilitate a two-stage transition process. Users are encouraged to start with
 hipSOLVER's compatibility APIs, which use the :ref:`hipsolverDn <library_dense>`, :ref:`hipsolverSp <library_sparse>`, and

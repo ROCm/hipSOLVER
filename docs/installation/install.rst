@@ -13,7 +13,7 @@ Install pre-built packages
 
 Download pre-built packages from :doc:`ROCm's package servers <rocm-install-on-linux:index>`. Updates to each release are listed in the ``CHANGELOG.md`` file under the releases tab of the `hipSOLVER github page <https://github.com/ROCm/hipSOLVER>`_.
 
-* `sudo apt update && sudo apt install hipsolver`
+* ``sudo apt update && sudo apt install hipsolver``
 
 .. note::
     The pre-built packages depend on the third-party library SuiteSparse, which must be installed on the system prior to installing hipSOLVER. SuiteSparse can be installed using the package manager of most distros.
@@ -68,7 +68,7 @@ The rocSOLVER backend has the following dependencies:
 4. `SuiteSparse <https://github.com/DrTimothyAldenDavis/SuiteSparse>`_ modules CHOLMOD and SuiteSparse_config (optional, required by default)
 
 rocSOLVER itself depends on rocBLAS and rocSPARSE, therefore all three libraries should be present with a standard rocSOLVER installation. For more information
-about building and installing rocSOLVER, refer to the :doc:`rocSOLVER documentation <rocsolver:installation/installlinux>`.
+about building and installing rocSOLVER, refer to the :doc:`rocSOLVER documentation <rocsolver:installation/index>`.
 
 SuiteSparse is a third-party library, and can be installed using the package managers of most distros. Together with rocSPARSE, it is used to provide
 functionality for the hipsolverSp API. If only hipsolverDn and/or hipsolverRf are needed, these dependencies can be ignored by setting the ``BUILD_WITH_SPARSE``
