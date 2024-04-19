@@ -2,6 +2,16 @@
 
 Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html).
 
+## (Unreleased) hipSOLVER
+### Added
+### Optimized
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Known Issues
+### Security
+
 
 ## hipSOLVER 2.2.0 for ROCm 6.2.0
 ### Added
