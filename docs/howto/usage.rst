@@ -234,7 +234,7 @@ Using rocSOLVER's memory model
 
 Most hipSOLVER functions take a workspace pointer and size as arguments, allowing the user to manage the device memory used
 internally by the backends. rocSOLVER, however, can maintain the device workspace automatically by default
-(see `rocSOLVER's memory model <https://rocm.docs.amd.com/projects/rocSOLVER/en/latest/userguide/memory.html>`_ for more details). In order to take
+(see :doc:`rocSOLVER's memory model <rocsolver:howto/memory>` for more details). In order to take
 advantage of this feature, users may pass a null pointer for the `work` argument or a zero size for the `lwork` argument of any function
 when using the rocSOLVER backend, and the workspace will be automatically managed behind-the-scenes. It is recommended, however, to use
 a consistent strategy for workspace management, as performance issues may arise if the internal workspace is made to flip-flop between
@@ -246,9 +246,7 @@ user-provided and automatically allocated workspaces.
 
 Using rocSOLVER's in-place functions
 --------------------------------------
-
-The solvers `gesv` and `gels` in cuSOLVER are out-of-place in the sense that the solution vectors `X` do not overwrite the
-input matrix `B`. In rocSOLVER this is not the case; when `hipsolverXXgels` or `hipsolverXXgesv` call rocSOLVER, some data
+The solvers `gesv` and `gels` in cuSOLVER are out-of-place in the sense that the solution vectors `X` do not overwrite the input matrix `B`. In rocSOLVER this is not the case; when `hipsolverXXgels` or `hipsolverXXgesv` call rocSOLVER, some data
 movements must be done internally to restore `B` and copy the results back to `X`. These copies could introduce noticeable
 overhead depending on the size of the matrices. To avoid this potential problem, users can pass `X = B` to `hipsolverXXgels`
 or `hipsolverXXgesv` when using the rocSOLVER backend; in this case, no data movements will be required, and the solution
