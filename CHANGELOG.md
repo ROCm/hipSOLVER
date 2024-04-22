@@ -1,20 +1,29 @@
-# Change Log for hipSOLVER
+# Changelog for hipSOLVER
 
 Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html).
 
 ## (Unreleased) hipSOLVER
-### Added
-### Optimized
-### Changed
-### Deprecated
-### Removed
-### Fixed
+
+### Additions
+
+### Optimizations
+
+### Changes
+
+### Deprecations
+
+### Removals
+
+### Fixes
+
 ### Known Issues
+
 ### Security
 
+## (Unreleased) hipSOLVER 2.2.0 for ROCm 6.2.0
 
-## hipSOLVER 2.2.0 for ROCm 6.2.0
-### Added
+### Additions
+
 - Added compatibility-only functions
   - auxiliary
     - hipsolverDnCreateParams, hipsolverDnDestroyParams, hipsolverDnSetAdvOptions
@@ -26,24 +35,29 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 - Added support for building on Ubuntu 24.04.
 - Added hip::host to roc::hipsolver usage requirements.
 
-### Changed
+### Changes
+
 - The numerical factorization in csrlsvchol will now be performed on the GPU. (The symbolic factorization is still performed on the CPU.)
 - Renamed hipsolver-compat.h to hipsolver-dense.h.
 
-### Removed
+### Removals
+
 - Removed dependency on cblas from the hipsolver test and benchmark clients.
 
+## (Unreleased) hipSOLVER 2.1.1 for ROCm 6.1.1
 
-## hipSOLVER 2.1.1 for ROCm 6.1.1
-### Changed
+### Changes
+
 - `BUILD_WITH_SPARSE` now defaults to OFF on Windows.
 
-### Fixed
+### Fixes
+
 - Fixed benchmark client build when `BUILD_WITH_SPARSE` is OFF.
 
-
 ## hipSOLVER 2.1.0 for ROCm 6.1.0
-### Added
+
+### Additions
+
 - Added compatibility API with hipsolverSp prefix
 - Added compatibility-only functions
   - csrlsvchol
@@ -53,43 +67,52 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
   functionality for the hipsolverSp API (on by default).
 - Added hipSPARSE as an optional dependency to hipsolver-test. Use the `BUILD_WITH_SPARSE` CMake option to enable tests of the hipsolverSp API (on by default).
 
-### Changed
+### Changes
+
 - Relax array length requirements for GESVDA.
 
-### Fixed
+### Fixes
+
 - Fixed incorrect singular vectors returned from GESVDA.
 
-
 ## hipSOLVER 2.0.0 for ROCm 6.0.0
-### Added
+
+### Additions
+
 - Added hipBLAS as an optional dependency to hipsolver-test. Use the `BUILD_HIPBLAS_TESTS` CMake option to test compatibility between hipSOLVER and hipBLAS.
 
-### Changed
+### Changes
+
 - Types hipsolverOperation_t, hipsolverFillMode_t, and hipsolverSideMode_t are now aliases of hipblasOperation_t, hipblasFillMode_t, and hipblasSideMode_t.
 
-### Fixed
+### Fixes
+
 - Fixed tests for hipsolver info updates in ORGBR/UNGBR, ORGQR/UNGQR,
   ORGTR/UNGTR, ORMQR/UNMQR, and ORMTR/UNMTR.
 
-
 ## hipSOLVER 1.8.2 for ROCm 5.7.1
-### Fixed
+
+### Fixes
+
 - Fixed conflicts between the hipsolver-dev and -asan packages by excluding
   hipsolver_module.f90 from the latter
 
-
 ## hipSOLVER 1.8.1 for ROCm 5.7.0
-### Changed
+
+### Changes
+
 - Changed hipsolver-test sparse input data search paths to be relative to the test executable
 
-
 ## hipSOLVER 1.8.0 for ROCm 5.6.0
-### Added
+
+### Additions
+
 - Added compatibility API with hipsolverRf prefix
 
-
 ## hipSOLVER 1.7.0 for ROCm 5.5.0
-### Added
+
+### Additions
+
 - Added functions
   - gesvdj
     - hipsolverSgesvdj_bufferSize, hipsolverDgesvdj_bufferSize, hipsolverCgesvdj_bufferSize, hipsolverZgesvdj_bufferSize
@@ -98,17 +121,19 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
     - hipsolverSgesvdjBatched_bufferSize, hipsolverDgesvdjBatched_bufferSize, hipsolverCgesvdjBatched_bufferSize, hipsolverZgesvdjBatched_bufferSize
     - hipsolverSgesvdjBatched, hipsolverDgesvdjBatched, hipsolverCgesvdjBatched, hipsolverZgesvdjBatched
 
-
 ## hipSOLVER 1.6.0 for ROCm 5.4.0
-### Added
+
+### Additions
+
 - Added compatibility-only functions
   - gesvdaStridedBatched
     - hipsolverDnSgesvdaStridedBatched_bufferSize, hipsolverDnDgesvdaStridedBatched_bufferSize, hipsolverDnCgesvdaStridedBatched_bufferSize, hipsolverDnZgesvdaStridedBatched_bufferSize
     - hipsolverDnSgesvdaStridedBatched, hipsolverDnDgesvdaStridedBatched, hipsolverDnCgesvdaStridedBatched, hipsolverDnZgesvdaStridedBatched
 
-
 ## hipSOLVER 1.5.0 for ROCm 5.3.0
-### Added
+
+### Additions
+
 - Added functions
   - syevj
     - hipsolverSsyevj_bufferSize, hipsolverDsyevj_bufferSize, hipsolverCheevj_bufferSize, hipsolverZheevj_bufferSize
@@ -128,28 +153,33 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
     - hipsolverDnSsygvdx, hipsolverDnDsygvdx, hipsolverDnChegvdx, hipsolverDnZhegvdx
 - Added --mem_query option to hipsolver-bench, which will print the amount of device memory workspace required by the function.
 
-### Changed
+### Changes
+
 - The rocSOLVER backend will now set `info` to zero if rocSOLVER does not reference `info`. (Applies to orgbr/ungbr, orgqr/ungqr, orgtr/ungtr, ormqr/unmqr, ormtr/unmtr, gebrd, geqrf, getrs, potrs, and sytrd/hetrd).
 - gesvdj will no longer require extra workspace to transpose `V` when `jobz` is `HIPSOLVER_EIG_MODE_VECTOR` and `econ` is 1.
 
-### Fixed
+### Fixes
+
 - Fixed Fortran return value declarations within hipsolver_module.f90
 - Fixed gesvdj_bufferSize returning `HIPSOLVER_STATUS_INVALID_VALUE` when `jobz` is `HIPSOLVER_EIG_MODE_NOVECTOR` and 1 <= `ldv` < `n`
 - Fixed gesvdj returning `HIPSOLVER_STATUS_INVALID_VALUE` when `jobz` is `HIPSOLVER_EIG_MODE_VECTOR`, `econ` is 1, and `m` < `n`
 
-
 ## hipSOLVER 1.4.0 for ROCm 5.2.0
-### Added
+
+### Additions
+
 - Package generation for test and benchmark executables on all supported OSes using CPack.
 - File/Folder Reorg
   - Added File/Folder Reorg Changes with backward compatibility support using ROCM-CMAKE wrapper functions.
 
-### Fixed
+### Fixes
+
 - Fixed the ReadTheDocs documentation generation.
 
-
 ## hipSOLVER 1.3.0 for ROCm 5.1.0
-### Added
+
+### Additions
+
 - Added functions
   - gels
     - hipsolverSSgels_bufferSize, hipsolverDDgels_bufferSize, hipsolverCCgels_bufferSize, hipsolverZZgels_bufferSize
@@ -173,29 +203,34 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
     - hipsolverDnSsygvj_bufferSize, hipsolverDnDsygvj_bufferSize, hipsolverDnChegvj_bufferSize, hipsolverDnZhegvj_bufferSize
     - hipsolverDnSsygvj, hipsolverDnDsygvj, hipsolverDnChegvj, hipsolverDnZhegvj
 
-### Changed
+### Changes
+
 - The rocSOLVER backend now allows hipsolverXXgels and hipsolverXXgesv to be called in-place when B == X.
 - The rocSOLVER backend now allows rwork to be passed as a null pointer to hipsolverXgesvd.
 
-### Fixed
+### Fixes
+
 - bufferSize functions will now return HIPSOLVER_STATUS_NOT_INITIALIZED instead of HIPSOLVER_STATUS_INVALID_VALUE when both handle and lwork are null.
 - Fixed rare memory allocation failure in syevd/heevd and sygvd/hegvd caused by improper workspace array allocation outside of rocSOLVER.
 
-
 ## hipSOLVER 1.2.0 for ROCm 5.0.0
-### Added
+
+### Additions
+
 - Added functions
   - sytrf
     - hipsolverSsytrf_bufferSize, hipsolverDsytrf_bufferSize, hipsolverCsytrf_bufferSize, hipsolverZsytrf_bufferSize
     - hipsolverSsytrf, hipsolverDsytrf, hipsolverCsytrf, hipsolverZsytrf
 
-### Fixed
+### Fixes
+
 - Fixed use of incorrect `HIP_PATH` when building from source (#40).
   Thanks [@jakub329homola](https://github.com/jakub329homola)!
 
-
 ## hipSOLVER 1.1.0 for ROCm 4.5.0
-### Added
+
+### Additions
+
 - Added functions
   - gesv
     - hipsolverSSgesv_bufferSize, hipsolverDDgesv_bufferSize, hipsolverCCgesv_bufferSize, hipsolverZZgesv_bufferSize
@@ -258,10 +293,12 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
     - hipsolverCreate, hipsolverDestroy
     - hipsolverSetStream, hipsolverGetStream
 
-### Changed
+### Changes
+
 - hipSOLVER functions will now return HIPSOLVER_STATUS_INVALID_ENUM or HIPSOLVER_STATUS_UNKNOWN status codes rather than throw exceptions.
 - hipsolverXgetrf functions now take lwork as an argument.
 
-### Removed
+### Removals
+
 - Removed unused HIPSOLVER_FILL_MODE_FULL enum value.
 - Removed hipsolverComplex and hipsolverDoubleComplex from the library. Use hipFloatComplex and hipDoubleComplex instead.
