@@ -222,7 +222,7 @@ if( NOT USE_CUDA )
   if( BUILD_WITH_SPARSE )
     list(APPEND hipsolver_pkgdeps "rocsparse >= 2.3.0")
 
-    if( SYSTEM_OS STREQUAL "centos" OR SYSTEM_OS STREQUAL "rhel" )
+    if( SYSTEM_OS STREQUAL "centos" OR SYSTEM_OS STREQUAL "rhel" OR SYSTEM_OS STREQUAL "mariner" )
       list(APPEND hipsolver_pkgdeps "suitesparse")
     elseif(SYSTEM_OS STREQUAL "ubuntu" AND SYSTEM_OS_VERSION VERSION_GREATER_EQUAL "24.04")
       list(APPEND hipsolver_pkgdeps "libcholmod4" "libsuitesparseconfig7")
