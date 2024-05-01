@@ -27,6 +27,7 @@
 #include <exception>
 
 HIPSOLVER_BEGIN_NAMESPACE
+
 // Convert the current C++ exception to hipsolverStatus_t
 // This allows extern "C" functions to return this function in a catch(...) block
 // while converting all C++ exceptions to an equivalent hipsolverStatus_t here
@@ -49,4 +50,5 @@ catch(...)
 {
     return HIPSOLVER_STATUS_INTERNAL_ERROR;
 }
+
 HIPSOLVER_END_NAMESPACE

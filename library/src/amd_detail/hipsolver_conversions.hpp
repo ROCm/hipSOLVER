@@ -29,6 +29,7 @@
 #include "rocsolver/rocsolver.h"
 
 HIPSOLVER_BEGIN_NAMESPACE
+
 rocblas_operation_ hip2rocblas_operation(hipsolverOperation_t op);
 
 hipsolverOperation_t rocblas2hip_operation(rocblas_operation_ op);

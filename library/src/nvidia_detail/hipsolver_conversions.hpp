@@ -27,6 +27,7 @@
 #include "hipsolver.h"
 #include <cusolverDn.h>
 #include <cusolverRf.h>
+
 HIPSOLVER_BEGIN_NAMESPACE
 
 cublasOperation_t hip2cuda_operation(hipsolverOperation_t op);

@@ -28,6 +28,7 @@
 #include "hipsolver_conversions.hpp"
 
 HIPSOLVER_BEGIN_NAMESPACE
+
 rocblas_operation_ hip2rocblas_operation(hipsolverOperation_t op)
 {
     switch(op)
@@ -282,4 +283,5 @@ hipsolverStatus_t rocblas2hip_status(rocblas_status_ error)
         return HIPSOLVER_STATUS_UNKNOWN;
     }
 }
+
 HIPSOLVER_END_NAMESPACE
