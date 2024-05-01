@@ -11,7 +11,7 @@ Using hipSOLVER
 hipSOLVER is an open-source marshalling library for `LAPACK routines <https://www.netlib.org/lapack/explore-html/modules.html>`_ on the GPU.
 It sits between a backend library and the user application, marshalling inputs to and outputs from the backend library so that the user
 application remains unchanged when using different backends. Currently, two backend libraries are supported by hipSOLVER: NVIDIA's `cuSOLVER
-library <https://developer.nvidia.com/cusolver>`_ and AMD's open-source `rocSOLVER library <https://github.com/ROCmSoftwarePlatform/rocSOLVER>`_.
+library <https://developer.nvidia.com/cusolver>`_ and AMD's open-source `rocSOLVER library <https://github.com/ROCm/rocSOLVER>`_.
 
 The :ref:`regular hipSOLVER API <library_api>` is a thin wrapper layer around the different backends. As such, it is not expected to introduce
 significant overhead. However, its main purpose is portability, so when performance is critical directly using the library backend is recommended.
