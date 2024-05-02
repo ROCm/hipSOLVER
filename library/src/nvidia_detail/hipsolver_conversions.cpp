@@ -223,7 +223,7 @@ hipsolverAlgMode_t cuda2hip_algmode(cusolverAlgMode_t mode)
     }
 }
 
-hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
+hipsolverStatus_t hipsolver::cuda2hip_status(cusolverStatus_t cuStatus)
 {
     switch(cuStatus)
     {

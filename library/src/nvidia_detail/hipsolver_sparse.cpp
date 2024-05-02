@@ -31,10 +31,7 @@
 #include "hipsolver.h"
 #include "hipsolver_conversions.hpp"
 
-
-
 #include <cusolverSp.h>
-using namespace hipsolver;
 
 extern "C" {
 
@@ -45,11 +42,11 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return cuda2hip_status(cusolverSpCreate((cusolverSpHandle_t*)handle));
+    return hipsolver::hipsolver::cuda2hip_status(cusolverSpCreate((cusolverSpHandle_t*)handle));
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverSpDestroy(hipsolverSpHandle_t handle)
@@ -58,11 +55,11 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return cuda2hip_status(cusolverSpDestroy((cusolverSpHandle_t)handle));
+    return hipsolver::hipsolver::cuda2hip_status(cusolverSpDestroy((cusolverSpHandle_t)handle));
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverSpSetStream(hipsolverSpHandle_t handle, hipStream_t streamId)
@@ -71,11 +68,11 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return cuda2hip_status(cusolverSpSetStream((cusolverSpHandle_t)handle, (cudaStream_t)streamId));
+    return hipsolver::hipsolver::cuda2hip_status(cusolverSpSetStream((cusolverSpHandle_t)handle, (cudaStream_t)streamId));
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 /******************** CSRLSVCHOL ********************/
@@ -98,7 +95,7 @@ try
     if(!descrA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverSpScsrlsvchol((cusolverSpHandle_t)handle,
+    return hipsolver::hipsolver::cuda2hip_status(cusolverSpScsrlsvchol((cusolverSpHandle_t)handle,
                                                  n,
                                                  nnzA,
                                                  (cusparseMatDescr_t)descrA,
@@ -113,7 +110,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverSpDcsrlsvchol(hipsolverSpHandle_t       handle,
@@ -135,7 +132,7 @@ try
     if(!descrA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverSpDcsrlsvchol((cusolverSpHandle_t)handle,
+    return hipsolver::hipsolver::cuda2hip_status(cusolverSpDcsrlsvchol((cusolverSpHandle_t)handle,
                                                  n,
                                                  nnzA,
                                                  (cusparseMatDescr_t)descrA,
@@ -150,7 +147,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 /*hipsolverStatus_t hipsolverSpCcsrlsvchol(hipsolverSpHandle_t       handle,
@@ -172,7 +169,7 @@ try
     if(!descrA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverSpCcsrlsvchol((cusolverSpHandle_t)handle,
+    return hipsolver::hipsolver::cuda2hip_status(cusolverSpCcsrlsvchol((cusolverSpHandle_t)handle,
                                                  n,
                                                  nnzA,
                                                  (cusparseMatDescr_t)descrA,
@@ -187,7 +184,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverSpZcsrlsvchol(hipsolverSpHandle_t       handle,
@@ -209,7 +206,7 @@ try
     if(!descrA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverSpZcsrlsvchol((cusolverSpHandle_t)handle,
+    return hipsolver::hipsolver::cuda2hip_status(cusolverSpZcsrlsvchol((cusolverSpHandle_t)handle,
                                                  n,
                                                  nnzA,
                                                  (cusparseMatDescr_t)descrA,
@@ -224,7 +221,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }*/
 
 hipsolverStatus_t hipsolverSpScsrlsvcholHost(hipsolverSpHandle_t       handle,
@@ -246,7 +243,7 @@ try
     if(!descrA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverSpScsrlsvcholHost((cusolverSpHandle_t)handle,
+    return hipsolver::hipsolver::cuda2hip_status(cusolverSpScsrlsvcholHost((cusolverSpHandle_t)handle,
                                                      n,
                                                      nnzA,
                                                      (cusparseMatDescr_t)descrA,
@@ -261,7 +258,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverSpDcsrlsvcholHost(hipsolverSpHandle_t       handle,
@@ -283,7 +280,7 @@ try
     if(!descrA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverSpDcsrlsvcholHost((cusolverSpHandle_t)handle,
+    return hipsolver::hipsolver::cuda2hip_status(cusolverSpDcsrlsvcholHost((cusolverSpHandle_t)handle,
                                                      n,
                                                      nnzA,
                                                      (cusparseMatDescr_t)descrA,
@@ -298,7 +295,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 /*hipsolverStatus_t hipsolverSpCcsrlsvcholHost(hipsolverSpHandle_t       handle,
@@ -320,7 +317,7 @@ try
     if(!descrA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverSpCcsrlsvcholHost((cusolverSpHandle_t)handle,
+    return hipsolver::hipsolver::cuda2hip_status(cusolverSpCcsrlsvcholHost((cusolverSpHandle_t)handle,
                                                      n,
                                                      nnzA,
                                                      (cusparseMatDescr_t)descrA,
@@ -335,7 +332,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverSpZcsrlsvcholHost(hipsolverSpHandle_t       handle,
@@ -357,7 +354,7 @@ try
     if(!descrA)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverSpZcsrlsvcholHost((cusolverSpHandle_t)handle,
+    return hipsolver::hipsolver::cuda2hip_status(cusolverSpZcsrlsvcholHost((cusolverSpHandle_t)handle,
                                                      n,
                                                      nnzA,
                                                      (cusparseMatDescr_t)descrA,
@@ -372,7 +369,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }*/
 
 } //extern C

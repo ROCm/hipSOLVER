@@ -43,8 +43,6 @@
 #include <set>
 #include <vector>
 
-using namespace hipsolver;
-
 #ifdef HAVE_ROCSPARSE
 #include "cholmod.h"
 #include "rocsparse/rocsparse.h"
@@ -347,14 +345,14 @@ try
     if((status = rocblas_create_handle(&sp->handle)) != rocblas_status_success)
     {
         delete sp;
-        return rocblas2hip_status(status);
+        return hipsolver::rocblas2hip_status(status);
     }
 
     if((status = rocsolver_create_rfinfo(&sp->rfinfo, sp->handle)) != rocblas_status_success)
     {
         rocblas_destroy_handle(sp->handle);
         delete sp;
-        return rocblas2hip_status(status);
+        return hipsolver::rocblas2hip_status(status);
     }
 
     if(cholmod_start(&sp->c_handle) != TRUE)
@@ -373,7 +371,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverSpDestroy(hipsolverSpHandle_t handle)
@@ -397,7 +395,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverSpSetStream(hipsolverSpHandle_t handle, hipStream_t streamId)
@@ -408,14 +406,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
-    return rocblas2hip_status(rocblas_set_stream(sp->handle, streamId));
+    return hipsolver::rocblas2hip_status(rocblas_set_stream(sp->handle, streamId));
 #else
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
 #endif
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 /******************** CSRLSVCHOL ********************/
@@ -606,7 +604,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverSpDcsrlsvchol(hipsolverSpHandle_t       handle,
@@ -796,7 +794,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 /*hipsolverStatus_t hipsolverSpCcsrlsvchol(hipsolverSpHandle_t       handle,
@@ -817,7 +815,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverSpZcsrlsvchol(hipsolverSpHandle_t       handle,
@@ -838,7 +836,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }*/
 
 hipsolverStatus_t hipsolverSpScsrlsvcholHost(hipsolverSpHandle_t       handle,
@@ -949,7 +947,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverSpDcsrlsvcholHost(hipsolverSpHandle_t       handle,
@@ -1059,7 +1057,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 /*hipsolverStatus_t hipsolverSpCcsrlsvcholHost(hipsolverSpHandle_t       handle,
@@ -1080,7 +1078,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverSpZcsrlsvcholHost(hipsolverSpHandle_t       handle,
@@ -1101,7 +1099,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }*/
 
 } //extern C

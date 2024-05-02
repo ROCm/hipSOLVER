@@ -40,11 +40,11 @@ try
     if(!params)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverDnCreateParams((cusolverDnParams_t*)params));
+    return hipsolver::hipsolver::cuda2hip_status(cusolverDnCreateParams((cusolverDnParams_t*)params));
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDnDestroyParams(hipsolverDnParams_t params)
@@ -53,11 +53,11 @@ try
     if(!params)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverDnDestroyParams((cusolverDnParams_t)params));
+    return hipsolver::hipsolver::cuda2hip_status(cusolverDnDestroyParams((cusolverDnParams_t)params));
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDnSetAdvOptions(hipsolverDnParams_t   params,
@@ -68,12 +68,12 @@ try
     if(!params)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverDnSetAdvOptions(
-        (cusolverDnParams_t)params, hip2cuda_function(func), hip2cuda_algmode(alg)));
+    return hipsolver::hipsolver::cuda2hip_status(cusolverDnSetAdvOptions(
+        (cusolverDnParams_t)params, hipsolver::hip2cuda_function(func), hipsolver::hip2cuda_algmode(alg)));
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 } //extern C

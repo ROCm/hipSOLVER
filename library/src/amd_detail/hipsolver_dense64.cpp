@@ -40,8 +40,6 @@
 #include <iostream>
 #include <math.h>
 
-using namespace hipsolver;
-
 extern "C" {
 
 /******************** PARAMS ********************/
@@ -70,7 +68,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDnDestroyParams(hipsolverDnParams_t info)
@@ -86,7 +84,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDnSetAdvOptions(hipsolverDnParams_t   params,
@@ -98,7 +96,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 } //extern C
