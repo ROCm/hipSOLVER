@@ -40,7 +40,7 @@ try
     if(!params)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverDnCreateParams((cusolverDnParams_t*)params));
+    return hipsolver::cuda2hip_status(cusolverDnCreateParams((cusolverDnParams_t*)params));
 }
 catch(...)
 {
@@ -53,7 +53,7 @@ try
     if(!params)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverDnDestroyParams((cusolverDnParams_t)params));
+    return hipsolver::cuda2hip_status(cusolverDnDestroyParams((cusolverDnParams_t)params));
 }
 catch(...)
 {
@@ -68,7 +68,7 @@ try
     if(!params)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverDnSetAdvOptions(
+    return hipsolver::cuda2hip_status(cusolverDnSetAdvOptions(
         (cusolverDnParams_t)params, hipsolver::hip2cuda_function(func), hipsolver::hip2cuda_algmode(alg)));
 }
 catch(...)
@@ -107,7 +107,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverDnXgetrf(hipsolverDnHandle_t handle,
@@ -148,7 +148,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 /******************** GETRS ********************/
@@ -188,7 +188,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 } //extern C

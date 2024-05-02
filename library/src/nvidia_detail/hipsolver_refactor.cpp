@@ -41,7 +41,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfCreate((cusolverRfHandle_t*)handle));
+    return hipsolver::cuda2hip_status(cusolverRfCreate((cusolverRfHandle_t*)handle));
 }
 catch(...)
 {
@@ -54,7 +54,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfDestroy((cusolverRfHandle_t)handle));
+    return hipsolver::cuda2hip_status(cusolverRfDestroy((cusolverRfHandle_t)handle));
 }
 catch(...)
 {
@@ -83,7 +83,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfSetupDevice(n,
+    return hipsolver::cuda2hip_status(cusolverRfSetupDevice(n,
                                                  nnzA,
                                                  csrRowPtrA,
                                                  csrColIndA,
@@ -126,7 +126,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfSetupHost(n,
+    return hipsolver::cuda2hip_status(cusolverRfSetupHost(n,
                                                nnzA,
                                                h_csrRowPtrA,
                                                h_csrColIndA,
@@ -155,7 +155,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(
+    return hipsolver::cuda2hip_status(
         cusolverRfAccessBundledFactorsDevice((cusolverRfHandle_t)handle, nnzM, Mp, Mi, Mx));
 }
 catch(...)
@@ -169,7 +169,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfAnalyze((cusolverRfHandle_t)handle));
+    return hipsolver::cuda2hip_status(cusolverRfAnalyze((cusolverRfHandle_t)handle));
 }
 catch(...)
 {
@@ -183,7 +183,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(
+    return hipsolver::cuda2hip_status(
         cusolverRfExtractBundledFactorsHost((cusolverRfHandle_t)handle, h_nnzM, h_Mp, h_Mi, h_Mx));
 }
 catch(...)
@@ -205,7 +205,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfExtractSplitFactorsHost(
+    return hipsolver::cuda2hip_status(cusolverRfExtractSplitFactorsHost(
         (cusolverRfHandle_t)handle, h_nnzL, h_Lp, h_Li, h_Lx, h_nnzU, h_Up, h_Ui, h_Ux));
 }
 catch(...)
@@ -232,7 +232,7 @@ try
 
     *fact_alg  = hipsolver::cuda2hip_factorization(fact_algC);
     *solve_alg = hipsolver::cuda2hip_trisolve(solve_algC);
-    return hipsolver::hipsolver::cuda2hip_status(status);
+    return hipsolver::cuda2hip_status(status);
 }
 catch(...)
 {
@@ -258,7 +258,7 @@ try
 
     *format = hipsolver::cuda2hip_matrixformat(formatC);
     *diag   = hipsolver::cuda2hip_unitdiag(diagC);
-    return hipsolver::hipsolver::cuda2hip_status(status);
+    return hipsolver::cuda2hip_status(status);
 }
 catch(...)
 {
@@ -278,7 +278,7 @@ try
     cusolverStatus_t status = cusolverRfGetNumericBoostReport((cusolverRfHandle_t)handle, &reportC);
 
     *report = hipsolver::cuda2hip_boostrep(reportC);
-    return hipsolver::hipsolver::cuda2hip_status(status);
+    return hipsolver::cuda2hip_status(status);
 }
 catch(...)
 {
@@ -292,7 +292,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfGetNumericProperties((cusolverRfHandle_t)handle, zero, boost));
+    return hipsolver::cuda2hip_status(cusolverRfGetNumericProperties((cusolverRfHandle_t)handle, zero, boost));
 }
 catch(...)
 {
@@ -313,7 +313,7 @@ try
         = cusolverRfGetResetValuesFastMode((cusolverRfHandle_t)handle, &fastModeC);
 
     *fastMode = hipsolver::cuda2hip_resetvalsfm(fastModeC);
-    return hipsolver::hipsolver::cuda2hip_status(status);
+    return hipsolver::cuda2hip_status(status);
 }
 catch(...)
 {
@@ -326,7 +326,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfRefactor((cusolverRfHandle_t)handle));
+    return hipsolver::cuda2hip_status(cusolverRfRefactor((cusolverRfHandle_t)handle));
 }
 catch(...)
 {
@@ -346,7 +346,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfResetValues(
+    return hipsolver::cuda2hip_status(cusolverRfResetValues(
         n, nnzA, csrRowPtrA, csrColIndA, csrValA, P, Q, (cusolverRfHandle_t)handle));
 }
 catch(...)
@@ -362,7 +362,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfSetAlgs((cusolverRfHandle_t)handle,
+    return hipsolver::cuda2hip_status(cusolverRfSetAlgs((cusolverRfHandle_t)handle,
                                              hipsolver::hip2cuda_factorization(fact_alg),
                                              hipsolver::hip2cuda_trisolve(solve_alg)));
 }
@@ -379,7 +379,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfSetMatrixFormat(
+    return hipsolver::cuda2hip_status(cusolverRfSetMatrixFormat(
         (cusolverRfHandle_t)handle, hipsolver::hip2cuda_matrixformat(format), hipsolver::hip2cuda_unitdiag(diag)));
 }
 catch(...)
@@ -395,7 +395,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(
+    return hipsolver::cuda2hip_status(
         cusolverRfSetNumericProperties((cusolverRfHandle_t)handle, effective_zero, boost_val));
 }
 catch(...)
@@ -410,7 +410,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfSetResetValuesFastMode((cusolverRfHandle_t)handle,
+    return hipsolver::cuda2hip_status(cusolverRfSetResetValuesFastMode((cusolverRfHandle_t)handle,
                                                             hipsolver::hip2cuda_resetvalsfm(fastMode)));
 }
 catch(...)
@@ -431,7 +431,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(
+    return hipsolver::cuda2hip_status(
         cusolverRfSolve((cusolverRfHandle_t)handle, P, Q, nrhs, Temp, ldt, XF, ldxf));
 }
 catch(...)
@@ -462,7 +462,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfBatchSetupHost(batchSize,
+    return hipsolver::cuda2hip_status(cusolverRfBatchSetupHost(batchSize,
                                                     n,
                                                     nnzA,
                                                     h_csrRowPtrA,
@@ -491,7 +491,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfBatchAnalyze((cusolverRfHandle_t)handle));
+    return hipsolver::cuda2hip_status(cusolverRfBatchAnalyze((cusolverRfHandle_t)handle));
 }
 catch(...)
 {
@@ -504,7 +504,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfBatchRefactor((cusolverRfHandle_t)handle));
+    return hipsolver::cuda2hip_status(cusolverRfBatchRefactor((cusolverRfHandle_t)handle));
 }
 catch(...)
 {
@@ -525,7 +525,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfBatchResetValues(batchSize,
+    return hipsolver::cuda2hip_status(cusolverRfBatchResetValues(batchSize,
                                                       n,
                                                       nnzA,
                                                       csrRowPtrA,
@@ -553,7 +553,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(
+    return hipsolver::cuda2hip_status(
         cusolverRfBatchSolve((cusolverRfHandle_t)handle, P, Q, nrhs, Temp, ldt, XF_array, ldxf));
 }
 catch(...)
@@ -567,7 +567,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::hipsolver::cuda2hip_status(cusolverRfBatchZeroPivot((cusolverRfHandle_t)handle, position));
+    return hipsolver::cuda2hip_status(cusolverRfBatchZeroPivot((cusolverRfHandle_t)handle, position));
 }
 catch(...)
 {
