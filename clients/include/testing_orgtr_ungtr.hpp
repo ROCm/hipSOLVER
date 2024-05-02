@@ -67,8 +67,8 @@ void testing_orgtr_ungtr_bad_arg()
     // safe arguments
     hipsolver_local_handle handle;
     hipsolverFillMode_t    uplo = HIPSOLVER_FILL_MODE_UPPER;
-    int                    n    = 1;
-    int                    lda  = 1;
+    int                    n    = 2;
+    int                    lda  = 2;
 
     // memory allocation
     device_strided_batch_vector<T>   dA(1, 1, 1, 1);
@@ -104,7 +104,7 @@ void orgtr_ungtr_initData(const hipsolverHandle_t   handle,
     if(CPU)
     {
         using S          = decltype(std::real(T{}));
-        size_t         s = max(hIpiv.n(), 2);
+        size_t         s = max(hIpiv.n(), int64_t(2));
         std::vector<S> E(s - 1);
         std::vector<S> D(s);
 

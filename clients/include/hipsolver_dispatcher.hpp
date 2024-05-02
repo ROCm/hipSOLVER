@@ -27,7 +27,6 @@
 #include <map>
 #include <string>
 
-#include "testing_csrlsvchol.hpp"
 #include "testing_gebrd.hpp"
 #include "testing_gels.hpp"
 #include "testing_geqrf.hpp"
@@ -53,6 +52,10 @@
 #include "testing_sygvj_hegvj.hpp"
 #include "testing_sytrd_hetrd.hpp"
 #include "testing_sytrf.hpp"
+
+#ifdef HAVE_HIPSPARSE
+#include "testing_csrlsvchol.hpp"
+#endif
 
 struct str_less
 {
@@ -81,8 +84,10 @@ class hipsolver_dispatcher
             {"gesvda_strided_batched", testing_gesvda<API_COMPAT, false, true, T>},
             {"gesvdj", testing_gesvdj<API_NORMAL, false, false, T>},
             {"gesvdj_batched", testing_gesvdj<API_NORMAL, false, true, T>},
-            {"getrf", testing_getrf<API_NORMAL, false, false, false, T>},
-            {"getrs", testing_getrs<API_NORMAL, false, false, T>},
+            {"getrf", testing_getrf<API_NORMAL, false, false, false, T, int, int>},
+            {"getrf_64", testing_getrf<API_NORMAL, false, false, false, T, int64_t, size_t>},
+            {"getrs", testing_getrs<API_NORMAL, false, false, T, int, int>},
+            {"getrs_64", testing_getrs<API_COMPAT, false, false, T, int64_t, size_t>},
             {"potrf", testing_potrf<API_NORMAL, false, false, T>},
             {"potrf_batched", testing_potrf<API_NORMAL, true, false, T>},
             {"potri", testing_potri<API_NORMAL, false, false, T>},
@@ -120,8 +125,11 @@ class hipsolver_dispatcher
             {"sygvdx", testing_sygvdx_hegvdx<API_COMPAT, false, false, T>},
             {"sygvj", testing_sygvj_hegvj<API_NORMAL, false, false, T>},
             {"sytrd", testing_sytrd_hetrd<API_NORMAL, false, false, T>},
+
+#ifdef HAVE_HIPSPARSE
             {"csrlsvchol", testing_csrlsvchol<false, T>},
             {"csrlsvcholHost", testing_csrlsvchol<true, T>},
+#endif
         };
 
         // Grab function from the map and execute

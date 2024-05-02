@@ -76,4 +76,119 @@ catch(...)
     return hipsolver::exception2hip_status();
 }
 
+/******************** GETRF ********************/
+hipsolverStatus_t hipsolverDnXgetrf_bufferSize(hipsolverDnHandle_t handle,
+                                               hipsolverDnParams_t params,
+                                               int64_t             m,
+                                               int64_t             n,
+                                               hipDataType         dataTypeA,
+                                               const void*         A,
+                                               int64_t             lda,
+                                               hipDataType         computeType,
+                                               size_t*             lworkOnDevice,
+                                               size_t*             lworkOnHost)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return cuda2hip_status(cusolverDnXgetrf_bufferSize((cusolverDnHandle_t)handle,
+                                                       (cusolverDnParams_t)params,
+                                                       m,
+                                                       n,
+                                                       dataTypeA,
+                                                       A,
+                                                       lda,
+                                                       computeType,
+                                                       lworkOnDevice,
+                                                       lworkOnHost));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnXgetrf(hipsolverDnHandle_t handle,
+                                    hipsolverDnParams_t params,
+                                    int64_t             m,
+                                    int64_t             n,
+                                    hipDataType         dataTypeA,
+                                    void*               A,
+                                    int64_t             lda,
+                                    int64_t*            devIpiv,
+                                    hipDataType         computeType,
+                                    void*               workOnDevice,
+                                    size_t              lworkOnDevice,
+                                    void*               workOnHost,
+                                    size_t              lworkOnHost,
+                                    int*                devInfo)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return cuda2hip_status(cusolverDnXgetrf((cusolverDnHandle_t)handle,
+                                            (cusolverDnParams_t)params,
+                                            m,
+                                            n,
+                                            dataTypeA,
+                                            A,
+                                            lda,
+                                            devIpiv,
+                                            computeType,
+                                            workOnDevice,
+                                            lworkOnDevice,
+                                            workOnHost,
+                                            lworkOnHost,
+                                            devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
+/******************** GETRS ********************/
+hipsolverStatus_t hipsolverDnXgetrs(hipsolverDnHandle_t  handle,
+                                    hipsolverDnParams_t  params,
+                                    hipsolverOperation_t trans,
+                                    int64_t              n,
+                                    int64_t              nrhs,
+                                    hipDataType          dataTypeA,
+                                    const void*          A,
+                                    int64_t              lda,
+                                    const int64_t*       devIpiv,
+                                    hipDataType          dataTypeB,
+                                    void*                B,
+                                    int64_t              ldb,
+                                    int*                 devInfo)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return cuda2hip_status(cusolverDnXgetrs((cusolverDnHandle_t)handle,
+                                            (cusolverDnParams_t)params,
+                                            hip2cuda_operation(trans),
+                                            n,
+                                            nrhs,
+                                            dataTypeA,
+                                            A,
+                                            lda,
+                                            devIpiv,
+                                            dataTypeB,
+                                            B,
+                                            ldb,
+                                            devInfo));
+}
+catch(...)
+{
+    return exception2hip_status();
+}
+
 } //extern C

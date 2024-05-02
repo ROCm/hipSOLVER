@@ -29,6 +29,7 @@
 #include "lib_macros.hpp"
 #include "exceptions.hpp"
 #include "hipsolver_conversions.hpp"
+#include "utility.hpp"
 
 #include "rocblas/internal/rocblas_device_malloc.hpp"
 #include "rocblas/rocblas.h"
@@ -554,39 +555,6 @@ rocblas_status rocsolver_zgesvdx_notransv_strided_batched(rocblas_handle        
                                                           const rocblas_stride    strideF,
                                                           rocblas_int*            info,
                                                           const rocblas_int       batch_count);
-
-/******************** HELPERS ********************/
-inline rocblas_status hipsolverManageWorkspace(rocblas_handle handle, size_t new_size)
-{
-    if(new_size < 0)
-        return rocblas_status_memory_error;
-
-    size_t current_size = 0;
-    if(rocblas_is_user_managing_device_memory(handle))
-        rocblas_get_device_memory_size(handle, &current_size);
-
-    if(new_size > current_size)
-        return rocblas_set_device_memory_size(handle, new_size);
-    else
-        return rocblas_status_success;
-}
-
-inline rocblas_status
-    hipsolverZeroInfo(rocblas_handle handle, rocblas_int* devInfo, rocblas_int batch_count)
-{
-    if(!handle)
-        return rocblas_status_invalid_handle;
-    if(!devInfo)
-        return rocblas_status_invalid_pointer;
-
-    hipStream_t stream;
-    rocblas_get_stream(handle, &stream);
-
-    if(hipMemsetAsync(devInfo, 0, sizeof(rocblas_int) * batch_count, stream) == hipSuccess)
-        return rocblas_status_success;
-    else
-        return rocblas_status_internal_error;
-}
 
 /******************** AUXILIARY ********************/
 hipsolverStatus_t hipsolverCreate(hipsolverHandle_t* handle)

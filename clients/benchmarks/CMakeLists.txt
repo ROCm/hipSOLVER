@@ -53,6 +53,10 @@ target_link_libraries( hipsolver-bench PRIVATE
   roc::hipsolver
 )
 if( BUILD_WITH_SPARSE )
+  set_source_files_properties(client.cpp
+    PROPERTIES
+      COMPILE_DEFINITIONS HAVE_HIPSPARSE
+  )
   target_link_libraries( hipsolver-bench PRIVATE roc::hipsparse )
 endif( )
 if( UNIX )
@@ -60,9 +64,6 @@ if( UNIX )
 endif( )
 
 add_armor_flags( hipsolver-bench "${ARMOR_LEVEL}" )
-
-# need mf16c flag for float->half convertion
-target_compile_options( hipsolver-bench PRIVATE -mf16c)
 
 if( NOT USE_CUDA )
   target_link_libraries( hipsolver-bench PRIVATE hip::host )

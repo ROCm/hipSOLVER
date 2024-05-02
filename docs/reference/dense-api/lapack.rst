@@ -70,6 +70,8 @@ hipsolverDn<type>potrfBatched()
 
 hipsolverDn<type>getrf_bufferSize()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXgetrf_bufferSize
+   :outline:
 .. doxygenfunction:: hipsolverDnZgetrf_bufferSize
    :outline:
 .. doxygenfunction:: hipsolverDnCgetrf_bufferSize
@@ -82,6 +84,8 @@ hipsolverDn<type>getrf_bufferSize()
 
 hipsolverDn<type>getrf()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXgetrf
+   :outline:
 .. doxygenfunction:: hipsolverDnZgetrf
    :outline:
 .. doxygenfunction:: hipsolverDnCgetrf
@@ -279,6 +283,8 @@ hipsolverDn<type>potrsBatched()
 
 hipsolverDn<type>getrs()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXgetrs
+   :outline:
 .. doxygenfunction:: hipsolverDnZgetrs
    :outline:
 .. doxygenfunction:: hipsolverDnCgetrs

@@ -3,22 +3,33 @@
 Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html).
 
 
-## (Unreleased) hipSOLVER
+## hipSOLVER 2.2.0 for ROCm 6.2.0
 ### Added
 - Added compatibility-only functions
   - auxiliary
     - hipsolverDnCreateParams, hipsolverDnDestroyParams, hipsolverDnSetAdvOptions
+  - getrf
+    - hipsolverDnXgetrf_bufferSize
+    - hipsolverDnXgetrf
+  - getrs
+    - hipsolverDnXgetrs
+- Added support for building on Ubuntu 24.04.
+- Added hip::host to roc::hipsolver usage requirements.
 
-### Optimized
 ### Changed
 - The numerical factorization in csrlsvchol will now be performed on the GPU. (The symbolic factorization is still performed on the CPU.)
 - Renamed hipsolver-compat.h to hipsolver-dense.h.
 
-### Deprecated
 ### Removed
+- Removed dependency on cblas from the hipsolver test and benchmark clients.
+
+
+## hipSOLVER 2.1.1 for ROCm 6.1.1
+### Changed
+- `BUILD_WITH_SPARSE` now defaults to OFF on Windows.
+
 ### Fixed
-### Known Issues
-### Security
+- Fixed benchmark client build when `BUILD_WITH_SPARSE` is OFF.
 
 
 ## hipSOLVER 2.1.0 for ROCm 6.1.0
