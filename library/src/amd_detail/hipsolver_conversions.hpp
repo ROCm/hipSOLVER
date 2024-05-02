@@ -23,8 +23,8 @@
 
 #pragma once
 
-#include "lib_macros.hpp"
 #include "hipsolver.h"
+#include "lib_macros.hpp"
 #include "rocblas/rocblas.h"
 #include "rocsolver/rocsolver.h"
 

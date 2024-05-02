@@ -26,10 +26,10 @@
  *  calls to hipSOLVER or rocSOLVER.
  */
 
-#include "lib_macros.hpp"
 #include "exceptions.hpp"
 #include "hipsolver.h"
 #include "hipsolver_conversions.hpp"
+#include "lib_macros.hpp"
 
 #include <algorithm>
 #include <climits>

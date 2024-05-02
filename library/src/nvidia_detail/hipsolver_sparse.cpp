@@ -26,10 +26,10 @@
  *  calls to hipSOLVER or cuSOLVER.
  */
 
-#include "lib_macros.hpp"
 #include "exceptions.hpp"
 #include "hipsolver.h"
 #include "hipsolver_conversions.hpp"
+#include "lib_macros.hpp"
 
 #include <cusolverSp.h>
 
@@ -68,7 +68,8 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverSpSetStream((cusolverSpHandle_t)handle, (cudaStream_t)streamId));
+    return hipsolver::cuda2hip_status(
+        cusolverSpSetStream((cusolverSpHandle_t)handle, (cudaStream_t)streamId));
 }
 catch(...)
 {
@@ -96,17 +97,17 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverSpScsrlsvchol((cusolverSpHandle_t)handle,
-                                                 n,
-                                                 nnzA,
-                                                 (cusparseMatDescr_t)descrA,
-                                                 csrVal,
-                                                 csrRowPtr,
-                                                 csrColInd,
-                                                 b,
-                                                 tolerance,
-                                                 reorder,
-                                                 x,
-                                                 singularity));
+                                                            n,
+                                                            nnzA,
+                                                            (cusparseMatDescr_t)descrA,
+                                                            csrVal,
+                                                            csrRowPtr,
+                                                            csrColInd,
+                                                            b,
+                                                            tolerance,
+                                                            reorder,
+                                                            x,
+                                                            singularity));
 }
 catch(...)
 {
@@ -133,17 +134,17 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverSpDcsrlsvchol((cusolverSpHandle_t)handle,
-                                                 n,
-                                                 nnzA,
-                                                 (cusparseMatDescr_t)descrA,
-                                                 csrVal,
-                                                 csrRowPtr,
-                                                 csrColInd,
-                                                 b,
-                                                 tolerance,
-                                                 reorder,
-                                                 x,
-                                                 singularity));
+                                                            n,
+                                                            nnzA,
+                                                            (cusparseMatDescr_t)descrA,
+                                                            csrVal,
+                                                            csrRowPtr,
+                                                            csrColInd,
+                                                            b,
+                                                            tolerance,
+                                                            reorder,
+                                                            x,
+                                                            singularity));
 }
 catch(...)
 {
@@ -244,17 +245,17 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverSpScsrlsvcholHost((cusolverSpHandle_t)handle,
-                                                     n,
-                                                     nnzA,
-                                                     (cusparseMatDescr_t)descrA,
-                                                     csrVal,
-                                                     csrRowPtr,
-                                                     csrColInd,
-                                                     b,
-                                                     tolerance,
-                                                     reorder,
-                                                     x,
-                                                     singularity));
+                                                                n,
+                                                                nnzA,
+                                                                (cusparseMatDescr_t)descrA,
+                                                                csrVal,
+                                                                csrRowPtr,
+                                                                csrColInd,
+                                                                b,
+                                                                tolerance,
+                                                                reorder,
+                                                                x,
+                                                                singularity));
 }
 catch(...)
 {
@@ -281,17 +282,17 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverSpDcsrlsvcholHost((cusolverSpHandle_t)handle,
-                                                     n,
-                                                     nnzA,
-                                                     (cusparseMatDescr_t)descrA,
-                                                     csrVal,
-                                                     csrRowPtr,
-                                                     csrColInd,
-                                                     b,
-                                                     tolerance,
-                                                     reorder,
-                                                     x,
-                                                     singularity));
+                                                                n,
+                                                                nnzA,
+                                                                (cusparseMatDescr_t)descrA,
+                                                                csrVal,
+                                                                csrRowPtr,
+                                                                csrColInd,
+                                                                b,
+                                                                tolerance,
+                                                                reorder,
+                                                                x,
+                                                                singularity));
 }
 catch(...)
 {

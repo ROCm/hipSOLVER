@@ -45,14 +45,14 @@
 #endif
 
 #ifndef HIPSOLVER_BEGIN_NAMESPACE
-#define HIPSOLVER_BEGIN_NAMESPACE                                      \
-    namespace hipsolver                                                \
-    {                                                                  \
-    inline namespace HIPSOLVER_CONCAT4(v,                              \
-                                       hipsolverVersionMajor,        \
-                                       hipsolverVersionMinor_PADDED, \
-                                       hipsolverVersionPatch_PADDED) \
-    {
+#define HIPSOLVER_BEGIN_NAMESPACE                                        \
+    namespace hipsolver                                                  \
+    {                                                                    \
+        inline namespace HIPSOLVER_CONCAT4(v,                            \
+                                           hipsolverVersionMajor,        \
+                                           hipsolverVersionMinor_PADDED, \
+                                           hipsolverVersionPatch_PADDED) \
+        {
 #define HIPSOLVER_END_NAMESPACE \
     }                           \
     }
@@ -66,11 +66,11 @@
             return _status;                     \
     } while(0)
 
-#define CHECK_ROCBLAS_ERROR(STATUS)             \
-    do                                          \
-    {                                           \
-        rocblas_status _status = (STATUS);      \
-        if(_status != rocblas_status_success)   \
+#define CHECK_ROCBLAS_ERROR(STATUS)                        \
+    do                                                     \
+    {                                                      \
+        rocblas_status _status = (STATUS);                 \
+        if(_status != rocblas_status_success)              \
             return hipsolver::rocblas2hip_status(_status); \
     } while(0)
 

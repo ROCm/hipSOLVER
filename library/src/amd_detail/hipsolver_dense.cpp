@@ -26,8 +26,8 @@
  *  to hipSOLVER on the rocSOLVER side.
  */
 
-#include "lib_macros.hpp"
 #include "hipsolver.h"
+#include "lib_macros.hpp"
 #include <algorithm>
 #include <iostream>
 

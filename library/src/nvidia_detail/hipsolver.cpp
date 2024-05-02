@@ -25,10 +25,10 @@
  *  \brief Implementation of the hipSOLVER regular APIs on the cuSOLVER side.
  */
 
-#include "lib_macros.hpp"
 #include "hipsolver.h"
 #include "exceptions.hpp"
 #include "hipsolver_conversions.hpp"
+#include "lib_macros.hpp"
 
 #include <cusolverDn.h>
 
@@ -67,7 +67,8 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSetStream((cusolverDnHandle_t)handle, (cudaStream_t)streamId));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSetStream((cusolverDnHandle_t)handle, (cudaStream_t)streamId));
 }
 catch(...)
 {
@@ -121,7 +122,8 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return hipsolver::cuda2hip_status(cusolverDnXgesvdjSetMaxSweeps((gesvdjInfo_t)info, max_sweeps));
+    return hipsolver::cuda2hip_status(
+        cusolverDnXgesvdjSetMaxSweeps((gesvdjInfo_t)info, max_sweeps));
 }
 catch(...)
 {
@@ -344,14 +346,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCungbr_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_side(side),
-                                                       m,
-                                                       n,
-                                                       k,
-                                                       (cuComplex*)A,
-                                                       lda,
-                                                       (cuComplex*)tau,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_side(side),
+                                                                  m,
+                                                                  n,
+                                                                  k,
+                                                                  (cuComplex*)A,
+                                                                  lda,
+                                                                  (cuComplex*)tau,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -373,14 +375,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZungbr_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_side(side),
-                                                       m,
-                                                       n,
-                                                       k,
-                                                       (cuDoubleComplex*)A,
-                                                       lda,
-                                                       (cuDoubleComplex*)tau,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_side(side),
+                                                                  m,
+                                                                  n,
+                                                                  k,
+                                                                  (cuDoubleComplex*)A,
+                                                                  lda,
+                                                                  (cuDoubleComplex*)tau,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -404,16 +406,16 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSorgbr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_side(side),
-                                            m,
-                                            n,
-                                            k,
-                                            A,
-                                            lda,
-                                            tau,
-                                            work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_side(side),
+                                                       m,
+                                                       n,
+                                                       k,
+                                                       A,
+                                                       lda,
+                                                       tau,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -437,16 +439,16 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDorgbr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_side(side),
-                                            m,
-                                            n,
-                                            k,
-                                            A,
-                                            lda,
-                                            tau,
-                                            work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_side(side),
+                                                       m,
+                                                       n,
+                                                       k,
+                                                       A,
+                                                       lda,
+                                                       tau,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -470,16 +472,16 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCungbr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_side(side),
-                                            m,
-                                            n,
-                                            k,
-                                            (cuComplex*)A,
-                                            lda,
-                                            (cuComplex*)tau,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_side(side),
+                                                       m,
+                                                       n,
+                                                       k,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       (cuComplex*)tau,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -503,16 +505,16 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZungbr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_side(side),
-                                            m,
-                                            n,
-                                            k,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            (cuDoubleComplex*)tau,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_side(side),
+                                                       m,
+                                                       n,
+                                                       k,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)tau,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -585,13 +587,13 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZungqr_bufferSize((cusolverDnHandle_t)handle,
-                                                       m,
-                                                       n,
-                                                       k,
-                                                       (cuDoubleComplex*)A,
-                                                       lda,
-                                                       (cuDoubleComplex*)tau,
-                                                       lwork));
+                                                                  m,
+                                                                  n,
+                                                                  k,
+                                                                  (cuDoubleComplex*)A,
+                                                                  lda,
+                                                                  (cuDoubleComplex*)tau,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -660,15 +662,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCungqr((cusolverDnHandle_t)handle,
-                                            m,
-                                            n,
-                                            k,
-                                            (cuComplex*)A,
-                                            lda,
-                                            (cuComplex*)tau,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       m,
+                                                       n,
+                                                       k,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       (cuComplex*)tau,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -691,15 +693,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZungqr((cusolverDnHandle_t)handle,
-                                            m,
-                                            n,
-                                            k,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            (cuDoubleComplex*)tau,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       m,
+                                                       n,
+                                                       k,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)tau,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -760,12 +762,12 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCungtr_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       (cuComplex*)A,
-                                                       lda,
-                                                       (cuComplex*)tau,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuComplex*)A,
+                                                                  lda,
+                                                                  (cuComplex*)tau,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -785,12 +787,12 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZungtr_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       (cuDoubleComplex*)A,
-                                                       lda,
-                                                       (cuDoubleComplex*)tau,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuDoubleComplex*)A,
+                                                                  lda,
+                                                                  (cuDoubleComplex*)tau,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -811,8 +813,15 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSorgtr(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, A, lda, tau, work, lwork, devInfo));
+    return hipsolver::cuda2hip_status(cusolverDnSorgtr((cusolverDnHandle_t)handle,
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       tau,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -833,8 +842,15 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnDorgtr(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, A, lda, tau, work, lwork, devInfo));
+    return hipsolver::cuda2hip_status(cusolverDnDorgtr((cusolverDnHandle_t)handle,
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       tau,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -856,14 +872,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCungtr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuComplex*)A,
-                                            lda,
-                                            (cuComplex*)tau,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       (cuComplex*)tau,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -885,14 +901,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZungtr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            (cuDoubleComplex*)tau,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)tau,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -917,18 +933,19 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSormqr_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_side(side),
-                                                       hipsolver::hip2cuda_operation(trans),
-                                                       m,
-                                                       n,
-                                                       k,
-                                                       A,
-                                                       lda,
-                                                       tau,
-                                                       C,
-                                                       ldc,
-                                                       lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSormqr_bufferSize((cusolverDnHandle_t)handle,
+                                    hipsolver::hip2cuda_side(side),
+                                    hipsolver::hip2cuda_operation(trans),
+                                    m,
+                                    n,
+                                    k,
+                                    A,
+                                    lda,
+                                    tau,
+                                    C,
+                                    ldc,
+                                    lwork));
 }
 catch(...)
 {
@@ -952,18 +969,19 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnDormqr_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_side(side),
-                                                       hipsolver::hip2cuda_operation(trans),
-                                                       m,
-                                                       n,
-                                                       k,
-                                                       A,
-                                                       lda,
-                                                       tau,
-                                                       C,
-                                                       ldc,
-                                                       lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnDormqr_bufferSize((cusolverDnHandle_t)handle,
+                                    hipsolver::hip2cuda_side(side),
+                                    hipsolver::hip2cuda_operation(trans),
+                                    m,
+                                    n,
+                                    k,
+                                    A,
+                                    lda,
+                                    tau,
+                                    C,
+                                    ldc,
+                                    lwork));
 }
 catch(...)
 {
@@ -987,18 +1005,19 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnCunmqr_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_side(side),
-                                                       hipsolver::hip2cuda_operation(trans),
-                                                       m,
-                                                       n,
-                                                       k,
-                                                       (cuComplex*)A,
-                                                       lda,
-                                                       (cuComplex*)tau,
-                                                       (cuComplex*)C,
-                                                       ldc,
-                                                       lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnCunmqr_bufferSize((cusolverDnHandle_t)handle,
+                                    hipsolver::hip2cuda_side(side),
+                                    hipsolver::hip2cuda_operation(trans),
+                                    m,
+                                    n,
+                                    k,
+                                    (cuComplex*)A,
+                                    lda,
+                                    (cuComplex*)tau,
+                                    (cuComplex*)C,
+                                    ldc,
+                                    lwork));
 }
 catch(...)
 {
@@ -1022,18 +1041,19 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnZunmqr_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_side(side),
-                                                       hipsolver::hip2cuda_operation(trans),
-                                                       m,
-                                                       n,
-                                                       k,
-                                                       (cuDoubleComplex*)A,
-                                                       lda,
-                                                       (cuDoubleComplex*)tau,
-                                                       (cuDoubleComplex*)C,
-                                                       ldc,
-                                                       lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnZunmqr_bufferSize((cusolverDnHandle_t)handle,
+                                    hipsolver::hip2cuda_side(side),
+                                    hipsolver::hip2cuda_operation(trans),
+                                    m,
+                                    n,
+                                    k,
+                                    (cuDoubleComplex*)A,
+                                    lda,
+                                    (cuDoubleComplex*)tau,
+                                    (cuDoubleComplex*)C,
+                                    ldc,
+                                    lwork));
 }
 catch(...)
 {
@@ -1060,19 +1080,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSormqr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_side(side),
-                                            hipsolver::hip2cuda_operation(trans),
-                                            m,
-                                            n,
-                                            k,
-                                            A,
-                                            lda,
-                                            tau,
-                                            C,
-                                            ldc,
-                                            work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_side(side),
+                                                       hipsolver::hip2cuda_operation(trans),
+                                                       m,
+                                                       n,
+                                                       k,
+                                                       A,
+                                                       lda,
+                                                       tau,
+                                                       C,
+                                                       ldc,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -1099,19 +1119,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDormqr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_side(side),
-                                            hipsolver::hip2cuda_operation(trans),
-                                            m,
-                                            n,
-                                            k,
-                                            A,
-                                            lda,
-                                            tau,
-                                            C,
-                                            ldc,
-                                            work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_side(side),
+                                                       hipsolver::hip2cuda_operation(trans),
+                                                       m,
+                                                       n,
+                                                       k,
+                                                       A,
+                                                       lda,
+                                                       tau,
+                                                       C,
+                                                       ldc,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -1138,19 +1158,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCunmqr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_side(side),
-                                            hipsolver::hip2cuda_operation(trans),
-                                            m,
-                                            n,
-                                            k,
-                                            (cuComplex*)A,
-                                            lda,
-                                            (cuComplex*)tau,
-                                            (cuComplex*)C,
-                                            ldc,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_side(side),
+                                                       hipsolver::hip2cuda_operation(trans),
+                                                       m,
+                                                       n,
+                                                       k,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       (cuComplex*)tau,
+                                                       (cuComplex*)C,
+                                                       ldc,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -1177,19 +1197,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZunmqr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_side(side),
-                                            hipsolver::hip2cuda_operation(trans),
-                                            m,
-                                            n,
-                                            k,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            (cuDoubleComplex*)tau,
-                                            (cuDoubleComplex*)C,
-                                            ldc,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_side(side),
+                                                       hipsolver::hip2cuda_operation(trans),
+                                                       m,
+                                                       n,
+                                                       k,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)tau,
+                                                       (cuDoubleComplex*)C,
+                                                       ldc,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -1214,18 +1234,19 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSormtr_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_side(side),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       hipsolver::hip2cuda_operation(trans),
-                                                       m,
-                                                       n,
-                                                       A,
-                                                       lda,
-                                                       tau,
-                                                       C,
-                                                       ldc,
-                                                       lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSormtr_bufferSize((cusolverDnHandle_t)handle,
+                                    hipsolver::hip2cuda_side(side),
+                                    hipsolver::hip2cuda_fill(uplo),
+                                    hipsolver::hip2cuda_operation(trans),
+                                    m,
+                                    n,
+                                    A,
+                                    lda,
+                                    tau,
+                                    C,
+                                    ldc,
+                                    lwork));
 }
 catch(...)
 {
@@ -1249,18 +1270,19 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnDormtr_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_side(side),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       hipsolver::hip2cuda_operation(trans),
-                                                       m,
-                                                       n,
-                                                       A,
-                                                       lda,
-                                                       tau,
-                                                       C,
-                                                       ldc,
-                                                       lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnDormtr_bufferSize((cusolverDnHandle_t)handle,
+                                    hipsolver::hip2cuda_side(side),
+                                    hipsolver::hip2cuda_fill(uplo),
+                                    hipsolver::hip2cuda_operation(trans),
+                                    m,
+                                    n,
+                                    A,
+                                    lda,
+                                    tau,
+                                    C,
+                                    ldc,
+                                    lwork));
 }
 catch(...)
 {
@@ -1284,18 +1306,19 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnCunmtr_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_side(side),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       hipsolver::hip2cuda_operation(trans),
-                                                       m,
-                                                       n,
-                                                       (cuComplex*)A,
-                                                       lda,
-                                                       (cuComplex*)tau,
-                                                       (cuComplex*)C,
-                                                       ldc,
-                                                       lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnCunmtr_bufferSize((cusolverDnHandle_t)handle,
+                                    hipsolver::hip2cuda_side(side),
+                                    hipsolver::hip2cuda_fill(uplo),
+                                    hipsolver::hip2cuda_operation(trans),
+                                    m,
+                                    n,
+                                    (cuComplex*)A,
+                                    lda,
+                                    (cuComplex*)tau,
+                                    (cuComplex*)C,
+                                    ldc,
+                                    lwork));
 }
 catch(...)
 {
@@ -1319,18 +1342,19 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnZunmtr_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_side(side),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       hipsolver::hip2cuda_operation(trans),
-                                                       m,
-                                                       n,
-                                                       (cuDoubleComplex*)A,
-                                                       lda,
-                                                       (cuDoubleComplex*)tau,
-                                                       (cuDoubleComplex*)C,
-                                                       ldc,
-                                                       lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnZunmtr_bufferSize((cusolverDnHandle_t)handle,
+                                    hipsolver::hip2cuda_side(side),
+                                    hipsolver::hip2cuda_fill(uplo),
+                                    hipsolver::hip2cuda_operation(trans),
+                                    m,
+                                    n,
+                                    (cuDoubleComplex*)A,
+                                    lda,
+                                    (cuDoubleComplex*)tau,
+                                    (cuDoubleComplex*)C,
+                                    ldc,
+                                    lwork));
 }
 catch(...)
 {
@@ -1357,19 +1381,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSormtr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_side(side),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            hipsolver::hip2cuda_operation(trans),
-                                            m,
-                                            n,
-                                            A,
-                                            lda,
-                                            tau,
-                                            C,
-                                            ldc,
-                                            work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_side(side),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       hipsolver::hip2cuda_operation(trans),
+                                                       m,
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       tau,
+                                                       C,
+                                                       ldc,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -1396,19 +1420,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDormtr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_side(side),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            hipsolver::hip2cuda_operation(trans),
-                                            m,
-                                            n,
-                                            A,
-                                            lda,
-                                            tau,
-                                            C,
-                                            ldc,
-                                            work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_side(side),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       hipsolver::hip2cuda_operation(trans),
+                                                       m,
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       tau,
+                                                       C,
+                                                       ldc,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -1435,19 +1459,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCunmtr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_side(side),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            hipsolver::hip2cuda_operation(trans),
-                                            m,
-                                            n,
-                                            (cuComplex*)A,
-                                            lda,
-                                            (cuComplex*)tau,
-                                            (cuComplex*)C,
-                                            ldc,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_side(side),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       hipsolver::hip2cuda_operation(trans),
+                                                       m,
+                                                       n,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       (cuComplex*)tau,
+                                                       (cuComplex*)C,
+                                                       ldc,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -1474,19 +1498,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZunmtr((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_side(side),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            hipsolver::hip2cuda_operation(trans),
-                                            m,
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            (cuDoubleComplex*)tau,
-                                            (cuDoubleComplex*)C,
-                                            ldc,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_side(side),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       hipsolver::hip2cuda_operation(trans),
+                                                       m,
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)tau,
+                                                       (cuDoubleComplex*)C,
+                                                       ldc,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -1500,7 +1524,8 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSgebrd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSgebrd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
 }
 catch(...)
 {
@@ -1513,7 +1538,8 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnDgebrd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnDgebrd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
 }
 catch(...)
 {
@@ -1526,7 +1552,8 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnCgebrd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnCgebrd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
 }
 catch(...)
 {
@@ -1539,7 +1566,8 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnZgebrd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnZgebrd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
 }
 catch(...)
 {
@@ -1614,17 +1642,17 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCgebrd((cusolverDnHandle_t)handle,
-                                            m,
-                                            n,
-                                            (cuComplex*)A,
-                                            lda,
-                                            D,
-                                            E,
-                                            (cuComplex*)tauq,
-                                            (cuComplex*)taup,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       m,
+                                                       n,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       D,
+                                                       E,
+                                                       (cuComplex*)tauq,
+                                                       (cuComplex*)taup,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -1649,17 +1677,17 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZgebrd((cusolverDnHandle_t)handle,
-                                            m,
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            D,
-                                            E,
-                                            (cuDoubleComplex*)tauq,
-                                            (cuDoubleComplex*)taup,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       m,
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       D,
+                                                       E,
+                                                       (cuDoubleComplex*)tauq,
+                                                       (cuDoubleComplex*)taup,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -1732,17 +1760,17 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCCgels_bufferSize((cusolverDnHandle_t)handle,
-                                                       m,
-                                                       n,
-                                                       nrhs,
-                                                       (cuComplex*)A,
-                                                       lda,
-                                                       (cuComplex*)B,
-                                                       ldb,
-                                                       (cuComplex*)X,
-                                                       ldx,
-                                                       nullptr,
-                                                       lwork));
+                                                                  m,
+                                                                  n,
+                                                                  nrhs,
+                                                                  (cuComplex*)A,
+                                                                  lda,
+                                                                  (cuComplex*)B,
+                                                                  ldb,
+                                                                  (cuComplex*)X,
+                                                                  ldx,
+                                                                  nullptr,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -1766,17 +1794,17 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZZgels_bufferSize((cusolverDnHandle_t)handle,
-                                                       m,
-                                                       n,
-                                                       nrhs,
-                                                       (cuDoubleComplex*)A,
-                                                       lda,
-                                                       (cuDoubleComplex*)B,
-                                                       ldb,
-                                                       (cuDoubleComplex*)X,
-                                                       ldx,
-                                                       nullptr,
-                                                       lwork));
+                                                                  m,
+                                                                  n,
+                                                                  nrhs,
+                                                                  (cuDoubleComplex*)A,
+                                                                  lda,
+                                                                  (cuDoubleComplex*)B,
+                                                                  ldb,
+                                                                  (cuDoubleComplex*)X,
+                                                                  ldx,
+                                                                  nullptr,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -1803,19 +1831,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSSgels((cusolverDnHandle_t)handle,
-                                            m,
-                                            n,
-                                            nrhs,
-                                            A,
-                                            lda,
-                                            B,
-                                            ldb,
-                                            X,
-                                            ldx,
-                                            work,
-                                            lwork,
-                                            niters,
-                                            devInfo));
+                                                       m,
+                                                       n,
+                                                       nrhs,
+                                                       A,
+                                                       lda,
+                                                       B,
+                                                       ldb,
+                                                       X,
+                                                       ldx,
+                                                       work,
+                                                       lwork,
+                                                       niters,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -1842,19 +1870,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDDgels((cusolverDnHandle_t)handle,
-                                            m,
-                                            n,
-                                            nrhs,
-                                            A,
-                                            lda,
-                                            B,
-                                            ldb,
-                                            X,
-                                            ldx,
-                                            work,
-                                            lwork,
-                                            niters,
-                                            devInfo));
+                                                       m,
+                                                       n,
+                                                       nrhs,
+                                                       A,
+                                                       lda,
+                                                       B,
+                                                       ldb,
+                                                       X,
+                                                       ldx,
+                                                       work,
+                                                       lwork,
+                                                       niters,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -1881,19 +1909,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCCgels((cusolverDnHandle_t)handle,
-                                            m,
-                                            n,
-                                            nrhs,
-                                            (cuComplex*)A,
-                                            lda,
-                                            (cuComplex*)B,
-                                            ldb,
-                                            (cuComplex*)X,
-                                            ldx,
-                                            work,
-                                            lwork,
-                                            niters,
-                                            devInfo));
+                                                       m,
+                                                       n,
+                                                       nrhs,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       (cuComplex*)B,
+                                                       ldb,
+                                                       (cuComplex*)X,
+                                                       ldx,
+                                                       work,
+                                                       lwork,
+                                                       niters,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -1920,19 +1948,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZZgels((cusolverDnHandle_t)handle,
-                                            m,
-                                            n,
-                                            nrhs,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            (cuDoubleComplex*)B,
-                                            ldb,
-                                            (cuDoubleComplex*)X,
-                                            ldx,
-                                            work,
-                                            lwork,
-                                            niters,
-                                            devInfo));
+                                                       m,
+                                                       n,
+                                                       nrhs,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)B,
+                                                       ldb,
+                                                       (cuDoubleComplex*)X,
+                                                       ldx,
+                                                       work,
+                                                       lwork,
+                                                       niters,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -2059,14 +2087,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCgeqrf((cusolverDnHandle_t)handle,
-                                            m,
-                                            n,
-                                            (cuComplex*)A,
-                                            lda,
-                                            (cuComplex*)tau,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       m,
+                                                       n,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       (cuComplex*)tau,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -2088,14 +2116,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZgeqrf((cusolverDnHandle_t)handle,
-                                            m,
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            (cuDoubleComplex*)tau,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       m,
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)tau,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -2168,17 +2196,17 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCCgesv_bufferSize((cusolverDnHandle_t)handle,
-                                                       n,
-                                                       nrhs,
-                                                       (cuComplex*)A,
-                                                       lda,
-                                                       devIpiv,
-                                                       (cuComplex*)B,
-                                                       ldb,
-                                                       (cuComplex*)X,
-                                                       ldx,
-                                                       nullptr,
-                                                       lwork));
+                                                                  n,
+                                                                  nrhs,
+                                                                  (cuComplex*)A,
+                                                                  lda,
+                                                                  devIpiv,
+                                                                  (cuComplex*)B,
+                                                                  ldb,
+                                                                  (cuComplex*)X,
+                                                                  ldx,
+                                                                  nullptr,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -2202,17 +2230,17 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZZgesv_bufferSize((cusolverDnHandle_t)handle,
-                                                       n,
-                                                       nrhs,
-                                                       (cuDoubleComplex*)A,
-                                                       lda,
-                                                       devIpiv,
-                                                       (cuDoubleComplex*)B,
-                                                       ldb,
-                                                       (cuDoubleComplex*)X,
-                                                       ldx,
-                                                       nullptr,
-                                                       lwork));
+                                                                  n,
+                                                                  nrhs,
+                                                                  (cuDoubleComplex*)A,
+                                                                  lda,
+                                                                  devIpiv,
+                                                                  (cuDoubleComplex*)B,
+                                                                  ldb,
+                                                                  (cuDoubleComplex*)X,
+                                                                  ldx,
+                                                                  nullptr,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -2239,19 +2267,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSSgesv((cusolverDnHandle_t)handle,
-                                            n,
-                                            nrhs,
-                                            A,
-                                            lda,
-                                            devIpiv,
-                                            B,
-                                            ldb,
-                                            X,
-                                            ldx,
-                                            work,
-                                            lwork,
-                                            niters,
-                                            devInfo));
+                                                       n,
+                                                       nrhs,
+                                                       A,
+                                                       lda,
+                                                       devIpiv,
+                                                       B,
+                                                       ldb,
+                                                       X,
+                                                       ldx,
+                                                       work,
+                                                       lwork,
+                                                       niters,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -2278,19 +2306,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDDgesv((cusolverDnHandle_t)handle,
-                                            n,
-                                            nrhs,
-                                            A,
-                                            lda,
-                                            devIpiv,
-                                            B,
-                                            ldb,
-                                            X,
-                                            ldx,
-                                            work,
-                                            lwork,
-                                            niters,
-                                            devInfo));
+                                                       n,
+                                                       nrhs,
+                                                       A,
+                                                       lda,
+                                                       devIpiv,
+                                                       B,
+                                                       ldb,
+                                                       X,
+                                                       ldx,
+                                                       work,
+                                                       lwork,
+                                                       niters,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -2317,19 +2345,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCCgesv((cusolverDnHandle_t)handle,
-                                            n,
-                                            nrhs,
-                                            (cuComplex*)A,
-                                            lda,
-                                            devIpiv,
-                                            (cuComplex*)B,
-                                            ldb,
-                                            (cuComplex*)X,
-                                            ldx,
-                                            work,
-                                            lwork,
-                                            niters,
-                                            devInfo));
+                                                       n,
+                                                       nrhs,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       devIpiv,
+                                                       (cuComplex*)B,
+                                                       ldb,
+                                                       (cuComplex*)X,
+                                                       ldx,
+                                                       work,
+                                                       lwork,
+                                                       niters,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -2356,19 +2384,19 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZZgesv((cusolverDnHandle_t)handle,
-                                            n,
-                                            nrhs,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            devIpiv,
-                                            (cuDoubleComplex*)B,
-                                            ldb,
-                                            (cuDoubleComplex*)X,
-                                            ldx,
-                                            work,
-                                            lwork,
-                                            niters,
-                                            devInfo));
+                                                       n,
+                                                       nrhs,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       devIpiv,
+                                                       (cuDoubleComplex*)B,
+                                                       ldb,
+                                                       (cuDoubleComplex*)X,
+                                                       ldx,
+                                                       work,
+                                                       lwork,
+                                                       niters,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -2383,7 +2411,8 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSgesvd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSgesvd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
 }
 catch(...)
 {
@@ -2397,7 +2426,8 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSgesvd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSgesvd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
 }
 catch(...)
 {
@@ -2411,7 +2441,8 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSgesvd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSgesvd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
 }
 catch(...)
 {
@@ -2425,7 +2456,8 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSgesvd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSgesvd_bufferSize((cusolverDnHandle_t)handle, m, n, lwork));
 }
 catch(...)
 {
@@ -2454,21 +2486,21 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSgesvd((cusolverDnHandle_t)handle,
-                                            jobu,
-                                            jobv,
-                                            m,
-                                            n,
-                                            A,
-                                            lda,
-                                            S,
-                                            U,
-                                            ldu,
-                                            V,
-                                            ldv,
-                                            work,
-                                            lwork,
-                                            rwork,
-                                            devInfo));
+                                                       jobu,
+                                                       jobv,
+                                                       m,
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       S,
+                                                       U,
+                                                       ldu,
+                                                       V,
+                                                       ldv,
+                                                       work,
+                                                       lwork,
+                                                       rwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -2497,21 +2529,21 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDgesvd((cusolverDnHandle_t)handle,
-                                            jobu,
-                                            jobv,
-                                            m,
-                                            n,
-                                            A,
-                                            lda,
-                                            S,
-                                            U,
-                                            ldu,
-                                            V,
-                                            ldv,
-                                            work,
-                                            lwork,
-                                            rwork,
-                                            devInfo));
+                                                       jobu,
+                                                       jobv,
+                                                       m,
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       S,
+                                                       U,
+                                                       ldu,
+                                                       V,
+                                                       ldv,
+                                                       work,
+                                                       lwork,
+                                                       rwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -2540,21 +2572,21 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCgesvd((cusolverDnHandle_t)handle,
-                                            jobu,
-                                            jobv,
-                                            m,
-                                            n,
-                                            (cuComplex*)A,
-                                            lda,
-                                            S,
-                                            (cuComplex*)U,
-                                            ldu,
-                                            (cuComplex*)V,
-                                            ldv,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            rwork,
-                                            devInfo));
+                                                       jobu,
+                                                       jobv,
+                                                       m,
+                                                       n,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       S,
+                                                       (cuComplex*)U,
+                                                       ldu,
+                                                       (cuComplex*)V,
+                                                       ldv,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       rwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -2583,21 +2615,21 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZgesvd((cusolverDnHandle_t)handle,
-                                            jobu,
-                                            jobv,
-                                            m,
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            S,
-                                            (cuDoubleComplex*)U,
-                                            ldu,
-                                            (cuDoubleComplex*)V,
-                                            ldv,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            rwork,
-                                            devInfo));
+                                                       jobu,
+                                                       jobv,
+                                                       m,
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       S,
+                                                       (cuDoubleComplex*)U,
+                                                       ldu,
+                                                       (cuDoubleComplex*)V,
+                                                       ldv,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       rwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -2627,19 +2659,19 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnSgesvdj_bufferSize((cusolverDnHandle_t)handle,
-                                                        hipsolver::hip2cuda_evect(jobz),
-                                                        econ,
-                                                        m,
-                                                        n,
-                                                        A,
-                                                        lda,
-                                                        S,
-                                                        U,
-                                                        ldu,
-                                                        V,
-                                                        ldv,
-                                                        lwork,
-                                                        (gesvdjInfo_t)info));
+                                                                   hipsolver::hip2cuda_evect(jobz),
+                                                                   econ,
+                                                                   m,
+                                                                   n,
+                                                                   A,
+                                                                   lda,
+                                                                   S,
+                                                                   U,
+                                                                   ldu,
+                                                                   V,
+                                                                   ldv,
+                                                                   lwork,
+                                                                   (gesvdjInfo_t)info));
 }
 catch(...)
 {
@@ -2668,19 +2700,19 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnDgesvdj_bufferSize((cusolverDnHandle_t)handle,
-                                                        hipsolver::hip2cuda_evect(jobz),
-                                                        econ,
-                                                        m,
-                                                        n,
-                                                        A,
-                                                        lda,
-                                                        S,
-                                                        U,
-                                                        ldu,
-                                                        V,
-                                                        ldv,
-                                                        lwork,
-                                                        (gesvdjInfo_t)info));
+                                                                   hipsolver::hip2cuda_evect(jobz),
+                                                                   econ,
+                                                                   m,
+                                                                   n,
+                                                                   A,
+                                                                   lda,
+                                                                   S,
+                                                                   U,
+                                                                   ldu,
+                                                                   V,
+                                                                   ldv,
+                                                                   lwork,
+                                                                   (gesvdjInfo_t)info));
 }
 catch(...)
 {
@@ -2709,19 +2741,19 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnCgesvdj_bufferSize((cusolverDnHandle_t)handle,
-                                                        hipsolver::hip2cuda_evect(jobz),
-                                                        econ,
-                                                        m,
-                                                        n,
-                                                        (cuComplex*)A,
-                                                        lda,
-                                                        S,
-                                                        (cuComplex*)U,
-                                                        ldu,
-                                                        (cuComplex*)V,
-                                                        ldv,
-                                                        lwork,
-                                                        (gesvdjInfo_t)info));
+                                                                   hipsolver::hip2cuda_evect(jobz),
+                                                                   econ,
+                                                                   m,
+                                                                   n,
+                                                                   (cuComplex*)A,
+                                                                   lda,
+                                                                   S,
+                                                                   (cuComplex*)U,
+                                                                   ldu,
+                                                                   (cuComplex*)V,
+                                                                   ldv,
+                                                                   lwork,
+                                                                   (gesvdjInfo_t)info));
 }
 catch(...)
 {
@@ -2750,19 +2782,19 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnZgesvdj_bufferSize((cusolverDnHandle_t)handle,
-                                                        hipsolver::hip2cuda_evect(jobz),
-                                                        econ,
-                                                        m,
-                                                        n,
-                                                        (cuDoubleComplex*)A,
-                                                        lda,
-                                                        S,
-                                                        (cuDoubleComplex*)U,
-                                                        ldu,
-                                                        (cuDoubleComplex*)V,
-                                                        ldv,
-                                                        lwork,
-                                                        (gesvdjInfo_t)info));
+                                                                   hipsolver::hip2cuda_evect(jobz),
+                                                                   econ,
+                                                                   m,
+                                                                   n,
+                                                                   (cuDoubleComplex*)A,
+                                                                   lda,
+                                                                   S,
+                                                                   (cuDoubleComplex*)U,
+                                                                   ldu,
+                                                                   (cuDoubleComplex*)V,
+                                                                   ldv,
+                                                                   lwork,
+                                                                   (gesvdjInfo_t)info));
 }
 catch(...)
 {
@@ -2793,21 +2825,21 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnSgesvdj((cusolverDnHandle_t)handle,
-                                             hipsolver::hip2cuda_evect(jobz),
-                                             econ,
-                                             m,
-                                             n,
-                                             A,
-                                             lda,
-                                             S,
-                                             U,
-                                             ldu,
-                                             V,
-                                             ldv,
-                                             work,
-                                             lwork,
-                                             devInfo,
-                                             (gesvdjInfo_t)info));
+                                                        hipsolver::hip2cuda_evect(jobz),
+                                                        econ,
+                                                        m,
+                                                        n,
+                                                        A,
+                                                        lda,
+                                                        S,
+                                                        U,
+                                                        ldu,
+                                                        V,
+                                                        ldv,
+                                                        work,
+                                                        lwork,
+                                                        devInfo,
+                                                        (gesvdjInfo_t)info));
 }
 catch(...)
 {
@@ -2838,21 +2870,21 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnDgesvdj((cusolverDnHandle_t)handle,
-                                             hipsolver::hip2cuda_evect(jobz),
-                                             econ,
-                                             m,
-                                             n,
-                                             A,
-                                             lda,
-                                             S,
-                                             U,
-                                             ldu,
-                                             V,
-                                             ldv,
-                                             work,
-                                             lwork,
-                                             devInfo,
-                                             (gesvdjInfo_t)info));
+                                                        hipsolver::hip2cuda_evect(jobz),
+                                                        econ,
+                                                        m,
+                                                        n,
+                                                        A,
+                                                        lda,
+                                                        S,
+                                                        U,
+                                                        ldu,
+                                                        V,
+                                                        ldv,
+                                                        work,
+                                                        lwork,
+                                                        devInfo,
+                                                        (gesvdjInfo_t)info));
 }
 catch(...)
 {
@@ -2883,21 +2915,21 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnCgesvdj((cusolverDnHandle_t)handle,
-                                             hipsolver::hip2cuda_evect(jobz),
-                                             econ,
-                                             m,
-                                             n,
-                                             (cuComplex*)A,
-                                             lda,
-                                             S,
-                                             (cuComplex*)U,
-                                             ldu,
-                                             (cuComplex*)V,
-                                             ldv,
-                                             (cuComplex*)work,
-                                             lwork,
-                                             devInfo,
-                                             (gesvdjInfo_t)info));
+                                                        hipsolver::hip2cuda_evect(jobz),
+                                                        econ,
+                                                        m,
+                                                        n,
+                                                        (cuComplex*)A,
+                                                        lda,
+                                                        S,
+                                                        (cuComplex*)U,
+                                                        ldu,
+                                                        (cuComplex*)V,
+                                                        ldv,
+                                                        (cuComplex*)work,
+                                                        lwork,
+                                                        devInfo,
+                                                        (gesvdjInfo_t)info));
 }
 catch(...)
 {
@@ -2928,21 +2960,21 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnZgesvdj((cusolverDnHandle_t)handle,
-                                             hipsolver::hip2cuda_evect(jobz),
-                                             econ,
-                                             m,
-                                             n,
-                                             (cuDoubleComplex*)A,
-                                             lda,
-                                             S,
-                                             (cuDoubleComplex*)U,
-                                             ldu,
-                                             (cuDoubleComplex*)V,
-                                             ldv,
-                                             (cuDoubleComplex*)work,
-                                             lwork,
-                                             devInfo,
-                                             (gesvdjInfo_t)info));
+                                                        hipsolver::hip2cuda_evect(jobz),
+                                                        econ,
+                                                        m,
+                                                        n,
+                                                        (cuDoubleComplex*)A,
+                                                        lda,
+                                                        S,
+                                                        (cuDoubleComplex*)U,
+                                                        ldu,
+                                                        (cuDoubleComplex*)V,
+                                                        ldv,
+                                                        (cuDoubleComplex*)work,
+                                                        lwork,
+                                                        devInfo,
+                                                        (gesvdjInfo_t)info));
 }
 catch(...)
 {
@@ -2971,20 +3003,21 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return hipsolver::cuda2hip_status(cusolverDnSgesvdjBatched_bufferSize((cusolverDnHandle_t)handle,
-                                                               hipsolver::hip2cuda_evect(jobz),
-                                                               m,
-                                                               n,
-                                                               A,
-                                                               lda,
-                                                               S,
-                                                               U,
-                                                               ldu,
-                                                               V,
-                                                               ldv,
-                                                               lwork,
-                                                               (gesvdjInfo_t)info,
-                                                               batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSgesvdjBatched_bufferSize((cusolverDnHandle_t)handle,
+                                            hipsolver::hip2cuda_evect(jobz),
+                                            m,
+                                            n,
+                                            A,
+                                            lda,
+                                            S,
+                                            U,
+                                            ldu,
+                                            V,
+                                            ldv,
+                                            lwork,
+                                            (gesvdjInfo_t)info,
+                                            batch_count));
 }
 catch(...)
 {
@@ -3012,20 +3045,21 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return hipsolver::cuda2hip_status(cusolverDnDgesvdjBatched_bufferSize((cusolverDnHandle_t)handle,
-                                                               hipsolver::hip2cuda_evect(jobz),
-                                                               m,
-                                                               n,
-                                                               A,
-                                                               lda,
-                                                               S,
-                                                               U,
-                                                               ldu,
-                                                               V,
-                                                               ldv,
-                                                               lwork,
-                                                               (gesvdjInfo_t)info,
-                                                               batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnDgesvdjBatched_bufferSize((cusolverDnHandle_t)handle,
+                                            hipsolver::hip2cuda_evect(jobz),
+                                            m,
+                                            n,
+                                            A,
+                                            lda,
+                                            S,
+                                            U,
+                                            ldu,
+                                            V,
+                                            ldv,
+                                            lwork,
+                                            (gesvdjInfo_t)info,
+                                            batch_count));
 }
 catch(...)
 {
@@ -3053,20 +3087,21 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return hipsolver::cuda2hip_status(cusolverDnCgesvdjBatched_bufferSize((cusolverDnHandle_t)handle,
-                                                               hipsolver::hip2cuda_evect(jobz),
-                                                               m,
-                                                               n,
-                                                               (cuComplex*)A,
-                                                               lda,
-                                                               S,
-                                                               (cuComplex*)U,
-                                                               ldu,
-                                                               (cuComplex*)V,
-                                                               ldv,
-                                                               lwork,
-                                                               (gesvdjInfo_t)info,
-                                                               batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnCgesvdjBatched_bufferSize((cusolverDnHandle_t)handle,
+                                            hipsolver::hip2cuda_evect(jobz),
+                                            m,
+                                            n,
+                                            (cuComplex*)A,
+                                            lda,
+                                            S,
+                                            (cuComplex*)U,
+                                            ldu,
+                                            (cuComplex*)V,
+                                            ldv,
+                                            lwork,
+                                            (gesvdjInfo_t)info,
+                                            batch_count));
 }
 catch(...)
 {
@@ -3094,20 +3129,21 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return hipsolver::cuda2hip_status(cusolverDnZgesvdjBatched_bufferSize((cusolverDnHandle_t)handle,
-                                                               hipsolver::hip2cuda_evect(jobz),
-                                                               m,
-                                                               n,
-                                                               (cuDoubleComplex*)A,
-                                                               lda,
-                                                               S,
-                                                               (cuDoubleComplex*)U,
-                                                               ldu,
-                                                               (cuDoubleComplex*)V,
-                                                               ldv,
-                                                               lwork,
-                                                               (gesvdjInfo_t)info,
-                                                               batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnZgesvdjBatched_bufferSize((cusolverDnHandle_t)handle,
+                                            hipsolver::hip2cuda_evect(jobz),
+                                            m,
+                                            n,
+                                            (cuDoubleComplex*)A,
+                                            lda,
+                                            S,
+                                            (cuDoubleComplex*)U,
+                                            ldu,
+                                            (cuDoubleComplex*)V,
+                                            ldv,
+                                            lwork,
+                                            (gesvdjInfo_t)info,
+                                            batch_count));
 }
 catch(...)
 {
@@ -3138,21 +3174,21 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnSgesvdjBatched((cusolverDnHandle_t)handle,
-                                                    hipsolver::hip2cuda_evect(jobz),
-                                                    m,
-                                                    n,
-                                                    A,
-                                                    lda,
-                                                    S,
-                                                    U,
-                                                    ldu,
-                                                    V,
-                                                    ldv,
-                                                    work,
-                                                    lwork,
-                                                    devInfo,
-                                                    (gesvdjInfo_t)info,
-                                                    batch_count));
+                                                               hipsolver::hip2cuda_evect(jobz),
+                                                               m,
+                                                               n,
+                                                               A,
+                                                               lda,
+                                                               S,
+                                                               U,
+                                                               ldu,
+                                                               V,
+                                                               ldv,
+                                                               work,
+                                                               lwork,
+                                                               devInfo,
+                                                               (gesvdjInfo_t)info,
+                                                               batch_count));
 }
 catch(...)
 {
@@ -3183,21 +3219,21 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnDgesvdjBatched((cusolverDnHandle_t)handle,
-                                                    hipsolver::hip2cuda_evect(jobz),
-                                                    m,
-                                                    n,
-                                                    A,
-                                                    lda,
-                                                    S,
-                                                    U,
-                                                    ldu,
-                                                    V,
-                                                    ldv,
-                                                    work,
-                                                    lwork,
-                                                    devInfo,
-                                                    (gesvdjInfo_t)info,
-                                                    batch_count));
+                                                               hipsolver::hip2cuda_evect(jobz),
+                                                               m,
+                                                               n,
+                                                               A,
+                                                               lda,
+                                                               S,
+                                                               U,
+                                                               ldu,
+                                                               V,
+                                                               ldv,
+                                                               work,
+                                                               lwork,
+                                                               devInfo,
+                                                               (gesvdjInfo_t)info,
+                                                               batch_count));
 }
 catch(...)
 {
@@ -3228,21 +3264,21 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnCgesvdjBatched((cusolverDnHandle_t)handle,
-                                                    hipsolver::hip2cuda_evect(jobz),
-                                                    m,
-                                                    n,
-                                                    (cuComplex*)A,
-                                                    lda,
-                                                    S,
-                                                    (cuComplex*)U,
-                                                    ldu,
-                                                    (cuComplex*)V,
-                                                    ldv,
-                                                    (cuComplex*)work,
-                                                    lwork,
-                                                    devInfo,
-                                                    (gesvdjInfo_t)info,
-                                                    batch_count));
+                                                               hipsolver::hip2cuda_evect(jobz),
+                                                               m,
+                                                               n,
+                                                               (cuComplex*)A,
+                                                               lda,
+                                                               S,
+                                                               (cuComplex*)U,
+                                                               ldu,
+                                                               (cuComplex*)V,
+                                                               ldv,
+                                                               (cuComplex*)work,
+                                                               lwork,
+                                                               devInfo,
+                                                               (gesvdjInfo_t)info,
+                                                               batch_count));
 }
 catch(...)
 {
@@ -3273,21 +3309,21 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnZgesvdjBatched((cusolverDnHandle_t)handle,
-                                                    hipsolver::hip2cuda_evect(jobz),
-                                                    m,
-                                                    n,
-                                                    (cuDoubleComplex*)A,
-                                                    lda,
-                                                    S,
-                                                    (cuDoubleComplex*)U,
-                                                    ldu,
-                                                    (cuDoubleComplex*)V,
-                                                    ldv,
-                                                    (cuDoubleComplex*)work,
-                                                    lwork,
-                                                    devInfo,
-                                                    (gesvdjInfo_t)info,
-                                                    batch_count));
+                                                               hipsolver::hip2cuda_evect(jobz),
+                                                               m,
+                                                               n,
+                                                               (cuDoubleComplex*)A,
+                                                               lda,
+                                                               S,
+                                                               (cuDoubleComplex*)U,
+                                                               ldu,
+                                                               (cuDoubleComplex*)V,
+                                                               ldv,
+                                                               (cuDoubleComplex*)work,
+                                                               lwork,
+                                                               devInfo,
+                                                               (gesvdjInfo_t)info,
+                                                               batch_count));
 }
 catch(...)
 {
@@ -3318,24 +3354,25 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSgesvdaStridedBatched_bufferSize((cusolverDnHandle_t)handle,
-                                                                      hipsolver::hip2cuda_evect(jobz),
-                                                                      rank,
-                                                                      m,
-                                                                      n,
-                                                                      A,
-                                                                      lda,
-                                                                      strideA,
-                                                                      S,
-                                                                      strideS,
-                                                                      U,
-                                                                      ldu,
-                                                                      strideU,
-                                                                      V,
-                                                                      ldv,
-                                                                      strideV,
-                                                                      lwork,
-                                                                      batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSgesvdaStridedBatched_bufferSize((cusolverDnHandle_t)handle,
+                                                   hipsolver::hip2cuda_evect(jobz),
+                                                   rank,
+                                                   m,
+                                                   n,
+                                                   A,
+                                                   lda,
+                                                   strideA,
+                                                   S,
+                                                   strideS,
+                                                   U,
+                                                   ldu,
+                                                   strideU,
+                                                   V,
+                                                   ldv,
+                                                   strideV,
+                                                   lwork,
+                                                   batch_count));
 }
 catch(...)
 {
@@ -3365,24 +3402,25 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnDgesvdaStridedBatched_bufferSize((cusolverDnHandle_t)handle,
-                                                                      hipsolver::hip2cuda_evect(jobz),
-                                                                      rank,
-                                                                      m,
-                                                                      n,
-                                                                      A,
-                                                                      lda,
-                                                                      strideA,
-                                                                      S,
-                                                                      strideS,
-                                                                      U,
-                                                                      ldu,
-                                                                      strideU,
-                                                                      V,
-                                                                      ldv,
-                                                                      strideV,
-                                                                      lwork,
-                                                                      batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnDgesvdaStridedBatched_bufferSize((cusolverDnHandle_t)handle,
+                                                   hipsolver::hip2cuda_evect(jobz),
+                                                   rank,
+                                                   m,
+                                                   n,
+                                                   A,
+                                                   lda,
+                                                   strideA,
+                                                   S,
+                                                   strideS,
+                                                   U,
+                                                   ldu,
+                                                   strideU,
+                                                   V,
+                                                   ldv,
+                                                   strideV,
+                                                   lwork,
+                                                   batch_count));
 }
 catch(...)
 {
@@ -3412,24 +3450,25 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnCgesvdaStridedBatched_bufferSize((cusolverDnHandle_t)handle,
-                                                                      hipsolver::hip2cuda_evect(jobz),
-                                                                      rank,
-                                                                      m,
-                                                                      n,
-                                                                      (cuComplex*)A,
-                                                                      lda,
-                                                                      strideA,
-                                                                      S,
-                                                                      strideS,
-                                                                      (cuComplex*)U,
-                                                                      ldu,
-                                                                      strideU,
-                                                                      (cuComplex*)V,
-                                                                      ldv,
-                                                                      strideV,
-                                                                      lwork,
-                                                                      batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnCgesvdaStridedBatched_bufferSize((cusolverDnHandle_t)handle,
+                                                   hipsolver::hip2cuda_evect(jobz),
+                                                   rank,
+                                                   m,
+                                                   n,
+                                                   (cuComplex*)A,
+                                                   lda,
+                                                   strideA,
+                                                   S,
+                                                   strideS,
+                                                   (cuComplex*)U,
+                                                   ldu,
+                                                   strideU,
+                                                   (cuComplex*)V,
+                                                   ldv,
+                                                   strideV,
+                                                   lwork,
+                                                   batch_count));
 }
 catch(...)
 {
@@ -3459,24 +3498,25 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnZgesvdaStridedBatched_bufferSize((cusolverDnHandle_t)handle,
-                                                                      hipsolver::hip2cuda_evect(jobz),
-                                                                      rank,
-                                                                      m,
-                                                                      n,
-                                                                      (cuDoubleComplex*)A,
-                                                                      lda,
-                                                                      strideA,
-                                                                      S,
-                                                                      strideS,
-                                                                      (cuDoubleComplex*)U,
-                                                                      ldu,
-                                                                      strideU,
-                                                                      (cuDoubleComplex*)V,
-                                                                      ldv,
-                                                                      strideV,
-                                                                      lwork,
-                                                                      batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnZgesvdaStridedBatched_bufferSize((cusolverDnHandle_t)handle,
+                                                   hipsolver::hip2cuda_evect(jobz),
+                                                   rank,
+                                                   m,
+                                                   n,
+                                                   (cuDoubleComplex*)A,
+                                                   lda,
+                                                   strideA,
+                                                   S,
+                                                   strideS,
+                                                   (cuDoubleComplex*)U,
+                                                   ldu,
+                                                   strideU,
+                                                   (cuDoubleComplex*)V,
+                                                   ldv,
+                                                   strideV,
+                                                   lwork,
+                                                   batch_count));
 }
 catch(...)
 {
@@ -3509,27 +3549,28 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSgesvdaStridedBatched((cusolverDnHandle_t)handle,
-                                                           hipsolver::hip2cuda_evect(jobz),
-                                                           rank,
-                                                           m,
-                                                           n,
-                                                           A,
-                                                           lda,
-                                                           strideA,
-                                                           S,
-                                                           strideS,
-                                                           U,
-                                                           ldu,
-                                                           strideU,
-                                                           V,
-                                                           ldv,
-                                                           strideV,
-                                                           work,
-                                                           lwork,
-                                                           devInfo,
-                                                           hRnrmF,
-                                                           batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSgesvdaStridedBatched((cusolverDnHandle_t)handle,
+                                        hipsolver::hip2cuda_evect(jobz),
+                                        rank,
+                                        m,
+                                        n,
+                                        A,
+                                        lda,
+                                        strideA,
+                                        S,
+                                        strideS,
+                                        U,
+                                        ldu,
+                                        strideU,
+                                        V,
+                                        ldv,
+                                        strideV,
+                                        work,
+                                        lwork,
+                                        devInfo,
+                                        hRnrmF,
+                                        batch_count));
 }
 catch(...)
 {
@@ -3562,27 +3603,28 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnDgesvdaStridedBatched((cusolverDnHandle_t)handle,
-                                                           hipsolver::hip2cuda_evect(jobz),
-                                                           rank,
-                                                           m,
-                                                           n,
-                                                           A,
-                                                           lda,
-                                                           strideA,
-                                                           S,
-                                                           strideS,
-                                                           U,
-                                                           ldu,
-                                                           strideU,
-                                                           V,
-                                                           ldv,
-                                                           strideV,
-                                                           work,
-                                                           lwork,
-                                                           devInfo,
-                                                           hRnrmF,
-                                                           batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnDgesvdaStridedBatched((cusolverDnHandle_t)handle,
+                                        hipsolver::hip2cuda_evect(jobz),
+                                        rank,
+                                        m,
+                                        n,
+                                        A,
+                                        lda,
+                                        strideA,
+                                        S,
+                                        strideS,
+                                        U,
+                                        ldu,
+                                        strideU,
+                                        V,
+                                        ldv,
+                                        strideV,
+                                        work,
+                                        lwork,
+                                        devInfo,
+                                        hRnrmF,
+                                        batch_count));
 }
 catch(...)
 {
@@ -3615,27 +3657,28 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnCgesvdaStridedBatched((cusolverDnHandle_t)handle,
-                                                           hipsolver::hip2cuda_evect(jobz),
-                                                           rank,
-                                                           m,
-                                                           n,
-                                                           (cuComplex*)A,
-                                                           lda,
-                                                           strideA,
-                                                           S,
-                                                           strideS,
-                                                           (cuComplex*)U,
-                                                           ldu,
-                                                           strideU,
-                                                           (cuComplex*)V,
-                                                           ldv,
-                                                           strideV,
-                                                           (cuComplex*)work,
-                                                           lwork,
-                                                           devInfo,
-                                                           hRnrmF,
-                                                           batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnCgesvdaStridedBatched((cusolverDnHandle_t)handle,
+                                        hipsolver::hip2cuda_evect(jobz),
+                                        rank,
+                                        m,
+                                        n,
+                                        (cuComplex*)A,
+                                        lda,
+                                        strideA,
+                                        S,
+                                        strideS,
+                                        (cuComplex*)U,
+                                        ldu,
+                                        strideU,
+                                        (cuComplex*)V,
+                                        ldv,
+                                        strideV,
+                                        (cuComplex*)work,
+                                        lwork,
+                                        devInfo,
+                                        hRnrmF,
+                                        batch_count));
 }
 catch(...)
 {
@@ -3668,27 +3711,28 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnZgesvdaStridedBatched((cusolverDnHandle_t)handle,
-                                                           hipsolver::hip2cuda_evect(jobz),
-                                                           rank,
-                                                           m,
-                                                           n,
-                                                           (cuDoubleComplex*)A,
-                                                           lda,
-                                                           strideA,
-                                                           S,
-                                                           strideS,
-                                                           (cuDoubleComplex*)U,
-                                                           ldu,
-                                                           strideU,
-                                                           (cuDoubleComplex*)V,
-                                                           ldv,
-                                                           strideV,
-                                                           (cuDoubleComplex*)work,
-                                                           lwork,
-                                                           devInfo,
-                                                           hRnrmF,
-                                                           batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnZgesvdaStridedBatched((cusolverDnHandle_t)handle,
+                                        hipsolver::hip2cuda_evect(jobz),
+                                        rank,
+                                        m,
+                                        n,
+                                        (cuDoubleComplex*)A,
+                                        lda,
+                                        strideA,
+                                        S,
+                                        strideS,
+                                        (cuDoubleComplex*)U,
+                                        ldu,
+                                        strideU,
+                                        (cuDoubleComplex*)V,
+                                        ldv,
+                                        strideV,
+                                        (cuDoubleComplex*)work,
+                                        lwork,
+                                        devInfo,
+                                        hRnrmF,
+                                        batch_count));
 }
 catch(...)
 {
@@ -3837,13 +3881,13 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZgetrf((cusolverDnHandle_t)handle,
-                                            m,
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            (cuDoubleComplex*)work,
-                                            devIpiv,
-                                            devInfo));
+                                                       m,
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)work,
+                                                       devIpiv,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -3969,15 +4013,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSgetrs((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_operation(trans),
-                                            n,
-                                            nrhs,
-                                            A,
-                                            lda,
-                                            devIpiv,
-                                            B,
-                                            ldb,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_operation(trans),
+                                                       n,
+                                                       nrhs,
+                                                       A,
+                                                       lda,
+                                                       devIpiv,
+                                                       B,
+                                                       ldb,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4002,15 +4046,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDgetrs((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_operation(trans),
-                                            n,
-                                            nrhs,
-                                            A,
-                                            lda,
-                                            devIpiv,
-                                            B,
-                                            ldb,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_operation(trans),
+                                                       n,
+                                                       nrhs,
+                                                       A,
+                                                       lda,
+                                                       devIpiv,
+                                                       B,
+                                                       ldb,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4035,15 +4079,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCgetrs((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_operation(trans),
-                                            n,
-                                            nrhs,
-                                            (cuComplex*)A,
-                                            lda,
-                                            devIpiv,
-                                            (cuComplex*)B,
-                                            ldb,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_operation(trans),
+                                                       n,
+                                                       nrhs,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       devIpiv,
+                                                       (cuComplex*)B,
+                                                       ldb,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4068,15 +4112,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZgetrs((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_operation(trans),
-                                            n,
-                                            nrhs,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            devIpiv,
-                                            (cuDoubleComplex*)B,
-                                            ldb,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_operation(trans),
+                                                       n,
+                                                       nrhs,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       devIpiv,
+                                                       (cuDoubleComplex*)B,
+                                                       ldb,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4144,8 +4188,12 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnZpotrf_bufferSize(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, (cuDoubleComplex*)A, lda, lwork));
+    return hipsolver::cuda2hip_status(cusolverDnZpotrf_bufferSize((cusolverDnHandle_t)handle,
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuDoubleComplex*)A,
+                                                                  lda,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -4165,8 +4213,14 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSpotrf(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, A, lda, work, lwork, devInfo));
+    return hipsolver::cuda2hip_status(cusolverDnSpotrf((cusolverDnHandle_t)handle,
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4186,8 +4240,14 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnDpotrf(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, A, lda, work, lwork, devInfo));
+    return hipsolver::cuda2hip_status(cusolverDnDpotrf((cusolverDnHandle_t)handle,
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4208,13 +4268,13 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCpotrf((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuComplex*)A,
-                                            lda,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4235,13 +4295,13 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZpotrf((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4351,8 +4411,13 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSpotrfBatched(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, A, lda, devInfo, batch_count));
+    return hipsolver::cuda2hip_status(cusolverDnSpotrfBatched((cusolverDnHandle_t)handle,
+                                                              hipsolver::hip2cuda_fill(uplo),
+                                                              n,
+                                                              A,
+                                                              lda,
+                                                              devInfo,
+                                                              batch_count));
 }
 catch(...)
 {
@@ -4373,8 +4438,13 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnDpotrfBatched(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, A, lda, devInfo, batch_count));
+    return hipsolver::cuda2hip_status(cusolverDnDpotrfBatched((cusolverDnHandle_t)handle,
+                                                              hipsolver::hip2cuda_fill(uplo),
+                                                              n,
+                                                              A,
+                                                              lda,
+                                                              devInfo,
+                                                              batch_count));
 }
 catch(...)
 {
@@ -4396,12 +4466,12 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCpotrfBatched((cusolverDnHandle_t)handle,
-                                                   hipsolver::hip2cuda_fill(uplo),
-                                                   n,
-                                                   (cuComplex**)A,
-                                                   lda,
-                                                   devInfo,
-                                                   batch_count));
+                                                              hipsolver::hip2cuda_fill(uplo),
+                                                              n,
+                                                              (cuComplex**)A,
+                                                              lda,
+                                                              devInfo,
+                                                              batch_count));
 }
 catch(...)
 {
@@ -4423,12 +4493,12 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZpotrfBatched((cusolverDnHandle_t)handle,
-                                                   hipsolver::hip2cuda_fill(uplo),
-                                                   n,
-                                                   (cuDoubleComplex**)A,
-                                                   lda,
-                                                   devInfo,
-                                                   batch_count));
+                                                              hipsolver::hip2cuda_fill(uplo),
+                                                              n,
+                                                              (cuDoubleComplex**)A,
+                                                              lda,
+                                                              devInfo,
+                                                              batch_count));
 }
 catch(...)
 {
@@ -4496,8 +4566,12 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnZpotri_bufferSize(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, (cuDoubleComplex*)A, lda, lwork));
+    return hipsolver::cuda2hip_status(cusolverDnZpotri_bufferSize((cusolverDnHandle_t)handle,
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuDoubleComplex*)A,
+                                                                  lda,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -4517,8 +4591,14 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSpotri(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, A, lda, work, lwork, devInfo));
+    return hipsolver::cuda2hip_status(cusolverDnSpotri((cusolverDnHandle_t)handle,
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4538,8 +4618,14 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnDpotri(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, A, lda, work, lwork, devInfo));
+    return hipsolver::cuda2hip_status(cusolverDnDpotri((cusolverDnHandle_t)handle,
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4560,13 +4646,13 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCpotri((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuComplex*)A,
-                                            lda,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4587,13 +4673,13 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZpotri((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4713,8 +4799,15 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSpotrs(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, nrhs, A, lda, B, ldb, devInfo));
+    return hipsolver::cuda2hip_status(cusolverDnSpotrs((cusolverDnHandle_t)handle,
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       nrhs,
+                                                       A,
+                                                       lda,
+                                                       B,
+                                                       ldb,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4737,8 +4830,15 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnDpotrs(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, nrhs, A, lda, B, ldb, devInfo));
+    return hipsolver::cuda2hip_status(cusolverDnDpotrs((cusolverDnHandle_t)handle,
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       nrhs,
+                                                       A,
+                                                       lda,
+                                                       B,
+                                                       ldb,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4762,14 +4862,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCpotrs((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            nrhs,
-                                            (cuComplex*)A,
-                                            lda,
-                                            (cuComplex*)B,
-                                            ldb,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       nrhs,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       (cuComplex*)B,
+                                                       ldb,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4793,14 +4893,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZpotrs((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            nrhs,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            (cuDoubleComplex*)B,
-                                            ldb,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       nrhs,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)B,
+                                                       ldb,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -4926,15 +5026,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSpotrsBatched((cusolverDnHandle_t)handle,
-                                                   hipsolver::hip2cuda_fill(uplo),
-                                                   n,
-                                                   nrhs,
-                                                   A,
-                                                   lda,
-                                                   B,
-                                                   ldb,
-                                                   devInfo,
-                                                   batch_count));
+                                                              hipsolver::hip2cuda_fill(uplo),
+                                                              n,
+                                                              nrhs,
+                                                              A,
+                                                              lda,
+                                                              B,
+                                                              ldb,
+                                                              devInfo,
+                                                              batch_count));
 }
 catch(...)
 {
@@ -4959,15 +5059,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDpotrsBatched((cusolverDnHandle_t)handle,
-                                                   hipsolver::hip2cuda_fill(uplo),
-                                                   n,
-                                                   nrhs,
-                                                   A,
-                                                   lda,
-                                                   B,
-                                                   ldb,
-                                                   devInfo,
-                                                   batch_count));
+                                                              hipsolver::hip2cuda_fill(uplo),
+                                                              n,
+                                                              nrhs,
+                                                              A,
+                                                              lda,
+                                                              B,
+                                                              ldb,
+                                                              devInfo,
+                                                              batch_count));
 }
 catch(...)
 {
@@ -4992,15 +5092,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCpotrsBatched((cusolverDnHandle_t)handle,
-                                                   hipsolver::hip2cuda_fill(uplo),
-                                                   n,
-                                                   nrhs,
-                                                   (cuComplex**)A,
-                                                   lda,
-                                                   (cuComplex**)B,
-                                                   ldb,
-                                                   devInfo,
-                                                   batch_count));
+                                                              hipsolver::hip2cuda_fill(uplo),
+                                                              n,
+                                                              nrhs,
+                                                              (cuComplex**)A,
+                                                              lda,
+                                                              (cuComplex**)B,
+                                                              ldb,
+                                                              devInfo,
+                                                              batch_count));
 }
 catch(...)
 {
@@ -5025,15 +5125,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZpotrsBatched((cusolverDnHandle_t)handle,
-                                                   hipsolver::hip2cuda_fill(uplo),
-                                                   n,
-                                                   nrhs,
-                                                   (cuDoubleComplex**)A,
-                                                   lda,
-                                                   (cuDoubleComplex**)B,
-                                                   ldb,
-                                                   devInfo,
-                                                   batch_count));
+                                                              hipsolver::hip2cuda_fill(uplo),
+                                                              n,
+                                                              nrhs,
+                                                              (cuDoubleComplex**)A,
+                                                              lda,
+                                                              (cuDoubleComplex**)B,
+                                                              ldb,
+                                                              devInfo,
+                                                              batch_count));
 }
 catch(...)
 {
@@ -5055,13 +5155,13 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSsyevd_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       A,
-                                                       lda,
-                                                       W,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  A,
+                                                                  lda,
+                                                                  W,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -5082,13 +5182,13 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDsyevd_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       A,
-                                                       lda,
-                                                       W,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  A,
+                                                                  lda,
+                                                                  W,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -5109,13 +5209,13 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCheevd_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       (cuComplex*)A,
-                                                       lda,
-                                                       W,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuComplex*)A,
+                                                                  lda,
+                                                                  W,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -5136,13 +5236,13 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZheevd_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       (cuDoubleComplex*)A,
-                                                       lda,
-                                                       W,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuDoubleComplex*)A,
+                                                                  lda,
+                                                                  W,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -5165,15 +5265,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSsyevd((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            A,
-                                            lda,
-                                            W,
-                                            work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       W,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -5196,15 +5296,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDsyevd((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            A,
-                                            lda,
-                                            W,
-                                            work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       W,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -5227,15 +5327,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCheevd((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuComplex*)A,
-                                            lda,
-                                            W,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       W,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -5258,15 +5358,15 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZheevd((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            W,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       W,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -5293,20 +5393,21 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSsyevdx_bufferSize((cusolverDnHandle_t)handle,
-                                                        hipsolver::hip2cuda_evect(jobz),
-                                                        hipsolver::hip2cuda_erange(range),
-                                                        hipsolver::hip2cuda_fill(uplo),
-                                                        n,
-                                                        A,
-                                                        lda,
-                                                        vl,
-                                                        vu,
-                                                        il,
-                                                        iu,
-                                                        nev,
-                                                        W,
-                                                        lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSsyevdx_bufferSize((cusolverDnHandle_t)handle,
+                                     hipsolver::hip2cuda_evect(jobz),
+                                     hipsolver::hip2cuda_erange(range),
+                                     hipsolver::hip2cuda_fill(uplo),
+                                     n,
+                                     A,
+                                     lda,
+                                     vl,
+                                     vu,
+                                     il,
+                                     iu,
+                                     nev,
+                                     W,
+                                     lwork));
 }
 catch(...)
 {
@@ -5332,20 +5433,21 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnDsyevdx_bufferSize((cusolverDnHandle_t)handle,
-                                                        hipsolver::hip2cuda_evect(jobz),
-                                                        hipsolver::hip2cuda_erange(range),
-                                                        hipsolver::hip2cuda_fill(uplo),
-                                                        n,
-                                                        A,
-                                                        lda,
-                                                        vl,
-                                                        vu,
-                                                        il,
-                                                        iu,
-                                                        nev,
-                                                        W,
-                                                        lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnDsyevdx_bufferSize((cusolverDnHandle_t)handle,
+                                     hipsolver::hip2cuda_evect(jobz),
+                                     hipsolver::hip2cuda_erange(range),
+                                     hipsolver::hip2cuda_fill(uplo),
+                                     n,
+                                     A,
+                                     lda,
+                                     vl,
+                                     vu,
+                                     il,
+                                     iu,
+                                     nev,
+                                     W,
+                                     lwork));
 }
 catch(...)
 {
@@ -5371,20 +5473,21 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnCheevdx_bufferSize((cusolverDnHandle_t)handle,
-                                                        hipsolver::hip2cuda_evect(jobz),
-                                                        hipsolver::hip2cuda_erange(range),
-                                                        hipsolver::hip2cuda_fill(uplo),
-                                                        n,
-                                                        (cuComplex*)A,
-                                                        lda,
-                                                        vl,
-                                                        vu,
-                                                        il,
-                                                        iu,
-                                                        nev,
-                                                        W,
-                                                        lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnCheevdx_bufferSize((cusolverDnHandle_t)handle,
+                                     hipsolver::hip2cuda_evect(jobz),
+                                     hipsolver::hip2cuda_erange(range),
+                                     hipsolver::hip2cuda_fill(uplo),
+                                     n,
+                                     (cuComplex*)A,
+                                     lda,
+                                     vl,
+                                     vu,
+                                     il,
+                                     iu,
+                                     nev,
+                                     W,
+                                     lwork));
 }
 catch(...)
 {
@@ -5410,20 +5513,21 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnZheevdx_bufferSize((cusolverDnHandle_t)handle,
-                                                        hipsolver::hip2cuda_evect(jobz),
-                                                        hipsolver::hip2cuda_erange(range),
-                                                        hipsolver::hip2cuda_fill(uplo),
-                                                        n,
-                                                        (cuDoubleComplex*)A,
-                                                        lda,
-                                                        vl,
-                                                        vu,
-                                                        il,
-                                                        iu,
-                                                        nev,
-                                                        W,
-                                                        lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnZheevdx_bufferSize((cusolverDnHandle_t)handle,
+                                     hipsolver::hip2cuda_evect(jobz),
+                                     hipsolver::hip2cuda_erange(range),
+                                     hipsolver::hip2cuda_fill(uplo),
+                                     n,
+                                     (cuDoubleComplex*)A,
+                                     lda,
+                                     vl,
+                                     vu,
+                                     il,
+                                     iu,
+                                     nev,
+                                     W,
+                                     lwork));
 }
 catch(...)
 {
@@ -5452,21 +5556,21 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSsyevdx((cusolverDnHandle_t)handle,
-                                             hipsolver::hip2cuda_evect(jobz),
-                                             hipsolver::hip2cuda_erange(range),
-                                             hipsolver::hip2cuda_fill(uplo),
-                                             n,
-                                             A,
-                                             lda,
-                                             vl,
-                                             vu,
-                                             il,
-                                             iu,
-                                             nev,
-                                             W,
-                                             work,
-                                             lwork,
-                                             devInfo));
+                                                        hipsolver::hip2cuda_evect(jobz),
+                                                        hipsolver::hip2cuda_erange(range),
+                                                        hipsolver::hip2cuda_fill(uplo),
+                                                        n,
+                                                        A,
+                                                        lda,
+                                                        vl,
+                                                        vu,
+                                                        il,
+                                                        iu,
+                                                        nev,
+                                                        W,
+                                                        work,
+                                                        lwork,
+                                                        devInfo));
 }
 catch(...)
 {
@@ -5495,21 +5599,21 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDsyevdx((cusolverDnHandle_t)handle,
-                                             hipsolver::hip2cuda_evect(jobz),
-                                             hipsolver::hip2cuda_erange(range),
-                                             hipsolver::hip2cuda_fill(uplo),
-                                             n,
-                                             A,
-                                             lda,
-                                             vl,
-                                             vu,
-                                             il,
-                                             iu,
-                                             nev,
-                                             W,
-                                             work,
-                                             lwork,
-                                             devInfo));
+                                                        hipsolver::hip2cuda_evect(jobz),
+                                                        hipsolver::hip2cuda_erange(range),
+                                                        hipsolver::hip2cuda_fill(uplo),
+                                                        n,
+                                                        A,
+                                                        lda,
+                                                        vl,
+                                                        vu,
+                                                        il,
+                                                        iu,
+                                                        nev,
+                                                        W,
+                                                        work,
+                                                        lwork,
+                                                        devInfo));
 }
 catch(...)
 {
@@ -5538,21 +5642,21 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCheevdx((cusolverDnHandle_t)handle,
-                                             hipsolver::hip2cuda_evect(jobz),
-                                             hipsolver::hip2cuda_erange(range),
-                                             hipsolver::hip2cuda_fill(uplo),
-                                             n,
-                                             (cuComplex*)A,
-                                             lda,
-                                             vl,
-                                             vu,
-                                             il,
-                                             iu,
-                                             nev,
-                                             W,
-                                             (cuComplex*)work,
-                                             lwork,
-                                             devInfo));
+                                                        hipsolver::hip2cuda_evect(jobz),
+                                                        hipsolver::hip2cuda_erange(range),
+                                                        hipsolver::hip2cuda_fill(uplo),
+                                                        n,
+                                                        (cuComplex*)A,
+                                                        lda,
+                                                        vl,
+                                                        vu,
+                                                        il,
+                                                        iu,
+                                                        nev,
+                                                        W,
+                                                        (cuComplex*)work,
+                                                        lwork,
+                                                        devInfo));
 }
 catch(...)
 {
@@ -5581,21 +5685,21 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZheevdx((cusolverDnHandle_t)handle,
-                                             hipsolver::hip2cuda_evect(jobz),
-                                             hipsolver::hip2cuda_erange(range),
-                                             hipsolver::hip2cuda_fill(uplo),
-                                             n,
-                                             (cuDoubleComplex*)A,
-                                             lda,
-                                             vl,
-                                             vu,
-                                             il,
-                                             iu,
-                                             nev,
-                                             W,
-                                             (cuDoubleComplex*)work,
-                                             lwork,
-                                             devInfo));
+                                                        hipsolver::hip2cuda_evect(jobz),
+                                                        hipsolver::hip2cuda_erange(range),
+                                                        hipsolver::hip2cuda_fill(uplo),
+                                                        n,
+                                                        (cuDoubleComplex*)A,
+                                                        lda,
+                                                        vl,
+                                                        vu,
+                                                        il,
+                                                        iu,
+                                                        nev,
+                                                        W,
+                                                        (cuDoubleComplex*)work,
+                                                        lwork,
+                                                        devInfo));
 }
 catch(...)
 {
@@ -5620,14 +5724,14 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnSsyevj_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       A,
-                                                       lda,
-                                                       W,
-                                                       lwork,
-                                                       (syevjInfo_t)info));
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  A,
+                                                                  lda,
+                                                                  W,
+                                                                  lwork,
+                                                                  (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -5651,14 +5755,14 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnDsyevj_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       A,
-                                                       lda,
-                                                       W,
-                                                       lwork,
-                                                       (syevjInfo_t)info));
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  A,
+                                                                  lda,
+                                                                  W,
+                                                                  lwork,
+                                                                  (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -5682,14 +5786,14 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnCheevj_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       (cuComplex*)A,
-                                                       lda,
-                                                       W,
-                                                       lwork,
-                                                       (syevjInfo_t)info));
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuComplex*)A,
+                                                                  lda,
+                                                                  W,
+                                                                  lwork,
+                                                                  (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -5713,14 +5817,14 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnZheevj_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       (cuDoubleComplex*)A,
-                                                       lda,
-                                                       W,
-                                                       lwork,
-                                                       (syevjInfo_t)info));
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuDoubleComplex*)A,
+                                                                  lda,
+                                                                  W,
+                                                                  lwork,
+                                                                  (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -5746,16 +5850,16 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnSsyevj((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            A,
-                                            lda,
-                                            W,
-                                            work,
-                                            lwork,
-                                            devInfo,
-                                            (syevjInfo_t)info));
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       W,
+                                                       work,
+                                                       lwork,
+                                                       devInfo,
+                                                       (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -5781,16 +5885,16 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnDsyevj((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            A,
-                                            lda,
-                                            W,
-                                            work,
-                                            lwork,
-                                            devInfo,
-                                            (syevjInfo_t)info));
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       W,
+                                                       work,
+                                                       lwork,
+                                                       devInfo,
+                                                       (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -5816,16 +5920,16 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnCheevj((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuComplex*)A,
-                                            lda,
-                                            W,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo,
-                                            (syevjInfo_t)info));
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       W,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo,
+                                                       (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -5851,16 +5955,16 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnZheevj((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            W,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo,
-                                            (syevjInfo_t)info));
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       W,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo,
+                                                       (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -5885,16 +5989,17 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return hipsolver::cuda2hip_status(cusolverDnSsyevjBatched_bufferSize((cusolverDnHandle_t)handle,
-                                                              hipsolver::hip2cuda_evect(jobz),
-                                                              hipsolver::hip2cuda_fill(uplo),
-                                                              n,
-                                                              A,
-                                                              lda,
-                                                              W,
-                                                              lwork,
-                                                              (syevjInfo_t)info,
-                                                              batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSsyevjBatched_bufferSize((cusolverDnHandle_t)handle,
+                                           hipsolver::hip2cuda_evect(jobz),
+                                           hipsolver::hip2cuda_fill(uplo),
+                                           n,
+                                           A,
+                                           lda,
+                                           W,
+                                           lwork,
+                                           (syevjInfo_t)info,
+                                           batch_count));
 }
 catch(...)
 {
@@ -5918,16 +6023,17 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return hipsolver::cuda2hip_status(cusolverDnDsyevjBatched_bufferSize((cusolverDnHandle_t)handle,
-                                                              hipsolver::hip2cuda_evect(jobz),
-                                                              hipsolver::hip2cuda_fill(uplo),
-                                                              n,
-                                                              A,
-                                                              lda,
-                                                              W,
-                                                              lwork,
-                                                              (syevjInfo_t)info,
-                                                              batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnDsyevjBatched_bufferSize((cusolverDnHandle_t)handle,
+                                           hipsolver::hip2cuda_evect(jobz),
+                                           hipsolver::hip2cuda_fill(uplo),
+                                           n,
+                                           A,
+                                           lda,
+                                           W,
+                                           lwork,
+                                           (syevjInfo_t)info,
+                                           batch_count));
 }
 catch(...)
 {
@@ -5951,16 +6057,17 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return hipsolver::cuda2hip_status(cusolverDnCheevjBatched_bufferSize((cusolverDnHandle_t)handle,
-                                                              hipsolver::hip2cuda_evect(jobz),
-                                                              hipsolver::hip2cuda_fill(uplo),
-                                                              n,
-                                                              (cuComplex*)A,
-                                                              lda,
-                                                              W,
-                                                              lwork,
-                                                              (syevjInfo_t)info,
-                                                              batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnCheevjBatched_bufferSize((cusolverDnHandle_t)handle,
+                                           hipsolver::hip2cuda_evect(jobz),
+                                           hipsolver::hip2cuda_fill(uplo),
+                                           n,
+                                           (cuComplex*)A,
+                                           lda,
+                                           W,
+                                           lwork,
+                                           (syevjInfo_t)info,
+                                           batch_count));
 }
 catch(...)
 {
@@ -5984,16 +6091,17 @@ try
     if(!info)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return hipsolver::cuda2hip_status(cusolverDnZheevjBatched_bufferSize((cusolverDnHandle_t)handle,
-                                                              hipsolver::hip2cuda_evect(jobz),
-                                                              hipsolver::hip2cuda_fill(uplo),
-                                                              n,
-                                                              (cuDoubleComplex*)A,
-                                                              lda,
-                                                              W,
-                                                              lwork,
-                                                              (syevjInfo_t)info,
-                                                              batch_count));
+    return hipsolver::cuda2hip_status(
+        cusolverDnZheevjBatched_bufferSize((cusolverDnHandle_t)handle,
+                                           hipsolver::hip2cuda_evect(jobz),
+                                           hipsolver::hip2cuda_fill(uplo),
+                                           n,
+                                           (cuDoubleComplex*)A,
+                                           lda,
+                                           W,
+                                           lwork,
+                                           (syevjInfo_t)info,
+                                           batch_count));
 }
 catch(...)
 {
@@ -6020,17 +6128,17 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnSsyevjBatched((cusolverDnHandle_t)handle,
-                                                   hipsolver::hip2cuda_evect(jobz),
-                                                   hipsolver::hip2cuda_fill(uplo),
-                                                   n,
-                                                   A,
-                                                   lda,
-                                                   W,
-                                                   work,
-                                                   lwork,
-                                                   devInfo,
-                                                   (syevjInfo_t)info,
-                                                   batch_count));
+                                                              hipsolver::hip2cuda_evect(jobz),
+                                                              hipsolver::hip2cuda_fill(uplo),
+                                                              n,
+                                                              A,
+                                                              lda,
+                                                              W,
+                                                              work,
+                                                              lwork,
+                                                              devInfo,
+                                                              (syevjInfo_t)info,
+                                                              batch_count));
 }
 catch(...)
 {
@@ -6057,17 +6165,17 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnDsyevjBatched((cusolverDnHandle_t)handle,
-                                                   hipsolver::hip2cuda_evect(jobz),
-                                                   hipsolver::hip2cuda_fill(uplo),
-                                                   n,
-                                                   A,
-                                                   lda,
-                                                   W,
-                                                   work,
-                                                   lwork,
-                                                   devInfo,
-                                                   (syevjInfo_t)info,
-                                                   batch_count));
+                                                              hipsolver::hip2cuda_evect(jobz),
+                                                              hipsolver::hip2cuda_fill(uplo),
+                                                              n,
+                                                              A,
+                                                              lda,
+                                                              W,
+                                                              work,
+                                                              lwork,
+                                                              devInfo,
+                                                              (syevjInfo_t)info,
+                                                              batch_count));
 }
 catch(...)
 {
@@ -6094,17 +6202,17 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnCheevjBatched((cusolverDnHandle_t)handle,
-                                                   hipsolver::hip2cuda_evect(jobz),
-                                                   hipsolver::hip2cuda_fill(uplo),
-                                                   n,
-                                                   (cuComplex*)A,
-                                                   lda,
-                                                   W,
-                                                   (cuComplex*)work,
-                                                   lwork,
-                                                   devInfo,
-                                                   (syevjInfo_t)info,
-                                                   batch_count));
+                                                              hipsolver::hip2cuda_evect(jobz),
+                                                              hipsolver::hip2cuda_fill(uplo),
+                                                              n,
+                                                              (cuComplex*)A,
+                                                              lda,
+                                                              W,
+                                                              (cuComplex*)work,
+                                                              lwork,
+                                                              devInfo,
+                                                              (syevjInfo_t)info,
+                                                              batch_count));
 }
 catch(...)
 {
@@ -6131,17 +6239,17 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnZheevjBatched((cusolverDnHandle_t)handle,
-                                                   hipsolver::hip2cuda_evect(jobz),
-                                                   hipsolver::hip2cuda_fill(uplo),
-                                                   n,
-                                                   (cuDoubleComplex*)A,
-                                                   lda,
-                                                   W,
-                                                   (cuDoubleComplex*)work,
-                                                   lwork,
-                                                   devInfo,
-                                                   (syevjInfo_t)info,
-                                                   batch_count));
+                                                              hipsolver::hip2cuda_evect(jobz),
+                                                              hipsolver::hip2cuda_fill(uplo),
+                                                              n,
+                                                              (cuDoubleComplex*)A,
+                                                              lda,
+                                                              W,
+                                                              (cuDoubleComplex*)work,
+                                                              lwork,
+                                                              devInfo,
+                                                              (syevjInfo_t)info,
+                                                              batch_count));
 }
 catch(...)
 {
@@ -6166,16 +6274,16 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSsygvd_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_eform(itype),
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       A,
-                                                       lda,
-                                                       B,
-                                                       ldb,
-                                                       W,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_eform(itype),
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  A,
+                                                                  lda,
+                                                                  B,
+                                                                  ldb,
+                                                                  W,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -6199,16 +6307,16 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDsygvd_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_eform(itype),
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       A,
-                                                       lda,
-                                                       B,
-                                                       ldb,
-                                                       W,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_eform(itype),
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  A,
+                                                                  lda,
+                                                                  B,
+                                                                  ldb,
+                                                                  W,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -6232,16 +6340,16 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnChegvd_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_eform(itype),
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       (cuComplex*)A,
-                                                       lda,
-                                                       (cuComplex*)B,
-                                                       ldb,
-                                                       W,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_eform(itype),
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuComplex*)A,
+                                                                  lda,
+                                                                  (cuComplex*)B,
+                                                                  ldb,
+                                                                  W,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -6265,16 +6373,16 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZhegvd_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_eform(itype),
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       (cuDoubleComplex*)A,
-                                                       lda,
-                                                       (cuDoubleComplex*)B,
-                                                       ldb,
-                                                       W,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_eform(itype),
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuDoubleComplex*)A,
+                                                                  lda,
+                                                                  (cuDoubleComplex*)B,
+                                                                  ldb,
+                                                                  W,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -6300,18 +6408,18 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSsygvd((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_eform(itype),
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            A,
-                                            lda,
-                                            B,
-                                            ldb,
-                                            W,
-                                            work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_eform(itype),
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       B,
+                                                       ldb,
+                                                       W,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -6337,18 +6445,18 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDsygvd((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_eform(itype),
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            A,
-                                            lda,
-                                            B,
-                                            ldb,
-                                            W,
-                                            work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_eform(itype),
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       B,
+                                                       ldb,
+                                                       W,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -6374,18 +6482,18 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnChegvd((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_eform(itype),
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuComplex*)A,
-                                            lda,
-                                            (cuComplex*)B,
-                                            ldb,
-                                            W,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_eform(itype),
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       (cuComplex*)B,
+                                                       ldb,
+                                                       W,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -6411,18 +6519,18 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZhegvd((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_eform(itype),
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            (cuDoubleComplex*)B,
-                                            ldb,
-                                            W,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_eform(itype),
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)B,
+                                                       ldb,
+                                                       W,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -6452,23 +6560,24 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSsygvdx_bufferSize((cusolverDnHandle_t)handle,
-                                                        hipsolver::hip2cuda_eform(itype),
-                                                        hipsolver::hip2cuda_evect(jobz),
-                                                        hipsolver::hip2cuda_erange(range),
-                                                        hipsolver::hip2cuda_fill(uplo),
-                                                        n,
-                                                        A,
-                                                        lda,
-                                                        B,
-                                                        ldb,
-                                                        vl,
-                                                        vu,
-                                                        il,
-                                                        iu,
-                                                        nev,
-                                                        W,
-                                                        lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnSsygvdx_bufferSize((cusolverDnHandle_t)handle,
+                                     hipsolver::hip2cuda_eform(itype),
+                                     hipsolver::hip2cuda_evect(jobz),
+                                     hipsolver::hip2cuda_erange(range),
+                                     hipsolver::hip2cuda_fill(uplo),
+                                     n,
+                                     A,
+                                     lda,
+                                     B,
+                                     ldb,
+                                     vl,
+                                     vu,
+                                     il,
+                                     iu,
+                                     nev,
+                                     W,
+                                     lwork));
 }
 catch(...)
 {
@@ -6497,23 +6606,24 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnDsygvdx_bufferSize((cusolverDnHandle_t)handle,
-                                                        hipsolver::hip2cuda_eform(itype),
-                                                        hipsolver::hip2cuda_evect(jobz),
-                                                        hipsolver::hip2cuda_erange(range),
-                                                        hipsolver::hip2cuda_fill(uplo),
-                                                        n,
-                                                        A,
-                                                        lda,
-                                                        B,
-                                                        ldb,
-                                                        vl,
-                                                        vu,
-                                                        il,
-                                                        iu,
-                                                        nev,
-                                                        W,
-                                                        lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnDsygvdx_bufferSize((cusolverDnHandle_t)handle,
+                                     hipsolver::hip2cuda_eform(itype),
+                                     hipsolver::hip2cuda_evect(jobz),
+                                     hipsolver::hip2cuda_erange(range),
+                                     hipsolver::hip2cuda_fill(uplo),
+                                     n,
+                                     A,
+                                     lda,
+                                     B,
+                                     ldb,
+                                     vl,
+                                     vu,
+                                     il,
+                                     iu,
+                                     nev,
+                                     W,
+                                     lwork));
 }
 catch(...)
 {
@@ -6542,23 +6652,24 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnChegvdx_bufferSize((cusolverDnHandle_t)handle,
-                                                        hipsolver::hip2cuda_eform(itype),
-                                                        hipsolver::hip2cuda_evect(jobz),
-                                                        hipsolver::hip2cuda_erange(range),
-                                                        hipsolver::hip2cuda_fill(uplo),
-                                                        n,
-                                                        (cuComplex*)A,
-                                                        lda,
-                                                        (cuComplex*)B,
-                                                        ldb,
-                                                        vl,
-                                                        vu,
-                                                        il,
-                                                        iu,
-                                                        nev,
-                                                        W,
-                                                        lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnChegvdx_bufferSize((cusolverDnHandle_t)handle,
+                                     hipsolver::hip2cuda_eform(itype),
+                                     hipsolver::hip2cuda_evect(jobz),
+                                     hipsolver::hip2cuda_erange(range),
+                                     hipsolver::hip2cuda_fill(uplo),
+                                     n,
+                                     (cuComplex*)A,
+                                     lda,
+                                     (cuComplex*)B,
+                                     ldb,
+                                     vl,
+                                     vu,
+                                     il,
+                                     iu,
+                                     nev,
+                                     W,
+                                     lwork));
 }
 catch(...)
 {
@@ -6587,23 +6698,24 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnZhegvdx_bufferSize((cusolverDnHandle_t)handle,
-                                                        hipsolver::hip2cuda_eform(itype),
-                                                        hipsolver::hip2cuda_evect(jobz),
-                                                        hipsolver::hip2cuda_erange(range),
-                                                        hipsolver::hip2cuda_fill(uplo),
-                                                        n,
-                                                        (cuDoubleComplex*)A,
-                                                        lda,
-                                                        (cuDoubleComplex*)B,
-                                                        ldb,
-                                                        vl,
-                                                        vu,
-                                                        il,
-                                                        iu,
-                                                        nev,
-                                                        W,
-                                                        lwork));
+    return hipsolver::cuda2hip_status(
+        cusolverDnZhegvdx_bufferSize((cusolverDnHandle_t)handle,
+                                     hipsolver::hip2cuda_eform(itype),
+                                     hipsolver::hip2cuda_evect(jobz),
+                                     hipsolver::hip2cuda_erange(range),
+                                     hipsolver::hip2cuda_fill(uplo),
+                                     n,
+                                     (cuDoubleComplex*)A,
+                                     lda,
+                                     (cuDoubleComplex*)B,
+                                     ldb,
+                                     vl,
+                                     vu,
+                                     il,
+                                     iu,
+                                     nev,
+                                     W,
+                                     lwork));
 }
 catch(...)
 {
@@ -6635,24 +6747,24 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSsygvdx((cusolverDnHandle_t)handle,
-                                             hipsolver::hip2cuda_eform(itype),
-                                             hipsolver::hip2cuda_evect(jobz),
-                                             hipsolver::hip2cuda_erange(range),
-                                             hipsolver::hip2cuda_fill(uplo),
-                                             n,
-                                             A,
-                                             lda,
-                                             B,
-                                             ldb,
-                                             vl,
-                                             vu,
-                                             il,
-                                             iu,
-                                             nev,
-                                             W,
-                                             work,
-                                             lwork,
-                                             devInfo));
+                                                        hipsolver::hip2cuda_eform(itype),
+                                                        hipsolver::hip2cuda_evect(jobz),
+                                                        hipsolver::hip2cuda_erange(range),
+                                                        hipsolver::hip2cuda_fill(uplo),
+                                                        n,
+                                                        A,
+                                                        lda,
+                                                        B,
+                                                        ldb,
+                                                        vl,
+                                                        vu,
+                                                        il,
+                                                        iu,
+                                                        nev,
+                                                        W,
+                                                        work,
+                                                        lwork,
+                                                        devInfo));
 }
 catch(...)
 {
@@ -6684,24 +6796,24 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDsygvdx((cusolverDnHandle_t)handle,
-                                             hipsolver::hip2cuda_eform(itype),
-                                             hipsolver::hip2cuda_evect(jobz),
-                                             hipsolver::hip2cuda_erange(range),
-                                             hipsolver::hip2cuda_fill(uplo),
-                                             n,
-                                             A,
-                                             lda,
-                                             B,
-                                             ldb,
-                                             vl,
-                                             vu,
-                                             il,
-                                             iu,
-                                             nev,
-                                             W,
-                                             work,
-                                             lwork,
-                                             devInfo));
+                                                        hipsolver::hip2cuda_eform(itype),
+                                                        hipsolver::hip2cuda_evect(jobz),
+                                                        hipsolver::hip2cuda_erange(range),
+                                                        hipsolver::hip2cuda_fill(uplo),
+                                                        n,
+                                                        A,
+                                                        lda,
+                                                        B,
+                                                        ldb,
+                                                        vl,
+                                                        vu,
+                                                        il,
+                                                        iu,
+                                                        nev,
+                                                        W,
+                                                        work,
+                                                        lwork,
+                                                        devInfo));
 }
 catch(...)
 {
@@ -6733,24 +6845,24 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnChegvdx((cusolverDnHandle_t)handle,
-                                             hipsolver::hip2cuda_eform(itype),
-                                             hipsolver::hip2cuda_evect(jobz),
-                                             hipsolver::hip2cuda_erange(range),
-                                             hipsolver::hip2cuda_fill(uplo),
-                                             n,
-                                             (cuComplex*)A,
-                                             lda,
-                                             (cuComplex*)B,
-                                             ldb,
-                                             vl,
-                                             vu,
-                                             il,
-                                             iu,
-                                             nev,
-                                             W,
-                                             (cuComplex*)work,
-                                             lwork,
-                                             devInfo));
+                                                        hipsolver::hip2cuda_eform(itype),
+                                                        hipsolver::hip2cuda_evect(jobz),
+                                                        hipsolver::hip2cuda_erange(range),
+                                                        hipsolver::hip2cuda_fill(uplo),
+                                                        n,
+                                                        (cuComplex*)A,
+                                                        lda,
+                                                        (cuComplex*)B,
+                                                        ldb,
+                                                        vl,
+                                                        vu,
+                                                        il,
+                                                        iu,
+                                                        nev,
+                                                        W,
+                                                        (cuComplex*)work,
+                                                        lwork,
+                                                        devInfo));
 }
 catch(...)
 {
@@ -6782,24 +6894,24 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZhegvdx((cusolverDnHandle_t)handle,
-                                             hipsolver::hip2cuda_eform(itype),
-                                             hipsolver::hip2cuda_evect(jobz),
-                                             hipsolver::hip2cuda_erange(range),
-                                             hipsolver::hip2cuda_fill(uplo),
-                                             n,
-                                             (cuDoubleComplex*)A,
-                                             lda,
-                                             (cuDoubleComplex*)B,
-                                             ldb,
-                                             vl,
-                                             vu,
-                                             il,
-                                             iu,
-                                             nev,
-                                             W,
-                                             (cuDoubleComplex*)work,
-                                             lwork,
-                                             devInfo));
+                                                        hipsolver::hip2cuda_eform(itype),
+                                                        hipsolver::hip2cuda_evect(jobz),
+                                                        hipsolver::hip2cuda_erange(range),
+                                                        hipsolver::hip2cuda_fill(uplo),
+                                                        n,
+                                                        (cuDoubleComplex*)A,
+                                                        lda,
+                                                        (cuDoubleComplex*)B,
+                                                        ldb,
+                                                        vl,
+                                                        vu,
+                                                        il,
+                                                        iu,
+                                                        nev,
+                                                        W,
+                                                        (cuDoubleComplex*)work,
+                                                        lwork,
+                                                        devInfo));
 }
 catch(...)
 {
@@ -6827,17 +6939,17 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnSsygvj_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_eform(itype),
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       A,
-                                                       lda,
-                                                       B,
-                                                       ldb,
-                                                       W,
-                                                       lwork,
-                                                       (syevjInfo_t)info));
+                                                                  hipsolver::hip2cuda_eform(itype),
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  A,
+                                                                  lda,
+                                                                  B,
+                                                                  ldb,
+                                                                  W,
+                                                                  lwork,
+                                                                  (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -6864,17 +6976,17 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnDsygvj_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_eform(itype),
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       A,
-                                                       lda,
-                                                       B,
-                                                       ldb,
-                                                       W,
-                                                       lwork,
-                                                       (syevjInfo_t)info));
+                                                                  hipsolver::hip2cuda_eform(itype),
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  A,
+                                                                  lda,
+                                                                  B,
+                                                                  ldb,
+                                                                  W,
+                                                                  lwork,
+                                                                  (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -6901,17 +7013,17 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnChegvj_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_eform(itype),
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       (cuComplex*)A,
-                                                       lda,
-                                                       (cuComplex*)B,
-                                                       ldb,
-                                                       W,
-                                                       lwork,
-                                                       (syevjInfo_t)info));
+                                                                  hipsolver::hip2cuda_eform(itype),
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuComplex*)A,
+                                                                  lda,
+                                                                  (cuComplex*)B,
+                                                                  ldb,
+                                                                  W,
+                                                                  lwork,
+                                                                  (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -6938,17 +7050,17 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnZhegvj_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_eform(itype),
-                                                       hipsolver::hip2cuda_evect(jobz),
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       (cuDoubleComplex*)A,
-                                                       lda,
-                                                       (cuDoubleComplex*)B,
-                                                       ldb,
-                                                       W,
-                                                       lwork,
-                                                       (syevjInfo_t)info));
+                                                                  hipsolver::hip2cuda_eform(itype),
+                                                                  hipsolver::hip2cuda_evect(jobz),
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuDoubleComplex*)A,
+                                                                  lda,
+                                                                  (cuDoubleComplex*)B,
+                                                                  ldb,
+                                                                  W,
+                                                                  lwork,
+                                                                  (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -6977,19 +7089,19 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnSsygvj((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_eform(itype),
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            A,
-                                            lda,
-                                            B,
-                                            ldb,
-                                            W,
-                                            work,
-                                            lwork,
-                                            devInfo,
-                                            (syevjInfo_t)info));
+                                                       hipsolver::hip2cuda_eform(itype),
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       B,
+                                                       ldb,
+                                                       W,
+                                                       work,
+                                                       lwork,
+                                                       devInfo,
+                                                       (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -7018,19 +7130,19 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnDsygvj((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_eform(itype),
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            A,
-                                            lda,
-                                            B,
-                                            ldb,
-                                            W,
-                                            work,
-                                            lwork,
-                                            devInfo,
-                                            (syevjInfo_t)info));
+                                                       hipsolver::hip2cuda_eform(itype),
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       B,
+                                                       ldb,
+                                                       W,
+                                                       work,
+                                                       lwork,
+                                                       devInfo,
+                                                       (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -7059,19 +7171,19 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnChegvj((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_eform(itype),
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuComplex*)A,
-                                            lda,
-                                            (cuComplex*)B,
-                                            ldb,
-                                            W,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo,
-                                            (syevjInfo_t)info));
+                                                       hipsolver::hip2cuda_eform(itype),
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       (cuComplex*)B,
+                                                       ldb,
+                                                       W,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo,
+                                                       (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -7100,19 +7212,19 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnZhegvj((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_eform(itype),
-                                            hipsolver::hip2cuda_evect(jobz),
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            (cuDoubleComplex*)B,
-                                            ldb,
-                                            W,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo,
-                                            (syevjInfo_t)info));
+                                                       hipsolver::hip2cuda_eform(itype),
+                                                       hipsolver::hip2cuda_evect(jobz),
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       (cuDoubleComplex*)B,
+                                                       ldb,
+                                                       W,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo,
+                                                       (syevjInfo_t)info));
 }
 catch(...)
 {
@@ -7179,14 +7291,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnChetrd_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       (cuComplex*)A,
-                                                       lda,
-                                                       D,
-                                                       E,
-                                                       (cuComplex*)tau,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuComplex*)A,
+                                                                  lda,
+                                                                  D,
+                                                                  E,
+                                                                  (cuComplex*)tau,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -7208,14 +7320,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZhetrd_bufferSize((cusolverDnHandle_t)handle,
-                                                       hipsolver::hip2cuda_fill(uplo),
-                                                       n,
-                                                       (cuDoubleComplex*)A,
-                                                       lda,
-                                                       D,
-                                                       E,
-                                                       (cuDoubleComplex*)tau,
-                                                       lwork));
+                                                                  hipsolver::hip2cuda_fill(uplo),
+                                                                  n,
+                                                                  (cuDoubleComplex*)A,
+                                                                  lda,
+                                                                  D,
+                                                                  E,
+                                                                  (cuDoubleComplex*)tau,
+                                                                  lwork));
 }
 catch(...)
 {
@@ -7239,16 +7351,16 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnSsytrd((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            A,
-                                            lda,
-                                            D,
-                                            E,
-                                            tau,
-                                            work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       D,
+                                                       E,
+                                                       tau,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -7272,16 +7384,16 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnDsytrd((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            A,
-                                            lda,
-                                            D,
-                                            E,
-                                            tau,
-                                            work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       D,
+                                                       E,
+                                                       tau,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -7305,16 +7417,16 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnChetrd((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuComplex*)A,
-                                            lda,
-                                            D,
-                                            E,
-                                            (cuComplex*)tau,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       D,
+                                                       E,
+                                                       (cuComplex*)tau,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -7338,16 +7450,16 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZhetrd((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            D,
-                                            E,
-                                            (cuDoubleComplex*)tau,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       D,
+                                                       E,
+                                                       (cuDoubleComplex*)tau,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -7429,8 +7541,15 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnSsytrf(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, A, lda, ipiv, work, lwork, devInfo));
+    return hipsolver::cuda2hip_status(cusolverDnSsytrf((cusolverDnHandle_t)handle,
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       ipiv,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -7451,8 +7570,15 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverDnDsytrf(
-        (cusolverDnHandle_t)handle, hipsolver::hip2cuda_fill(uplo), n, A, lda, ipiv, work, lwork, devInfo));
+    return hipsolver::cuda2hip_status(cusolverDnDsytrf((cusolverDnHandle_t)handle,
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       A,
+                                                       lda,
+                                                       ipiv,
+                                                       work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -7474,14 +7600,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnCsytrf((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuComplex*)A,
-                                            lda,
-                                            ipiv,
-                                            (cuComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuComplex*)A,
+                                                       lda,
+                                                       ipiv,
+                                                       (cuComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -7503,14 +7629,14 @@ try
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
     return hipsolver::cuda2hip_status(cusolverDnZsytrf((cusolverDnHandle_t)handle,
-                                            hipsolver::hip2cuda_fill(uplo),
-                                            n,
-                                            (cuDoubleComplex*)A,
-                                            lda,
-                                            ipiv,
-                                            (cuDoubleComplex*)work,
-                                            lwork,
-                                            devInfo));
+                                                       hipsolver::hip2cuda_fill(uplo),
+                                                       n,
+                                                       (cuDoubleComplex*)A,
+                                                       lda,
+                                                       ipiv,
+                                                       (cuDoubleComplex*)work,
+                                                       lwork,
+                                                       devInfo));
 }
 catch(...)
 {

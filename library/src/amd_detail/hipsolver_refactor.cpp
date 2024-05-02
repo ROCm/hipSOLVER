@@ -26,10 +26,10 @@
  *  calls to hipSOLVER or rocSOLVER.
  */
 
-#include "lib_macros.hpp"
 #include "exceptions.hpp"
 #include "hipsolver.h"
 #include "hipsolver_conversions.hpp"
+#include "lib_macros.hpp"
 
 #include "rocblas/internal/rocblas_device_malloc.hpp"
 #include "rocblas/rocblas.h"
@@ -484,22 +484,22 @@ try
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     return hipsolver::rocblas2hip_status(rocsolver_dcsrrf_analysis(rf->handle,
-                                                        rf->n,
-                                                        1,
-                                                        rf->nnzA,
-                                                        rf->dPtrA,
-                                                        rf->dIndA,
-                                                        rf->dValA,
-                                                        rf->nnzLU,
-                                                        rf->dPtrLU,
-                                                        rf->dIndLU,
-                                                        rf->dValLU,
-                                                        rf->dP,
-                                                        rf->dQ,
-                                                        // pass dummy values for B
-                                                        rf->dValA,
-                                                        rf->n,
-                                                        rf->rfinfo));
+                                                                   rf->n,
+                                                                   1,
+                                                                   rf->nnzA,
+                                                                   rf->dPtrA,
+                                                                   rf->dIndA,
+                                                                   rf->dValA,
+                                                                   rf->nnzLU,
+                                                                   rf->dPtrLU,
+                                                                   rf->dIndLU,
+                                                                   rf->dValLU,
+                                                                   rf->dP,
+                                                                   rf->dQ,
+                                                                   // pass dummy values for B
+                                                                   rf->dValA,
+                                                                   rf->n,
+                                                                   rf->rfinfo));
 }
 catch(...)
 {
@@ -723,18 +723,18 @@ try
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     return hipsolver::rocblas2hip_status(rocsolver_dcsrrf_refactlu(rf->handle,
-                                                        rf->n,
-                                                        rf->nnzA,
-                                                        rf->dPtrA,
-                                                        rf->dIndA,
-                                                        rf->dValA,
-                                                        rf->nnzLU,
-                                                        rf->dPtrLU,
-                                                        rf->dIndLU,
-                                                        rf->dValLU,
-                                                        rf->dP,
-                                                        rf->dQ,
-                                                        rf->rfinfo));
+                                                                   rf->n,
+                                                                   rf->nnzA,
+                                                                   rf->dPtrA,
+                                                                   rf->dIndA,
+                                                                   rf->dValA,
+                                                                   rf->nnzLU,
+                                                                   rf->dPtrLU,
+                                                                   rf->dIndLU,
+                                                                   rf->dValLU,
+                                                                   rf->dP,
+                                                                   rf->dQ,
+                                                                   rf->rfinfo));
 }
 catch(...)
 {
@@ -840,17 +840,17 @@ try
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
     return hipsolver::rocblas2hip_status(rocsolver_dcsrrf_solve(rf->handle,
-                                                     rf->n,
-                                                     nrhs,
-                                                     rf->nnzLU,
-                                                     rf->dPtrLU,
-                                                     rf->dIndLU,
-                                                     rf->dValLU,
-                                                     rf->dP,
-                                                     rf->dQ,
-                                                     XF,
-                                                     ldxf,
-                                                     rf->rfinfo));
+                                                                rf->n,
+                                                                nrhs,
+                                                                rf->nnzLU,
+                                                                rf->dPtrLU,
+                                                                rf->dIndLU,
+                                                                rf->dValLU,
+                                                                rf->dP,
+                                                                rf->dQ,
+                                                                XF,
+                                                                ldxf,
+                                                                rf->rfinfo));
 }
 catch(...)
 {

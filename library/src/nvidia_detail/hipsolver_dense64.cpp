@@ -68,8 +68,9 @@ try
     if(!params)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return hipsolver::cuda2hip_status(cusolverDnSetAdvOptions(
-        (cusolverDnParams_t)params, hipsolver::hip2cuda_function(func), hipsolver::hip2cuda_algmode(alg)));
+    return hipsolver::cuda2hip_status(cusolverDnSetAdvOptions((cusolverDnParams_t)params,
+                                                              hipsolver::hip2cuda_function(func),
+                                                              hipsolver::hip2cuda_algmode(alg)));
 }
 catch(...)
 {
