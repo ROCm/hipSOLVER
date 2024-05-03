@@ -13,7 +13,7 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
     - hipsolverDnXgetrf
   - getrs
     - hipsolverDnXgetrs
-- Added support for building on Ubuntu 24.04.
+- Added support for building on Ubuntu 24.04 and CBL-Mariner.
 - Added hip::host to roc::hipsolver usage requirements.
 
 ### Changed
