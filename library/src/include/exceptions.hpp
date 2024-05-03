@@ -23,8 +23,10 @@
 
 #pragma once
 
-#include "hipsolver.h"
 #include <exception>
+
+#include "hipsolver.h"
+#include "lib_macros.h"
 
 HIPSOLVER_BEGIN_NAMESPACE
 
