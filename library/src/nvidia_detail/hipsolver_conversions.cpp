@@ -27,6 +27,8 @@
 
 #include "hipsolver_conversions.hpp"
 
+HIPSOLVER_BEGIN_NAMESPACE
+
 cublasOperation_t hip2cuda_operation(hipsolverOperation_t op)
 {
     switch(op)
@@ -450,3 +452,5 @@ hipsolverRfUnitDiagonal_t cuda2hip_unitdiag(cusolverRfUnitDiagonal_t diag)
         throw HIPSOLVER_STATUS_INVALID_ENUM;
     }
 }
+
+HIPSOLVER_END_NAMESPACE
