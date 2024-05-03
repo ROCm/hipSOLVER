@@ -55,6 +55,6 @@ hipsolverAlgMode_t
 .. doxygenenum:: hipsolverAlgMode_t
 
 hipsolverDnFunction_t
---------------------
+---------------------
 .. doxygenenum:: hipsolverDnFunction_t
 

@@ -8,6 +8,6 @@
 Installation
 ********************************************************************
 
-This section provides a guide to install hipSOLVER in different systems. 
+This section provides a guide to install hipSOLVER on different systems. 
 
 * :ref:`install-linux`

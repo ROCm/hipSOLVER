@@ -5,7 +5,7 @@
 .. _ug_index:
 
 ********************************************************************
-How-To
+How to
 ********************************************************************
 
 This section provides guides on how to use the hipSOLVER library and its
