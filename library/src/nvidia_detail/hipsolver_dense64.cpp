@@ -95,7 +95,7 @@ try
     if(!params)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverDnXgetrf_bufferSize((cusolverDnHandle_t)handle,
+    return hipsolver::cuda2hip_status(cusolverDnXgetrf_bufferSize((cusolverDnHandle_t)handle,
                                                        (cusolverDnParams_t)params,
                                                        m,
                                                        n,
@@ -132,7 +132,7 @@ try
     if(!params)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverDnXgetrf((cusolverDnHandle_t)handle,
+    return hipsolver::cuda2hip_status(cusolverDnXgetrf((cusolverDnHandle_t)handle,
                                             (cusolverDnParams_t)params,
                                             m,
                                             n,
@@ -173,7 +173,7 @@ try
     if(!params)
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
-    return cuda2hip_status(cusolverDnXgetrs((cusolverDnHandle_t)handle,
+    return hipsolver::cuda2hip_status(cusolverDnXgetrs((cusolverDnHandle_t)handle,
                                             (cusolverDnParams_t)params,
                                             hip2cuda_operation(trans),
                                             n,
