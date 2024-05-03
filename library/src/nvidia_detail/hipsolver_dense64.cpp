@@ -175,7 +175,7 @@ try
 
     return hipsolver::cuda2hip_status(cusolverDnXgetrs((cusolverDnHandle_t)handle,
                                             (cusolverDnParams_t)params,
-                                            hip2cuda_operation(trans),
+                                            hipsolver::hip2cuda_operation(trans),
                                             n,
                                             nrhs,
                                             dataTypeA,
