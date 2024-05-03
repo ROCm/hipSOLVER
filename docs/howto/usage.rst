@@ -11,7 +11,7 @@ Using hipSOLVER
 hipSOLVER is an open-source marshalling library for `LAPACK routines <https://www.netlib.org/lapack/explore-html/modules.html>`_ on the GPU.
 It sits between a backend library and the user application, marshalling inputs to and outputs from the backend library so that the user
 application remains unchanged when using different backends. Currently, two backend libraries are supported by hipSOLVER: NVIDIA's `cuSOLVER
-library <https://developer.nvidia.com/cusolver>`_ and AMD's open-source `rocSOLVER library <https://github.com/ROCmSoftwarePlatform/rocSOLVER>`_.
+library <https://developer.nvidia.com/cusolver>`_ and AMD's open-source `rocSOLVER library <https://github.com/ROCm/rocSOLVER>`_.
 
 The :ref:`regular hipSOLVER API <library_api>` is a thin wrapper layer around the different backends. As such, it is not expected to introduce
 significant overhead. However, its main purpose is portability, so when performance is critical directly using the library backend is recommended.
@@ -21,7 +21,7 @@ in the user code, and the shared library will become link-time and run-time depe
 user code can be ported, with no changes, to any system with hipSOLVER installed regardless of the backend library.
 
 For more details on how to use the API methods, see the code samples on
-`hipSOLVER's Clients github page <https://github.com/ROCm/hipSOLVER/tree/develop/clients/samples>`_, or
+`hipSOLVER's clients' GitHub page <https://github.com/ROCm/hipSOLVER/tree/develop/clients/samples>`_, or
 the documentation of the corresponding backend libraries.
 
 .. _porting:
@@ -30,7 +30,7 @@ Porting cuSOLVER applications to hipSOLVER
 ============================================
 
 Another purpose of hipSOLVER is to facilitate the translation of cuSOLVER applications to
-`AMD's open source ROCm platform <https://rocmdocs.amd.com/en/latest/index.html>`_ ecosystem. 
+:doc:`AMD's open-source ROCm platform <rocm:index>` ecosystem.
 hipSOLVER is designed to make it easy for users of cuSOLVER to port their existing applications to hipSOLVER, and provides two
 separate but interchangeable API patterns in order to facilitate a two-stage transition process. Users are encouraged to start with
 hipSOLVER's compatibility APIs, which use the :ref:`hipsolverDn <library_compat>`, :ref:`hipsolverSp <library_sparse>`, and
@@ -234,7 +234,7 @@ Using rocSOLVER's memory model
 
 Most hipSOLVER functions take a workspace pointer and size as arguments, allowing the user to manage the device memory used
 internally by the backends. rocSOLVER, however, can maintain the device workspace automatically by default
-(see `rocSOLVER's memory model <https://rocm.docs.amd.com/projects/rocSOLVER/en/latest/userguide/memory.html>`_ for more details). In order to take
+(see :doc:`rocSOLVER's memory model <rocsolver:howto/memory>` for more details). In order to take
 advantage of this feature, users may pass a null pointer for the `work` argument or a zero size for the `lwork` argument of any function
 when using the rocSOLVER backend, and the workspace will be automatically managed behind-the-scenes. It is recommended, however, to use
 a consistent strategy for workspace management, as performance issues may arise if the internal workspace is made to flip-flop between
@@ -246,9 +246,7 @@ user-provided and automatically allocated workspaces.
 
 Using rocSOLVER's in-place functions
 --------------------------------------
-
-The solvers `gesv` and `gels` in cuSOLVER are out-of-place in the sense that the solution vectors `X` do not overwrite the
-input matrix `B`. In rocSOLVER this is not the case; when `hipsolverXXgels` or `hipsolverXXgesv` call rocSOLVER, some data
+The solvers `gesv` and `gels` in cuSOLVER are out-of-place in the sense that the solution vectors `X` do not overwrite the input matrix `B`. In rocSOLVER this is not the case; when `hipsolverXXgels` or `hipsolverXXgesv` call rocSOLVER, some data
 movements must be done internally to restore `B` and copy the results back to `X`. These copies could introduce noticeable
 overhead depending on the size of the matrices. To avoid this potential problem, users can pass `X = B` to `hipsolverXXgels`
 or `hipsolverXXgesv` when using the rocSOLVER backend; in this case, no data movements will be required, and the solution

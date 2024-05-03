@@ -10,7 +10,7 @@ hipSOLVER documentation
 
 hipSOLVER is a LAPACK marshalling library, with multiple supported backends. It sits between the application and a 'worker' LAPACK library, marshalling inputs into the backend library and marshalling results back to the application. hipSOLVER supports rocSOLVER and cuSOLVER as backends. hipSOLVER exports an interface that does not require the client to change, regardless of the chosen backend. 
 
-The code is open and hosted at: https://github.com/ROCm/hipSOLVER
+The code is open and hosted at: `<https://github.com/ROCm/hipSOLVER>`__
 
 The hipSOLVER documentation is structured as follows:
 
@@ -21,7 +21,7 @@ The hipSOLVER documentation is structured as follows:
 
     * :ref:`install-linux`
 
-  .. grid-item-card:: How-to
+  .. grid-item-card:: How to
 
     * :ref:`usage_label`
 
@@ -35,7 +35,7 @@ The hipSOLVER documentation is structured as follows:
 
 :ref:`usage_label` is the starting point for new users of the library. For a list of currently implemented routines in the different APIs refer to :ref:`api-intro`. 
 
-To contribute to the documentation refer to `Contributing to ROCm  <https://rocm.docs.amd.com/en/latest/contribute/contributing.html>`_.
+To contribute to the documentation refer to :doc:`Contributing to ROCm <rocm:contribute/contributing>`.
 
-You can find licensing information on the `Licensing <https://rocm.docs.amd.com/en/latest/about/license.html>`_ page.
+You can find licensing information on the :doc:`Licensing <rocm:about/license>` page.
 
