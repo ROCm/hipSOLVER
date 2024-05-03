@@ -96,15 +96,15 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnXgetrf_bufferSize((cusolverDnHandle_t)handle,
-                                                       (cusolverDnParams_t)params,
-                                                       m,
-                                                       n,
-                                                       dataTypeA,
-                                                       A,
-                                                       lda,
-                                                       computeType,
-                                                       lworkOnDevice,
-                                                       lworkOnHost));
+                                                                  (cusolverDnParams_t)params,
+                                                                  m,
+                                                                  n,
+                                                                  dataTypeA,
+                                                                  A,
+                                                                  lda,
+                                                                  computeType,
+                                                                  lworkOnDevice,
+                                                                  lworkOnHost));
 }
 catch(...)
 {
@@ -133,19 +133,19 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnXgetrf((cusolverDnHandle_t)handle,
-                                            (cusolverDnParams_t)params,
-                                            m,
-                                            n,
-                                            dataTypeA,
-                                            A,
-                                            lda,
-                                            devIpiv,
-                                            computeType,
-                                            workOnDevice,
-                                            lworkOnDevice,
-                                            workOnHost,
-                                            lworkOnHost,
-                                            devInfo));
+                                                       (cusolverDnParams_t)params,
+                                                       m,
+                                                       n,
+                                                       dataTypeA,
+                                                       A,
+                                                       lda,
+                                                       devIpiv,
+                                                       computeType,
+                                                       workOnDevice,
+                                                       lworkOnDevice,
+                                                       workOnHost,
+                                                       lworkOnHost,
+                                                       devInfo));
 }
 catch(...)
 {
@@ -174,18 +174,18 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     return hipsolver::cuda2hip_status(cusolverDnXgetrs((cusolverDnHandle_t)handle,
-                                            (cusolverDnParams_t)params,
-                                            hipsolver::hip2cuda_operation(trans),
-                                            n,
-                                            nrhs,
-                                            dataTypeA,
-                                            A,
-                                            lda,
-                                            devIpiv,
-                                            dataTypeB,
-                                            B,
-                                            ldb,
-                                            devInfo));
+                                                       (cusolverDnParams_t)params,
+                                                       hipsolver::hip2cuda_operation(trans),
+                                                       n,
+                                                       nrhs,
+                                                       dataTypeA,
+                                                       A,
+                                                       lda,
+                                                       devIpiv,
+                                                       dataTypeB,
+                                                       B,
+                                                       ldb,
+                                                       devInfo));
 }
 catch(...)
 {
