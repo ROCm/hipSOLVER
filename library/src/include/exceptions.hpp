@@ -26,7 +26,7 @@
 #include <exception>
 
 #include "hipsolver.h"
-#include "lib_macros.h"
+#include "lib_macros.hpp"
 
 HIPSOLVER_BEGIN_NAMESPACE
 
