@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2023-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,10 +26,10 @@
  *  calls to hipSOLVER or rocSOLVER.
  */
 
-#include "error_macros.hpp"
 #include "exceptions.hpp"
 #include "hipsolver.h"
 #include "hipsolver_conversions.hpp"
+#include "lib_macros.hpp"
 
 #include "rocblas/internal/rocblas_device_malloc.hpp"
 #include "rocblas/rocblas.h"
@@ -274,14 +274,14 @@ try
     if((status = rocblas_create_handle(&rf->handle)) != rocblas_status_success)
     {
         delete rf;
-        return rocblas2hip_status(status);
+        return hipsolver::rocblas2hip_status(status);
     }
 
     if((status = rocsolver_create_rfinfo(&rf->rfinfo, rf->handle)) != rocblas_status_success)
     {
         rocblas_destroy_handle(rf->handle);
         delete rf;
-        return rocblas2hip_status(status);
+        return hipsolver::rocblas2hip_status(status);
     }
 
     *handle = rf;
@@ -289,7 +289,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfDestroy(hipsolverRfHandle_t handle)
@@ -308,7 +308,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 /******************** NON-BATCHED ********************/
@@ -371,7 +371,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfSetupHost(int                 n,
@@ -445,7 +445,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfAccessBundledFactorsDevice(
@@ -470,7 +470,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfAnalyze(hipsolverRfHandle_t handle)
@@ -483,27 +483,27 @@ try
     if(!rf->d_buffer)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
-    return rocblas2hip_status(rocsolver_dcsrrf_analysis(rf->handle,
-                                                        rf->n,
-                                                        1,
-                                                        rf->nnzA,
-                                                        rf->dPtrA,
-                                                        rf->dIndA,
-                                                        rf->dValA,
-                                                        rf->nnzLU,
-                                                        rf->dPtrLU,
-                                                        rf->dIndLU,
-                                                        rf->dValLU,
-                                                        rf->dP,
-                                                        rf->dQ,
-                                                        // pass dummy values for B
-                                                        rf->dValA,
-                                                        rf->n,
-                                                        rf->rfinfo));
+    return hipsolver::rocblas2hip_status(rocsolver_dcsrrf_analysis(rf->handle,
+                                                                   rf->n,
+                                                                   1,
+                                                                   rf->nnzA,
+                                                                   rf->dPtrA,
+                                                                   rf->dIndA,
+                                                                   rf->dValA,
+                                                                   rf->nnzLU,
+                                                                   rf->dPtrLU,
+                                                                   rf->dIndLU,
+                                                                   rf->dValLU,
+                                                                   rf->dP,
+                                                                   rf->dQ,
+                                                                   // pass dummy values for B
+                                                                   rf->dValA,
+                                                                   rf->n,
+                                                                   rf->rfinfo));
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfExtractBundledFactorsHost(
@@ -536,7 +536,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfExtractSplitFactorsHost(hipsolverRfHandle_t handle,
@@ -603,7 +603,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfGet_Algs(hipsolverRfHandle_t           handle,
@@ -626,7 +626,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfGetMatrixFormat(hipsolverRfHandle_t        handle,
@@ -649,7 +649,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfGetNumericBoostReport(hipsolverRfHandle_t              handle,
@@ -668,7 +668,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t
@@ -690,7 +690,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfGetResetValuesFastMode(hipsolverRfHandle_t               handle,
@@ -709,7 +709,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfRefactor(hipsolverRfHandle_t handle)
@@ -722,23 +722,23 @@ try
     if(!rf->d_buffer)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
-    return rocblas2hip_status(rocsolver_dcsrrf_refactlu(rf->handle,
-                                                        rf->n,
-                                                        rf->nnzA,
-                                                        rf->dPtrA,
-                                                        rf->dIndA,
-                                                        rf->dValA,
-                                                        rf->nnzLU,
-                                                        rf->dPtrLU,
-                                                        rf->dIndLU,
-                                                        rf->dValLU,
-                                                        rf->dP,
-                                                        rf->dQ,
-                                                        rf->rfinfo));
+    return hipsolver::rocblas2hip_status(rocsolver_dcsrrf_refactlu(rf->handle,
+                                                                   rf->n,
+                                                                   rf->nnzA,
+                                                                   rf->dPtrA,
+                                                                   rf->dIndA,
+                                                                   rf->dValA,
+                                                                   rf->nnzLU,
+                                                                   rf->dPtrLU,
+                                                                   rf->dIndLU,
+                                                                   rf->dValLU,
+                                                                   rf->dP,
+                                                                   rf->dQ,
+                                                                   rf->rfinfo));
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfResetValues(int                 n,
@@ -772,7 +772,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfSetAlgs(hipsolverRfHandle_t          handle,
@@ -784,7 +784,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfSetMatrixFormat(hipsolverRfHandle_t       handle,
@@ -796,7 +796,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfSetNumericProperties(hipsolverRfHandle_t handle,
@@ -808,7 +808,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfSetResetValuesFastMode(hipsolverRfHandle_t              handle,
@@ -819,7 +819,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfSolve(hipsolverRfHandle_t handle,
@@ -839,22 +839,22 @@ try
     if(!rf->d_buffer)
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
 
-    return rocblas2hip_status(rocsolver_dcsrrf_solve(rf->handle,
-                                                     rf->n,
-                                                     nrhs,
-                                                     rf->nnzLU,
-                                                     rf->dPtrLU,
-                                                     rf->dIndLU,
-                                                     rf->dValLU,
-                                                     rf->dP,
-                                                     rf->dQ,
-                                                     XF,
-                                                     ldxf,
-                                                     rf->rfinfo));
+    return hipsolver::rocblas2hip_status(rocsolver_dcsrrf_solve(rf->handle,
+                                                                rf->n,
+                                                                nrhs,
+                                                                rf->nnzLU,
+                                                                rf->dPtrLU,
+                                                                rf->dIndLU,
+                                                                rf->dValLU,
+                                                                rf->dP,
+                                                                rf->dQ,
+                                                                XF,
+                                                                ldxf,
+                                                                rf->rfinfo));
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 /******************** BATCHED ********************/
@@ -881,7 +881,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfBatchAnalyze(hipsolverRfHandle_t handle)
@@ -891,7 +891,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfBatchRefactor(hipsolverRfHandle_t handle)
@@ -901,7 +901,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfBatchResetValues(int                 batchSize,
@@ -919,7 +919,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfBatchSolve(hipsolverRfHandle_t handle,
@@ -936,7 +936,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 hipsolverStatus_t hipsolverRfBatchZeroPivot(hipsolverRfHandle_t handle, int* position)
@@ -946,7 +946,7 @@ try
 }
 catch(...)
 {
-    return exception2hip_status();
+    return hipsolver::exception2hip_status();
 }
 
 } //extern C
