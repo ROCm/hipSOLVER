@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2022-2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2022-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,39 @@
 
 #include "hipsolver.h"
 
+// concaternate the two arguments, evaluating them first if they are macros
+#define HIPSOLVER_CONCAT2_HELPER(a, b) a##b
+#define HIPSOLVER_CONCAT2(a, b) HIPSOLVER_CONCAT2_HELPER(a, b)
+
+#define HIPSOLVER_CONCAT4_HELPER(a, b, c, d) a##b##c##d
+#define HIPSOLVER_CONCAT4(a, b, c, d) HIPSOLVER_CONCAT4_HELPER(a, b, c, d)
+
+#if hipsolverVersionMinor < 10
+#define hipsolverVersionMinor_PADDED HIPSOLVER_CONCAT2(0, hipsolverVersionMinor)
+#else
+#define hipsolverVersionMinor_PADDED hipsolverVersionMinor
+#endif
+
+#if hipsolverVersionPatch < 10
+#define hipsolverVersionPatch_PADDED HIPSOLVER_CONCAT2(0, hipsolverVersionPatch)
+#else
+#define hipsolverVersionPatch_PADDED hipsolverVersionPatch
+#endif
+
+#ifndef HIPSOLVER_BEGIN_NAMESPACE
+#define HIPSOLVER_BEGIN_NAMESPACE                                        \
+    namespace hipsolver                                                  \
+    {                                                                    \
+        inline namespace HIPSOLVER_CONCAT4(v,                            \
+                                           hipsolverVersionMajor,        \
+                                           hipsolverVersionMinor_PADDED, \
+                                           hipsolverVersionPatch_PADDED) \
+        {
+#define HIPSOLVER_END_NAMESPACE \
+    }                           \
+    }
+#endif
+
 #define CHECK_HIPSOLVER_ERROR(STATUS)           \
     do                                          \
     {                                           \
@@ -33,12 +66,12 @@
             return _status;                     \
     } while(0)
 
-#define CHECK_ROCBLAS_ERROR(STATUS)             \
-    do                                          \
-    {                                           \
-        rocblas_status _status = (STATUS);      \
-        if(_status != rocblas_status_success)   \
-            return rocblas2hip_status(_status); \
+#define CHECK_ROCBLAS_ERROR(STATUS)                        \
+    do                                                     \
+    {                                                      \
+        rocblas_status _status = (STATUS);                 \
+        if(_status != rocblas_status_success)              \
+            return hipsolver::rocblas2hip_status(_status); \
     } while(0)
 
 #define CHECK_HIP_ERROR(STATUS)                     \
