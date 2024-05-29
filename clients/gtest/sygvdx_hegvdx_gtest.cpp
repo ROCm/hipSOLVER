@@ -53,7 +53,7 @@ const vector<vector<int>> matrix_size_range = {
     // valid only when erange=A
     {20, 20, 20, 10, 0, 10, 1},
     // normal (valid) samples
-    {20, 30, 20, 5, 15, 1, 10},
+    {21, 30, 20, 5, 15, 1, 10},
     {35, 35, 35, -10, 10, 1, 35},
     {50, 50, 60, -15, -5, 25, 50},
 };
