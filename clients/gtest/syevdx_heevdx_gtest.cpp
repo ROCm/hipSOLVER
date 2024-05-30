@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2021-2022 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2021-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -107,48 +107,44 @@ protected:
     }
 };
 
-class SYEVDX_COMPAT : public SYEVDX_HEEVDX<API_COMPAT>
+class SYEVDX : public SYEVDX_HEEVDX<API_NORMAL>
 {
 };
 
-class HEEVDX_COMPAT : public SYEVDX_HEEVDX<API_COMPAT>
+class HEEVDX : public SYEVDX_HEEVDX<API_NORMAL>
 {
 };
 
 // non-batch tests
 
-TEST_P(SYEVDX_COMPAT, __float)
+TEST_P(SYEVDX, __float)
 {
     run_tests<false, false, float>();
 }
 
-TEST_P(SYEVDX_COMPAT, __double)
+TEST_P(SYEVDX, __double)
 {
     run_tests<false, false, double>();
 }
 
-TEST_P(HEEVDX_COMPAT, __float_complex)
+TEST_P(HEEVDX, __float_complex)
 {
     run_tests<false, false, rocblas_float_complex>();
 }
 
-TEST_P(HEEVDX_COMPAT, __double_complex)
+TEST_P(HEEVDX, __double_complex)
 {
     run_tests<false, false, rocblas_double_complex>();
 }
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          SYEVDX_COMPAT,
+//                          SYEVDX,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
-INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         SYEVDX_COMPAT,
-                         Combine(ValuesIn(size_range), ValuesIn(op_range)));
+INSTANTIATE_TEST_SUITE_P(checkin_lapack, SYEVDX, Combine(ValuesIn(size_range), ValuesIn(op_range)));
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
-//                          HEEVDX_COMPAT,
+//                          HEEVDX,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
-INSTANTIATE_TEST_SUITE_P(checkin_lapack,
-                         HEEVDX_COMPAT,
-                         Combine(ValuesIn(size_range), ValuesIn(op_range)));
+INSTANTIATE_TEST_SUITE_P(checkin_lapack, HEEVDX, Combine(ValuesIn(size_range), ValuesIn(op_range)));
