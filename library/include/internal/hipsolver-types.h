@@ -119,6 +119,13 @@ typedef enum
     HIPSOLVER_EIG_TYPE_3 = 213,
 } hipsolverEigType_t;
 
+typedef enum
+{
+    HIPSOLVER_EIG_RANGE_ALL = 221,
+    HIPSOLVER_EIG_RANGE_V   = 222,
+    HIPSOLVER_EIG_RANGE_I   = 223,
+} hipsolverEigRange_t;
+
 // Aliases for hipBLAS enums
 
 /*! \brief Alias of hipblasOperation_t. HIPSOLVER_OP_N, HIPSOLVER_OP_T, and HIPSOLVER_OP_C
