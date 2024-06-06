@@ -54,6 +54,10 @@ hipsolverAlgMode_t
 --------------------
 .. doxygenenum:: hipsolverAlgMode_t
 
+hipsolverDeterministicMode_t
+-----------------------------
+See :ref:`hipsolverDeterministicMode_t <deterministicMode_t>`.
+
 hipsolverDnFunction_t
 ---------------------
 .. doxygenenum:: hipsolverDnFunction_t
