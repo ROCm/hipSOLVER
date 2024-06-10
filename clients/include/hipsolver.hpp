@@ -6593,9 +6593,12 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx_bufferSize(testAPI_t           
                                                             float*              W,
                                                             int*                lwork)
 {
-    switch(api2marshal(API, false))
+    switch(API)
     {
-    case COMPAT_NORMAL:
+    case API_NORMAL:
+        return hipsolverSsyevdx_bufferSize(
+            handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, lwork);
+    case API_COMPAT:
         return hipsolverDnSsyevdx_bufferSize(
             handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, lwork);
     default:
@@ -6619,9 +6622,12 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx_bufferSize(testAPI_t           
                                                             double*             W,
                                                             int*                lwork)
 {
-    switch(api2marshal(API, false))
+    switch(API)
     {
-    case COMPAT_NORMAL:
+    case API_NORMAL:
+        return hipsolverDsyevdx_bufferSize(
+            handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, lwork);
+    case API_COMPAT:
         return hipsolverDnDsyevdx_bufferSize(
             handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, lwork);
     default:
@@ -6645,9 +6651,12 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx_bufferSize(testAPI_t           
                                                             float*              W,
                                                             int*                lwork)
 {
-    switch(api2marshal(API, false))
+    switch(API)
     {
-    case COMPAT_NORMAL:
+    case API_NORMAL:
+        return hipsolverCheevdx_bufferSize(
+            handle, jobz, range, uplo, n, (hipFloatComplex*)A, lda, vl, vu, il, iu, nev, W, lwork);
+    case API_COMPAT:
         return hipsolverDnCheevdx_bufferSize(
             handle, jobz, range, uplo, n, (hipFloatComplex*)A, lda, vl, vu, il, iu, nev, W, lwork);
     default:
@@ -6671,9 +6680,12 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx_bufferSize(testAPI_t           
                                                             double*                 W,
                                                             int*                    lwork)
 {
-    switch(api2marshal(API, false))
+    switch(API)
     {
-    case COMPAT_NORMAL:
+    case API_NORMAL:
+        return hipsolverZheevdx_bufferSize(
+            handle, jobz, range, uplo, n, (hipDoubleComplex*)A, lda, vl, vu, il, iu, nev, W, lwork);
+    case API_COMPAT:
         return hipsolverDnZheevdx_bufferSize(
             handle, jobz, range, uplo, n, (hipDoubleComplex*)A, lda, vl, vu, il, iu, nev, W, lwork);
     default:
@@ -6702,9 +6714,12 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx(testAPI_t           API,
                                                  int*                info,
                                                  int                 bc)
 {
-    switch(api2marshal(API, false))
+    switch(API)
     {
-    case COMPAT_NORMAL:
+    case API_NORMAL:
+        return hipsolverSsyevdx(
+            handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, work, lwork, info);
+    case API_COMPAT:
         return hipsolverDnSsyevdx(
             handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, work, lwork, info);
     default:
@@ -6733,9 +6748,12 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx(testAPI_t           API,
                                                  int*                info,
                                                  int                 bc)
 {
-    switch(api2marshal(API, false))
+    switch(API)
     {
-    case COMPAT_NORMAL:
+    case API_NORMAL:
+        return hipsolverDsyevdx(
+            handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, work, lwork, info);
+    case API_COMPAT:
         return hipsolverDnDsyevdx(
             handle, jobz, range, uplo, n, A, lda, vl, vu, il, iu, nev, W, work, lwork, info);
     default:
@@ -6764,9 +6782,26 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx(testAPI_t           API,
                                                  int*                info,
                                                  int                 bc)
 {
-    switch(api2marshal(API, false))
+    switch(API)
     {
-    case COMPAT_NORMAL:
+    case API_NORMAL:
+        return hipsolverCheevdx(handle,
+                                jobz,
+                                range,
+                                uplo,
+                                n,
+                                (hipFloatComplex*)A,
+                                lda,
+                                vl,
+                                vu,
+                                il,
+                                iu,
+                                nev,
+                                W,
+                                (hipFloatComplex*)work,
+                                lwork,
+                                info);
+    case API_COMPAT:
         return hipsolverDnCheevdx(handle,
                                   jobz,
                                   range,
@@ -6809,9 +6844,26 @@ inline hipsolverStatus_t hipsolver_syevdx_heevdx(testAPI_t               API,
                                                  int*                    info,
                                                  int                     bc)
 {
-    switch(api2marshal(API, false))
+    switch(API)
     {
-    case COMPAT_NORMAL:
+    case API_NORMAL:
+        return hipsolverZheevdx(handle,
+                                jobz,
+                                range,
+                                uplo,
+                                n,
+                                (hipDoubleComplex*)A,
+                                lda,
+                                vl,
+                                vu,
+                                il,
+                                iu,
+                                nev,
+                                W,
+                                (hipDoubleComplex*)work,
+                                lwork,
+                                info);
+    case API_COMPAT:
         return hipsolverDnZheevdx(handle,
                                   jobz,
                                   range,
@@ -7593,6 +7645,9 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(testAPI_t           
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverSsygvdx_bufferSize(
+            handle, itype, jobz, range, uplo, n, A, lda, B, ldb, vl, vu, il, iu, nev, W, lwork);
     case API_COMPAT:
         return hipsolverDnSsygvdx_bufferSize(
             handle, itype, jobz, range, uplo, n, A, lda, B, ldb, vl, vu, il, iu, nev, W, lwork);
@@ -7622,6 +7677,9 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(testAPI_t           
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverDsygvdx_bufferSize(
+            handle, itype, jobz, range, uplo, n, A, lda, B, ldb, vl, vu, il, iu, nev, W, lwork);
     case API_COMPAT:
         return hipsolverDnDsygvdx_bufferSize(
             handle, itype, jobz, range, uplo, n, A, lda, B, ldb, vl, vu, il, iu, nev, W, lwork);
@@ -7651,6 +7709,24 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(testAPI_t           
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverChegvdx_bufferSize(handle,
+                                           itype,
+                                           jobz,
+                                           range,
+                                           uplo,
+                                           n,
+                                           (hipFloatComplex*)A,
+                                           lda,
+                                           (hipFloatComplex*)B,
+                                           ldb,
+                                           vl,
+                                           vu,
+                                           il,
+                                           iu,
+                                           nev,
+                                           W,
+                                           lwork);
     case API_COMPAT:
         return hipsolverDnChegvdx_bufferSize(handle,
                                              itype,
@@ -7695,6 +7771,24 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx_bufferSize(testAPI_t           
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverZhegvdx_bufferSize(handle,
+                                           itype,
+                                           jobz,
+                                           range,
+                                           uplo,
+                                           n,
+                                           (hipDoubleComplex*)A,
+                                           lda,
+                                           (hipDoubleComplex*)B,
+                                           ldb,
+                                           vl,
+                                           vu,
+                                           il,
+                                           iu,
+                                           nev,
+                                           W,
+                                           lwork);
     case API_COMPAT:
         return hipsolverDnZhegvdx_bufferSize(handle,
                                              itype,
@@ -7745,6 +7839,26 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(testAPI_t           API,
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverSsygvdx(handle,
+                                itype,
+                                jobz,
+                                range,
+                                uplo,
+                                n,
+                                A,
+                                lda,
+                                B,
+                                ldb,
+                                vl,
+                                vu,
+                                il,
+                                iu,
+                                nev,
+                                W,
+                                work,
+                                lwork,
+                                info);
     case API_COMPAT:
         return hipsolverDnSsygvdx(handle,
                                   itype,
@@ -7797,6 +7911,26 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(testAPI_t           API,
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverDsygvdx(handle,
+                                itype,
+                                jobz,
+                                range,
+                                uplo,
+                                n,
+                                A,
+                                lda,
+                                B,
+                                ldb,
+                                vl,
+                                vu,
+                                il,
+                                iu,
+                                nev,
+                                W,
+                                work,
+                                lwork,
+                                info);
     case API_COMPAT:
         return hipsolverDnDsygvdx(handle,
                                   itype,
@@ -7849,6 +7983,26 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(testAPI_t           API,
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverChegvdx(handle,
+                                itype,
+                                jobz,
+                                range,
+                                uplo,
+                                n,
+                                (hipFloatComplex*)A,
+                                lda,
+                                (hipFloatComplex*)B,
+                                ldb,
+                                vl,
+                                vu,
+                                il,
+                                iu,
+                                nev,
+                                W,
+                                (hipFloatComplex*)work,
+                                lwork,
+                                info);
     case API_COMPAT:
         return hipsolverDnChegvdx(handle,
                                   itype,
@@ -7901,6 +8055,26 @@ inline hipsolverStatus_t hipsolver_sygvdx_hegvdx(testAPI_t               API,
 {
     switch(API)
     {
+    case API_NORMAL:
+        return hipsolverZhegvdx(handle,
+                                itype,
+                                jobz,
+                                range,
+                                uplo,
+                                n,
+                                (hipDoubleComplex*)A,
+                                lda,
+                                (hipDoubleComplex*)B,
+                                ldb,
+                                vl,
+                                vu,
+                                il,
+                                iu,
+                                nev,
+                                W,
+                                (hipDoubleComplex*)work,
+                                lwork,
+                                info);
     case API_COMPAT:
         return hipsolverDnZhegvdx(handle,
                                   itype,

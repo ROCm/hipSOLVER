@@ -217,21 +217,27 @@ endif( )
 
 # Package specific CPACK vars
 if( NOT USE_CUDA )
-  set(hipsolver_pkgdeps "rocblas >= 4.2.0" "rocsolver >= 3.27.0")
+  set(rocblas_minimum 4.2.0)
+  set(rocsolver_minimum 3.27.0)
+  rocm_package_add_dependencies(SHARED_DEPENDS "rocblas >= ${rocblas_minimum}" "rocsolver >= ${rocsolver_minimum}")
+  rocm_package_add_rpm_dependencies(STATIC_DEPENDS "rocblas-static-devel >= ${rocblas_minimum}" "rocsolver-static-devel >= ${rocsolver_minimum}")
+  rocm_package_add_deb_dependencies(STATIC_DEPENDS "rocblas-static-dev >= ${rocblas_minimum}" "rocsolver-static-dev >= ${rocsolver_minimum}")
 
   if( BUILD_WITH_SPARSE )
-    list(APPEND hipsolver_pkgdeps "rocsparse >= 2.2.0")
+    set(rocsparse_minimum 2.3.0)
+    rocm_package_add_dependencies(SHARED_DEPENDS "rocsparse >= ${rocsparse_minimum}")
+    rocm_package_add_rpm_dependencies(STATIC_DEPENDS "rocsparse-static-devel >= ${rocsparse_minimum}")
+    rocm_package_add_deb_dependencies(STATIC_DEPENDS "rocsparse-static-dev >= ${rocsparse_minimum}")
 
     if( SYSTEM_OS STREQUAL "centos" OR SYSTEM_OS STREQUAL "rhel" OR SYSTEM_OS STREQUAL "mariner" )
       list(APPEND hipsolver_pkgdeps "suitesparse")
     elseif(SYSTEM_OS STREQUAL "ubuntu" AND SYSTEM_OS_VERSION VERSION_GREATER_EQUAL "24.04")
-      list(APPEND hipsolver_pkgdeps "libcholmod4" "libsuitesparseconfig7")
+      list(APPEND hipsolver_pkgdeps "libcholmod5" "libsuitesparseconfig7")
     else()
       list(APPEND hipsolver_pkgdeps "libcholmod3" "libsuitesparseconfig5")
     endif()
+    rocm_package_add_dependencies(DEPENDS ${hipsolver_pkgdeps})
   endif( )
-
-  rocm_package_add_dependencies(DEPENDS ${hipsolver_pkgdeps})
 endif( )
 
 set( CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.md" )
