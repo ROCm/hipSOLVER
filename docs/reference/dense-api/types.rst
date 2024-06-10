@@ -48,7 +48,7 @@ See :ref:`hipsolverEigType_t <eigtype_t>`.
 
 hipsolverEigRange_t
 --------------------
-.. doxygenenum:: hipsolverEigRange_t
+See :ref:`hipsolverEigRange_t <eigrange_t>`.
 
 hipsolverAlgMode_t
 --------------------
