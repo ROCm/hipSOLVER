@@ -51,17 +51,19 @@ find_library(SUITESPARSE_CONFIG_LIBRARY suitesparseconfig)
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(SuiteSparse_config SUITESPARSE_CONFIG_INCLUDE_DIR SUITESPARSE_CONFIG_LIBRARY)
 
-if(SUITESPARSE_CONFIG_FOUND AND NOT TARGET SuiteSparse::SuiteSparseConfig)
-  add_library(SuiteSparse::SuiteSparseConfig INTERFACE IMPORTED)
+if(SUITESPARSE_CONFIG_FOUND)
+  if(NOT DEFINED SUITESPARSE_CONFIG_LIBRARIES)
+    set(SUITESPARSE_CONFIG_LIBRARIES ${SUITESPARSE_CONFIG_LIBRARY})
+  endif()
 
-  set_target_properties(SuiteSparse::SuiteSparseConfig PROPERTIES
-    INTERFACE_LINK_LIBRARIES "${SUITESPARSE_CONFIG_LIBRARIES}"
-  )
-  set_target_properties(SuiteSparse::SuiteSparseConfig PROPERTIES
-    INTERFACE_INCLUDE_DIRECTORIES "${SUITESPARSE_CONFIG_INCLUDE_DIR}"
-  )
-endif()
+  if(NOT TARGET SuiteSparse::SuiteSparseConfig)
+    add_library(SuiteSparse::SuiteSparseConfig INTERFACE IMPORTED)
 
-if(NOT DEFINED SUITESPARSE_CONFIG_LIBRARIES)
-  set(SUITESPARSE_CONFIG_LIBRARIES ${SUITESPARSE_CONFIG_LIBRARY})
+    set_target_properties(SuiteSparse::SuiteSparseConfig PROPERTIES
+      INTERFACE_LINK_LIBRARIES "${SUITESPARSE_CONFIG_LIBRARIES}"
+    )
+    set_target_properties(SuiteSparse::SuiteSparseConfig PROPERTIES
+      INTERFACE_INCLUDE_DIRECTORIES "${SUITESPARSE_CONFIG_INCLUDE_DIR}"
+    )
+  endif()
 endif()

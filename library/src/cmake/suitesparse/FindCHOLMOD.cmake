@@ -53,24 +53,21 @@ find_package_handle_standard_args(CHOLMOD CHOLMOD_INCLUDE_DIR CHOLMOD_LIBRARY)
 
 find_package(SuiteSparse_config QUIET)
 
-if(CHOLMOD_FOUND AND NOT TARGET SuiteSparse::CHOLMOD)
-  add_library(SuiteSparse::CHOLMOD INTERFACE IMPORTED)
-
-  set_target_properties(SuiteSparse::CHOLMOD PROPERTIES
-    INTERFACE_LINK_LIBRARIES "${CHOLMOD_LIBRARIES}"
-    INTERFACE_INCLUDE_DIRECTORIES "${CHOLMOD_INCLUDE_DIR}"
-  )
-  if(TARGET SuiteSparse::SuiteSparse_config)
-    set_target_properties(SuiteSparse::CHOLMOD PROPERTIES
-      INTERFACE_LINK_LIBRARIES SuiteSparse::SuiteSparse_config
-    )
+if(CHOLMOD_FOUND)
+  if(NOT DEFINED CHOLMOD_LIBRARIES)
+    if(TARGET SuiteSparse::SuiteSparse_config)
+      set(CHOLMOD_LIBRARIES ${CHOLMOD_LIBRARY} SuiteSparse::SuiteSparse_config)
+    else()
+      set(CHOLMOD_LIBRARIES ${CHOLMOD_LIBRARY})
+    endif()
   endif()
-endif()
 
-if(NOT DEFINED CHOLMOD_LIBRARIES)
-  if(TARGET SuiteSparse::SuiteSparse_config)
-    set(CHOLMOD_LIBRARIES ${CHOLMOD_LIBRARY} SuiteSparse::SuiteSparse_config)
-  else()
-    set(CHOLMOD_LIBRARIES ${CHOLMOD_LIBRARY})
+  if(NOT TARGET SuiteSparse::CHOLMOD)
+    add_library(SuiteSparse::CHOLMOD INTERFACE IMPORTED)
+
+    set_target_properties(SuiteSparse::CHOLMOD PROPERTIES
+      INTERFACE_LINK_LIBRARIES "${CHOLMOD_LIBRARIES}"
+      INTERFACE_INCLUDE_DIRECTORIES "${CHOLMOD_INCLUDE_DIR}"
+    )
   endif()
 endif()
