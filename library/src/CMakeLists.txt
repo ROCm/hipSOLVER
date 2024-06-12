@@ -92,7 +92,7 @@ if( WIN32 )
     if( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
       add_custom_command( TARGET hipsolver
         POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_BINARY_DIR}/staging/hipsolver-d.pdb" "${PROJECT_BINARY_DIR}/clients/staging/hipsolver-d.pdb"
+        COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_BINARY_DIR}/staging/hipsolver.pdb" "${PROJECT_BINARY_DIR}/clients/staging/hipsolver.pdb"
       )
     endif( )
   endif( )
@@ -179,7 +179,6 @@ target_include_directories( hipsolver
 rocm_set_soversion( hipsolver ${hipsolver_SOVERSION} )
 set_target_properties( hipsolver PROPERTIES CXX_EXTENSIONS NO )
 set_target_properties( hipsolver PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging" )
-set_target_properties( hipsolver PROPERTIES DEBUG_POSTFIX "-d" )
 
 # Package that helps me set visibility for function names exported from shared library
 include( GenerateExportHeader )
