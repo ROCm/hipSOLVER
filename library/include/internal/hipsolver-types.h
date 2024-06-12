@@ -14,8 +14,7 @@
 #endif
 
 #include <hip/hip_complex.h>
-#include <hip/hip_runtime_api.h>
-#include <hip/library_types.h>
+#include <hip/hip_runtime.h>
 
 typedef void* hipsolverHandle_t;
 
