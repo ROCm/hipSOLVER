@@ -22,7 +22,7 @@
 
 
 # ########################################################################
-# A helper function to prefix a source list of files with a common path into a new list(non-destructive)
+# A helper function to prefix a source list of files with a common path into a new list (non-destructive)
 # ########################################################################
 function(prepend_path prefix source_list_of_files return_list_of_files)
   foreach(file ${${source_list_of_files}})
