@@ -92,7 +92,7 @@ if( WIN32 )
     if( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
       add_custom_command( TARGET hipsolver
         POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_BINARY_DIR}/staging/hipsolver.pdb" "${PROJECT_BINARY_DIR}/clients/staging/hipsolver.pdb"
+        COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_BINARY_DIR}/staging/$<TARGET_PDB_FILE_NAME:hipsolver>" "${PROJECT_BINARY_DIR}/clients/staging/$<TARGET_PDB_FILE_NAME:hipsolver>"
       )
     endif( )
   endif( )
