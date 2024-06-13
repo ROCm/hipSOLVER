@@ -11,7 +11,7 @@ Installation on Linux
 Install pre-built packages
 ===========================
 
-Download pre-built packages from :doc:`ROCm's package servers <rocm-install-on-linux:index>`. Updates to each release are listed in the ``CHANGELOG.md`` file under the releases tab of the `hipSOLVER github page <https://github.com/ROCm/hipSOLVER>`_.
+Download pre-built packages from :doc:`ROCm's package servers <rocm-install-on-linux:index>`. Updates to each release are listed in the ``CHANGELOG.md`` file under the releases tab of the `hipSOLVER GitHub page <https://github.com/ROCm/hipSOLVER>`_.
 
 * ``sudo apt update && sudo apt install hipsolver``
 
