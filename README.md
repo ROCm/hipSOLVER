@@ -31,11 +31,11 @@ hipSOLVER requires either cuSOLVER or rocSOLVER + SuiteSparse to be installed on
 
 Once installed, hipSOLVER can be used just like any other library with a C API. The header file will need to be included in the user code, and the hipSOLVER library will become a link-time and run-time dependency for the user application.
 
-For more information on building and installing hipSOLVER, see the [hipSOLVER install guide](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/userguide/install.html)
+For more information on building and installing hipSOLVER, see the [hipSOLVER install guide](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/installation/index.html)
 
 ## Using the hipSOLVER Interface
 
-The hipSOLVER interface is compatible with the rocSOLVER and cuSOLVER-v11 APIs. Porting a CUDA application that originally calls the cuSOLVER API to an application calling the hipSOLVER API should be fairly straightforward (see [porting a cuSOLVER application to hipSOLVER](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/userguide/usage.html#porting-cusolver-applications-to-hipsolver)). For example, the hipSOLVER SGEQRF interface is
+The hipSOLVER interface is compatible with the rocSOLVER and cuSOLVER-v11 APIs. Porting a CUDA application that originally calls the cuSOLVER API to an application calling the hipSOLVER API should be fairly straightforward (see [porting a cuSOLVER application to hipSOLVER](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/howto/usage.html#porting-cusolver-applications-to-hipsolver)). For example, the hipSOLVER SGEQRF interface is
 
 ```c
 hipsolverStatus_t
@@ -62,4 +62,4 @@ hipsolverSgeqrf(hipsolverHandle_t handle,
 
 ## Supported Functionality
 
-For a complete listing of all supported functions, see the [hipSOLVER user guide](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/userguide/index.html) and/or [API documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/api/index.html).
+For a complete listing of all supported functions, see the [hipSOLVER user guide](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/howto/usage.html) and/or [API documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/reference/index.html).
