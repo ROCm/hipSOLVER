@@ -20,29 +20,29 @@
 #
 # ########################################################################
 
-find_package( GTest REQUIRED )
+find_package(GTest REQUIRED)
 
-if( BUILD_HIPBLAS_TESTS )
-  if( NOT TARGET hipblas )
-    if( CUSTOM_HIPBLAS )
-      set ( ENV{hipblas_DIR} ${CUSTOM_HIPBLAS})
-      find_package( hipblas REQUIRED CONFIG NO_CMAKE_PATH )
-    else( )
-      find_package( hipblas REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm )
-    endif( )
-  endif( )
-endif( )
+if(BUILD_HIPBLAS_TESTS)
+  if(NOT TARGET hipblas)
+    if(CUSTOM_HIPBLAS)
+      set(ENV{hipblas_DIR} ${CUSTOM_HIPBLAS})
+      find_package(hipblas REQUIRED CONFIG NO_CMAKE_PATH)
+    else()
+      find_package(hipblas REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm)
+    endif()
+  endif()
+endif()
 
-if( BUILD_WITH_SPARSE )
-  if( NOT TARGET hipsparse )
-    if( CUSTOM_HIPSPARSE )
-      set ( ENV{hipsparse_DIR} ${CUSTOM_HIPSPARSE})
-      find_package( hipsparse REQUIRED CONFIG NO_CMAKE_PATH )
-    else( )
-      find_package( hipsparse REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm )
-    endif( )
-  endif( )
-endif( )
+if(BUILD_WITH_SPARSE)
+  if(NOT TARGET hipsparse)
+    if(CUSTOM_HIPSPARSE)
+      set(ENV{hipsparse_DIR} ${CUSTOM_HIPSPARSE})
+      find_package(hipsparse REQUIRED CONFIG NO_CMAKE_PATH)
+    else()
+      find_package(hipsparse REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm)
+    endif()
+  endif()
+endif()
 
 set(hipsolverDn_test_source
   hipsolver_gtest_main.cpp
@@ -86,25 +86,25 @@ set(others_test_source
   params_gtest.cpp
 )
 
-add_executable( hipsolver-test ${others_test_source} ${hipsolverDn_test_source} ${hipsolverRf_test_source} )
+add_executable(hipsolver-test ${others_test_source} ${hipsolverDn_test_source} ${hipsolverRf_test_source})
 
-target_include_directories( hipsolver-test
+target_include_directories(hipsolver-test
   PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
 )
 
-add_armor_flags( hipsolver-test "${ARMOR_LEVEL}" )
+add_armor_flags(hipsolver-test "${ARMOR_LEVEL}")
 
-target_compile_definitions( hipsolver-test PRIVATE GOOGLE_TEST )
+target_compile_definitions(hipsolver-test PRIVATE GOOGLE_TEST)
 
 # External header includes included as SYSTEM files
-target_include_directories( hipsolver-test
+target_include_directories(hipsolver-test
   SYSTEM PRIVATE
     $<BUILD_INTERFACE:${CBLAS_INCLUDE_DIRS}>
     $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
 )
 
-target_link_libraries( hipsolver-test PRIVATE
+target_link_libraries(hipsolver-test PRIVATE
   ${LAPACK_LIBRARIES}
   hipsolver-common
   clients-common
@@ -112,43 +112,43 @@ target_link_libraries( hipsolver-test PRIVATE
   Threads::Threads
   roc::hipsolver
 )
-if( BUILD_HIPBLAS_TESTS )
-  target_link_libraries( hipsolver-test PRIVATE roc::hipblas )
-  target_sources( hipsolver-test PRIVATE hipblas_include1_gtest.cpp hipblas_include2_gtest.cpp )
-endif( )
-if( BUILD_WITH_SPARSE )
-  target_link_libraries( hipsolver-test PRIVATE roc::hipsparse )
-  target_sources( hipsolver-test PRIVATE ${hipsolverSp_test_source} )
-endif( )
-if( UNIX )
-  target_link_libraries( hipsolver-test PRIVATE hipsolver_fortran_client )
-  target_sources( hipsolver-test PRIVATE ${hipsolver_f90_source} )
-endif( )
+if(BUILD_HIPBLAS_TESTS)
+  target_link_libraries(hipsolver-test PRIVATE roc::hipblas)
+  target_sources(hipsolver-test PRIVATE hipblas_include1_gtest.cpp hipblas_include2_gtest.cpp)
+endif()
+if(BUILD_WITH_SPARSE)
+  target_link_libraries(hipsolver-test PRIVATE roc::hipsparse)
+  target_sources(hipsolver-test PRIVATE ${hipsolverSp_test_source})
+endif()
+if(UNIX)
+  target_link_libraries(hipsolver-test PRIVATE hipsolver_fortran_client)
+  target_sources(hipsolver-test PRIVATE ${hipsolver_f90_source})
+endif()
 
-if( NOT USE_CUDA )
-  target_link_libraries( hipsolver-test PRIVATE hip::host )
+if(NOT USE_CUDA)
+  target_link_libraries(hipsolver-test PRIVATE hip::host)
 
-  if( CUSTOM_TARGET )
-    target_link_libraries( hipsolver-test PRIVATE hip::${CUSTOM_TARGET} )
-  endif( )
-
-  if( CMAKE_CXX_COMPILER MATCHES ".*/hipcc$" )
-    # hip-clang needs specific flag to turn on pthread and m
-    target_link_libraries( hipsolver-test PRIVATE -lpthread -lm )
+  if(CUSTOM_TARGET)
+    target_link_libraries(hipsolver-test PRIVATE hip::${CUSTOM_TARGET})
   endif()
-else( )
-  target_compile_definitions( hipsolver-test PRIVATE __HIP_PLATFORM_NVIDIA__ )
 
-  target_include_directories( hipsolver-test
+  if(CMAKE_CXX_COMPILER MATCHES ".*/hipcc$")
+    # hip-clang needs specific flag to turn on pthread and m
+    target_link_libraries(hipsolver-test PRIVATE -lpthread -lm)
+  endif()
+else()
+  target_compile_definitions(hipsolver-test PRIVATE __HIP_PLATFORM_NVIDIA__)
+
+  target_include_directories(hipsolver-test
     PRIVATE
       $<BUILD_INTERFACE:${CUDA_INCLUDE_DIRS}>
   )
 
-  target_link_libraries( hipsolver-test PRIVATE ${CUDA_LIBRARIES} Threads::Threads )
-endif( )
+  target_link_libraries(hipsolver-test PRIVATE ${CUDA_LIBRARIES} Threads::Threads)
+endif()
 
-set_target_properties( hipsolver-test PROPERTIES DEBUG_POSTFIX "-d" CXX_EXTENSIONS NO )
-set_target_properties( hipsolver-test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging" )
+set_target_properties(hipsolver-test PROPERTIES DEBUG_POSTFIX "-d" CXX_EXTENSIONS NO)
+set_target_properties(hipsolver-test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging")
 
 rocm_install(TARGETS hipsolver-test COMPONENT tests)
 
