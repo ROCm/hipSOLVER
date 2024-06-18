@@ -68,7 +68,7 @@ The rocSOLVER backend has the following dependencies:
 4. `SuiteSparse <https://github.com/DrTimothyAldenDavis/SuiteSparse>`_ modules CHOLMOD and SuiteSparse_config (optional, required by default)
 
 rocSOLVER itself depends on rocBLAS and rocSPARSE, therefore all three libraries should be present with a standard rocSOLVER installation. For more information
-about building and installing rocSOLVER, refer to the `rocSOLVER documentation <https://rocm.docs.amd.com/projects/rocSOLVER/en/latest/userguide/install.html>`_.
+about building and installing rocSOLVER, refer to the :doc:`rocSOLVER documentation <rocsolver:installation/installlinux>`.
 
 SuiteSparse is a third-party library, and can be installed using the package managers of most distros. Together with rocSPARSE, it is used to provide
 functionality for the hipsolverSp API. If only hipsolverDn and/or hipsolverRf are needed, these dependencies can be ignored by setting the ``BUILD_WITH_SPARSE``
