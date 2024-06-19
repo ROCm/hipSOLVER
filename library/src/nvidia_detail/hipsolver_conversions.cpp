@@ -223,7 +223,7 @@ hipsolverAlgMode_t cuda2hip_algmode(cusolverAlgMode_t mode)
     }
 }
 
-#if(!defined(CUDART_VERSION) || CUDART_VERSION < 12020)
+#if(CUDART_VERSION >= 12020)
 cusolverDeterministicMode_t hip2cuda_deterministic(hipsolverDeterministicMode_t mode)
 {
     switch(mode)

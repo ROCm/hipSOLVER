@@ -93,7 +93,7 @@ hipsolverStatus_t hipsolverSetDeterministicMode(hipsolverHandle_t            han
                                                 hipsolverDeterministicMode_t mode)
 try
 {
-#if(!defined(CUDART_VERSION) || CUDART_VERSION < 12020)
+#if(CUDART_VERSION >= 12020)
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
@@ -112,7 +112,7 @@ hipsolverStatus_t hipsolverGetDeterministicMode(hipsolverHandle_t             ha
                                                 hipsolverDeterministicMode_t* mode)
 try
 {
-#if(!defined(CUDART_VERSION) || CUDART_VERSION < 12020)
+#if(CUDART_VERSION >= 12020)
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
     if(!mode)
