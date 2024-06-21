@@ -1,14 +1,16 @@
 defaults:
   numbered: False
 root: index
-entries:
-- file: installation/index.rst
+subtrees:
+- caption: Install
   entries:
   - file: installation/install.rst
-- file: howto/index.rst
+
+- caption: How to
   entries:
   - file: howto/usage.rst
-- file: reference/index.rst
+
+- caption: Reference
   entries:
   - file: reference/intro.rst
   - file: reference/api/index.rst
@@ -35,4 +37,7 @@ entries:
     - file: reference/refactor-api/types.rst
     - file: reference/refactor-api/helpers.rst
     - file: reference/refactor-api/refactor.rst
-- file: license.rst
+
+- caption: About
+  entries:
+  - file: license.rst
