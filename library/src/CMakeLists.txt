@@ -66,7 +66,7 @@ set(hipsolver_f90_source
   hipsolver_module.f90
 )
 
-if(UNIX)
+if(BUILD_FORTRAN_BINDINGS)
   # Create hipSOLVER Fortran module
   add_library(hipsolver_fortran ${hipsolver_f90_source})
 endif()
@@ -227,7 +227,7 @@ else()
   )
 endif()
 
-if(UNIX)
+if(BUILD_FORTRAN_MODULE)
   # Exclude include folder for ASAN package
   if(NOT ENABLE_ASAN_PACKAGING)
     # Force installation of .f90 module files
