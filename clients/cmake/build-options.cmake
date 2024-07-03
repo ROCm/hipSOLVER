@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2016-2022 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2016-2024 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -27,17 +27,17 @@
 # presented in the superbuild GUI, but then passed into the ExternalProject as -D
 # parameters, which would already define them.
 
-if( NOT BUILD_CLIENTS_TESTS )
-  option( BUILD_CLIENTS_TESTS "Build hipSOLVER unit tests" OFF )
-endif( )
+if(NOT BUILD_CLIENTS_TESTS)
+  option(BUILD_CLIENTS_TESTS "Build hipSOLVER unit tests" OFF)
+endif()
 
-if( NOT BUILD_CLIENTS_BENCHMARKS )
-  option( BUILD_CLIENTS_BENCHMARKS "Build hipSOLVER benchmarks" OFF )
-endif( )
+if(NOT BUILD_CLIENTS_BENCHMARKS)
+  option(BUILD_CLIENTS_BENCHMARKS "Build hipSOLVER benchmarks" OFF)
+endif()
 
-if( NOT BUILD_CLIENTS_SAMPLES )
-  option( BUILD_CLIENTS_SAMPLES "Build hipSOLVER samples" OFF )
-endif( )
+if(NOT BUILD_CLIENTS_SAMPLES)
+  option(BUILD_CLIENTS_SAMPLES "Build hipSOLVER samples" OFF)
+endif()
 
 
 

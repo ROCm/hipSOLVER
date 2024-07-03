@@ -20,8 +20,8 @@
 #
 # ########################################################################
 
-add_executable( example-c-basic example_basic.c )
-add_executable( example-cpp-basic example_basic.cpp )
+add_executable(example-c-basic example_basic.c)
+add_executable(example-cpp-basic example_basic.cpp)
 
 # We test for C99 compatibility in the example-c.c test
 set_source_files_properties(example_basic.c PROPERTIES LANGUAGE CXX)
@@ -30,38 +30,38 @@ set_source_files_properties(example_basic.c PROPERTIES COMPILE_FLAGS "-xc -std=c
 # Test for C++11 compatibility in one of the samples
 set_property(TARGET example-cpp-basic PROPERTY CXX_STANDARD 11)
 
-foreach( exe example-c-basic;example-cpp-basic; )
+foreach(exe example-c-basic;example-cpp-basic;)
 
   # External header includes included as SYSTEM files
-  target_include_directories( ${exe}
+  target_include_directories(${exe}
     SYSTEM PRIVATE
       $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
   )
 
-  target_include_directories( ${exe} PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include> )
+  target_include_directories(${exe} PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>)
 
-  target_link_libraries( ${exe} PRIVATE roc::hipsolver )
+  target_link_libraries(${exe} PRIVATE roc::hipsolver)
 
-  if( NOT USE_CUDA )
-    target_link_libraries( ${exe} PRIVATE hip::host )
+  if(NOT USE_CUDA)
+    target_link_libraries(${exe} PRIVATE hip::host)
 
-    if( CUSTOM_TARGET )
-      target_link_libraries( ${exe} PRIVATE hip::${CUSTOM_TARGET} )
-    endif( )
+    if(CUSTOM_TARGET)
+      target_link_libraries(${exe} PRIVATE hip::${CUSTOM_TARGET})
+    endif()
 
-  else( )
-    target_compile_definitions( ${exe} PRIVATE __HIP_PLATFORM_NVIDIA__ )
+  else()
+    target_compile_definitions(${exe} PRIVATE __HIP_PLATFORM_NVIDIA__)
 
-    target_include_directories( ${exe}
+    target_include_directories(${exe}
       PRIVATE
         $<BUILD_INTERFACE:${CUDA_INCLUDE_DIRS}>
     )
 
-    target_link_libraries( ${exe} PRIVATE ${CUDA_LIBRARIES} )
-  endif( )
+    target_link_libraries(${exe} PRIVATE ${CUDA_LIBRARIES})
+  endif()
 
   set_target_properties(${exe} PROPERTIES LINKER_LANGUAGE CXX)
-  set_target_properties( ${exe} PROPERTIES CXX_EXTENSIONS NO )
-  set_target_properties( ${exe} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging" )
+  set_target_properties(${exe} PROPERTIES CXX_EXTENSIONS NO)
+  set_target_properties(${exe} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging")
 
-endforeach( )
+endforeach()

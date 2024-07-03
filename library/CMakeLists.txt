@@ -22,41 +22,41 @@
 
 
 # This is incremented when the ABI to the library changes
-set( hipsolver_SOVERSION 0.3 )
+set(hipsolver_SOVERSION 0.3)
 
-list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${ROCM_PATH}/lib/cmake/hip /opt/rocm/lib/cmake/hip ${HIP_PATH}/cmake )
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${ROCM_PATH}/lib/cmake/hip /opt/rocm/lib/cmake/hip ${HIP_PATH}/cmake)
 
 # This option only works for make/nmake and the ninja generators, but no reason it shouldn't be on all the time
 # This tells cmake to create a compile_commands.json file that can be used with clang tooling or vim
-set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Print out compiler flags for viewing/debug
-if( BUILD_VERBOSE )
-  message( STATUS "hipsolver_VERSION: " ${hipsolver_VERSION} )
-  message( STATUS "\t==>CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE} )
-  message( STATUS "\t==>BUILD_SHARED_LIBS: " ${BUILD_SHARED_LIBS} )
-  message( STATUS "\t==>CMAKE_INSTALL_PREFIX link: " ${CMAKE_INSTALL_PREFIX} )
-  message( STATUS "\t==>CMAKE_MODULE_PATH link: " ${CMAKE_MODULE_PATH} )
-  message( STATUS "\t==>CMAKE_PREFIX_PATH link: " ${CMAKE_PREFIX_PATH} )
+if(BUILD_VERBOSE)
+  message(STATUS "hipsolver_VERSION: " ${hipsolver_VERSION})
+  message(STATUS "\t==>CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
+  message(STATUS "\t==>BUILD_SHARED_LIBS: " ${BUILD_SHARED_LIBS})
+  message(STATUS "\t==>CMAKE_INSTALL_PREFIX link: " ${CMAKE_INSTALL_PREFIX})
+  message(STATUS "\t==>CMAKE_MODULE_PATH link: " ${CMAKE_MODULE_PATH})
+  message(STATUS "\t==>CMAKE_PREFIX_PATH link: " ${CMAKE_PREFIX_PATH})
 
-  message( STATUS "\t==>CMAKE_CXX_COMPILER flags: " ${CMAKE_CXX_FLAGS} )
-  message( STATUS "\t==>CMAKE_CXX_COMPILER debug flags: " ${CMAKE_CXX_FLAGS_DEBUG} )
-  message( STATUS "\t==>CMAKE_CXX_COMPILER release flags: " ${CMAKE_CXX_FLAGS_RELEASE} )
-  message( STATUS "\t==>CMAKE_CXX_COMPILER relwithdebinfo flags: " ${CMAKE_CXX_FLAGS_RELWITHDEBINFO} )
-  message( STATUS "\t==>CMAKE_EXE_LINKER link flags: " ${CMAKE_EXE_LINKER_FLAGS} )
-endif( )
+  message(STATUS "\t==>CMAKE_CXX_COMPILER flags: " ${CMAKE_CXX_FLAGS})
+  message(STATUS "\t==>CMAKE_CXX_COMPILER debug flags: " ${CMAKE_CXX_FLAGS_DEBUG})
+  message(STATUS "\t==>CMAKE_CXX_COMPILER release flags: " ${CMAKE_CXX_FLAGS_RELEASE})
+  message(STATUS "\t==>CMAKE_CXX_COMPILER relwithdebinfo flags: " ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
+  message(STATUS "\t==>CMAKE_EXE_LINKER link flags: " ${CMAKE_EXE_LINKER_FLAGS})
+endif()
 
-if( NOT USE_CUDA )
-  find_package( hip REQUIRED PATHS ${ROCM_PATH} /opt/rocm ${HIP_PATH} )
+if(NOT USE_CUDA)
+  find_package(hip REQUIRED PATHS ${ROCM_PATH} /opt/rocm ${HIP_PATH})
 else()
-  find_package( HIP REQUIRED )
+  find_package(HIP REQUIRED)
 endif()
 
 # configure a header file to pass the CMake version settings to the source, and package the header files in the output archive
-configure_file( "${CMAKE_CURRENT_SOURCE_DIR}/include/internal/hipsolver-version.h.in"
-	"${PROJECT_BINARY_DIR}/include/hipsolver/internal/hipsolver-version.h" )
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/include/internal/hipsolver-version.h.in"
+	"${PROJECT_BINARY_DIR}/include/hipsolver/internal/hipsolver-version.h")
 
-set( hipsolver_headers_public
+set(hipsolver_headers_public
   include/hipsolver.h
   include/internal/hipsolver-types.h
   include/internal/hipsolver-functions.h
@@ -68,18 +68,18 @@ set( hipsolver_headers_public
   ${PROJECT_BINARY_DIR}/include/hipsolver/internal/hipsolver-version.h
 )
 
-source_group( "Header Files\\Public" FILES ${hipsolver_headers_public} )
+source_group("Header Files\\Public" FILES ${hipsolver_headers_public})
 
 set(CMAKE_Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/include/hipsolver/internal)
 
 # Build into subdirectories
-add_subdirectory( src )
+add_subdirectory(src)
 
 # The following code is setting variables to control the behavior of CPack to generate our
-# if( WIN32 )
-#     set( CPACK_SOURCE_GENERATOR "ZIP" )
-#     set( CPACK_GENERATOR "ZIP" )
-# else( )
-#     set( CPACK_SOURCE_GENERATOR "TGZ" )
-#     set( CPACK_GENERATOR "DEB;RPM" CACHE STRING "cpack list: 7Z, DEB, IFW, NSIS, NSIS64, RPM, STGZ, TBZ2, TGZ, TXZ, TZ, ZIP" )
-# endif( )
+# if(WIN32)
+#     set(CPACK_SOURCE_GENERATOR "ZIP")
+#     set(CPACK_GENERATOR "ZIP")
+# else()
+#     set(CPACK_SOURCE_GENERATOR "TGZ")
+#     set(CPACK_GENERATOR "DEB;RPM" CACHE STRING "cpack list: 7Z, DEB, IFW, NSIS, NSIS64, RPM, STGZ, TBZ2, TGZ, TXZ, TZ, ZIP")
+# endif()
