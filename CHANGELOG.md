@@ -6,6 +6,8 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 ### Added
 ### Optimized
 ### Changed
+- Binaries in debug builds no longer have a "-d" suffix.
+
 ### Deprecated
 ### Removed
 ### Fixed
