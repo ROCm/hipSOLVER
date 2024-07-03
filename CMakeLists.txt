@@ -288,9 +288,6 @@ rocm_create_package(
 #  > make coverage_output (generate html documentation)
 if(BUILD_CODE_COVERAGE)
   set(coverage_test ./clients/staging/hipsolver-test)
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(coverage_test ./clients/staging/hipsolver-test-d)
-  endif()
 
   # Run coverage analysis
   add_custom_target(coverage_analysis

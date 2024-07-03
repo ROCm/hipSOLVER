@@ -30,7 +30,7 @@ def runCompileCommand(platform, project, jobName, boolean sameOrg=false)
 def runTestCommand(platform, project)
 {
     String buildType = project.buildName.contains('Debug') ? "debug" : "release"
-    String testExe = project.buildName.contains('Debug') ? "hipsolver-test-d" : "hipsolver-test"
+    String testExe = "hipsolver-test"
     def command = """#!/usr/bin/env bash
                     set -x
                     cd ${project.paths.project_build_prefix}/build/${buildType}/clients/staging
