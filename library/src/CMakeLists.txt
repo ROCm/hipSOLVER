@@ -42,6 +42,7 @@ prepend_path(".." hipsolver_headers_public relative_hipsolver_headers_public)
 
 if(NOT USE_CUDA)
   set(hipsolver_source
+    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/dlopen/rocsparse.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_conversions.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_dense.cpp"
@@ -99,6 +100,10 @@ if(WIN32)
 endif()
 
 set(static_depends)
+
+if(NOT BUILD_WITH_SPARSE)
+  target_link_libraries(hipsolver PRIVATE $<$<PLATFORM_ID:Linux>:dl>)
+endif()
 
 # Build hipsolver from source on AMD platform
 if(NOT USE_CUDA)

@@ -43,8 +43,9 @@
 #include <rocblas/rocblas.h>
 #include <rocsolver/rocsolver.h>
 
+#include "dlopen/rocsparse.hpp"
+
 #ifdef HAVE_ROCSPARSE
-#include <rocsparse/rocsparse.h>
 #include <suitesparse/cholmod.h>
 #endif
 
