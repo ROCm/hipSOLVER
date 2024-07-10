@@ -43,14 +43,8 @@
 #include <rocblas/rocblas.h>
 #include <rocsolver/rocsolver.h>
 
+#include "dlopen/cholmod.hpp"
 #include "dlopen/rocsparse.hpp"
-
-#ifdef HAVE_ROCSPARSE
-#include <suitesparse/cholmod.h>
-#endif
-
-#undef TRUE
-#define TRUE 1
 
 extern "C" {
 
