@@ -67,18 +67,19 @@ if(NOT TARGET hipsolver)
   find_package(hipsolver REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm)
 endif()
 
-if(UNIX)
+if(BUILD_FORTRAN_BINDINGS)
   set(hipsolver_f90_source_clients
     include/hipsolver_fortran.f90
   )
 endif()
 
 if(BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS)
-  if(UNIX)
+  if(BUILD_FORTRAN_BINDINGS)
     add_library(hipsolver_fortran_client STATIC ${hipsolver_f90_source_clients})
     add_dependencies(hipsolver_fortran_client hipsolver_fortran)
     include_directories(${CMAKE_BINARY_DIR}/include/hipsolver)
     include_directories(${CMAKE_BINARY_DIR}/include/hipsolver/internal)
+    target_compile_definitions(hipsolver_fortran_client INTERFACE HAVE_HIPSOLVER_FORTRAN_CLIENT)
   endif()
 
   add_library(clients-common INTERFACE)

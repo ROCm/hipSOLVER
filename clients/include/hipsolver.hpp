@@ -24,10 +24,10 @@
 #pragma once
 
 #include "hipsolver.h"
-#ifdef _WIN32
-#include "hipsolver_no_fortran.hpp"
-#else
+#ifdef HAVE_HIPSOLVER_FORTRAN_CLIENT
 #include "hipsolver_fortran.hpp"
+#else
+#include "hipsolver_no_fortran.hpp"
 #endif
 
 // Most functions within this file exist to provide a consistent interface for our templated tests.
