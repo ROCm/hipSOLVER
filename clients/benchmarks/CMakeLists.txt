@@ -59,7 +59,7 @@ if(BUILD_WITH_SPARSE)
   )
   target_link_libraries(hipsolver-bench PRIVATE roc::hipsparse)
 endif()
-if(UNIX)
+if(BUILD_FORTRAN_BINDINGS)
   target_link_libraries(hipsolver-bench PRIVATE hipsolver_fortran_client)
 endif()
 
