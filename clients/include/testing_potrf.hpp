@@ -80,7 +80,7 @@ void testing_potrf_bad_arg()
 
         int size_W;
         hipsolver_potrf_bufferSize(API, handle, uplo, n, dA.data(), lda, &size_W, bc);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -98,7 +98,7 @@ void testing_potrf_bad_arg()
 
         int size_W;
         hipsolver_potrf_bufferSize(API, handle, uplo, n, dA.data(), lda, &size_W, bc);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -381,7 +381,7 @@ void testing_potrf(Arguments& argus)
         host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         device_batch_vector<T>           dA(size_A, 1, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());
@@ -435,7 +435,7 @@ void testing_potrf(Arguments& argus)
         host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         device_strided_batch_vector<T>   dA(size_A, 1, stA, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());

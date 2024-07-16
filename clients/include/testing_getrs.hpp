@@ -217,7 +217,7 @@ void testing_getrs_bad_arg()
 
         // SIZE size_W;
         // hipsolver_getrs_bufferSize(API, handle, params, trans, m, nrhs, dA.data(), lda, dIpiv.data(), dB.data(), ldb, &size_W);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -263,7 +263,7 @@ void testing_getrs_bad_arg()
                                    dB.data(),
                                    ldb,
                                    &size_W);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -764,7 +764,7 @@ void testing_getrs(Arguments& argus)
         // device_batch_vector<T>           dB(size_B, 1, bc);
         // device_strided_batch_vector<I>   dIpiv(size_P, 1, stP, bc);
         // device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
+        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
         // if(size_B)
@@ -847,7 +847,7 @@ void testing_getrs(Arguments& argus)
         device_strided_batch_vector<T>   dB(size_B, 1, stB, bc);
         device_strided_batch_vector<I>   dIpiv(size_P, 1, stP, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         if(size_B)

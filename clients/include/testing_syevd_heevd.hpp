@@ -123,7 +123,7 @@ void testing_syevd_heevd_bad_arg()
         // int size_W;
         // hipsolver_syevd_heevd_bufferSize(
         //     API, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -155,7 +155,7 @@ void testing_syevd_heevd_bad_arg()
         int size_W;
         hipsolver_syevd_heevd_bufferSize(
             API, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -595,7 +595,7 @@ void testing_syevd_heevd(Arguments& argus)
     // device
     device_strided_batch_vector<S>   dD(size_D, 1, stD, bc);
     device_strided_batch_vector<int> dinfo(1, 1, 1, bc);
-    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
+    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
     if(size_D)
         CHECK_HIP_ERROR(dD.memcheck());
     CHECK_HIP_ERROR(dinfo.memcheck());
