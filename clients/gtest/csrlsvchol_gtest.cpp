@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2023 Advanced Micro Devices, Inc.
+ * Copyright (C) 2023-2024 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #include "testing_csrlsvchol.hpp"
@@ -66,9 +66,15 @@ template <bool HOST>
 class CSRLSVCHOL_BASE : public ::TestWithParam<csrlsvchol_tuple>
 {
 protected:
-    CSRLSVCHOL_BASE() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void SetUp() override
+    {
+        if(hipsolverSpCreate(nullptr) == HIPSOLVER_STATUS_NOT_SUPPORTED)
+            GTEST_SKIP() << "Sparse functionality is not enabled";
+    }
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <typename T>
     void run_tests()
