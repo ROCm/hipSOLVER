@@ -82,9 +82,10 @@ template <testAPI_t API>
 class SYTRF_BASE : public ::TestWithParam<sytrf_tuple>
 {
 protected:
-    SYTRF_BASE() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <bool BATCHED, bool STRIDED, typename T>
     void run_tests()

@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2023 Advanced Micro Devices, Inc.
+ * Copyright (C) 2023-2024 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #include "testing_csrrf_refactlu.hpp"
@@ -59,9 +59,10 @@ Arguments csrrf_refactlu_setup_arguments(csrrf_refactlu_tuple tup)
 class CSRRF_REFACTLU : public ::TestWithParam<csrrf_refactlu_tuple>
 {
 protected:
-    CSRRF_REFACTLU() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <typename T>
     void run_tests()

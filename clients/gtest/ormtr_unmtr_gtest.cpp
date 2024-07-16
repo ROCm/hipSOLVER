@@ -124,9 +124,10 @@ template <testAPI_t API>
 class ORMTR_UNMTR : public ::TestWithParam<ormtr_tuple>
 {
 protected:
-    ORMTR_UNMTR() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <typename T>
     void run_tests()

@@ -87,9 +87,10 @@ template <testAPI_t API>
 class GEBRD_BASE : public ::TestWithParam<gebrd_tuple>
 {
 protected:
-    GEBRD_BASE() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <bool BATCHED, bool STRIDED, typename T>
     void run_tests()
