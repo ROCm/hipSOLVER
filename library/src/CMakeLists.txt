@@ -103,7 +103,7 @@ endif()
 set(static_depends)
 
 if(NOT BUILD_WITH_SPARSE)
-  target_link_libraries(hipsolver PRIVATE $<$<PLATFORM_ID:Linux>:dl>)
+  target_link_libraries(hipsolver PRIVATE $<$<PLATFORM_ID:Linux>:${CMAKE_DL_LIBS}>)
 endif()
 
 # Build hipsolver from source on AMD platform

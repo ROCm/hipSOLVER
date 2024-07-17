@@ -105,13 +105,19 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ROCM_PATH}/lib
 # NOTE:  workaround until hip cmake modules fixes symlink logic in their config files; remove when fixed
 list(APPEND CMAKE_PREFIX_PATH ${ROCM_PATH}/lib/cmake/hip /opt/rocm /opt/rocm/llvm /opt/rocm/hip)
 
+option(BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON)
+if(BUILD_SHARED_LIBS)
+  set(BUILD_WITH_SPARSE_DEFAULT OFF)
+else()
+  set(BUILD_WITH_SPARSE_DEFAULT ON)
+endif()
+
 option(BUILD_ADDRESS_SANITIZER "Build with address sanitizer enabled" OFF)
 option(BUILD_CODE_COVERAGE "Build hipSOLVER with code coverage enabled" OFF)
 option(BUILD_HIPBLAS_TESTS "Build additional tests to ensure hipBLAS and hipSOLVER are compatible (requires installed hipBLAS)" OFF)
 option(BUILD_HIPSPARSE_TESTS "Build additional tests to cover sparse functionality (requires installed hipSPARSE)" ON)
 # BUILD_SHARED_LIBS is a cmake built-in; we make it an explicit option such that it shows in cmake-gui
-option(BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON)
-option(BUILD_WITH_SPARSE "Build hipSOLVER with sparse functionality available at build time (requires installed dependencies)" OFF)
+option(BUILD_WITH_SPARSE "Build hipSOLVER with sparse functionality available at build time (requires installed dependencies)" "${BUILD_WITH_SPARSE_DEFAULT}")
 option(BUILD_VERBOSE "Output additional build information" OFF)
 option(USE_CUDA "Look for CUDA and use that as a backend if found" OFF)
 option(HIPSOLVER_FIND_PACKAGE_LAPACK_CONFIG "Skip module mode search for LAPACK" ON)
