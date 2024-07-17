@@ -182,7 +182,7 @@ rocblas_erange_ hip2rocblas_erange(hipsolverEigRange_t range)
     }
 }
 
-hipsolverEigRange_t rocblas2hip_eerange(rocblas_erange_ range)
+hipsolverEigRange_t rocblas2hip_erange(rocblas_erange_ range)
 {
     switch(range)
     {
@@ -237,6 +237,32 @@ rocblas_svect_ hip2rocblas_evect2overwrite(hipsolverEigMode_t eig, int econ)
             return rocblas_svect_overwrite;
         else
             return rocblas_svect_all;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+rocblas_atomics_mode_ hip2rocblas_deterministic(hipsolverDeterministicMode_t mode)
+{
+    switch(mode)
+    {
+    case HIPSOLVER_DETERMINISTIC_RESULTS:
+        return rocblas_atomics_not_allowed;
+    case HIPSOLVER_ALLOW_NON_DETERMINISTIC_RESULTS:
+        return rocblas_atomics_allowed;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+hipsolverDeterministicMode_t rocblas2hip_deterministic(rocblas_atomics_mode_ mode)
+{
+    switch(mode)
+    {
+    case rocblas_atomics_not_allowed:
+        return HIPSOLVER_DETERMINISTIC_RESULTS;
+    case rocblas_atomics_allowed:
+        return HIPSOLVER_ALLOW_NON_DETERMINISTIC_RESULTS;
     default:
         throw HIPSOLVER_STATUS_INVALID_ENUM;
     }

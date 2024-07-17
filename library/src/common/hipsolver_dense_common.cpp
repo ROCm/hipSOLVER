@@ -52,6 +52,18 @@ hipsolverStatus_t hipsolverDnGetStream(hipsolverHandle_t handle, hipStream_t* st
     return hipsolverGetStream(handle, streamId);
 }
 
+hipsolverStatus_t hipsolverDnSetDeterministicMode(hipsolverHandle_t            handle,
+                                                  hipsolverDeterministicMode_t mode)
+{
+    return hipsolverSetDeterministicMode(handle, mode);
+}
+
+hipsolverStatus_t hipsolverDnGetDeterministicMode(hipsolverHandle_t             handle,
+                                                  hipsolverDeterministicMode_t* mode)
+{
+    return hipsolverGetDeterministicMode(handle, mode);
+}
+
 // gesvdj params
 hipsolverStatus_t hipsolverDnCreateGesvdjInfo(hipsolverGesvdjInfo_t* info)
 {
