@@ -223,6 +223,34 @@ hipsolverAlgMode_t cuda2hip_algmode(cusolverAlgMode_t mode)
     }
 }
 
+#if(CUDART_VERSION >= 12020)
+cusolverDeterministicMode_t hip2cuda_deterministic(hipsolverDeterministicMode_t mode)
+{
+    switch(mode)
+    {
+    case HIPSOLVER_DETERMINISTIC_RESULTS:
+        return CUSOLVER_DETERMINISTIC_RESULTS;
+    case HIPSOLVER_ALLOW_NON_DETERMINISTIC_RESULTS:
+        return CUSOLVER_ALLOW_NON_DETERMINISTIC_RESULTS;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+
+hipsolverDeterministicMode_t cuda2hip_deterministic(cusolverDeterministicMode_t mode)
+{
+    switch(mode)
+    {
+    case CUSOLVER_DETERMINISTIC_RESULTS:
+        return HIPSOLVER_DETERMINISTIC_RESULTS;
+    case CUSOLVER_ALLOW_NON_DETERMINISTIC_RESULTS:
+        return HIPSOLVER_ALLOW_NON_DETERMINISTIC_RESULTS;
+    default:
+        throw HIPSOLVER_STATUS_INVALID_ENUM;
+    }
+}
+#endif
+
 hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus)
 {
     switch(cuStatus)

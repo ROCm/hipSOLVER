@@ -27,6 +27,12 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSetStream(hipsolverHandle_t handle,
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverGetStream(hipsolverHandle_t handle,
                                                       hipStream_t*      streamId);
 
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSetDeterministicMode(hipsolverHandle_t handle,
+                                                                 hipsolverDeterministicMode_t mode);
+
+HIPSOLVER_EXPORT hipsolverStatus_t
+    hipsolverGetDeterministicMode(hipsolverHandle_t handle, hipsolverDeterministicMode_t* mode);
+
 // gesvdj params
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverCreateGesvdjInfo(hipsolverGesvdjInfo_t* info);
 

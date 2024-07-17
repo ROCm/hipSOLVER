@@ -8,11 +8,12 @@
 hipSOLVER helper functions
 ***************************
 
-These are helper functions that control aspects of the hipSOLVER library. They are divided 
+These are helper functions that control aspects of the hipSOLVER library. They are divided
 into the following categories:
 
 * :ref:`initialize` functions. Used to initialize and cleanup the library handle.
 * :ref:`stream` functions. Provide functionality to manipulate streams.
+* :ref:`determinism` functions. Provide functionality to manipulate function determinism.
 * :ref:`gesvdj_info` functions. Provide functionality to manipulate gesvdj parameters.
 * :ref:`syevj_info` functions. Provide functionality to manipulate syevj parameters.
 
@@ -52,6 +53,25 @@ hipsolverSetStream()
 hipsolverGetStream()
 ---------------------------------
 .. doxygenfunction:: hipsolverGetStream
+
+
+
+.. _determinism:
+
+Determinism manipulation
+==============================
+
+.. contents:: List of deterministic mode manipulation functions
+   :local:
+   :backlinks: top
+
+hipsolverSetDeterministicMode()
+---------------------------------
+.. doxygenfunction:: hipsolverSetDeterministicMode
+
+hipsolverGetDeterministicMode()
+---------------------------------
+.. doxygenfunction:: hipsolverGetDeterministicMode
 
 
 

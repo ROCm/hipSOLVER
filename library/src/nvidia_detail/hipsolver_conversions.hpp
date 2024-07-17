@@ -58,6 +58,12 @@ cusolverAlgMode_t hip2cuda_algmode(hipsolverAlgMode_t mode);
 
 hipsolverAlgMode_t cuda2hip_algmode(cusolverAlgMode_t mode);
 
+#if(CUDART_VERSION >= 12020)
+cusolverDeterministicMode_t hip2cuda_deterministic(hipsolverDeterministicMode_t mode);
+
+hipsolverDeterministicMode_t cuda2hip_deterministic(cusolverDeterministicMode_t mode);
+#endif
+
 hipsolverStatus_t cuda2hip_status(cusolverStatus_t cuStatus);
 
 // Dense API

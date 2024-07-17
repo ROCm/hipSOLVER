@@ -4,6 +4,10 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 
 ## (Unreleased) hipSOLVER
 ### Added
+- Added functions
+  - auxiliary
+    - hipsolverSetDeterministicMode, hipsolverGetDeterministicMode
+
 ### Optimized
 ### Changed
 - Binaries in debug builds no longer have a "-d" suffix.

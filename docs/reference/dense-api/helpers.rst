@@ -11,11 +11,12 @@ Dense matrix helper functions
 These are helper functions that control aspects of the hipSOLVER library. They are divided
 into the following categories:
 
-* :ref:`dense_initialize` functions used to initialize and cleanup the library handle
-* :ref:`dense_stream` functions provide functionality to manipulate streams
-* :ref:`dense_gesvdj_info` functions provide functionality to manipulate gesvdj parameters
-* :ref:`dense_syevj_info` functions provide functionality to manipulate syevj parameters
-* :ref:`dense_params` functions provide functionality to manipulate other parameters
+* :ref:`dense_initialize` functions used to initialize and cleanup the library handle.
+* :ref:`dense_stream` functions provide functionality to manipulate streams.
+* :ref:`dense_determinism` functions. Provide functionality to manipulate function determinism.
+* :ref:`dense_gesvdj_info` functions provide functionality to manipulate gesvdj parameters.
+* :ref:`dense_syevj_info` functions provide functionality to manipulate syevj parameters.
+* :ref:`dense_params` functions provide functionality to manipulate other parameters.
 
 
 .. _dense_initialize:
@@ -53,6 +54,25 @@ hipsolverDnSetStream()
 hipsolverDnGetStream()
 ---------------------------------
 .. doxygenfunction:: hipsolverDnGetStream
+
+
+
+.. _dense_determinism:
+
+Determinism manipulation
+==============================
+
+.. contents:: List of deterministic mode manipulation functions
+   :local:
+   :backlinks: top
+
+hipsolverDnSetDeterministicMode()
+----------------------------------
+.. doxygenfunction:: hipsolverDnSetDeterministicMode
+
+hipsolverDnGetDeterministicMode()
+----------------------------------
+.. doxygenfunction:: hipsolverDnGetDeterministicMode
 
 
 

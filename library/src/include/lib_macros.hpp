@@ -74,6 +74,14 @@
             return hipsolver::rocblas2hip_status(_status); \
     } while(0)
 
+#define CHECK_CUSOLVER_ERROR(STATUS)                    \
+    do                                                  \
+    {                                                   \
+        cusolverStatus_t _status = (STATUS);            \
+        if(_status != CUSOLVER_STATUS_SUCCESS)          \
+            return hipsolver::cuda2hip_status(_status); \
+    } while(0)
+
 #define CHECK_HIP_ERROR(STATUS)                     \
     do                                              \
     {                                               \
