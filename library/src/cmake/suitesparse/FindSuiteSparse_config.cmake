@@ -57,7 +57,7 @@ if(SUITESPARSE_CONFIG_FOUND)
   endif()
 
   if(NOT TARGET SuiteSparse::SuiteSparseConfig)
-    add_library(SuiteSparse::SuiteSparseConfig INTERFACE IMPORTED)
+    add_library(SuiteSparse::SuiteSparseConfig UNKNOWN IMPORTED)
 
     set_target_properties(SuiteSparse::SuiteSparseConfig PROPERTIES
       INTERFACE_LINK_LIBRARIES "${SUITESPARSE_CONFIG_LIBRARIES}"
