@@ -146,11 +146,11 @@ if(NOT USE_CUDA)
     find_package(CHOLMOD QUIET)
     if(NOT TARGET SuiteSparse::CHOLMOD)
       # try again with the custom find modules for older versions of suitesparse
-      list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/suitesparse )
+      list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/suitesparse)
       find_package(CHOLMOD REQUIRED)
     endif()
 
-    target_link_libraries( hipsolver PRIVATE roc::rocsparse SuiteSparse::CHOLMOD )
+    target_link_libraries( hipsolver PRIVATE roc::rocsparse SuiteSparse::CHOLMOD)
     set_source_files_properties(${hipsolver_source}
       PROPERTIES
         COMPILE_DEFINITIONS HAVE_ROCSPARSE
