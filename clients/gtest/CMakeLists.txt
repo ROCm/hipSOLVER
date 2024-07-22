@@ -148,7 +148,6 @@ else()
   target_link_libraries(hipsolver-test PRIVATE ${CUDA_LIBRARIES} Threads::Threads)
 endif()
 
-set_target_properties(hipsolver-test PROPERTIES CXX_EXTENSIONS NO)
 set_target_properties(hipsolver-test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging")
 
 rocm_install(TARGETS hipsolver-test COMPONENT tests)

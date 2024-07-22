@@ -177,7 +177,6 @@ target_include_directories(hipsolver
 )
 
 rocm_set_soversion(hipsolver ${hipsolver_SOVERSION})
-set_target_properties(hipsolver PROPERTIES CXX_EXTENSIONS NO)
 set_target_properties(hipsolver PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging")
 
 # Package that helps me set visibility for function names exported from shared library
