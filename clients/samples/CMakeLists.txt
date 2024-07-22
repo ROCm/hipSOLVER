@@ -61,7 +61,6 @@ foreach(exe example-c-basic;example-cpp-basic;)
   endif()
 
   set_target_properties(${exe} PROPERTIES LINKER_LANGUAGE CXX)
-  set_target_properties(${exe} PROPERTIES CXX_EXTENSIONS NO)
   set_target_properties(${exe} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging")
 
 endforeach()
