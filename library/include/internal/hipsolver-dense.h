@@ -19,13 +19,6 @@
  ********************************************************************************/
 typedef hipsolverHandle_t hipsolverDnHandle_t;
 
-typedef enum
-{
-    HIPSOLVER_EIG_RANGE_ALL = 221,
-    HIPSOLVER_EIG_RANGE_V   = 222,
-    HIPSOLVER_EIG_RANGE_I   = 223,
-} hipsolverEigRange_t;
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -47,6 +40,16 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSetStream(hipsolverHandle_t handle
  ********************************************************************************/
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnGetStream(hipsolverHandle_t handle,
                                                         hipStream_t*      streamId);
+
+/*! \brief An alias for #hipsolverSetDeterministicMode.
+ ********************************************************************************/
+HIPSOLVER_EXPORT hipsolverStatus_t
+    hipsolverDnSetDeterministicMode(hipsolverHandle_t handle, hipsolverDeterministicMode_t mode);
+
+/*! \brief An alias for #hipsolverGetDeterministicMode.
+ ********************************************************************************/
+HIPSOLVER_EXPORT hipsolverStatus_t
+    hipsolverDnGetDeterministicMode(hipsolverHandle_t handle, hipsolverDeterministicMode_t* mode);
 
 // gesvdj params
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnCreateGesvdjInfo(hipsolverGesvdjInfo_t* info);

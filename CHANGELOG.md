@@ -4,8 +4,14 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 
 ## (Unreleased) hipSOLVER
 ### Added
+- Added functions
+  - auxiliary
+    - hipsolverSetDeterministicMode, hipsolverGetDeterministicMode
+
 ### Optimized
 ### Changed
+- Binaries in debug builds no longer have a "-d" suffix.
+
 ### Deprecated
 ### Removed
 ### Fixed
@@ -15,6 +21,13 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 
 ## hipSOLVER 2.2.0 for ROCm 6.2.0
 ### Added
+- Added functions
+  - syevdx/heevdx
+    - hipsolverSsyevdx_bufferSize, hipsolverDsyevdx_bufferSize, hipsolverCheevdx_bufferSize, hipsolverZheevdx_bufferSize
+    - hipsolverSsyevdx, hipsolverDsyevdx, hipsolverCheevdx, hipsolverZheevdx
+  - sygvdx/hegvdx
+    - hipsolverSsygvdx_bufferSize, hipsolverDsygvdx_bufferSize, hipsolverChegvdx_bufferSize, hipsolverZhegvdx_bufferSize
+    - hipsolverSsygvdx, hipsolverDsygvdx, hipsolverChegvdx, hipsolverZhegvdx
 - Added compatibility-only functions
   - auxiliary
     - hipsolverDnCreateParams, hipsolverDnDestroyParams, hipsolverDnSetAdvOptions

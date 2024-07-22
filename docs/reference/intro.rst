@@ -120,16 +120,24 @@ LAPACK-like functions
 .. csv-table:: Symmetric eigensolvers
     :header: "Function", "single", "double", "single complex", "double complex"
 
+    :ref:`hipsolverXsyevdx_bufferSize <syevdx_bufferSize>`, x, x, ,
+    :ref:`hipsolverXsyevdx <syevdx>`, x, x, ,
     :ref:`hipsolverXsyevj_bufferSize <syevj_bufferSize>`, x, x, ,
     :ref:`hipsolverXsyevj <syevj>`, x, x, ,
     :ref:`hipsolverXsyevjBatched_bufferSize <syevj_batched_bufferSize>`, x, x, ,
     :ref:`hipsolverXsyevjBatched <syevj_batched>`, x, x, ,
+    :ref:`hipsolverXsygvdx_bufferSize <sygvdx_bufferSize>`, x, x, ,
+    :ref:`hipsolverXsygvdx <sygvdx>`, x, x, ,
     :ref:`hipsolverXsygvj_bufferSize <sygvj_bufferSize>`, x, x, ,
     :ref:`hipsolverXsygvj <sygvj>`, x, x, ,
+    :ref:`hipsolverXheevdx_bufferSize <heevdx_bufferSize>`, , , x, x
+    :ref:`hipsolverXheevdx <heevdx>`, , , x, x
     :ref:`hipsolverXheevj_bufferSize <heevj_bufferSize>`, , , x, x
     :ref:`hipsolverXheevj <heevj>`, , , x, x
     :ref:`hipsolverXheevjBatched_bufferSize <heevj_batched_bufferSize>`, , , x, x
     :ref:`hipsolverXheevjBatched <heevj_batched>`, , , x, x
+    :ref:`hipsolverXhegvdx_bufferSize <hegvdx_bufferSize>`, , , x, x
+    :ref:`hipsolverXhegvdx <hegvdx>`, , , x, x
     :ref:`hipsolverXhegvj_bufferSize <hegvj_bufferSize>`, , , x, x
     :ref:`hipsolverXhegvj <hegvj>`, , , x, x
 
@@ -149,23 +157,6 @@ The following tables summarize the wrapper functions that are provided only in t
 These wrappers are supported in rocSOLVER but either by equivalent functions
 that use different algorithmic approaches, or by functionality that is not fully exposed in the public API.
 For these reasons, at present, the corresponding wrappers are not provided in the regular hipSOLVER API.
-
-Partial eigensolver functions
-------------------------------
-
-Partial eigensolvers have been implemented in rocSOLVER, but at present they do not use a divide-and-conquer approach.
-
-.. csv-table:: Symmetric eigensolvers
-    :header: "Function", "single", "double", "single complex", "double complex"
-
-    :ref:`hipsolverDnXsyevdx_bufferSize <dense_syevdx_bufferSize>`, x, x, ,
-    :ref:`hipsolverDnXsyevdx <dense_syevdx>`, x, x, ,
-    :ref:`hipsolverDnXsygvdx_bufferSize <dense_sygvdx_bufferSize>`, x, x, ,
-    :ref:`hipsolverDnXsygvdx <dense_sygvdx>`, x, x, ,
-    :ref:`hipsolverDnXheevdx_bufferSize <dense_heevdx_bufferSize>`, , , x, x
-    :ref:`hipsolverDnXheevdx <dense_heevdx>`, , , x, x
-    :ref:`hipsolverDnXhegvdx_bufferSize <dense_hegvdx_bufferSize>`, , , x, x
-    :ref:`hipsolverDnXhegvdx <dense_hegvdx>`, , , x, x
 
 Partial SVD functions
 ------------------------------

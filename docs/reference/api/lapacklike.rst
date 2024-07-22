@@ -24,6 +24,38 @@ Symmetric eigensolvers
    :local:
    :backlinks: top
 
+.. _syevdx_bufferSize:
+
+hipsolver<type>syevdx_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDsyevdx_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverSsyevdx_bufferSize
+
+.. _heevdx_bufferSize:
+
+hipsolver<type>heevdx_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZheevdx_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverCheevdx_bufferSize
+
+.. _syevdx:
+
+hipsolver<type>syevdx()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDsyevdx
+   :outline:
+.. doxygenfunction:: hipsolverSsyevdx
+
+.. _heevdx:
+
+hipsolver<type>heevdx()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZheevdx
+   :outline:
+.. doxygenfunction:: hipsolverCheevdx
+
 .. _syevj_bufferSize:
 
 hipsolver<type>syevj_bufferSize()
@@ -87,6 +119,38 @@ hipsolver<type>heevjBatched()
 .. doxygenfunction:: hipsolverZheevjBatched
    :outline:
 .. doxygenfunction:: hipsolverCheevjBatched
+
+.. _sygvdx_bufferSize:
+
+hipsolver<type>sygvdx_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDsygvdx_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverSsygvdx_bufferSize
+
+.. _hegvdx_bufferSize:
+
+hipsolver<type>hegvdx_bufferSize()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZhegvdx_bufferSize
+   :outline:
+.. doxygenfunction:: hipsolverChegvdx_bufferSize
+
+.. _sygvdx:
+
+hipsolver<type>sygvdx()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverDsygvdx
+   :outline:
+.. doxygenfunction:: hipsolverSsygvdx
+
+.. _hegvdx:
+
+hipsolver<type>hegvdx()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverZhegvdx
+   :outline:
+.. doxygenfunction:: hipsolverChegvdx
 
 .. _sygvj_bufferSize:
 

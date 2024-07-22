@@ -20,77 +20,75 @@
 #
 # ########################################################################
 
-if( BUILD_WITH_SPARSE )
-  if( NOT TARGET hipsparse )
-    if( CUSTOM_HIPSPARSE )
-      set ( ENV{hipsparse_DIR} ${CUSTOM_HIPSPARSE})
-      find_package( hipsparse REQUIRED CONFIG NO_CMAKE_PATH )
-    else( )
-      find_package( hipsparse REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm )
-    endif( )
-  endif( )
-endif( )
+if(BUILD_WITH_SPARSE)
+  if(NOT TARGET hipsparse)
+    if(CUSTOM_HIPSPARSE)
+      set(ENV{hipsparse_DIR} ${CUSTOM_HIPSPARSE})
+      find_package(hipsparse REQUIRED CONFIG NO_CMAKE_PATH)
+    else()
+      find_package(hipsparse REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm)
+    endif()
+  endif()
+endif()
 
-add_executable( hipsolver-bench client.cpp )
+add_executable(hipsolver-bench client.cpp)
 
 # Internal header includes
-target_include_directories( hipsolver-bench
+target_include_directories(hipsolver-bench
   PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
 )
 
 # External header includes included as system files
-target_include_directories( hipsolver-bench
+target_include_directories(hipsolver-bench
   SYSTEM PRIVATE
     $<BUILD_INTERFACE:${CBLAS_INCLUDE_DIRS}>
     $<BUILD_INTERFACE:${HIP_INCLUDE_DIRS}>
 )
 
-target_link_libraries( hipsolver-bench PRIVATE
+target_link_libraries(hipsolver-bench PRIVATE
   ${LAPACK_LIBRARIES}
   hipsolver-common
   clients-common
   roc::hipsolver
 )
-if( BUILD_WITH_SPARSE )
+if(BUILD_WITH_SPARSE)
   set_source_files_properties(client.cpp
     PROPERTIES
       COMPILE_DEFINITIONS HAVE_HIPSPARSE
   )
-  target_link_libraries( hipsolver-bench PRIVATE roc::hipsparse )
-endif( )
-if( UNIX )
-  target_link_libraries( hipsolver-bench PRIVATE hipsolver_fortran_client )
-endif( )
+  target_link_libraries(hipsolver-bench PRIVATE roc::hipsparse)
+endif()
+if(BUILD_FORTRAN_BINDINGS)
+  target_link_libraries(hipsolver-bench PRIVATE hipsolver_fortran_client)
+endif()
 
-add_armor_flags( hipsolver-bench "${ARMOR_LEVEL}" )
+add_armor_flags(hipsolver-bench "${ARMOR_LEVEL}")
 
-if( NOT USE_CUDA )
-  target_link_libraries( hipsolver-bench PRIVATE hip::host )
+if(NOT USE_CUDA)
+  target_link_libraries(hipsolver-bench PRIVATE hip::host)
 
-  if( CUSTOM_TARGET )
-    target_link_libraries( hipsolver-bench PRIVATE hip::${CUSTOM_TARGET} )
-  endif( )
-
-  if( UNIX AND CMAKE_CXX_COMPILER MATCHES ".*/hipcc$" )
-    # hip-clang needs specific flag to turn on pthread and m
-    target_link_libraries( hipsolver-bench PRIVATE -lpthread -lm )
+  if(CUSTOM_TARGET)
+    target_link_libraries(hipsolver-bench PRIVATE hip::${CUSTOM_TARGET})
   endif()
-else( )
-  target_compile_definitions( hipsolver-bench PRIVATE __HIP_PLATFORM_NVIDIA__ )
 
-  target_include_directories( hipsolver-bench
+  if(UNIX AND CMAKE_CXX_COMPILER MATCHES ".*/hipcc$")
+    # hip-clang needs specific flag to turn on pthread and m
+    target_link_libraries(hipsolver-bench PRIVATE -lpthread -lm)
+  endif()
+else()
+  target_compile_definitions(hipsolver-bench PRIVATE __HIP_PLATFORM_NVIDIA__)
+
+  target_include_directories(hipsolver-bench
     PRIVATE
       $<BUILD_INTERFACE:${CUDA_INCLUDE_DIRS}>
   )
 
-  target_link_libraries( hipsolver-bench PRIVATE ${CUDA_LIBRARIES} Threads::Threads )
-endif( )
+  target_link_libraries(hipsolver-bench PRIVATE ${CUDA_LIBRARIES} Threads::Threads)
+endif()
 
-set_target_properties( hipsolver-bench PROPERTIES DEBUG_POSTFIX "-d" CXX_EXTENSIONS NO )
-set_target_properties( hipsolver-bench PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging" )
-#add_dependencies( hipsolver-bench hipsolver-bench-common )
+set_target_properties(hipsolver-bench PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging")
 
 rocm_install(TARGETS hipsolver-bench COMPONENT benchmarks)
 
-target_compile_definitions( hipsolver-bench PRIVATE HIPSOLVER_BENCH ROCM_USE_FLOAT16 )
+target_compile_definitions(hipsolver-bench PRIVATE HIPSOLVER_BENCH ROCM_USE_FLOAT16)

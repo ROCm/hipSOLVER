@@ -22,34 +22,34 @@
 
 # Consider removing this in the future
 # This should appear before the project command, because it does not use FORCE
-if( WIN32 )
-  set( CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/package" CACHE PATH "Install path prefix, prepended onto install directories" )
-else( )
-  set( CMAKE_INSTALL_PREFIX "/opt/rocm" CACHE PATH "Install path prefix, prepended onto install directories" )
-endif( )
+if(WIN32)
+  set(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/package" CACHE PATH "Install path prefix, prepended onto install directories")
+else()
+  set(CMAKE_INSTALL_PREFIX "/opt/rocm" CACHE PATH "Install path prefix, prepended onto install directories")
+endif()
 
 # This has to be initialized before the project() command appears
 # Set the default of CMAKE_BUILD_TYPE to be release, unless user specifies with -D.  MSVC_IDE does not use CMAKE_BUILD_TYPE
-if( NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT DEFINED CMAKE_BUILD_TYPE )
-  set( CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel." )
+if(NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT DEFINED CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel.")
 endif()
 
 # This project may compile dependencies for clients
-project( hipsolver-clients LANGUAGES CXX )
-if( UNIX )
-  enable_language( Fortran )
-endif( )
+project(hipsolver-clients LANGUAGES CXX)
+if(UNIX)
+  enable_language(Fortran)
+endif()
 
 # We use C++17 features, this will add compile option: -std=c++17
-set( CMAKE_CXX_STANDARD 17 )
+set(CMAKE_CXX_STANDARD 17)
 
-list( APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake )
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-include( build-options )
+include(build-options)
 
 # Linking lapack library requires fortran flags
-set( THREADS_PREFER_PTHREAD_FLAG ON )
-find_package( Threads REQUIRED )
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
 if(HIPSOLVER_FIND_PACKAGE_LAPACK_CONFIG)
   find_package(LAPACK 3.7 REQUIRED CONFIG)
 else()
@@ -63,23 +63,24 @@ if(NOT LAPACK_LIBRARIES)
   )
 endif()
 
-if( NOT TARGET hipsolver )
-  find_package( hipsolver REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm )
-endif( )
+if(NOT TARGET hipsolver)
+  find_package(hipsolver REQUIRED CONFIG PATHS ${ROCM_PATH} /opt/rocm)
+endif()
 
-if( UNIX )
+if(BUILD_FORTRAN_BINDINGS)
   set(hipsolver_f90_source_clients
     include/hipsolver_fortran.f90
   )
-endif( )
+endif()
 
-if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
-  if( UNIX )
+if(BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS)
+  if(BUILD_FORTRAN_BINDINGS)
     add_library(hipsolver_fortran_client STATIC ${hipsolver_f90_source_clients})
     add_dependencies(hipsolver_fortran_client hipsolver_fortran)
     include_directories(${CMAKE_BINARY_DIR}/include/hipsolver)
     include_directories(${CMAKE_BINARY_DIR}/include/hipsolver/internal)
-  endif( )
+    target_compile_definitions(hipsolver_fortran_client INTERFACE HAVE_HIPSOLVER_FORTRAN_CLIENT)
+  endif()
 
   add_library(clients-common INTERFACE)
   target_include_directories(clients-common INTERFACE
@@ -111,15 +112,15 @@ if( BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
     COMPONENT tests
   )
 
-  if( BUILD_CLIENTS_TESTS )
-    add_subdirectory( gtest )
-  endif( )
+  if(BUILD_CLIENTS_TESTS)
+    add_subdirectory(gtest)
+  endif()
 
-  if( BUILD_CLIENTS_BENCHMARKS )
-    add_subdirectory( benchmarks )
-  endif( )
-endif( )
+  if(BUILD_CLIENTS_BENCHMARKS)
+    add_subdirectory(benchmarks)
+  endif()
+endif()
 
-if( BUILD_CLIENTS_SAMPLES )
-  add_subdirectory( samples )
-endif( )
+if(BUILD_CLIENTS_SAMPLES)
+  add_subdirectory(samples)
+endif()

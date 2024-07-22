@@ -48,11 +48,15 @@ See :ref:`hipsolverEigType_t <eigtype_t>`.
 
 hipsolverEigRange_t
 --------------------
-.. doxygenenum:: hipsolverEigRange_t
+See :ref:`hipsolverEigRange_t <eigrange_t>`.
 
 hipsolverAlgMode_t
 --------------------
 .. doxygenenum:: hipsolverAlgMode_t
+
+hipsolverDeterministicMode_t
+-----------------------------
+See :ref:`hipsolverDeterministicMode_t <deterministicMode_t>`.
 
 hipsolverDnFunction_t
 ---------------------
