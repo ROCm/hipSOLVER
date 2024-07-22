@@ -69,7 +69,7 @@ protected:
     void SetUp() override
     {
         if(hipsolverSpCreate(nullptr) == HIPSOLVER_STATUS_NOT_SUPPORTED)
-            GTEST_SKIP() << "Sparse functionality is not enabled";
+            GTEST_SKIP() << "Sparse dependencies could not be loaded";
     }
     void TearDown() override
     {

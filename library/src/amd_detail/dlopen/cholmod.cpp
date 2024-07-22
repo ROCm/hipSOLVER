@@ -42,6 +42,10 @@ fp_cholmod_solve            g_cholmod_solve;
 static bool load_cholmod()
 {
 #ifdef _WIN32
+    // Library users will need to call SetErrorMode(SEM_FAILCRITICALERRORS) if
+    // they wish to avoid an error message box when this library is not found.
+    // The call is not done by hipSOLVER directly, as it is not thread-safe and
+    // will affect the global state of the program.
     void* handle = LoadLibraryW(L"cholmod.dll");
 #else
     void* handle = dlopen("libcholmod.so", RTLD_NOW | RTLD_LOCAL);
