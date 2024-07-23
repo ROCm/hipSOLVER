@@ -66,8 +66,13 @@ if(CHOLMOD_FOUND)
     add_library(SuiteSparse::CHOLMOD UNKNOWN IMPORTED)
 
     set_target_properties(SuiteSparse::CHOLMOD PROPERTIES
-      INTERFACE_LINK_LIBRARIES "${CHOLMOD_LIBRARIES}"
+      IMPORTED_LOCATION "${CHOLMOD_LIBRARY}"
       INTERFACE_INCLUDE_DIRECTORIES "${CHOLMOD_INCLUDE_DIR}"
     )
+    if(TARGET SuiteSparse::SuiteSparse_config)
+      set_target_properties(SuiteSparse::CHOLMOD PROPERTIES
+        INTERFACE_LINK_LIBRARIES SuiteSparse::SuiteSparse_config
+      )
+    else()
   endif()
 endif()

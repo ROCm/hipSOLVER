@@ -60,7 +60,7 @@ if(SUITESPARSE_CONFIG_FOUND)
     add_library(SuiteSparse::SuiteSparseConfig UNKNOWN IMPORTED)
 
     set_target_properties(SuiteSparse::SuiteSparseConfig PROPERTIES
-      INTERFACE_LINK_LIBRARIES "${SUITESPARSE_CONFIG_LIBRARIES}"
+      IMPORTED_LOCATION "${SUITESPARSE_CONFIG_LIBRARY}"
     )
     set_target_properties(SuiteSparse::SuiteSparseConfig PROPERTIES
       INTERFACE_INCLUDE_DIRECTORIES "${SUITESPARSE_CONFIG_INCLUDE_DIR}"
