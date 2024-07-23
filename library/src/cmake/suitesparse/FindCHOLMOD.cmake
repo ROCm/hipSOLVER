@@ -73,6 +73,6 @@ if(CHOLMOD_FOUND)
       set_target_properties(SuiteSparse::CHOLMOD PROPERTIES
         INTERFACE_LINK_LIBRARIES SuiteSparse::SuiteSparse_config
       )
-    else()
+    endif()
   endif()
 endif()
