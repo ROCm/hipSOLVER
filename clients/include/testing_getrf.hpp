@@ -585,11 +585,11 @@ void testing_getrf(Arguments& argus)
         // host_strided_batch_vector<I>     hIpivRes(size_PRes, 1, stPRes, bc);
         // host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
         // host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
-        // host_strided_batch_vector<T>     hWork(size_hW, 1, size_hW, 1);
+        // host_strided_batch_vector<T>     hWork(size_hW, 1, size_hW, 1); // size_hW accounts for bc
         // device_batch_vector<T>           dA(size_A, 1, bc);
         // device_strided_batch_vector<I>   dIpiv(size_P, 1, stP, bc);
         // device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        // device_strided_batch_vector<T>   dWork(size_dW, 1, size_dW, 1);
+        // device_strided_batch_vector<T>   dWork(size_dW, 1, size_dW, 1); // size_dW accounts for bc
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
         // CHECK_HIP_ERROR(dInfo.memcheck());
@@ -658,11 +658,11 @@ void testing_getrf(Arguments& argus)
         host_strided_batch_vector<I>     hIpivRes(size_PRes, 1, stPRes, bc);
         host_strided_batch_vector<int>   hInfo(1, 1, 1, bc);
         host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
-        host_strided_batch_vector<T>     hWork(size_hW, 1, size_hW, 1);
+        host_strided_batch_vector<T>     hWork(size_hW, 1, size_hW, 1); // size_hW accounts for bc
         device_strided_batch_vector<T>   dA(size_A, 1, stA, bc);
         device_strided_batch_vector<I>   dIpiv(size_P, 1, stP, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        device_strided_batch_vector<T>   dWork(size_dW, 1, size_dW, 1);
+        device_strided_batch_vector<T>   dWork(size_dW, 1, size_dW, 1); // size_dW accounts for bc
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());

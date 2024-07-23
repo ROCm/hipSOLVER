@@ -376,7 +376,7 @@ void testing_potri(Arguments& argus)
         // host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         // device_batch_vector<T>           dA(size_A, 1, bc);
         // device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
+        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1); // size_W accounts for bc
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
         // CHECK_HIP_ERROR(dInfo.memcheck());
@@ -430,7 +430,7 @@ void testing_potri(Arguments& argus)
         host_strided_batch_vector<int>   hInfoRes(1, 1, 1, bc);
         device_strided_batch_vector<T>   dA(size_A, 1, stA, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1); // size_W accounts for bc
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         CHECK_HIP_ERROR(dInfo.memcheck());

@@ -436,7 +436,7 @@ void testing_geqrf(Arguments& argus)
         // device_batch_vector<T>           dA(size_A, 1, bc);
         // device_strided_batch_vector<T>   dIpiv(size_P, 1, stP, bc);
         // device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
+        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1); // size_W accounts for bc
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
         // if(size_P)
@@ -500,7 +500,7 @@ void testing_geqrf(Arguments& argus)
         device_strided_batch_vector<T>   dA(size_A, 1, stA, bc);
         device_strided_batch_vector<T>   dIpiv(size_P, 1, stP, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1); // size_W accounts for bc
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         if(size_P)

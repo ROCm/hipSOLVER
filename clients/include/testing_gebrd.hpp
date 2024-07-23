@@ -901,7 +901,7 @@ void testing_gebrd(Arguments& argus)
         // device_strided_batch_vector<T>   dTauq(size_Q, 1, stQ, bc);
         // device_strided_batch_vector<T>   dTaup(size_P, 1, stP, bc);
         // device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
+        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1); // size_W accounts for bc
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
         // if(size_D)
@@ -995,7 +995,7 @@ void testing_gebrd(Arguments& argus)
         device_strided_batch_vector<T>   dTauq(size_Q, 1, stQ, bc);
         device_strided_batch_vector<T>   dTaup(size_P, 1, stP, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1); // size_W accounts for bc
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         if(size_D)

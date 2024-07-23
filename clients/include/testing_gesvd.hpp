@@ -1089,7 +1089,7 @@ void testing_gesvd(Arguments& argus)
     device_strided_batch_vector<int> dinfo(1, 1, 1, bc);
     device_strided_batch_vector<T>   dVT(size_VT, 1, stVT, bc);
     device_strided_batch_vector<T>   dUT(size_UT, 1, stUT, bc);
-    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
+    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1); // size_W accounts for bc
     if(size_VT)
         CHECK_HIP_ERROR(dVT.memcheck());
     if(size_UT)

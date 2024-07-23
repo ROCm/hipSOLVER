@@ -712,7 +712,7 @@ void testing_syevj_heevj(Arguments& argus)
     // device
     device_strided_batch_vector<S>   dD(size_D, 1, stD, bc);
     device_strided_batch_vector<int> dinfo(1, 1, 1, bc);
-    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
+    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1); // size_W accounts for bc
     if(size_D)
         CHECK_HIP_ERROR(dD.memcheck());
     CHECK_HIP_ERROR(dinfo.memcheck());

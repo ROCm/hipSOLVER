@@ -787,7 +787,7 @@ void testing_sytrd_hetrd(Arguments& argus)
     device_strided_batch_vector<S>   dE(size_E, 1, stE, bc);
     device_strided_batch_vector<T>   dTau(size_tau, 1, stP, bc);
     device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1);
+    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1); // size_W accounts for bc
     if(size_D)
         CHECK_HIP_ERROR(dD.memcheck());
     if(size_E)
