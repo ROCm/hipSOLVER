@@ -54,7 +54,7 @@ function display_help()
   echo "    [--static] Create static library instead of shared library"
   echo "    [--codecoverage] Build with code coverage profiling enabled, excluding release mode."
   echo "    [--address-sanitizer] Build with address sanitizer enabled. Uses hipcc to compile"
-  echo "    [--embed-sparse] Build with sparse functionality enabled at build time."
+  echo "    [--sparse] Build with sparse functionality enabled at build time."
   echo "    [--no-sparse] Build with sparse functionality tests disabled."
   echo "    [--docs] (experimental) Pass this flag to build the documentation from source."
   echo "    [--cmake-arg] Forward the given argument to CMake when configuring the build"
@@ -385,7 +385,7 @@ declare -a cmake_client_options
 # check if we have a modern version of getopt that can handle whitespace and long parameters
 getopt -T
 if [[ $? -eq 4 ]]; then
-  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,rocsparse:,rocsparse-path:,hipsparse-path:,custom-target:,docs,address-sanitizer,embed-sparse,no-sparse,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
+  GETOPT_PARSE=$(getopt --name "${0}" --longoptions help,install,codecoverage,clients,no-solver,dependencies,debug,relwithdebinfo,hip-clang,no-hip-clang,compiler:,cuda,use-cuda,cudapath:,static,cmakepp,relocatable:,rocm-dev:,rocblas:,rocblas-path:,hipblas-path:,rocsolver:,rocsolver-path:,rocsparse:,rocsparse-path:,hipsparse-path:,custom-target:,docs,address-sanitizer,sparse,no-sparse,cmake-arg: --options rhicndgkp:v:b:s: -- "$@")
 else
   echo "Need a new version of getopt"
   exit 1
@@ -452,7 +452,7 @@ while true; do
         build_address_sanitizer=true
         compiler=hipcc
         shift ;;
-    --embed-sparse)
+    --sparse)
         build_sparse=true
         shift ;;
     --no-sparse)
