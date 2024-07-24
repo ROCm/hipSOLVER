@@ -112,9 +112,10 @@ template <testAPI_t API>
 class ORMQR_UNMQR : public ::TestWithParam<ormqr_tuple>
 {
 protected:
-    ORMQR_UNMQR() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <typename T>
     void run_tests()

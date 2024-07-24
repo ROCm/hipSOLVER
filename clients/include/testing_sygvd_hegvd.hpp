@@ -248,7 +248,7 @@ void testing_sygvd_hegvd_bad_arg()
         //                                  ldb,
         //                                  dD.data(),
         //                                  &size_W);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -286,7 +286,7 @@ void testing_sygvd_hegvd_bad_arg()
         int size_W;
         hipsolver_sygvd_hegvd_bufferSize(
             API, handle, itype, evect, uplo, n, dA.data(), lda, dB.data(), ldb, dD.data(), &size_W);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -879,7 +879,7 @@ void testing_sygvd_hegvd(Arguments& argus)
         // device_batch_vector<T>           dB(size_B, 1, bc);
         // device_strided_batch_vector<S>   dD(size_D, 1, stD, bc);
         // device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
+        // device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1); // size_W accounts for bc
         // if(size_A)
         //     CHECK_HIP_ERROR(dA.memcheck());
         // if(size_B)
@@ -963,7 +963,7 @@ void testing_sygvd_hegvd(Arguments& argus)
         device_strided_batch_vector<T>   dB(size_B, 1, stB, bc);
         device_strided_batch_vector<S>   dD(size_D, 1, stD, bc);
         device_strided_batch_vector<int> dInfo(1, 1, 1, bc);
-        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
+        device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1); // size_W accounts for bc
         if(size_A)
             CHECK_HIP_ERROR(dA.memcheck());
         if(size_B)

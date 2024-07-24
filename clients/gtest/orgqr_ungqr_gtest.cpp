@@ -89,9 +89,10 @@ template <testAPI_t API>
 class ORGQR_UNGQR : public ::TestWithParam<orgqr_tuple>
 {
 protected:
-    ORGQR_UNGQR() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <typename T>
     void run_tests()

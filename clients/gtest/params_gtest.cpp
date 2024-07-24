@@ -30,9 +30,10 @@ using ::testing::UnitTest;
 class checkin_misc_PARAMS : public ::testing::Test
 {
 protected:
-    checkin_misc_PARAMS() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 };
 
 TEST_F(checkin_misc_PARAMS, normal_execution)

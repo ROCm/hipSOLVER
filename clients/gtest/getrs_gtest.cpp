@@ -104,9 +104,10 @@ template <testAPI_t API, typename I, typename SIZE>
 class GETRS_BASE : public ::TestWithParam<getrs_tuple>
 {
 protected:
-    GETRS_BASE() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <bool BATCHED, bool STRIDED, typename T>
     void run_tests()

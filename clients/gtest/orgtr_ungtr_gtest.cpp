@@ -73,9 +73,10 @@ template <testAPI_t API>
 class ORGTR_UNGTR : public ::TestWithParam<orgtr_tuple>
 {
 protected:
-    ORGTR_UNGTR() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <typename T>
     void run_tests()

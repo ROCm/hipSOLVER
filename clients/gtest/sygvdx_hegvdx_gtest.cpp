@@ -99,9 +99,10 @@ template <testAPI_t API>
 class SYGVDX_HEGVDX : public ::TestWithParam<sygvdx_tuple>
 {
 protected:
-    SYGVDX_HEGVDX() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <bool BATCHED, bool STRIDED, typename T>
     void run_tests()

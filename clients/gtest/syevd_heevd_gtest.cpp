@@ -79,9 +79,10 @@ template <testAPI_t API>
 class SYEVD_HEEVD : public ::TestWithParam<syevd_heevd_tuple>
 {
 protected:
-    SYEVD_HEEVD() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <bool BATCHED, bool STRIDED, typename T>
     void run_tests()
