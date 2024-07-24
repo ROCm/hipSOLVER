@@ -181,7 +181,7 @@ void testing_syevj_heevj_bad_arg()
         // int size_W;
         // hipsolver_syevj_heevj_bufferSize(
         //     API, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W, params, bc);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -214,7 +214,7 @@ void testing_syevj_heevj_bad_arg()
         int size_W;
         hipsolver_syevj_heevj_bufferSize(
             API, STRIDED, handle, evect, uplo, n, dA.data(), lda, dD.data(), &size_W, params, bc);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -712,7 +712,7 @@ void testing_syevj_heevj(Arguments& argus)
     // device
     device_strided_batch_vector<S>   dD(size_D, 1, stD, bc);
     device_strided_batch_vector<int> dinfo(1, 1, 1, bc);
-    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
+    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1); // size_W accounts for bc
     if(size_D)
         CHECK_HIP_ERROR(dD.memcheck());
     CHECK_HIP_ERROR(dinfo.memcheck());

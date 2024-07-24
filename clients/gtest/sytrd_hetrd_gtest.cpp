@@ -79,9 +79,10 @@ template <testAPI_t API>
 class SYTRD_HETRD : public ::TestWithParam<sytrd_tuple>
 {
 protected:
-    SYTRD_HETRD() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <bool BATCHED, bool STRIDED, typename T>
     void run_tests()
