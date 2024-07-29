@@ -281,7 +281,7 @@ void testing_gesvda_bad_arg()
         //                             stV,
         //                             &size_W,
         //                             bc);
-        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        // device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
         // if(size_W)
         //     CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -344,7 +344,7 @@ void testing_gesvda_bad_arg()
                                     stV,
                                     &size_W,
                                     bc);
-        device_strided_batch_vector<T> dWork(size_W, 1, size_W, bc);
+        device_strided_batch_vector<T> dWork(size_W, 1, size_W, 1);
         if(size_W)
             CHECK_HIP_ERROR(dWork.memcheck());
 
@@ -870,7 +870,7 @@ void testing_gesvda(Arguments& argus)
     device_strided_batch_vector<T>   dV(size_V, 1, stV, bc);
     device_strided_batch_vector<T>   dU(size_U, 1, stU, bc);
     device_strided_batch_vector<int> dinfo(1, 1, 1, bc);
-    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, bc);
+    device_strided_batch_vector<T>   dWork(size_W, 1, size_W, 1); // size_W accounts for bc
     if(size_S)
         CHECK_HIP_ERROR(dS.memcheck());
     if(size_V)

@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2022 Advanced Micro Devices, Inc.
+ * Copyright (C) 2022-2024 Advanced Micro Devices, Inc.
  *
  * ************************************************************************ */
 
@@ -80,9 +80,10 @@ template <testAPI_t API>
 class GESVDA_BASE : public ::TestWithParam<gesvda_tuple>
 {
 protected:
-    GESVDA_BASE() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <bool BATCHED, bool STRIDED, typename T>
     void run_tests()

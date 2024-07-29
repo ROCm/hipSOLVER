@@ -68,7 +68,7 @@ set(hipsolver_f90_source
   hipsolver_module.f90
 )
 
-if(UNIX)
+if(BUILD_FORTRAN_BINDINGS)
   # Create hipSOLVER Fortran module
   add_library(hipsolver_fortran ${hipsolver_f90_source})
 endif()
@@ -149,7 +149,14 @@ if(NOT USE_CUDA)
       list(APPEND static_depends PACKAGE rocsparse)
     endif()
 
-    target_link_libraries(hipsolver PRIVATE roc::rocsparse suitesparseconfig cholmod)
+    find_package(CHOLMOD QUIET)
+    if(NOT TARGET SuiteSparse::CHOLMOD)
+      # try again with the custom find modules for older versions of suitesparse
+      list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/suitesparse)
+      find_package(CHOLMOD REQUIRED)
+    endif()
+
+    target_link_libraries( hipsolver PRIVATE roc::rocsparse SuiteSparse::CHOLMOD)
     set_source_files_properties(${hipsolver_source}
       PROPERTIES
         COMPILE_DEFINITIONS HAVE_ROCSPARSE
@@ -183,7 +190,6 @@ target_include_directories(hipsolver
 )
 
 rocm_set_soversion(hipsolver ${hipsolver_SOVERSION})
-set_target_properties(hipsolver PROPERTIES CXX_EXTENSIONS NO)
 set_target_properties(hipsolver PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging")
 
 # Package that helps me set visibility for function names exported from shared library
@@ -232,7 +238,7 @@ else()
   )
 endif()
 
-if(UNIX)
+if(BUILD_FORTRAN_MODULE)
   # Exclude include folder for ASAN package
   if(NOT ENABLE_ASAN_PACKAGING)
     # Force installation of .f90 module files

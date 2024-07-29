@@ -52,13 +52,17 @@ hipsolverEigType_t rocblas2hip_eform(rocblas_eform_ eig);
 
 rocblas_erange_ hip2rocblas_erange(hipsolverEigRange_t range);
 
-hipsolverEigRange_t rocblas2hip_eerange(rocblas_erange_ range);
+hipsolverEigRange_t rocblas2hip_erange(rocblas_erange_ range);
 
 rocblas_storev_ hip2rocblas_side2storev(hipsolverSideMode_t side);
 
 rocblas_svect_ hip2rocblas_evect2svect(hipsolverEigMode_t eig, int econ);
 
 rocblas_svect_ hip2rocblas_evect2overwrite(hipsolverEigMode_t eig, int econ);
+
+rocblas_atomics_mode_ hip2rocblas_deterministic(hipsolverDeterministicMode_t mode);
+
+hipsolverDeterministicMode_t rocblas2hip_deterministic(rocblas_atomics_mode_ mode);
 
 rocblas_svect_ char2rocblas_svect(signed char svect);
 

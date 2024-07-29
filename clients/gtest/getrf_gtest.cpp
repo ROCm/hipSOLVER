@@ -95,9 +95,10 @@ template <testAPI_t API, bool NPVT, typename I, typename SIZE>
 class GETRF_BASE : public ::TestWithParam<getrf_tuple>
 {
 protected:
-    GETRF_BASE() {}
-    virtual void SetUp() {}
-    virtual void TearDown() {}
+    void TearDown() override
+    {
+        EXPECT_EQ(hipGetLastError(), hipSuccess);
+    }
 
     template <bool BATCHED, bool STRIDED, typename T>
     void run_tests()

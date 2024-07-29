@@ -22,9 +22,6 @@
 
 cmake_minimum_required(VERSION 3.7)
 
-# We use C++17 features, this will add compile option: -std=c++17
-set(CMAKE_CXX_STANDARD 17)
-
 # Consider removing this in the future
 # This should appear before the project command, because it does not use FORCE
 if(WIN32)
@@ -44,9 +41,10 @@ if(NOT DEFINED CMAKE_Fortran_COMPILER AND NOT DEFINED ENV{FC})
 endif()
 
 project(hipsolver LANGUAGES CXX)
-if(UNIX)
-  enable_language(Fortran)
-endif()
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # This finds the rocm-cmake project, and installs it if not found
 # rocm-cmake contains common cmake code for rocm projects to help setup and install
@@ -121,6 +119,11 @@ option(BUILD_WITH_SPARSE "Build hipSOLVER with sparse functionality available at
 option(BUILD_VERBOSE "Output additional build information" OFF)
 option(USE_CUDA "Look for CUDA and use that as a backend if found" OFF)
 option(HIPSOLVER_FIND_PACKAGE_LAPACK_CONFIG "Skip module mode search for LAPACK" ON)
+option(BUILD_FORTRAN_BINDINGS "Build the Fortran bindings" "${UNIX}")
+
+if(BUILD_FORTRAN_BINDINGS)
+  enable_language(Fortran)
+endif()
 
 add_library(hipsolver-common INTERFACE)
 target_compile_options(hipsolver-common INTERFACE

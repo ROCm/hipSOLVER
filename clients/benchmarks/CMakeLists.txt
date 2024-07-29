@@ -59,7 +59,7 @@ if(BUILD_HIPSPARSE_TESTS)
   )
   target_link_libraries(hipsolver-bench PRIVATE roc::hipsparse)
 endif()
-if(UNIX)
+if(BUILD_FORTRAN_BINDINGS)
   target_link_libraries(hipsolver-bench PRIVATE hipsolver_fortran_client)
 endif()
 
@@ -87,9 +87,7 @@ else()
   target_link_libraries(hipsolver-bench PRIVATE ${CUDA_LIBRARIES} Threads::Threads)
 endif()
 
-set_target_properties(hipsolver-bench PROPERTIES CXX_EXTENSIONS NO)
 set_target_properties(hipsolver-bench PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging")
-# add_dependencies(hipsolver-bench hipsolver-bench-common)
 
 rocm_install(TARGETS hipsolver-bench COMPONENT benchmarks)
 

@@ -83,6 +83,7 @@ set(hipsolverRf_test_source
 )
 
 set(others_test_source
+  determinism_gtest.cpp
   params_gtest.cpp
 )
 
@@ -120,7 +121,7 @@ if(BUILD_HIPSPARSE_TESTS)
   target_link_libraries(hipsolver-test PRIVATE roc::hipsparse)
   target_sources(hipsolver-test PRIVATE ${hipsolverSp_test_source})
 endif()
-if(UNIX)
+if(BUILD_FORTRAN_BINDINGS)
   target_link_libraries(hipsolver-test PRIVATE hipsolver_fortran_client)
   target_sources(hipsolver-test PRIVATE ${hipsolver_f90_source})
 endif()
@@ -147,7 +148,6 @@ else()
   target_link_libraries(hipsolver-test PRIVATE ${CUDA_LIBRARIES} Threads::Threads)
 endif()
 
-set_target_properties(hipsolver-test PROPERTIES CXX_EXTENSIONS NO)
 set_target_properties(hipsolver-test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/staging")
 
 rocm_install(TARGETS hipsolver-test COMPONENT tests)

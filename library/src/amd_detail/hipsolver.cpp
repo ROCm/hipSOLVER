@@ -607,6 +607,41 @@ catch(...)
     return hipsolver::exception2hip_status();
 }
 
+hipsolverStatus_t hipsolverSetDeterministicMode(hipsolverHandle_t            handle,
+                                                hipsolverDeterministicMode_t mode)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+
+    return hipsolver::rocblas2hip_status(rocblas_set_atomics_mode(
+        (rocblas_handle)handle, hipsolver::hip2rocblas_deterministic(mode)));
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverGetDeterministicMode(hipsolverHandle_t             handle,
+                                                hipsolverDeterministicMode_t* mode)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!mode)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    rocblas_atomics_mode dmode;
+    CHECK_ROCBLAS_ERROR(rocblas_get_atomics_mode((rocblas_handle)handle, &dmode));
+    *mode = hipsolver::rocblas2hip_deterministic(dmode);
+
+    return HIPSOLVER_STATUS_SUCCESS;
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
 /******************** GESVDJ PARAMS ********************/
 struct hipsolverGesvdjInfo
 {

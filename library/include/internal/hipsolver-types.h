@@ -126,6 +126,12 @@ typedef enum
     HIPSOLVER_EIG_RANGE_I   = 223,
 } hipsolverEigRange_t;
 
+typedef enum
+{
+    HIPSOLVER_DETERMINISTIC_RESULTS           = 241,
+    HIPSOLVER_ALLOW_NON_DETERMINISTIC_RESULTS = 242,
+} hipsolverDeterministicMode_t;
+
 // Aliases for hipBLAS enums
 
 /*! \brief Alias of hipblasOperation_t. HIPSOLVER_OP_N, HIPSOLVER_OP_T, and HIPSOLVER_OP_C
