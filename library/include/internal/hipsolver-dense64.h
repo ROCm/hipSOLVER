@@ -33,6 +33,36 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnSetAdvOptions(hipsolverDnParams_t 
                                                             hipsolverDnFunction_t func,
                                                             hipsolverAlgMode_t    alg);
 
+// geqrf
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXgeqrf_bufferSize(hipsolverDnHandle_t handle,
+                                                                hipsolverDnParams_t params,
+                                                                int64_t             m,
+                                                                int64_t             n,
+                                                                hipDataType         dataTypeA,
+                                                                const void*         A,
+                                                                int64_t             lda,
+                                                                hipDataType         dataTypeTau,
+                                                                const void*         tau,
+                                                                hipDataType         computeType,
+                                                                size_t*             lworkOnDevice,
+                                                                size_t*             lworkOnHost);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXgeqrf(hipsolverDnHandle_t handle,
+                                                     hipsolverDnParams_t params,
+                                                     int64_t             m,
+                                                     int64_t             n,
+                                                     hipDataType         dataTypeA,
+                                                     void*               A,
+                                                     int64_t             lda,
+                                                     hipDataType         dataTypeTau,
+                                                     const void*         tau,
+                                                     hipDataType         computeType,
+                                                     void*               workOnDevice,
+                                                     size_t              lworkOnDevice,
+                                                     void*               workOnHost,
+                                                     size_t              lworkOnHost,
+                                                     int*                devInfo);
+
 // getrf
 HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXgetrf_bufferSize(hipsolverDnHandle_t handle,
                                                                 hipsolverDnParams_t params,

@@ -77,6 +77,87 @@ catch(...)
     return hipsolver::exception2hip_status();
 }
 
+/******************** GEQRF ********************/
+hipsolverStatus_t hipsolverDnXgeqrf_bufferSize(hipsolverDnHandle_t handle,
+                                               hipsolverDnParams_t params,
+                                               int64_t             m,
+                                               int64_t             n,
+                                               hipDataType         dataTypeA,
+                                               const void*         A,
+                                               int64_t             lda,
+                                               hipDataType         dataTypeTau,
+                                               const void*         tau,
+                                               hipDataType         computeType,
+                                               size_t*             lworkOnDevice,
+                                               size_t*             lworkOnHost)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return hipsolver::cuda2hip_status(cusolverDnXgeqrf_bufferSize((cusolverDnHandle_t)handle,
+                                                                  (cusolverDnParams_t)params,
+                                                                  m,
+                                                                  n,
+                                                                  dataTypeA,
+                                                                  A,
+                                                                  lda,
+                                                                  dataTypeTau,
+                                                                  tau,
+                                                                  computeType,
+                                                                  lworkOnDevice,
+                                                                  lworkOnHost));
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnXgeqrf(hipsolverDnHandle_t handle,
+                                    hipsolverDnParams_t params,
+                                    int64_t             m,
+                                    int64_t             n,
+                                    hipDataType         dataTypeA,
+                                    void*               A,
+                                    int64_t             lda,
+                                    hipDataType         dataTypeTau,
+                                    const void*         tau,
+                                    hipDataType         computeType,
+                                    void*               workOnDevice,
+                                    size_t              lworkOnDevice,
+                                    void*               workOnHost,
+                                    size_t              lworkOnHost,
+                                    int*                devInfo)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return hipsolver::cuda2hip_status(cusolverDnXgeqrf((cusolverDnHandle_t)handle,
+                                                       (cusolverDnParams_t)params,
+                                                       m,
+                                                       n,
+                                                       dataTypeA,
+                                                       A,
+                                                       lda,
+                                                       dataTypeTau,
+                                                       tau,
+                                                       computeType,
+                                                       workOnDevice,
+                                                       lworkOnDevice,
+                                                       workOnHost,
+                                                       lworkOnHost,
+                                                       devInfo));
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
 /******************** GETRF ********************/
 hipsolverStatus_t hipsolverDnXgetrf_bufferSize(hipsolverDnHandle_t handle,
                                                hipsolverDnParams_t params,
