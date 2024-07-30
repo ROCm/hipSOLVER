@@ -133,6 +133,8 @@ Orthogonal factorizations
 
 hipsolverDn<type>geqrf_bufferSize()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXgeqrf_bufferSize
+   :outline:
 .. doxygenfunction:: hipsolverDnZgeqrf_bufferSize
    :outline:
 .. doxygenfunction:: hipsolverDnCgeqrf_bufferSize
@@ -145,6 +147,8 @@ hipsolverDn<type>geqrf_bufferSize()
 
 hipsolverDn<type>geqrf()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXgeqrf
+   :outline:
 .. doxygenfunction:: hipsolverDnZgeqrf
    :outline:
 .. doxygenfunction:: hipsolverDnCgeqrf
