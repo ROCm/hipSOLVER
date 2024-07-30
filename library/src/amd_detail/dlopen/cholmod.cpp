@@ -48,8 +48,26 @@ static bool load_cholmod()
     // will affect the global state of the program.
     void* handle = LoadLibraryW(L"cholmod.dll");
 #else
-    void* handle = dlopen("libcholmod.so", RTLD_NOW | RTLD_LOCAL);
+    void* handle = dlopen("libcholmod.so.5", RTLD_NOW | RTLD_LOCAL);
     char* err    = dlerror(); // clear errors
+
+    if(!handle)
+    {
+        handle = dlopen("libcholmod.so.4", RTLD_NOW | RTLD_LOCAL);
+        err    = dlerror(); // clear errors
+    }
+
+    if(!handle)
+    {
+        handle = dlopen("libcholmod.so.3", RTLD_NOW | RTLD_LOCAL);
+        err    = dlerror(); // clear errors
+    }
+
+    if(!handle)
+    {
+        handle = dlopen("libcholmod.so", RTLD_NOW | RTLD_LOCAL);
+        err    = dlerror(); // clear errors
+    }
 #ifndef NDEBUG
     if(!handle)
         std::cerr << "hipsolver: error loading libcholmod.so: " << err << std::endl;

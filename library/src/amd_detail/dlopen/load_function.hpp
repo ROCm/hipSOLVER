@@ -26,7 +26,7 @@
 #include <iostream>
 
 #ifdef _WIN32
-#include <libloaderapi.h>
+#include <windows.h>
 #else
 #include <dlfcn.h>
 #endif /* _WIN32 */
@@ -34,7 +34,7 @@
 HIPSOLVER_BEGIN_NAMESPACE
 
 template <typename Fn>
-static bool load_function(void* handle, const char* symbol, Fn& fn)
+bool load_function(void* handle, const char* symbol, Fn& fn)
 {
 #ifdef _WIN32
     fn       = (Fn)(GetProcAddress((HMODULE)handle, symbol));
