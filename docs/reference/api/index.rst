@@ -10,7 +10,7 @@ hipSOLVER regular API
 
 This document provides the method signatures for wrapper functions that are currently implemented in hipSOLVER.
 For a complete description of the functions' behavior and arguments, see the corresponding backend documentation
-at `cuSOLVER API <https://docs.nvidia.com/cuda/cusolver/>`_ and/or `rocSOLVER API <https://rocm.docs.amd.com/projects/rocSOLVER/en/latest/api/index.html>`_.
+at `cuSOLVER API <https://docs.nvidia.com/cuda/cusolver/>`_ and/or :doc:`rocSOLVER API <rocsolver:reference/intro>`.
 
 The hipSOLVER API is designed to be similar to the cuSOLVER and rocSOLVER interfaces, but it requires some minor adjustments to ensure
 the best performance out of both backends. Generally, this involves the addition of workspace parameters and some additional API methods.
