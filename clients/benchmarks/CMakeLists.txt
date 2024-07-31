@@ -20,7 +20,7 @@
 #
 # ########################################################################
 
-if(BUILD_WITH_SPARSE)
+if(BUILD_HIPSPARSE_TESTS)
   if(NOT TARGET hipsparse)
     if(CUSTOM_HIPSPARSE)
       set(ENV{hipsparse_DIR} ${CUSTOM_HIPSPARSE})
@@ -52,7 +52,7 @@ target_link_libraries(hipsolver-bench PRIVATE
   clients-common
   roc::hipsolver
 )
-if(BUILD_WITH_SPARSE)
+if(BUILD_HIPSPARSE_TESTS)
   set_source_files_properties(client.cpp
     PROPERTIES
       COMPILE_DEFINITIONS HAVE_HIPSPARSE

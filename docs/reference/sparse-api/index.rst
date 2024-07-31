@@ -18,6 +18,6 @@ regular API. Note that there are :ref:`some performance limitations <sparse_perf
 functionality required for optimal performance has been implemented yet.
 
   * :ref:`sparse_types`
-  * :ref:`sparse_helpers` 
+  * :ref:`sparse_helpers`
   * :ref:`sparse_sparsefunc`
 

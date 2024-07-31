@@ -246,7 +246,8 @@ user-provided and automatically allocated workspaces.
 
 Using rocSOLVER's in-place functions
 --------------------------------------
-The solvers `gesv` and `gels` in cuSOLVER are out-of-place in the sense that the solution vectors `X` do not overwrite the input matrix `B`. In rocSOLVER this is not the case; when `hipsolverXXgels` or `hipsolverXXgesv` call rocSOLVER, some data
+The solvers `gesv` and `gels` in cuSOLVER are out-of-place in the sense that the solution vectors `X` do not overwrite the input matrix `B`.
+In rocSOLVER this is not the case; when `hipsolverXXgels` or `hipsolverXXgesv` call rocSOLVER, some data
 movements must be done internally to restore `B` and copy the results back to `X`. These copies could introduce noticeable
 overhead depending on the size of the matrices. To avoid this potential problem, users can pass `X = B` to `hipsolverXXgels`
 or `hipsolverXXgesv` when using the rocSOLVER backend; in this case, no data movements will be required, and the solution

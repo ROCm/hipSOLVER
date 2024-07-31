@@ -11,6 +11,10 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 ### Optimized
 ### Changed
 - Binaries in debug builds no longer have a "-d" suffix.
+- Changed rocSPARSE and SuiteSparse to be run-time dependencies by default. The `BUILD_WITH_SPARSE` CMake option can still be used
+  to convert them into build-time dependencies (now off by default).
+- The --no-sparse option of the install script now only affects the hipSOLVER clients and their dependency on hipSPARSE. Use the
+  `BUILD_HIPSPARSE_TESTS` CMake option to enable tests for the hipsolverSp API (on by default).
 
 ### Deprecated
 ### Removed
