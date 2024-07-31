@@ -15,9 +15,6 @@ Download pre-built packages from :doc:`ROCm's package servers <rocm-install-on-l
 
 * ``sudo apt update && sudo apt install hipsolver``
 
-.. note::
-    The pre-built packages depend on the third-party library SuiteSparse, which must be installed on the system prior to installing hipSOLVER. SuiteSparse can be installed using the package manager of most distros.
-
 
 Build & install library using script (Ubuntu only)
 ===================================================
@@ -28,7 +25,6 @@ so it may prompt you for a password.
 * ``./install.sh -id`` --- build library, build dependencies, and install (-d flag only needs to be passed once on a system).
 * ``./install.sh -ic`` --- build library, build clients (tests, benchmarks, and samples), and install.
 * ``./install.sh --cuda`` --- build library on a CUDA-enabled machine, with cuSOLVER as the backend.
-* ``./install.sh --no-sparse`` --- build library without hipsolverSp functionality, with rocSOLVER as the backend.
 
 To see more options, use the help option of the install script.
 
@@ -64,17 +60,18 @@ The rocSOLVER backend has the following dependencies:
 
 1. `rocSOLVER <https://github.com/ROCmSoftwarePlatform/rocSOLVER>`_
 2. `rocBLAS <https://github.com/ROCmSoftwarePlatform/rocBLAS>`_
-3. `rocSPARSE <https://github.com/ROCmSoftwarePlatform/rocSPARSE>`_ (optional, required by default)
-4. `SuiteSparse <https://github.com/DrTimothyAldenDavis/SuiteSparse>`_ modules CHOLMOD and SuiteSparse_config (optional, required by default)
+3. `rocSPARSE <https://github.com/ROCmSoftwarePlatform/rocSPARSE>`_ (optional)
+4. `SuiteSparse <https://github.com/DrTimothyAldenDavis/SuiteSparse>`_ modules CHOLMOD and SuiteSparse_config (optional)
 
 rocSOLVER itself depends on rocBLAS and rocSPARSE, therefore all three libraries should be present with a standard rocSOLVER installation. For more information
 about building and installing rocSOLVER, refer to the :doc:`rocSOLVER documentation <rocsolver:installation/installlinux>`.
 
 SuiteSparse is a third-party library, and can be installed using the package managers of most distros. Together with rocSPARSE, it is used to provide
-functionality for the hipsolverSp API. If only hipsolverDn and/or hipsolverRf are needed, these dependencies can be ignored by setting the ``BUILD_WITH_SPARSE``
-option to ``OFF``.
+functionality for the hipsolverSp API. By default, both libraries are run-time dependencies and will be dynamically loaded at run-time by dlopen if they are
+present on the system. If the ``BUILD_WITH_SPARSE`` option is set to ``ON``, these will instead become build-time dependencies and must be present on the
+system in order to build hipSOLVER.
 
-* ``DBUILD_WITH_SPARSE=OFF``
+* ``DBUILD_WITH_SPARSE=ON``
 
 
 Build library + tests + benchmarks + samples manually
@@ -104,11 +101,11 @@ the ``CMAKE_PREFIX_PATH`` definition. The following is a sequence of steps to bu
     make -j$(nproc) install
 
 hipBLAS is only required if the ``BUILD_HIPBLAS_TESTS`` option is set to ``ON``, and is used to ensure compatibility between the hipblas enums defined
-separately by hipBLAS and hipSOLVER. hipSPARSE is required by default but can be ignored if the ``BUILD_WITH_SPARSE`` option is set to ``OFF``, and is used
+separately by hipBLAS and hipSOLVER. hipSPARSE is required by default but can be ignored if the ``BUILD_HIPSPARSE_TESTS`` option is set to ``OFF``, and is used
 to create objects required by tests for the hipsolverSp API.
 
 * ``DBUILD_HIPBLAS_TESTS=ON``
-* ``DBUILD_WITH_SPARSE=OFF``
+* ``DBUILD_HIPSPARSE_TESTS=OFF``
 
 Both libraries can be installed similarly to hipSOLVER. For example, the install scripts for hipBLAS and hipSPARSE can each be invoked to build and
 install the respective library via:
