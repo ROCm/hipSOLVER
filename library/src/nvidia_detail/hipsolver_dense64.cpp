@@ -192,4 +192,69 @@ catch(...)
     return hipsolver::exception2hip_status();
 }
 
+/******************** POTRF ********************/
+hipsolverStatus_t hipsolverDnXpotrf_bufferSize(hipsolverDnHandle_t handle,
+                                               hipsolverDnParams_t params,
+                                               hipsolverFillMode_t uplo,
+                                               int64_t             n,
+                                               hipDataType         dataTypeA,
+                                               const void*         A,
+                                               int64_t             lda,
+                                               hipDataType         computeType,
+                                               size_t*             lworkOnDevice,
+                                               size_t*             lworkOnHost)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return hipsolver::cuda2hip_status(cusolverDnXpotrf_bufferSize(
+        handle, params, uplo, n, dataTypeA, A, lda, computeType, lworkOnDevice, lworkOnHost));
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverDnXpotrf(hipsolverDnHandle_t handle,
+                                    hipsolverDnParams_t params,
+                                    hipsolverFillMode_t uplo,
+                                    int64_t             n,
+                                    hipDataType         dataTypeA,
+                                    void*               A,
+                                    int64_t             lda,
+                                    hipDataType         computeType,
+                                    void*               workOnDevice,
+                                    size_t              lworkOnDevice,
+                                    void*               workOnHost,
+                                    size_t              lworkOnHost,
+                                    int*                info)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return hipsolver::cuda2hip_status(cusolverDnXpotrf(handle,
+                                                       params,
+                                                       uplo,
+                                                       n,
+                                                       dataTypeA,
+                                                       A,
+                                                       lda,
+                                                       computeType,
+                                                       workOnDevice,
+                                                       lworkOnDevice,
+                                                       workOnHost,
+                                                       lworkOnHost,
+                                                       info));
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
 } //extern C
