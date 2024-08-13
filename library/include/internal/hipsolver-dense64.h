@@ -102,18 +102,18 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXpotrf(hipsolverDnHandle_t handle,
                                                      int*                info);
 
 // potrs
-hipsolverStatus_t hipsolverDnXpotrs(hipsolverDnHandle_t handle,
-                                    hipsolverDnParams_t params,
-                                    hipsolverFillMode_t uplo,
-                                    int64_t             n,
-                                    int64_t             nrhs,
-                                    hipDataType         dataTypeA,
-                                    const void*         A,
-                                    int64_t             lda,
-                                    hipDataType         dataTypeB,
-                                    void*               B,
-                                    int64_t             ldb,
-                                    int*                info);
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXpotrs(hipsolverDnHandle_t handle,
+                                                     hipsolverDnParams_t params,
+                                                     hipsolverFillMode_t uplo,
+                                                     int64_t             n,
+                                                     int64_t             nrhs,
+                                                     hipDataType         dataTypeA,
+                                                     const void*         A,
+                                                     int64_t             lda,
+                                                     hipDataType         dataTypeB,
+                                                     void*               B,
+                                                     int64_t             ldb,
+                                                     int*                info);
 
 #ifdef __cplusplus
 }

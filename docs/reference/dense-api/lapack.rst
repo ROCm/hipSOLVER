@@ -34,6 +34,8 @@ Triangular factorizations
 
 hipsolverDn<type>potrf_bufferSize()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXpotrf_bufferSize
+   :outline:
 .. doxygenfunction:: hipsolverDnZpotrf_bufferSize
    :outline:
 .. doxygenfunction:: hipsolverDnCpotrf_bufferSize
@@ -46,6 +48,8 @@ hipsolverDn<type>potrf_bufferSize()
 
 hipsolverDn<type>potrf()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXpotrf
+   :outline:
 .. doxygenfunction:: hipsolverDnZpotrf
    :outline:
 .. doxygenfunction:: hipsolverDnCpotrf
@@ -259,6 +263,8 @@ hipsolverDn<type>potri()
 
 hipsolverDn<type>potrs()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXpotrs
+   :outline:
 .. doxygenfunction:: hipsolverDnZpotrs
    :outline:
 .. doxygenfunction:: hipsolverDnCpotrs

@@ -660,4 +660,76 @@ catch(...)
     return hipsolver::exception2hip_status();
 }
 
+/******************** POTRS ********************/
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXpotrs(hipsolverDnHandle_t handle,
+                                                     hipsolverDnParams_t params,
+                                                     hipsolverFillMode_t uplo,
+                                                     int64_t             n,
+                                                     int64_t             nrhs,
+                                                     hipDataType         dataTypeA,
+                                                     const void*         A,
+                                                     int64_t             lda,
+                                                     hipDataType         dataTypeB,
+                                                     void*               B,
+                                                     int64_t             ldb,
+                                                     int*                info)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    if(dataTypeA == HIP_R_32F && dataTypeB == HIP_R_32F)
+    {
+        return hipsolver::rocblas2hip_status(rocsolver_spotrs((rocblas_handle)handle,
+                                                              hipsolver::hip2rocblas_fill(uplo),
+                                                              n,
+                                                              nrhs,
+                                                              (float*)A,
+                                                              lda,
+                                                              (float*)B,
+                                                              ldb));
+    }
+    else if(dataTypeA == HIP_R_64F && dataTypeB == HIP_R_64F)
+    {
+        return hipsolver::rocblas2hip_status(rocsolver_dpotrs((rocblas_handle)handle,
+                                                              hipsolver::hip2rocblas_fill(uplo),
+                                                              n,
+                                                              nrhs,
+                                                              (double*)A,
+                                                              lda,
+                                                              (double*)B,
+                                                              ldb));
+    }
+    else if(dataTypeA == HIP_C_32F && dataTypeB == HIP_C_32F)
+    {
+        return hipsolver::rocblas2hip_status(rocsolver_cpotrs((rocblas_handle)handle,
+                                                              hipsolver::hip2rocblas_fill(uplo),
+                                                              n,
+                                                              nrhs,
+                                                              (rocblas_float_complex*)A,
+                                                              lda,
+                                                              (rocblas_float_complex*)B,
+                                                              ldb));
+    }
+    else if(dataTypeA == HIP_C_64F && dataTypeB == HIP_C_64F)
+    {
+        return hipsolver::rocblas2hip_status(rocsolver_zpotrs((rocblas_handle)handle,
+                                                              hipsolver::hip2rocblas_fill(uplo),
+                                                              n,
+                                                              nrhs,
+                                                              (rocblas_double_complex*)A,
+                                                              lda,
+                                                              (rocblas_double_complex*)B,
+                                                              ldb));
+    }
+    else
+        return HIPSOLVER_STATUS_INVALID_ENUM;
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
 } //extern C
