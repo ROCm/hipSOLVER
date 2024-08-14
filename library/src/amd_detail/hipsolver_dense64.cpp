@@ -105,6 +105,34 @@ rocblas_status rocsolver_zgetrf_npvt_info32(rocblas_handle          handle,
                                             const int64_t           lda,
                                             rocblas_int*            info);
 
+rocblas_status rocsolver_spotrf_info32(rocblas_handle     handle,
+                                       const rocblas_fill uplo,
+                                       const int64_t      n,
+                                       float*             A,
+                                       const int64_t      lda,
+                                       rocblas_int*       info);
+
+rocblas_status rocsolver_dpotrf_info32(rocblas_handle     handle,
+                                       const rocblas_fill uplo,
+                                       const int64_t      n,
+                                       double*            A,
+                                       const int64_t      lda,
+                                       rocblas_int*       info);
+
+rocblas_status rocsolver_cpotrf_info32(rocblas_handle         handle,
+                                       const rocblas_fill     uplo,
+                                       const int64_t          n,
+                                       rocblas_float_complex* A,
+                                       const int64_t          lda,
+                                       rocblas_int*           info);
+
+rocblas_status rocsolver_zpotrf_info32(rocblas_handle          handle,
+                                       const rocblas_fill      uplo,
+                                       const int64_t           n,
+                                       rocblas_double_complex* A,
+                                       const int64_t           lda,
+                                       rocblas_int*            info);
+
 /******************** PARAMS ********************/
 struct hipsolverParams
 {
@@ -629,6 +657,210 @@ try
                                 const_cast<int64_t*>(devIpiv),
                                 (rocblas_double_complex*)B,
                                 ldb));
+    }
+    else
+        return HIPSOLVER_STATUS_INVALID_ENUM;
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
+/******************** POTRF ********************/
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXpotrf_bufferSize(hipsolverDnHandle_t handle,
+                                                                hipsolverDnParams_t params,
+                                                                hipsolverFillMode_t uplo,
+                                                                int64_t             n,
+                                                                hipDataType         dataTypeA,
+                                                                const void*         A,
+                                                                int64_t             lda,
+                                                                hipDataType         computeType,
+                                                                size_t*             lworkOnDevice,
+                                                                size_t*             lworkOnHost)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!lworkOnDevice || !lworkOnHost)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    *lworkOnDevice = 0;
+    *lworkOnHost   = 0;
+
+    rocblas_start_device_memory_size_query((rocblas_handle)handle);
+    hipsolverStatus_t status;
+
+    if(dataTypeA == HIP_R_32F && computeType == HIP_R_32F)
+    {
+        status = hipsolver::rocblas2hip_status(rocsolver_spotrf_64(
+            (rocblas_handle)handle, hipsolver::hip2rocblas_fill(uplo), n, nullptr, lda, nullptr));
+    }
+    else if(dataTypeA == HIP_R_64F && computeType == HIP_R_64F)
+    {
+        status = hipsolver::rocblas2hip_status(rocsolver_dpotrf_64(
+            (rocblas_handle)handle, hipsolver::hip2rocblas_fill(uplo), n, nullptr, lda, nullptr));
+    }
+    else if(dataTypeA == HIP_C_32F && computeType == HIP_C_32F)
+    {
+        status = hipsolver::rocblas2hip_status(rocsolver_cpotrf_64(
+            (rocblas_handle)handle, hipsolver::hip2rocblas_fill(uplo), n, nullptr, lda, nullptr));
+    }
+    else if(dataTypeA == HIP_C_64F && computeType == HIP_C_64F)
+    {
+        status = hipsolver::rocblas2hip_status(rocsolver_zpotrf_64(
+            (rocblas_handle)handle, hipsolver::hip2rocblas_fill(uplo), n, nullptr, lda, nullptr));
+    }
+    else
+        return HIPSOLVER_STATUS_INVALID_ENUM;
+    rocblas_stop_device_memory_size_query((rocblas_handle)handle, lworkOnDevice);
+    return status;
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXpotrf(hipsolverDnHandle_t handle,
+                                                     hipsolverDnParams_t params,
+                                                     hipsolverFillMode_t uplo,
+                                                     int64_t             n,
+                                                     hipDataType         dataTypeA,
+                                                     void*               A,
+                                                     int64_t             lda,
+                                                     hipDataType         computeType,
+                                                     void*               workOnDevice,
+                                                     size_t              lworkOnDevice,
+                                                     void*               workOnHost,
+                                                     size_t              lworkOnHost,
+                                                     int*                info)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    if(workOnDevice && lworkOnDevice)
+        CHECK_ROCBLAS_ERROR(
+            rocblas_set_workspace((rocblas_handle)handle, workOnDevice, lworkOnDevice));
+    else
+    {
+        CHECK_HIPSOLVER_ERROR(hipsolverDnXpotrf_bufferSize((rocblas_handle)handle,
+                                                           params,
+                                                           uplo,
+                                                           n,
+                                                           dataTypeA,
+                                                           A,
+                                                           lda,
+                                                           computeType,
+                                                           &lworkOnDevice,
+                                                           &lworkOnHost));
+        CHECK_ROCBLAS_ERROR(hipsolverManageWorkspace((rocblas_handle)handle, lworkOnDevice));
+    }
+
+    if(dataTypeA == HIP_R_32F && computeType == HIP_R_32F)
+    {
+        return hipsolver::rocblas2hip_status(rocsolver_spotrf_info32(
+            (rocblas_handle)handle, hipsolver::hip2rocblas_fill(uplo), n, (float*)A, lda, info));
+    }
+    else if(dataTypeA == HIP_R_64F && computeType == HIP_R_64F)
+    {
+        return hipsolver::rocblas2hip_status(rocsolver_dpotrf_info32(
+            (rocblas_handle)handle, hipsolver::hip2rocblas_fill(uplo), n, (double*)A, lda, info));
+    }
+    else if(dataTypeA == HIP_C_32F && computeType == HIP_C_32F)
+    {
+        return hipsolver::rocblas2hip_status(
+            rocsolver_cpotrf_info32((rocblas_handle)handle,
+                                    hipsolver::hip2rocblas_fill(uplo),
+                                    n,
+                                    (rocblas_float_complex*)A,
+                                    lda,
+                                    info));
+    }
+    else if(dataTypeA == HIP_C_64F && computeType == HIP_C_64F)
+    {
+        return hipsolver::rocblas2hip_status(
+            rocsolver_zpotrf_info32((rocblas_handle)handle,
+                                    hipsolver::hip2rocblas_fill(uplo),
+                                    n,
+                                    (rocblas_double_complex*)A,
+                                    lda,
+                                    info));
+    }
+    else
+        return HIPSOLVER_STATUS_INVALID_ENUM;
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
+/******************** POTRS ********************/
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverDnXpotrs(hipsolverDnHandle_t handle,
+                                                     hipsolverDnParams_t params,
+                                                     hipsolverFillMode_t uplo,
+                                                     int64_t             n,
+                                                     int64_t             nrhs,
+                                                     hipDataType         dataTypeA,
+                                                     const void*         A,
+                                                     int64_t             lda,
+                                                     hipDataType         dataTypeB,
+                                                     void*               B,
+                                                     int64_t             ldb,
+                                                     int*                info)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!params)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    if(dataTypeA == HIP_R_32F && dataTypeB == HIP_R_32F)
+    {
+        return hipsolver::rocblas2hip_status(rocsolver_spotrs((rocblas_handle)handle,
+                                                              hipsolver::hip2rocblas_fill(uplo),
+                                                              n,
+                                                              nrhs,
+                                                              (float*)A,
+                                                              lda,
+                                                              (float*)B,
+                                                              ldb));
+    }
+    else if(dataTypeA == HIP_R_64F && dataTypeB == HIP_R_64F)
+    {
+        return hipsolver::rocblas2hip_status(rocsolver_dpotrs((rocblas_handle)handle,
+                                                              hipsolver::hip2rocblas_fill(uplo),
+                                                              n,
+                                                              nrhs,
+                                                              (double*)A,
+                                                              lda,
+                                                              (double*)B,
+                                                              ldb));
+    }
+    else if(dataTypeA == HIP_C_32F && dataTypeB == HIP_C_32F)
+    {
+        return hipsolver::rocblas2hip_status(rocsolver_cpotrs((rocblas_handle)handle,
+                                                              hipsolver::hip2rocblas_fill(uplo),
+                                                              n,
+                                                              nrhs,
+                                                              (rocblas_float_complex*)A,
+                                                              lda,
+                                                              (rocblas_float_complex*)B,
+                                                              ldb));
+    }
+    else if(dataTypeA == HIP_C_64F && dataTypeB == HIP_C_64F)
+    {
+        return hipsolver::rocblas2hip_status(rocsolver_zpotrs((rocblas_handle)handle,
+                                                              hipsolver::hip2rocblas_fill(uplo),
+                                                              n,
+                                                              nrhs,
+                                                              (rocblas_double_complex*)A,
+                                                              lda,
+                                                              (rocblas_double_complex*)B,
+                                                              ldb));
     }
     else
         return HIPSOLVER_STATUS_INVALID_ENUM;

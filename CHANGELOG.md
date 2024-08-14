@@ -8,6 +8,11 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
   - auxiliary
     - hipsolverSetDeterministicMode, hipsolverGetDeterministicMode
 - Added compatibility-only functions
+  - potrf
+    - hipsolverDnXpotrf_bufferSize
+    - hipsolverDnXpotrf
+  - potrs
+    - hipsolverDnXpotrs
   - geqrf
     - hipsolverDnXgeqrf_bufferSize
     - hipsolverDnXgeqrf
