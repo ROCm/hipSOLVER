@@ -13,6 +13,9 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
     - hipsolverDnXpotrf
   - potrs
     - hipsolverDnXpotrs
+  - geqrf
+    - hipsolverDnXgeqrf_bufferSize
+    - hipsolverDnXgeqrf
 
 ### Optimized
 ### Changed
