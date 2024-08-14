@@ -7,6 +7,10 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 - Added functions
   - auxiliary
     - hipsolverSetDeterministicMode, hipsolverGetDeterministicMode
+- Added compatibility-only functions
+  - geqrf
+    - hipsolverDnXgeqrf_bufferSize
+    - hipsolverDnXgeqrf
 
 ### Optimized
 ### Changed
