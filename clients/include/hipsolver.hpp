@@ -2031,130 +2031,320 @@ inline hipsolverStatus_t hipsolver_gels(testAPI_t               API,
 
 /******************** GEQRF ********************/
 // normal and strided_batched
-inline hipsolverStatus_t hipsolver_geqrf_bufferSize(
-    testAPI_t API, hipsolverHandle_t handle, int m, int n, float* A, int lda, int* lwork)
+inline hipsolverStatus_t hipsolver_geqrf_bufferSize(testAPI_t           API,
+                                                    hipsolverHandle_t   handle,
+                                                    hipsolverDnParams_t params,
+                                                    int                 m,
+                                                    int                 n,
+                                                    float*              A,
+                                                    int                 lda,
+                                                    float*              tau,
+                                                    int*                lworkOnDevice,
+                                                    int*                lworkOnHost)
 {
+    *lworkOnHost = 0;
     switch(API)
     {
     case API_NORMAL:
-        return hipsolverSgeqrf_bufferSize(handle, m, n, A, lda, lwork);
+        return hipsolverSgeqrf_bufferSize(handle, m, n, A, lda, lworkOnDevice);
     case API_FORTRAN:
-        return hipsolverSgeqrf_bufferSizeFortran(handle, m, n, A, lda, lwork);
+        return hipsolverSgeqrf_bufferSizeFortran(handle, m, n, A, lda, lworkOnDevice);
+    case API_COMPAT:
+        return hipsolverDnSgeqrf_bufferSize(handle, m, n, A, lda, lworkOnDevice);
     default:
+        *lworkOnDevice = 0;
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
-inline hipsolverStatus_t hipsolver_geqrf_bufferSize(
-    testAPI_t API, hipsolverHandle_t handle, int m, int n, double* A, int lda, int* lwork)
+inline hipsolverStatus_t hipsolver_geqrf_bufferSize(testAPI_t           API,
+                                                    hipsolverHandle_t   handle,
+                                                    hipsolverDnParams_t params,
+                                                    int                 m,
+                                                    int                 n,
+                                                    double*             A,
+                                                    int                 lda,
+                                                    double*             tau,
+                                                    int*                lworkOnDevice,
+                                                    int*                lworkOnHost)
 {
+    *lworkOnHost = 0;
     switch(API)
     {
     case API_NORMAL:
-        return hipsolverDgeqrf_bufferSize(handle, m, n, A, lda, lwork);
+        return hipsolverDgeqrf_bufferSize(handle, m, n, A, lda, lworkOnDevice);
     case API_FORTRAN:
-        return hipsolverDgeqrf_bufferSizeFortran(handle, m, n, A, lda, lwork);
+        return hipsolverDgeqrf_bufferSizeFortran(handle, m, n, A, lda, lworkOnDevice);
+    case API_COMPAT:
+        return hipsolverDnDgeqrf_bufferSize(handle, m, n, A, lda, lworkOnDevice);
     default:
+        *lworkOnDevice = 0;
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
-inline hipsolverStatus_t hipsolver_geqrf_bufferSize(
-    testAPI_t API, hipsolverHandle_t handle, int m, int n, hipsolverComplex* A, int lda, int* lwork)
+inline hipsolverStatus_t hipsolver_geqrf_bufferSize(testAPI_t           API,
+                                                    hipsolverHandle_t   handle,
+                                                    hipsolverDnParams_t params,
+                                                    int                 m,
+                                                    int                 n,
+                                                    hipsolverComplex*   A,
+                                                    int                 lda,
+                                                    hipsolverComplex*   tau,
+                                                    int*                lworkOnDevice,
+                                                    int*                lworkOnHost)
 {
+    *lworkOnHost = 0;
     switch(API)
     {
     case API_NORMAL:
-        return hipsolverCgeqrf_bufferSize(handle, m, n, (hipFloatComplex*)A, lda, lwork);
+        return hipsolverCgeqrf_bufferSize(handle, m, n, (hipFloatComplex*)A, lda, lworkOnDevice);
     case API_FORTRAN:
-        return hipsolverCgeqrf_bufferSizeFortran(handle, m, n, (hipFloatComplex*)A, lda, lwork);
+        return hipsolverCgeqrf_bufferSizeFortran(
+            handle, m, n, (hipFloatComplex*)A, lda, lworkOnDevice);
+    case API_COMPAT:
+        return hipsolverDnCgeqrf_bufferSize(handle, m, n, (hipFloatComplex*)A, lda, lworkOnDevice);
     default:
+        *lworkOnDevice = 0;
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
 inline hipsolverStatus_t hipsolver_geqrf_bufferSize(testAPI_t               API,
                                                     hipsolverHandle_t       handle,
+                                                    hipsolverDnParams_t     params,
                                                     int                     m,
                                                     int                     n,
                                                     hipsolverDoubleComplex* A,
                                                     int                     lda,
-                                                    int*                    lwork)
+                                                    hipsolverDoubleComplex* tau,
+                                                    int*                    lworkOnDevice,
+                                                    int*                    lworkOnHost)
+{
+    *lworkOnHost = 0;
+    switch(API)
+    {
+    case API_NORMAL:
+        return hipsolverZgeqrf_bufferSize(handle, m, n, (hipDoubleComplex*)A, lda, lworkOnDevice);
+    case API_FORTRAN:
+        return hipsolverZgeqrf_bufferSizeFortran(
+            handle, m, n, (hipDoubleComplex*)A, lda, lworkOnDevice);
+    case API_COMPAT:
+        return hipsolverDnZgeqrf_bufferSize(handle, m, n, (hipDoubleComplex*)A, lda, lworkOnDevice);
+    default:
+        *lworkOnDevice = 0;
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_geqrf_bufferSize(testAPI_t           API,
+                                                    hipsolverHandle_t   handle,
+                                                    hipsolverDnParams_t params,
+                                                    int64_t             m,
+                                                    int64_t             n,
+                                                    float*              A,
+                                                    int64_t             lda,
+                                                    float*              tau,
+                                                    size_t*             lworkOnDevice,
+                                                    size_t*             lworkOnHost)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnXgeqrf_bufferSize(handle,
+                                            params,
+                                            m,
+                                            n,
+                                            HIP_R_32F,
+                                            A,
+                                            lda,
+                                            HIP_R_32F,
+                                            tau,
+                                            HIP_R_32F,
+                                            lworkOnDevice,
+                                            lworkOnHost);
+    default:
+        *lworkOnDevice = 0;
+        *lworkOnHost   = 0;
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_geqrf_bufferSize(testAPI_t           API,
+                                                    hipsolverHandle_t   handle,
+                                                    hipsolverDnParams_t params,
+                                                    int64_t             m,
+                                                    int64_t             n,
+                                                    double*             A,
+                                                    int64_t             lda,
+                                                    double*             tau,
+                                                    size_t*             lworkOnDevice,
+                                                    size_t*             lworkOnHost)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnXgeqrf_bufferSize(handle,
+                                            params,
+                                            m,
+                                            n,
+                                            HIP_R_64F,
+                                            A,
+                                            lda,
+                                            HIP_R_64F,
+                                            tau,
+                                            HIP_R_64F,
+                                            lworkOnDevice,
+                                            lworkOnHost);
+    default:
+        *lworkOnDevice = 0;
+        *lworkOnHost   = 0;
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_geqrf_bufferSize(testAPI_t           API,
+                                                    hipsolverHandle_t   handle,
+                                                    hipsolverDnParams_t params,
+                                                    int64_t             m,
+                                                    int64_t             n,
+                                                    hipsolverComplex*   A,
+                                                    int64_t             lda,
+                                                    hipsolverComplex*   tau,
+                                                    size_t*             lworkOnDevice,
+                                                    size_t*             lworkOnHost)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnXgeqrf_bufferSize(handle,
+                                            params,
+                                            m,
+                                            n,
+                                            HIP_C_32F,
+                                            A,
+                                            lda,
+                                            HIP_C_32F,
+                                            tau,
+                                            HIP_C_32F,
+                                            lworkOnDevice,
+                                            lworkOnHost);
+    default:
+        *lworkOnDevice = 0;
+        *lworkOnHost   = 0;
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_geqrf_bufferSize(testAPI_t               API,
+                                                    hipsolverHandle_t       handle,
+                                                    hipsolverDnParams_t     params,
+                                                    int64_t                 m,
+                                                    int64_t                 n,
+                                                    hipsolverDoubleComplex* A,
+                                                    int64_t                 lda,
+                                                    hipsolverDoubleComplex* tau,
+                                                    size_t*                 lworkOnDevice,
+                                                    size_t*                 lworkOnHost)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnXgeqrf_bufferSize(handle,
+                                            params,
+                                            m,
+                                            n,
+                                            HIP_C_64F,
+                                            A,
+                                            lda,
+                                            HIP_C_64F,
+                                            tau,
+                                            HIP_C_64F,
+                                            lworkOnDevice,
+                                            lworkOnHost);
+    default:
+        *lworkOnDevice = 0;
+        *lworkOnHost   = 0;
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_geqrf(testAPI_t           API,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverDnParams_t params,
+                                         int                 m,
+                                         int                 n,
+                                         float*              A,
+                                         int                 lda,
+                                         int                 stA,
+                                         float*              tau,
+                                         int                 stT,
+                                         float*              workOnDevice,
+                                         int                 lworkOnDevice,
+                                         float*              workOnHost,
+                                         int                 lworkOnHost,
+                                         int*                info,
+                                         int                 bc)
 {
     switch(API)
     {
     case API_NORMAL:
-        return hipsolverZgeqrf_bufferSize(handle, m, n, (hipDoubleComplex*)A, lda, lwork);
+        return hipsolverSgeqrf(handle, m, n, A, lda, tau, workOnDevice, lworkOnDevice, info);
     case API_FORTRAN:
-        return hipsolverZgeqrf_bufferSizeFortran(handle, m, n, (hipDoubleComplex*)A, lda, lwork);
+        return hipsolverSgeqrfFortran(handle, m, n, A, lda, tau, workOnDevice, lworkOnDevice, info);
+    case API_COMPAT:
+        return hipsolverDnSgeqrf(handle, m, n, A, lda, tau, workOnDevice, lworkOnDevice, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
-inline hipsolverStatus_t hipsolver_geqrf(testAPI_t         API,
-                                         hipsolverHandle_t handle,
-                                         int               m,
-                                         int               n,
-                                         float*            A,
-                                         int               lda,
-                                         int               stA,
-                                         float*            tau,
-                                         int               stT,
-                                         float*            work,
-                                         int               lwork,
-                                         int*              info,
-                                         int               bc)
+inline hipsolverStatus_t hipsolver_geqrf(testAPI_t           API,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverDnParams_t params,
+                                         int                 m,
+                                         int                 n,
+                                         double*             A,
+                                         int                 lda,
+                                         int                 stA,
+                                         double*             tau,
+                                         int                 stT,
+                                         double*             workOnDevice,
+                                         int                 lworkOnDevice,
+                                         double*             workOnHost,
+                                         int                 lworkOnHost,
+                                         int*                info,
+                                         int                 bc)
 {
     switch(API)
     {
     case API_NORMAL:
-        return hipsolverSgeqrf(handle, m, n, A, lda, tau, work, lwork, info);
+        return hipsolverDgeqrf(handle, m, n, A, lda, tau, workOnDevice, lworkOnDevice, info);
     case API_FORTRAN:
-        return hipsolverSgeqrfFortran(handle, m, n, A, lda, tau, work, lwork, info);
+        return hipsolverDgeqrfFortran(handle, m, n, A, lda, tau, workOnDevice, lworkOnDevice, info);
+    case API_COMPAT:
+        return hipsolverDnDgeqrf(handle, m, n, A, lda, tau, workOnDevice, lworkOnDevice, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
 }
 
-inline hipsolverStatus_t hipsolver_geqrf(testAPI_t         API,
-                                         hipsolverHandle_t handle,
-                                         int               m,
-                                         int               n,
-                                         double*           A,
-                                         int               lda,
-                                         int               stA,
-                                         double*           tau,
-                                         int               stT,
-                                         double*           work,
-                                         int               lwork,
-                                         int*              info,
-                                         int               bc)
-{
-    switch(API)
-    {
-    case API_NORMAL:
-        return hipsolverDgeqrf(handle, m, n, A, lda, tau, work, lwork, info);
-    case API_FORTRAN:
-        return hipsolverDgeqrfFortran(handle, m, n, A, lda, tau, work, lwork, info);
-    default:
-        return HIPSOLVER_STATUS_NOT_SUPPORTED;
-    }
-}
-
-inline hipsolverStatus_t hipsolver_geqrf(testAPI_t         API,
-                                         hipsolverHandle_t handle,
-                                         int               m,
-                                         int               n,
-                                         hipsolverComplex* A,
-                                         int               lda,
-                                         int               stA,
-                                         hipsolverComplex* tau,
-                                         int               stT,
-                                         hipsolverComplex* work,
-                                         int               lwork,
-                                         int*              info,
-                                         int               bc)
+inline hipsolverStatus_t hipsolver_geqrf(testAPI_t           API,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverDnParams_t params,
+                                         int                 m,
+                                         int                 n,
+                                         hipsolverComplex*   A,
+                                         int                 lda,
+                                         int                 stA,
+                                         hipsolverComplex*   tau,
+                                         int                 stT,
+                                         hipsolverComplex*   workOnDevice,
+                                         int                 lworkOnDevice,
+                                         hipsolverComplex*   workOnHost,
+                                         int                 lworkOnHost,
+                                         int*                info,
+                                         int                 bc)
 {
     switch(API)
     {
@@ -2165,8 +2355,8 @@ inline hipsolverStatus_t hipsolver_geqrf(testAPI_t         API,
                                (hipFloatComplex*)A,
                                lda,
                                (hipFloatComplex*)tau,
-                               (hipFloatComplex*)work,
-                               lwork,
+                               (hipFloatComplex*)workOnDevice,
+                               lworkOnDevice,
                                info);
     case API_FORTRAN:
         return hipsolverCgeqrfFortran(handle,
@@ -2175,9 +2365,19 @@ inline hipsolverStatus_t hipsolver_geqrf(testAPI_t         API,
                                       (hipFloatComplex*)A,
                                       lda,
                                       (hipFloatComplex*)tau,
-                                      (hipFloatComplex*)work,
-                                      lwork,
+                                      (hipFloatComplex*)workOnDevice,
+                                      lworkOnDevice,
                                       info);
+    case API_COMPAT:
+        return hipsolverDnCgeqrf(handle,
+                                 m,
+                                 n,
+                                 (hipFloatComplex*)A,
+                                 lda,
+                                 (hipFloatComplex*)tau,
+                                 (hipFloatComplex*)workOnDevice,
+                                 lworkOnDevice,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -2185,6 +2385,7 @@ inline hipsolverStatus_t hipsolver_geqrf(testAPI_t         API,
 
 inline hipsolverStatus_t hipsolver_geqrf(testAPI_t               API,
                                          hipsolverHandle_t       handle,
+                                         hipsolverDnParams_t     params,
                                          int                     m,
                                          int                     n,
                                          hipsolverDoubleComplex* A,
@@ -2192,8 +2393,10 @@ inline hipsolverStatus_t hipsolver_geqrf(testAPI_t               API,
                                          int                     stA,
                                          hipsolverDoubleComplex* tau,
                                          int                     stT,
-                                         hipsolverDoubleComplex* work,
-                                         int                     lwork,
+                                         hipsolverDoubleComplex* workOnDevice,
+                                         int                     lworkOnDevice,
+                                         hipsolverDoubleComplex* workOnHost,
+                                         int                     lworkOnHost,
                                          int*                    info,
                                          int                     bc)
 {
@@ -2206,8 +2409,8 @@ inline hipsolverStatus_t hipsolver_geqrf(testAPI_t               API,
                                (hipDoubleComplex*)A,
                                lda,
                                (hipDoubleComplex*)tau,
-                               (hipDoubleComplex*)work,
-                               lwork,
+                               (hipDoubleComplex*)workOnDevice,
+                               lworkOnDevice,
                                info);
     case API_FORTRAN:
         return hipsolverZgeqrfFortran(handle,
@@ -2216,9 +2419,179 @@ inline hipsolverStatus_t hipsolver_geqrf(testAPI_t               API,
                                       (hipDoubleComplex*)A,
                                       lda,
                                       (hipDoubleComplex*)tau,
-                                      (hipDoubleComplex*)work,
-                                      lwork,
+                                      (hipDoubleComplex*)workOnDevice,
+                                      lworkOnDevice,
                                       info);
+    case API_COMPAT:
+        return hipsolverDnZgeqrf(handle,
+                                 m,
+                                 n,
+                                 (hipDoubleComplex*)A,
+                                 lda,
+                                 (hipDoubleComplex*)tau,
+                                 (hipDoubleComplex*)workOnDevice,
+                                 lworkOnDevice,
+                                 info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_geqrf(testAPI_t           API,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverDnParams_t params,
+                                         int64_t             m,
+                                         int64_t             n,
+                                         float*              A,
+                                         int64_t             lda,
+                                         int64_t             stA,
+                                         float*              tau,
+                                         int64_t             stT,
+                                         float*              workOnDevice,
+                                         size_t              lworkOnDevice,
+                                         float*              workOnHost,
+                                         size_t              lworkOnHost,
+                                         int*                info,
+                                         int                 bc)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnXgeqrf(handle,
+                                 params,
+                                 m,
+                                 n,
+                                 HIP_R_32F,
+                                 A,
+                                 lda,
+                                 HIP_R_32F,
+                                 tau,
+                                 HIP_R_32F,
+                                 workOnDevice,
+                                 lworkOnDevice,
+                                 workOnHost,
+                                 lworkOnHost,
+                                 info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_geqrf(testAPI_t           API,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverDnParams_t params,
+                                         int64_t             m,
+                                         int64_t             n,
+                                         double*             A,
+                                         int64_t             lda,
+                                         int64_t             stA,
+                                         double*             tau,
+                                         int64_t             stT,
+                                         double*             workOnDevice,
+                                         size_t              lworkOnDevice,
+                                         double*             workOnHost,
+                                         size_t              lworkOnHost,
+                                         int*                info,
+                                         int                 bc)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnXgeqrf(handle,
+                                 params,
+                                 m,
+                                 n,
+                                 HIP_R_64F,
+                                 A,
+                                 lda,
+                                 HIP_R_64F,
+                                 tau,
+                                 HIP_R_64F,
+                                 workOnDevice,
+                                 lworkOnDevice,
+                                 workOnHost,
+                                 lworkOnHost,
+                                 info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_geqrf(testAPI_t           API,
+                                         hipsolverHandle_t   handle,
+                                         hipsolverDnParams_t params,
+                                         int64_t             m,
+                                         int64_t             n,
+                                         hipsolverComplex*   A,
+                                         int64_t             lda,
+                                         int64_t             stA,
+                                         hipsolverComplex*   tau,
+                                         int64_t             stT,
+                                         hipsolverComplex*   workOnDevice,
+                                         size_t              lworkOnDevice,
+                                         hipsolverComplex*   workOnHost,
+                                         size_t              lworkOnHost,
+                                         int*                info,
+                                         int                 bc)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnXgeqrf(handle,
+                                 params,
+                                 m,
+                                 n,
+                                 HIP_C_32F,
+                                 A,
+                                 lda,
+                                 HIP_C_32F,
+                                 tau,
+                                 HIP_C_32F,
+                                 workOnDevice,
+                                 lworkOnDevice,
+                                 workOnHost,
+                                 lworkOnHost,
+                                 info);
+    default:
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+    }
+}
+
+inline hipsolverStatus_t hipsolver_geqrf(testAPI_t               API,
+                                         hipsolverHandle_t       handle,
+                                         hipsolverDnParams_t     params,
+                                         int64_t                 m,
+                                         int64_t                 n,
+                                         hipsolverDoubleComplex* A,
+                                         int64_t                 lda,
+                                         int64_t                 stA,
+                                         hipsolverDoubleComplex* tau,
+                                         int64_t                 stT,
+                                         hipsolverDoubleComplex* workOnDevice,
+                                         size_t                  lworkOnDevice,
+                                         hipsolverDoubleComplex* workOnHost,
+                                         size_t                  lworkOnHost,
+                                         int*                    info,
+                                         int                     bc)
+{
+    switch(API)
+    {
+    case API_COMPAT:
+        return hipsolverDnXgeqrf(handle,
+                                 params,
+                                 m,
+                                 n,
+                                 HIP_C_64F,
+                                 A,
+                                 lda,
+                                 HIP_C_64F,
+                                 tau,
+                                 HIP_C_64F,
+                                 workOnDevice,
+                                 lworkOnDevice,
+                                 workOnHost,
+                                 lworkOnHost,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
