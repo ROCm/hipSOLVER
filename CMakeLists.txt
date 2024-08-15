@@ -244,7 +244,7 @@ if(NOT USE_CUDA)
   endif()
 
   if(BUILD_WITH_SPARSE)
-    set(rocsparse_minimum 2.4.0)
+    set(rocsparse_minimum 2.3.0)
     rocm_package_add_dependencies(SHARED_DEPENDS "rocsparse >= ${rocsparse_minimum}")
     rocm_package_add_rpm_dependencies(STATIC_DEPENDS "rocsparse-static-devel >= ${rocsparse_minimum}")
     rocm_package_add_deb_dependencies(STATIC_DEPENDS "rocsparse-static-dev >= ${rocsparse_minimum}")
