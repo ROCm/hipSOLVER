@@ -28,11 +28,6 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 - The Fortran bindings provided in `hipsolver_module.f90` have been deprecated.
   The Fortran bindings provided by the hipfort project are recommended instead.
 
-### Removed
-### Fixed
-### Known Issues
-### Security
-
 
 ## hipSOLVER 2.2.0 for ROCm 6.2.0
 ### Added
