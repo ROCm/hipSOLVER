@@ -2,13 +2,21 @@
 
 Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html).
 
-## (Unreleased) hipSOLVER
+## hipSOLVER 2.3.0 for ROCm 6.3.0
 ### Added
 - Added functions
   - auxiliary
     - hipsolverSetDeterministicMode, hipsolverGetDeterministicMode
+- Added compatibility-only functions
+  - potrf
+    - hipsolverDnXpotrf_bufferSize
+    - hipsolverDnXpotrf
+  - potrs
+    - hipsolverDnXpotrs
+  - geqrf
+    - hipsolverDnXgeqrf_bufferSize
+    - hipsolverDnXgeqrf
 
-### Optimized
 ### Changed
 - Binaries in debug builds no longer have a "-d" suffix.
 - Changed rocSPARSE and SuiteSparse to be run-time dependencies by default. The `BUILD_WITH_SPARSE` CMake option can still be used

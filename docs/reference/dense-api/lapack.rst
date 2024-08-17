@@ -34,6 +34,8 @@ Triangular factorizations
 
 hipsolverDn<type>potrf_bufferSize()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXpotrf_bufferSize
+   :outline:
 .. doxygenfunction:: hipsolverDnZpotrf_bufferSize
    :outline:
 .. doxygenfunction:: hipsolverDnCpotrf_bufferSize
@@ -46,6 +48,8 @@ hipsolverDn<type>potrf_bufferSize()
 
 hipsolverDn<type>potrf()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXpotrf
+   :outline:
 .. doxygenfunction:: hipsolverDnZpotrf
    :outline:
 .. doxygenfunction:: hipsolverDnCpotrf
@@ -133,6 +137,8 @@ Orthogonal factorizations
 
 hipsolverDn<type>geqrf_bufferSize()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXgeqrf_bufferSize
+   :outline:
 .. doxygenfunction:: hipsolverDnZgeqrf_bufferSize
    :outline:
 .. doxygenfunction:: hipsolverDnCgeqrf_bufferSize
@@ -145,6 +151,8 @@ hipsolverDn<type>geqrf_bufferSize()
 
 hipsolverDn<type>geqrf()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXgeqrf
+   :outline:
 .. doxygenfunction:: hipsolverDnZgeqrf
    :outline:
 .. doxygenfunction:: hipsolverDnCgeqrf
@@ -259,6 +267,8 @@ hipsolverDn<type>potri()
 
 hipsolverDn<type>potrs()
 ---------------------------------------------------
+.. doxygenfunction:: hipsolverDnXpotrs
+   :outline:
 .. doxygenfunction:: hipsolverDnZpotrs
    :outline:
 .. doxygenfunction:: hipsolverDnCpotrs
