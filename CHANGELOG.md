@@ -24,6 +24,10 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 - The --no-sparse option of the install script now only affects the hipSOLVER clients and their dependency on hipSPARSE. Use the
   `BUILD_HIPSPARSE_TESTS` CMake option to enable tests for the hipsolverSp API (on by default).
 
+### Deprecated
+- The Fortran bindings provided in `hipsolver_module.f90` have been deprecated.
+  The Fortran bindings provided by the hipfort project are recommended instead.
+
 
 ## hipSOLVER 2.2.0 for ROCm 6.2.0
 ### Added
