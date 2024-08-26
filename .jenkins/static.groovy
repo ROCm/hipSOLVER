@@ -15,7 +15,7 @@ def runCI =
 
     def prj  = new rocProject('hipSOLVER', 'StaticLibrary')
     prj.paths.build_command = './install.sh -cd --static -p /opt/rocm/lib/cmake'
-    prj.libraryDependencies = ['rocBLAS', 'rocSPARSE', 'rocSOLVER', 'hipSPARSE', 'rocPRIM']
+    prj.libraryDependencies = ['hipBLAS-common', 'hipBLASLt', 'rocBLAS', 'rocSPARSE', 'rocSOLVER', 'hipSPARSE', 'rocPRIM']
     prj.defaults.ccache = true
 
     // Define test architectures, optional rocm version argument is available
