@@ -97,7 +97,7 @@ try
     if(!handle)
         return HIPSOLVER_STATUS_NOT_INITIALIZED;
 
-    return hipsolver::cuda2hip_status(cusolverSetDeterministicMode(
+    return hipsolver::cuda2hip_status(cusolverDnSetDeterministicMode(
         (cusolverDnHandle_t)handle, hipsolver::hip2cuda_deterministic(mode)));
 #else
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
@@ -119,7 +119,7 @@ try
         return HIPSOLVER_STATUS_INVALID_VALUE;
 
     cusolverDeterministicMode_t dmode;
-    CHECK_CUSOLVER_ERROR(cusolverGetDeterministicMode((cusolverDnHandle_t)handle, &dmode));
+    CHECK_CUSOLVER_ERROR(cusolverDnGetDeterministicMode((cusolverDnHandle_t)handle, &dmode));
     *mode = hipsolver::cuda2hip_deterministic(dmode);
 
     return HIPSOLVER_STATUS_SUCCESS;
