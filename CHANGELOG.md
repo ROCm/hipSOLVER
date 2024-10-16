@@ -3,33 +3,38 @@
 Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html).
 
 ## hipSOLVER 2.3.0 for ROCm 6.3.0
+
 ### Added
-- Added functions
-  - auxiliary
-    - hipsolverSetDeterministicMode, hipsolverGetDeterministicMode
-- Added compatibility-only functions
-  - potrf
-    - hipsolverDnXpotrf_bufferSize
-    - hipsolverDnXpotrf
-  - potrs
-    - hipsolverDnXpotrs
-  - geqrf
-    - hipsolverDnXgeqrf_bufferSize
-    - hipsolverDnXgeqrf
+
+* Added functions:
+  * auxiliary
+    * hipsolverSetDeterministicMode, hipsolverGetDeterministicMode
+* Added compatibility-only functions:
+  * potrf
+    * hipsolverDnXpotrf_bufferSize
+    * hipsolverDnXpotrf
+  * potrs
+    * hipsolverDnXpotrs
+  * geqrf
+    * hipsolverDnXgeqrf_bufferSize
+    * hipsolverDnXgeqrf
 
 ### Changed
-- Binaries in debug builds no longer have a "-d" suffix.
-- Changed rocSPARSE and SuiteSparse to be run-time dependencies by default. The `BUILD_WITH_SPARSE` CMake option can still be used
+
+* Binaries in debug builds no longer have a "-d" suffix.
+* Changed rocSPARSE and SuiteSparse to be run-time dependencies by default. The `BUILD_WITH_SPARSE` CMake option can still be used
   to convert them into build-time dependencies (now off by default).
-- The --no-sparse option of the install script now only affects the hipSOLVER clients and their dependency on hipSPARSE. Use the
+* The `--no-sparse` option of the install script now only affects the hipSOLVER clients and their dependency on hipSPARSE. Use the
   `BUILD_HIPSPARSE_TESTS` CMake option to enable tests for the hipsolverSp API (on by default).
 
-### Deprecated
-- The Fortran bindings provided in `hipsolver_module.f90` have been deprecated.
+### Upcoming changes
+
+* The Fortran bindings provided in `hipsolver_module.f90` have been deprecated.
   The Fortran bindings provided by the hipfort project are recommended instead.
 
 
 ## hipSOLVER 2.2.0 for ROCm 6.2.0
+
 ### Added
 - Added functions
   - syevdx/heevdx
@@ -50,23 +55,30 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 - Added hip::host to roc::hipsolver usage requirements.
 
 ### Changed
+
 - The numerical factorization in csrlsvchol will now be performed on the GPU. (The symbolic factorization is still performed on the CPU.)
 - Renamed hipsolver-compat.h to hipsolver-dense.h.
 
 ### Removed
+
 - Removed dependency on cblas from the hipsolver test and benchmark clients.
 
 
 ## hipSOLVER 2.1.1 for ROCm 6.1.1
+
 ### Changed
+
 - `BUILD_WITH_SPARSE` now defaults to OFF on Windows.
 
-### Fixed
+### Resolved issues
+
 - Fixed benchmark client build when `BUILD_WITH_SPARSE` is OFF.
 
 
 ## hipSOLVER 2.1.0 for ROCm 6.1.0
+
 ### Added
+
 - Added compatibility API with hipsolverSp prefix
 - Added compatibility-only functions
   - csrlsvchol
@@ -77,9 +89,11 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 - Added hipSPARSE as an optional dependency to hipsolver-test. Use the `BUILD_WITH_SPARSE` CMake option to enable tests of the hipsolverSp API (on by default).
 
 ### Changed
+
 - Relax array length requirements for GESVDA.
 
-### Fixed
+### Resolved issues
+
 - Fixed incorrect singular vectors returned from GESVDA.
 
 
