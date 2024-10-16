@@ -54,65 +54,66 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 ## hipSOLVER 2.2.0 for ROCm 6.2.0
 
 ### Added
-- Added functions
-  - syevdx/heevdx
-    - hipsolverSsyevdx_bufferSize, hipsolverDsyevdx_bufferSize, hipsolverCheevdx_bufferSize, hipsolverZheevdx_bufferSize
-    - hipsolverSsyevdx, hipsolverDsyevdx, hipsolverCheevdx, hipsolverZheevdx
-  - sygvdx/hegvdx
-    - hipsolverSsygvdx_bufferSize, hipsolverDsygvdx_bufferSize, hipsolverChegvdx_bufferSize, hipsolverZhegvdx_bufferSize
-    - hipsolverSsygvdx, hipsolverDsygvdx, hipsolverChegvdx, hipsolverZhegvdx
-- Added compatibility-only functions
-  - auxiliary
-    - hipsolverDnCreateParams, hipsolverDnDestroyParams, hipsolverDnSetAdvOptions
-  - getrf
-    - hipsolverDnXgetrf_bufferSize
-    - hipsolverDnXgetrf
-  - getrs
-    - hipsolverDnXgetrs
-- Added support for building on Ubuntu 24.04 and CBL-Mariner.
-- Added hip::host to roc::hipsolver usage requirements.
+
+* Added functions
+  * syevdx/heevdx
+    * hipsolverSsyevdx_bufferSize, hipsolverDsyevdx_bufferSize, hipsolverCheevdx_bufferSize, hipsolverZheevdx_bufferSize
+    * hipsolverSsyevdx, hipsolverDsyevdx, hipsolverCheevdx, hipsolverZheevdx
+  * sygvdx/hegvdx
+    * hipsolverSsygvdx_bufferSize, hipsolverDsygvdx_bufferSize, hipsolverChegvdx_bufferSize, hipsolverZhegvdx_bufferSize
+    * hipsolverSsygvdx, hipsolverDsygvdx, hipsolverChegvdx, hipsolverZhegvdx
+* Added compatibility-only functions
+  * auxiliary
+    * hipsolverDnCreateParams, hipsolverDnDestroyParams, hipsolverDnSetAdvOptions
+  * getrf
+    * hipsolverDnXgetrf_bufferSize
+    * hipsolverDnXgetrf
+  * getrs
+    * hipsolverDnXgetrs
+* Added support for building on Ubuntu 24.04 and CBL-Mariner.
+* Added hip::host to roc::hipsolver usage requirements.
 
 ### Changed
 
-- The numerical factorization in csrlsvchol will now be performed on the GPU. (The symbolic factorization is still performed on the CPU.)
-- Renamed hipsolver-compat.h to hipsolver-dense.h.
+* The numerical factorization in csrlsvchol will now be performed on the GPU. (The symbolic factorization is still performed on the CPU.)
+* Renamed hipsolver-compat.h to hipsolver-dense.h.
 
 ### Removed
 
-- Removed dependency on cblas from the hipsolver test and benchmark clients.
+* Removed dependency on cblas from the hipsolver test and benchmark clients.
 
 
 ## hipSOLVER 2.1.1 for ROCm 6.1.1
 
 ### Changed
 
-- `BUILD_WITH_SPARSE` now defaults to OFF on Windows.
+* `BUILD_WITH_SPARSE` now defaults to OFF on Windows.
 
 ### Resolved issues
 
-- Fixed benchmark client build when `BUILD_WITH_SPARSE` is OFF.
+* Fixed benchmark client build when `BUILD_WITH_SPARSE` is OFF.
 
 
 ## hipSOLVER 2.1.0 for ROCm 6.1.0
 
 ### Added
 
-- Added compatibility API with hipsolverSp prefix
-- Added compatibility-only functions
-  - csrlsvchol
-    - hipsolverSpScsrlsvcholHost, hipsolverSpDcsrlsvcholHost
-    - hipsolverSpScsrlsvchol, hipsolverSpDcsrlsvchol
-- Added rocSPARSE and SuiteSparse as optional dependencies to hipSOLVER (rocSOLVER backend only). Use the `BUILD_WITH_SPARSE` CMake option to enable
+* Added compatibility API with hipsolverSp prefix
+* Added compatibility-only functions
+  * csrlsvchol
+    * hipsolverSpScsrlsvcholHost, hipsolverSpDcsrlsvcholHost
+    * hipsolverSpScsrlsvchol, hipsolverSpDcsrlsvchol
+* Added rocSPARSE and SuiteSparse as optional dependencies to hipSOLVER (rocSOLVER backend only). Use the `BUILD_WITH_SPARSE` CMake option to enable
   functionality for the hipsolverSp API (on by default).
-- Added hipSPARSE as an optional dependency to hipsolver-test. Use the `BUILD_WITH_SPARSE` CMake option to enable tests of the hipsolverSp API (on by default).
+* Added hipSPARSE as an optional dependency to hipsolver-test. Use the `BUILD_WITH_SPARSE` CMake option to enable tests of the hipsolverSp API (on by default).
 
 ### Changed
 
-- Relax array length requirements for GESVDA.
+* Relax array length requirements for GESVDA.
 
 ### Resolved issues
 
-- Fixed incorrect singular vectors returned from GESVDA.
+* Fixed incorrect singular vectors returned from GESVDA.
 
 
 ## hipSOLVER 2.0.0 for ROCm 6.0.0
