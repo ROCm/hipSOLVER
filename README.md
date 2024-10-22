@@ -4,7 +4,9 @@ hipSOLVER is a LAPACK marshalling library, with multiple supported backends.  It
 
 ## Documentation
 
-For a detailed description of the hipSOLVER library, its implemented routines, the installation process and user guide, see the [hipSOLVER Documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html).
+> [!NOTE]
+> The published hipSOLVER documentation is available at [hipSOLVER](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html) in an organized, easy-to-read format, with search and a table of contents. The documentation source files reside in the hipSOLVER/docs folder of this repository. As with all ROCm projects, the documentation is open source. For more information, see [Contribute to ROCm documentation](https://rocm.docs.amd.com/en/latest/contribute/contributing.html).
+
 
 ### How to build documentation
 
