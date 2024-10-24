@@ -117,6 +117,10 @@ option(USE_CUDA "Look for CUDA and use that as a backend if found" OFF)
 option(HIPSOLVER_FIND_PACKAGE_LAPACK_CONFIG "Skip module mode search for LAPACK" ON)
 option(BUILD_FORTRAN_BINDINGS "Build the Fortran bindings" "${UNIX}")
 
+if(NOT BUILD_SHARED_LIBS)
+  set(BUILD_WITH_SPARSE CACHE OFF)
+endif()
+
 if(BUILD_FORTRAN_BINDINGS)
   enable_language(Fortran)
 endif()
