@@ -104,11 +104,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ROCM_PATH}/lib
 list(APPEND CMAKE_PREFIX_PATH ${ROCM_PATH}/lib/cmake/hip /opt/rocm /opt/rocm/llvm /opt/rocm/hip)
 
 option(BUILD_SHARED_LIBS "Build hipSOLVER as a shared library" ON)
-if(BUILD_SHARED_LIBS)
-  set(BUILD_WITH_SPARSE_DEFAULT OFF)
-else()
-  set(BUILD_WITH_SPARSE_DEFAULT ON)
-endif()
+set(BUILD_WITH_SPARSE_DEFAULT OFF)
 
 option(BUILD_ADDRESS_SANITIZER "Build with address sanitizer enabled" OFF)
 option(BUILD_CODE_COVERAGE "Build hipSOLVER with code coverage enabled" OFF)
