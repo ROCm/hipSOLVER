@@ -41,6 +41,7 @@ fp_cholmod_solve            g_cholmod_solve;
 
 static bool load_cholmod()
 {
+#ifndef HIPSOLVER_STATIC_LIB
 #ifdef _WIN32
     // Library users will need to call SetErrorMode(SEM_FAILCRITICALERRORS) if
     // they wish to avoid an error message box when this library is not found.
@@ -104,6 +105,9 @@ static bool load_cholmod()
         return false;
 
     return true;
+#else /* HIPSOLVER_STATIC_LIB */
+    return false;
+#endif
 }
 
 bool try_load_cholmod()

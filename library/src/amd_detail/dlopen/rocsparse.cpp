@@ -33,6 +33,7 @@ fp_rocsparse_get_mat_index_base g_rocsparse_get_mat_index_base;
 
 static bool load_rocsparse()
 {
+#ifndef HIPSOLVER_STATIC_LIB
 #ifdef _WIN32
     // Library users will need to call SetErrorMode(SEM_FAILCRITICALERRORS) if
     // they wish to avoid an error message box when this library is not found.
@@ -60,6 +61,9 @@ static bool load_rocsparse()
         return false;
 
     return true;
+#else /* HIPSOLVER_STATIC_LIB */
+    return false;
+#endif
 }
 
 bool try_load_rocsparse()

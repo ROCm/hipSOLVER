@@ -36,6 +36,7 @@ HIPSOLVER_BEGIN_NAMESPACE
 template <typename Fn>
 bool load_function(void* handle, const char* symbol, Fn& fn)
 {
+#ifndef HIPSOLVER_STATIC_LIB
 #ifdef _WIN32
     fn       = (Fn)(GetProcAddress((HMODULE)handle, symbol));
     bool err = !fn;
@@ -48,6 +49,9 @@ bool load_function(void* handle, const char* symbol, Fn& fn)
 #endif
 #endif /* _WIN32 */
     return !err;
+#else /* HIPSOLVER_STATIC_LIB */
+    return false;
+#endif
 }
 
 HIPSOLVER_END_NAMESPACE
