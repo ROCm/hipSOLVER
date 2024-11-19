@@ -373,4 +373,153 @@ catch(...)
     return hipsolver::exception2hip_status();
 }*/
 
+/******************** CSRLSVQR ********************/
+hipsolverStatus_t hipsolverSpScsrlsvqr(hipsolverSpHandle_t       handle,
+                                       int                       n,
+                                       int                       nnzA,
+                                       const hipsparseMatDescr_t descrA,
+                                       const float*              csrVal,
+                                       const int*                csrRowPtr,
+                                       const int*                csrColInd,
+                                       const float*              b,
+                                       double                    tolerance,
+                                       int                       reorder,
+                                       float*                    x,
+                                       int*                      singularity)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return hipsolver::cuda2hip_status(cusolverSpScsrlsvqr((cusolverSpHandle_t)handle,
+                                                          n,
+                                                          nnzA,
+                                                          (cusparseMatDescr_t)descrA,
+                                                          csrVal,
+                                                          csrRowPtr,
+                                                          csrColInd,
+                                                          b,
+                                                          tolerance,
+                                                          reorder,
+                                                          x,
+                                                          singularity));
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverSpDcsrlsvqr(hipsolverSpHandle_t       handle,
+                                       int                       n,
+                                       int                       nnzA,
+                                       const hipsparseMatDescr_t descrA,
+                                       const double*             csrVal,
+                                       const int*                csrRowPtr,
+                                       const int*                csrColInd,
+                                       const double*             b,
+                                       double                    tolerance,
+                                       int                       reorder,
+                                       double*                   x,
+                                       int*                      singularity)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return hipsolver::cuda2hip_status(cusolverSpDcsrlsvqr((cusolverSpHandle_t)handle,
+                                                          n,
+                                                          nnzA,
+                                                          (cusparseMatDescr_t)descrA,
+                                                          csrVal,
+                                                          csrRowPtr,
+                                                          csrColInd,
+                                                          b,
+                                                          tolerance,
+                                                          reorder,
+                                                          x,
+                                                          singularity));
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
+/*hipsolverStatus_t hipsolverSpCcsrlsvqr(hipsolverSpHandle_t       handle,
+                                       int                       n,
+                                       int                       nnzA,
+                                       const hipsparseMatDescr_t descrA,
+                                       const hipFloatComplex*    csrVal,
+                                       const int*                csrRowPtr,
+                                       const int*                csrColInd,
+                                       const hipFloatComplex*    b,
+                                       double                    tolerance,
+                                       int                       reorder,
+                                       hipFloatComplex*          x,
+                                       int*                      singularity)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return hipsolver::cuda2hip_status(cusolverSpCcsrlsvqr((cusolverSpHandle_t)handle,
+                                                          n,
+                                                          nnzA,
+                                                          (cusparseMatDescr_t)descrA,
+                                                          (cuComplex*)csrVal,
+                                                          csrRowPtr,
+                                                          csrColInd,
+                                                          (cuComplex*)b,
+                                                          tolerance,
+                                                          reorder,
+                                                          (cuComplex*)x,
+                                                          singularity));
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverSpZcsrlsvqr(hipsolverSpHandle_t       handle,
+                                       int                       n,
+                                       int                       nnzA,
+                                       const hipsparseMatDescr_t descrA,
+                                       const hipDoubleComplex*   csrVal,
+                                       const int*                csrRowPtr,
+                                       const int*                csrColInd,
+                                       const hipDoubleComplex*   b,
+                                       double                    tolerance,
+                                       int                       reorder,
+                                       hipDoubleComplex*         x,
+                                       int*                      singularity)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(!descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    return hipsolver::cuda2hip_status(cusolverSpZcsrlsvqr((cusolverSpHandle_t)handle,
+                                                          n,
+                                                          nnzA,
+                                                          (cusparseMatDescr_t)descrA,
+                                                          (cuDoubleComplex*)csrVal,
+                                                          csrRowPtr,
+                                                          csrColInd,
+                                                          (cuDoubleComplex*)b,
+                                                          tolerance,
+                                                          reorder,
+                                                          (cuDoubleComplex*)x,
+                                                          singularity));
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}*/
+
 } //extern C

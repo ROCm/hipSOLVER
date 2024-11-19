@@ -26,10 +26,16 @@
 
 HIPSOLVER_BEGIN_NAMESPACE
 
+fp_rocsparse_create_handle      g_rocsparse_create_handle;
+fp_rocsparse_destroy_handle     g_rocsparse_destroy_handle;
 fp_rocsparse_create_mat_descr   g_rocsparse_create_mat_descr;
 fp_rocsparse_destroy_mat_descr  g_rocsparse_destroy_mat_descr;
 fp_rocsparse_get_mat_type       g_rocsparse_get_mat_type;
 fp_rocsparse_get_mat_index_base g_rocsparse_get_mat_index_base;
+fp_rocsparse_scsr2dense         g_rocsparse_scsr2dense;
+fp_rocsparse_dcsr2dense         g_rocsparse_dcsr2dense;
+fp_rocsparse_ccsr2dense         g_rocsparse_ccsr2dense;
+fp_rocsparse_zcsr2dense         g_rocsparse_zcsr2dense;
 
 static bool load_rocsparse()
 {
@@ -51,6 +57,10 @@ static bool load_rocsparse()
     if(!handle)
         return false;
 
+    if(!load_function(handle, "rocsparse_create_handle", g_rocsparse_create_handle))
+        return false;
+    if(!load_function(handle, "rocsparse_destroy_handle", g_rocsparse_destroy_handle))
+        return false;
     if(!load_function(handle, "rocsparse_create_mat_descr", g_rocsparse_create_mat_descr))
         return false;
     if(!load_function(handle, "rocsparse_destroy_mat_descr", g_rocsparse_destroy_mat_descr))
@@ -58,6 +68,15 @@ static bool load_rocsparse()
     if(!load_function(handle, "rocsparse_get_mat_type", g_rocsparse_get_mat_type))
         return false;
     if(!load_function(handle, "rocsparse_get_mat_index_base", g_rocsparse_get_mat_index_base))
+        return false;
+
+    if(!load_function(handle, "rocsparse_scsr2dense", g_rocsparse_scsr2dense))
+        return false;
+    if(!load_function(handle, "rocsparse_dcsr2dense", g_rocsparse_dcsr2dense))
+        return false;
+    if(!load_function(handle, "rocsparse_ccsr2dense", g_rocsparse_ccsr2dense))
+        return false;
+    if(!load_function(handle, "rocsparse_zcsr2dense", g_rocsparse_zcsr2dense))
         return false;
 
     return true;

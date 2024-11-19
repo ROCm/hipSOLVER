@@ -723,6 +723,62 @@ inline void
     fclose(mat);
 }
 
+// complex float:
+inline void read_matrix(
+    const std::string filenameS, const int m, const int n, hipsolverComplex* A, const int lda)
+{
+    const char* filename = filenameS.c_str();
+    FILE*       mat;
+    mat = fopen(filename, "r");
+    float v;
+
+    if(mat == NULL)
+        throw std::invalid_argument(std::string("Error: Could not open file ") + filename
+                                    + " with test data...");
+
+    for(int j = 0; j < n; ++j)
+    {
+        for(int i = 0; i < m; ++i)
+        {
+            int read = fscanf(mat, "%g", &v);
+            if(read != 1)
+                throw std::out_of_range(std::string("Error: Could not read element from file ")
+                                        + filename);
+            A[i + j * lda] = {v, 0};
+        }
+    }
+
+    fclose(mat);
+}
+
+// complex double:
+inline void read_matrix(
+    const std::string filenameS, const int m, const int n, hipsolverDoubleComplex* A, const int lda)
+{
+    const char* filename = filenameS.c_str();
+    FILE*       mat;
+    mat = fopen(filename, "r");
+    double v;
+
+    if(mat == NULL)
+        throw std::invalid_argument(std::string("Error: Could not open file ") + filename
+                                    + " with test data...");
+
+    for(int j = 0; j < n; ++j)
+    {
+        for(int i = 0; i < m; ++i)
+        {
+            int read = fscanf(mat, "%lg", &v);
+            if(read != 1)
+                throw std::out_of_range(std::string("Error: Could not read element from file ")
+                                        + filename);
+            A[i + j * lda] = {v, 0};
+        }
+    }
+
+    fclose(mat);
+}
+
 /* =============================================================================================== */
 
 /* ============================================================================================ */

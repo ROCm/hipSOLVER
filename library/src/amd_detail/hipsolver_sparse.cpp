@@ -52,6 +52,7 @@ extern "C" {
 struct hipsolverSpHandle
 {
     rocblas_handle   handle;
+    rocsparse_handle sphandle;
     rocsolver_rfinfo rfinfo;
     cholmod_common   c_handle;
 
@@ -340,6 +341,7 @@ try
 
     hipsolverSpHandle* sp = new hipsolverSpHandle;
     rocblas_status     status;
+    rocsparse_status   sp_status;
 
     if((status = rocblas_create_handle(&sp->handle)) != rocblas_status_success)
     {
@@ -347,9 +349,17 @@ try
         return hipsolver::rocblas2hip_status(status);
     }
 
+    if((sp_status = rocsparse_create_handle(&sp->sphandle)) != rocsparse_status_success)
+    {
+        rocblas_destroy_handle(sp->handle);
+        delete sp;
+        return HIPSOLVER_STATUS_ALLOC_FAILED;
+    }
+
     if((status = rocsolver_create_rfinfo(&sp->rfinfo, sp->handle)) != rocblas_status_success)
     {
         rocblas_destroy_handle(sp->handle);
+        rocsparse_destroy_handle(sp->sphandle);
         delete sp;
         return hipsolver::rocblas2hip_status(status);
     }
@@ -357,6 +367,7 @@ try
     if(cholmod_start(&sp->c_handle) != TRUE)
     {
         rocblas_destroy_handle(sp->handle);
+        rocsparse_destroy_handle(sp->sphandle);
         rocsolver_destroy_rfinfo(sp->rfinfo);
         delete sp;
         return HIPSOLVER_STATUS_INTERNAL_ERROR;
@@ -379,6 +390,7 @@ try
     hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
     sp->free_all();
     rocblas_destroy_handle(sp->handle);
+    rocsparse_destroy_handle(sp->sphandle);
     rocsolver_destroy_rfinfo(sp->rfinfo);
     cholmod_finish(&sp->c_handle);
     delete sp;
@@ -1068,6 +1080,301 @@ hipsolverStatus_t hipsolverSpZcsrlsvcholHost(hipsolverSpHandle_t       handle,
 try
 {
     return HIPSOLVER_STATUS_NOT_SUPPORTED;
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}*/
+
+/******************** CSRLSVQR ********************/
+hipsolverStatus_t hipsolverSpScsrlsvqr(hipsolverSpHandle_t       handle,
+                                       int                       n,
+                                       int                       nnz,
+                                       const hipsparseMatDescr_t descrA,
+                                       const float*              csrVal,
+                                       const int*                csrRowPtr,
+                                       const int*                csrColInd,
+                                       const float*              b,
+                                       double                    tolerance,
+                                       int                       reorder,
+                                       float*                    x,
+                                       int*                      singularity)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(n < 0 || nnz < 0)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!csrRowPtr || !csrColInd || !csrVal || !descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!b || !x || !singularity)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    // if(reorder < 0 || reorder > 3)
+    //     return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    rocsparse_matrix_type mattype = rocsparse_get_mat_type((rocsparse_mat_descr)descrA);
+    rocsparse_index_base  indbase = rocsparse_get_mat_index_base((rocsparse_mat_descr)descrA);
+    if(mattype != rocsparse_matrix_type_general)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
+    if(indbase != rocsparse_index_base_zero && indbase != rocsparse_index_base_one)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
+
+    hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
+    *singularity          = -1;
+
+    // set up B
+    CHECK_HIP_ERROR(hipMemcpy((void*)x, b, sizeof(float) * n, hipMemcpyDeviceToDevice));
+
+    // convert A to dense matrix
+    float* denseA;
+    CHECK_HIP_ERROR(hipMalloc(&denseA, sizeof(float) * n * n));
+    rocsparse_scsr2dense(
+        sp->sphandle, n, n, (rocsparse_mat_descr)descrA, csrVal, csrRowPtr, csrColInd, denseA, n);
+
+    int* info;
+    CHECK_HIP_ERROR(hipMalloc(&info, sizeof(int)));
+
+    rocblas_status st
+        = rocsolver_sgels(sp->handle, rocblas_operation_none, n, n, 1, denseA, n, x, n, info);
+
+    // finalize singularity
+    CHECK_HIP_ERROR(hipMemcpy((void*)singularity, info, sizeof(int), hipMemcpyDeviceToHost));
+    *singularity = *singularity - 1;
+
+    CHECK_HIP_ERROR(hipFree(denseA));
+    CHECK_HIP_ERROR(hipFree(info));
+
+    return hipsolver::rocblas2hip_status(st);
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverSpDcsrlsvqr(hipsolverSpHandle_t       handle,
+                                       int                       n,
+                                       int                       nnz,
+                                       const hipsparseMatDescr_t descrA,
+                                       const double*             csrVal,
+                                       const int*                csrRowPtr,
+                                       const int*                csrColInd,
+                                       const double*             b,
+                                       double                    tolerance,
+                                       int                       reorder,
+                                       double*                   x,
+                                       int*                      singularity)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(n < 0 || nnz < 0)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!csrRowPtr || !csrColInd || !csrVal || !descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!b || !x || !singularity)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    // if(reorder < 0 || reorder > 3)
+    //     return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    rocsparse_matrix_type mattype = rocsparse_get_mat_type((rocsparse_mat_descr)descrA);
+    rocsparse_index_base  indbase = rocsparse_get_mat_index_base((rocsparse_mat_descr)descrA);
+    if(mattype != rocsparse_matrix_type_general)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
+    if(indbase != rocsparse_index_base_zero && indbase != rocsparse_index_base_one)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
+
+    hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
+    *singularity          = -1;
+
+    // set up B
+    CHECK_HIP_ERROR(hipMemcpy((void*)x, b, sizeof(double) * n, hipMemcpyDeviceToDevice));
+
+    // convert A to dense matrix
+    double* denseA;
+    CHECK_HIP_ERROR(hipMalloc(&denseA, sizeof(double) * n * n));
+    rocsparse_dcsr2dense(
+        sp->sphandle, n, n, (rocsparse_mat_descr)descrA, csrVal, csrRowPtr, csrColInd, denseA, n);
+
+    int* info;
+    CHECK_HIP_ERROR(hipMalloc(&info, sizeof(int)));
+
+    rocblas_status st
+        = rocsolver_dgels(sp->handle, rocblas_operation_none, n, n, 1, denseA, n, x, n, info);
+
+    // finalize singularity
+    CHECK_HIP_ERROR(hipMemcpy((void*)singularity, info, sizeof(int), hipMemcpyDeviceToHost));
+    *singularity = *singularity - 1;
+
+    CHECK_HIP_ERROR(hipFree(denseA));
+    CHECK_HIP_ERROR(hipFree(info));
+
+    return hipsolver::rocblas2hip_status(st);
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
+/*hipsolverStatus_t hipsolverSpCcsrlsvqr(hipsolverSpHandle_t       handle,
+                                       int                       n,
+                                       int                       nnz,
+                                       const hipsparseMatDescr_t descrA,
+                                       const hipFloatComplex*    csrVal,
+                                       const int*                csrRowPtr,
+                                       const int*                csrColInd,
+                                       const hipFloatComplex*    b,
+                                       double                    tolerance,
+                                       int                       reorder,
+                                       hipFloatComplex*          x,
+                                       int*                      singularity)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(n < 0 || nnz < 0)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!csrRowPtr || !csrColInd || !csrVal || !descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!b || !x || !singularity)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(reorder < 0 || reorder > 3)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    rocsparse_matrix_type mattype = rocsparse_get_mat_type((rocsparse_mat_descr)descrA);
+    rocsparse_index_base  indbase = rocsparse_get_mat_index_base((rocsparse_mat_descr)descrA);
+    if(mattype != rocsparse_matrix_type_general)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
+    if(indbase != rocsparse_index_base_zero && indbase != rocsparse_index_base_one)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
+
+    hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
+    *singularity          = -1;
+
+    // set up B
+    CHECK_HIP_ERROR(hipMemcpy((void*)x, b, sizeof(hipFloatComplex) * n, hipMemcpyDeviceToDevice));
+
+    // convert A to dense matrix
+    hipFloatComplex* denseA;
+    CHECK_HIP_ERROR(hipMalloc(&denseA, sizeof(hipFloatComplex) * n * n));
+    rocsparse_ccsr2dense(sp->sphandle,
+                         n,
+                         n,
+                         (rocsparse_mat_descr)descrA,
+                         (rocsparse_float_complex*)csrVal,
+                         csrRowPtr,
+                         csrColInd,
+                         (rocsparse_float_complex*)denseA,
+                         n);
+
+    int* info;
+    CHECK_HIP_ERROR(hipMalloc(&info, sizeof(int)));
+
+    rocblas_status st = rocsolver_cgels(sp->handle,
+                                        rocblas_operation_none,
+                                        n,
+                                        n,
+                                        1,
+                                        (rocblas_float_complex*)denseA,
+                                        n,
+                                        (rocblas_float_complex*)x,
+                                        n,
+                                        info);
+
+    // finalize singularity
+    CHECK_HIP_ERROR(hipMemcpy((void*)singularity, info, sizeof(int), hipMemcpyDeviceToHost));
+    *singularity = *singularity - 1;
+
+    CHECK_HIP_ERROR(hipFree(denseA));
+    CHECK_HIP_ERROR(hipFree(info));
+
+    return hipsolver::rocblas2hip_status(st);
+}
+catch(...)
+{
+    return hipsolver::exception2hip_status();
+}
+
+hipsolverStatus_t hipsolverSpZcsrlsvqr(hipsolverSpHandle_t       handle,
+                                       int                       n,
+                                       int                       nnz,
+                                       const hipsparseMatDescr_t descrA,
+                                       const hipDoubleComplex*   csrVal,
+                                       const int*                csrRowPtr,
+                                       const int*                csrColInd,
+                                       const hipDoubleComplex*   b,
+                                       double                    tolerance,
+                                       int                       reorder,
+                                       hipDoubleComplex*         x,
+                                       int*                      singularity)
+try
+{
+    if(!handle)
+        return HIPSOLVER_STATUS_NOT_INITIALIZED;
+    if(n < 0 || nnz < 0)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!csrRowPtr || !csrColInd || !csrVal || !descrA)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(!b || !x || !singularity)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+    if(reorder < 0 || reorder > 3)
+        return HIPSOLVER_STATUS_INVALID_VALUE;
+
+    rocsparse_matrix_type mattype = rocsparse_get_mat_type((rocsparse_mat_descr)descrA);
+    rocsparse_index_base  indbase = rocsparse_get_mat_index_base((rocsparse_mat_descr)descrA);
+    if(mattype != rocsparse_matrix_type_general)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
+    if(indbase != rocsparse_index_base_zero && indbase != rocsparse_index_base_one)
+        return HIPSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED;
+
+    hipsolverSpHandle* sp = (hipsolverSpHandle*)handle;
+    *singularity          = -1;
+
+    // set up B
+    CHECK_HIP_ERROR(hipMemcpy((void*)x, b, sizeof(hipDoubleComplex) * n, hipMemcpyDeviceToDevice));
+
+    // convert A to dense matrix
+    hipFloatComplex* denseA;
+    CHECK_HIP_ERROR(hipMalloc(&denseA, sizeof(hipDoubleComplex) * n * n));
+    rocsparse_zcsr2dense(sp->sphandle,
+                         n,
+                         n,
+                         (rocsparse_mat_descr)descrA,
+                         (rocsparse_double_complex*)csrVal,
+                         csrRowPtr,
+                         csrColInd,
+                         (rocsparse_double_complex*)denseA,
+                         n);
+
+    int* info;
+    CHECK_HIP_ERROR(hipMalloc(&info, sizeof(int)));
+
+    rocblas_status st = rocsolver_zgels(sp->handle,
+                                        rocblas_operation_none,
+                                        n,
+                                        n,
+                                        1,
+                                        (rocblas_double_complex*)denseA,
+                                        n,
+                                        (rocblas_double_complex*)x,
+                                        n,
+                                        info);
+
+    // finalize singularity
+    CHECK_HIP_ERROR(hipMemcpy((void*)singularity, info, sizeof(int), hipMemcpyDeviceToHost));
+    *singularity = *singularity - 1;
+
+    CHECK_HIP_ERROR(hipFree(denseA));
+    CHECK_HIP_ERROR(hipFree(info));
+
+    return hipsolver::rocblas2hip_status(st);
 }
 catch(...)
 {

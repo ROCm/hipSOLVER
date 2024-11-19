@@ -75,6 +75,7 @@ set(hipsolverDn_test_source
 
 set(hipsolverSp_test_source
   csrlsvchol_gtest.cpp
+  csrlsvqr_gtest.cpp
 )
 
 set(hipsolverRf_test_source

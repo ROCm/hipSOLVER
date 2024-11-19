@@ -55,6 +55,7 @@
 
 #ifdef HAVE_HIPSPARSE
 #include "testing_csrlsvchol.hpp"
+#include "testing_csrlsvqr.hpp"
 #endif
 
 struct str_less
@@ -130,6 +131,7 @@ class hipsolver_dispatcher
 #ifdef HAVE_HIPSPARSE
             {"csrlsvchol", testing_csrlsvchol<false, T>},
             {"csrlsvcholHost", testing_csrlsvchol<true, T>},
+            {"csrlsvqr", testing_csrlsvqr<false, T>},
 #endif
         };
 

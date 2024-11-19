@@ -36,3 +36,11 @@ hipsolverSp<type>csrlsvcholHost()
    :outline:
 .. doxygenfunction:: hipsolverSpScsrlsvcholHost
 
+.. _sparse_csrlsvqr:
+
+hipsolverSp<type>csrlsvqr()
+---------------------------------------------------
+.. doxygenfunction:: hipsolverSpDcsrlsvqr
+   :outline:
+.. doxygenfunction:: hipsolverSpScsrlsvqr
+

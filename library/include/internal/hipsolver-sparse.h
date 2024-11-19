@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2023 Advanced Micro Devices, Inc.
+ * Copyright (C) 2023-2024 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #ifndef HIPSOLVER_SPARSE_H
@@ -74,6 +74,33 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpDcsrlsvcholHost(hipsolverSpHandle_
                                                               int                       reorder,
                                                               double*                   x,
                                                               int* singularity);
+
+// linear solver based on QR
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpScsrlsvqr(hipsolverSpHandle_t       handle,
+                                                        int                       n,
+                                                        int                       nnz,
+                                                        const hipsparseMatDescr_t descrA,
+                                                        const float*              csrVal,
+                                                        const int*                csrRowPts,
+                                                        const int*                csrColInd,
+                                                        const float*              b,
+                                                        double                    tolerance,
+                                                        int                       reorder,
+                                                        float*                    x,
+                                                        int*                      singularity);
+
+HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpDcsrlsvqr(hipsolverSpHandle_t       handle,
+                                                        int                       n,
+                                                        int                       nnz,
+                                                        const hipsparseMatDescr_t descrA,
+                                                        const double*             csrVal,
+                                                        const int*                csrRowPts,
+                                                        const int*                csrColInd,
+                                                        const double*             b,
+                                                        double                    tolerance,
+                                                        int                       reorder,
+                                                        double*                   x,
+                                                        int*                      singularity);
 
 #ifdef __cplusplus
 }

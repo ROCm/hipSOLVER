@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2023-2024 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -201,5 +201,112 @@ inline hipsolverStatus_t hipsolver_csrlsvchol(bool                          HOST
                                           reorder,
                                           (hipDoubleComplex*)x,
                                           singularity);
+}*/
+/********************************************************/
+
+/******************** CSRLSVQR ********************/
+// normal and strided_batched
+inline hipsolverStatus_t hipsolver_csrlsvqr(bool                      HOST,
+                                            hipsolverSpHandle_t       handle,
+                                            int                       n,
+                                            int                       nnz,
+                                            const hipsparseMatDescr_t descrA,
+                                            const float*              csrVal,
+                                            const int*                csrRowPtr,
+                                            const int*                csrColInd,
+                                            const float*              b,
+                                            double                    tol,
+                                            int                       reorder,
+                                            float*                    x,
+                                            int*                      singularity)
+{
+    if(!HOST)
+        return hipsolverSpScsrlsvqr(
+            handle, n, nnz, descrA, csrVal, csrRowPtr, csrColInd, b, tol, reorder, x, singularity);
+    else
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+}
+
+inline hipsolverStatus_t hipsolver_csrlsvqr(bool                      HOST,
+                                            hipsolverSpHandle_t       handle,
+                                            int                       n,
+                                            int                       nnz,
+                                            const hipsparseMatDescr_t descrA,
+                                            const double*             csrVal,
+                                            const int*                csrRowPtr,
+                                            const int*                csrColInd,
+                                            const double*             b,
+                                            double                    tol,
+                                            int                       reorder,
+                                            double*                   x,
+                                            int*                      singularity)
+{
+    if(!HOST)
+        return hipsolverSpDcsrlsvqr(
+            handle, n, nnz, descrA, csrVal, csrRowPtr, csrColInd, b, tol, reorder, x, singularity);
+    else
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+}
+
+/*inline hipsolverStatus_t hipsolver_csrlsvqr(bool                      HOST,
+                                            hipsolverSpHandle_t       handle,
+                                            int                       n,
+                                            int                       nnz,
+                                            const hipsparseMatDescr_t descrA,
+                                            const hipsolverComplex*   csrVal,
+                                            const int*                csrRowPtr,
+                                            const int*                csrColInd,
+                                            const hipsolverComplex*   b,
+                                            double                    tol,
+                                            int                       reorder,
+                                            hipsolverComplex*         x,
+                                            int*                      singularity)
+{
+    if(!HOST)
+        return hipsolverSpCcsrlsvqr(handle,
+                                    n,
+                                    nnz,
+                                    descrA,
+                                    (hipFloatComplex*)csrVal,
+                                    csrRowPtr,
+                                    csrColInd,
+                                    (hipFloatComplex*)b,
+                                    tol,
+                                    reorder,
+                                    (hipFloatComplex*)x,
+                                    singularity);
+    else
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
+}
+
+inline hipsolverStatus_t hipsolver_csrlsvqr(bool                          HOST,
+                                            hipsolverSpHandle_t           handle,
+                                            int                           n,
+                                            int                           nnz,
+                                            const hipsparseMatDescr_t     descrA,
+                                            const hipsolverDoubleComplex* csrVal,
+                                            const int*                    csrRowPtr,
+                                            const int*                    csrColInd,
+                                            const hipsolverDoubleComplex* b,
+                                            double                        tol,
+                                            int                           reorder,
+                                            hipsolverDoubleComplex*       x,
+                                            int*                          singularity)
+{
+    if(!HOST)
+        return hipsolverSpZcsrlsvqr(handle,
+                                    n,
+                                    nnz,
+                                    descrA,
+                                    (hipDoubleComplex*)csrVal,
+                                    csrRowPtr,
+                                    csrColInd,
+                                    (hipDoubleComplex*)b,
+                                    tol,
+                                    reorder,
+                                    (hipDoubleComplex*)x,
+                                    singularity);
+    else
+        return HIPSOLVER_STATUS_NOT_SUPPORTED;
 }*/
 /********************************************************/

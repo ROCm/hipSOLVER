@@ -182,6 +182,7 @@ Refer to the :ref:`hipsolverSp compatibility API <library_sparse>` for more deta
 
     :ref:`hipsolverSpXcsrlsvcholHost <sparse_csrlsvcholHost>`, x, x, ,
     :ref:`hipsolverSpXcsrlsvchol <sparse_csrlsvchol>`, x, x, ,
+    :ref:`hipsolverSpXcsrlsvqr <sparse_csrlsvqr>`, x, x, ,
 
 Refactorization routines
 ------------------------------
