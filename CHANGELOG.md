@@ -2,19 +2,12 @@
 
 Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html).
 
-## (Unreleased) hipSOLVER
+## hipSOLVER 2.4.0 for ROCm 6.4.0
 
 ### Added
 * Added compatibility-only functions
   * csrlsvqr
     * hipsolverSpScsrlsvqr, hipsolverSpDcsrlsvqr, hipsolverSpCcsrlsvqr, hipsolverSpZcsrlsvqr
-
-### Changed
-### Removed
-### Optimized
-### Resolved issues
-### Known issues
-### Upcoming changes
 
 
 ## hipSOLVER 2.3.0 for ROCm 6.3.0
