@@ -10,7 +10,7 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 ### Optimized
 ### Resolved issues
 
-* Corrected the value of `lwork` returned by various bufferSize functions to be consistent with cuSOLVER. The following functions will
+* Corrected the value of `lwork` returned by various `bufferSize` functions to be consistent with NVIDIA cuSOLVER. The following functions will
   now return `lwork` such that the workspace size (in bytes) is `sizeof(T) * lwork`, rather than `lwork`:
   * hipsolverXorgbr_bufferSize, hipsolverXorgqr_bufferSize, hipsolverXorgtr_bufferSize, hipsolverXormqr_bufferSize, hipsolverXormtr_bufferSize,
     hipsolverXgesvd_bufferSize, hipsolverXgesvdj_bufferSize, hipsolverXgesvdBatched_bufferSize, hipsolverXgesvdaStridedBatched_bufferSize,
