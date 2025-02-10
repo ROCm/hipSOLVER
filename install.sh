@@ -609,7 +609,7 @@ fi
       exit 1
     fi
     cmake_common_options+=("-DBUILD_SHARED_LIBS=OFF")
-    compiler="${rocm_path}/bin/amdclang++" #force hipcc for static libs, g++ doesn't work
+    compiler="${rocm_path}/bin/amdclang++" #force amdclang++ for static libs, g++ doesn't work
     printf "Forcing compiler to amdclang++ for static library.\n"
   fi
 
