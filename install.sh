@@ -53,7 +53,7 @@ function display_help()
   echo "    [--hipsparse-path] Set specific path to custom built hipsparse"
   echo "    [--static] Create static library instead of shared library"
   echo "    [--codecoverage] Build with code coverage profiling enabled, excluding release mode."
-  echo "    [--address-sanitizer] Build with address sanitizer enabled. Uses hipcc to compile"
+  echo "    [--address-sanitizer] Build with address sanitizer enabled. Uses amdclang++ to compile"
   echo "    [--sparse] Build with sparse functionality enabled at build time."
   echo "    [--no-sparse] Build with sparse functionality tests disabled."
   echo "    [--docs] (experimental) Pass this flag to build the documentation from source."
@@ -450,7 +450,7 @@ while true; do
         shift ;;
     --address-sanitizer)
         build_address_sanitizer=true
-        compiler=hipcc
+        compiler=amdclang++
         shift ;;
     --sparse)
         build_sparse=true
