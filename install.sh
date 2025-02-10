@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (C) 2022-2024 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -609,8 +609,8 @@ fi
       exit 1
     fi
     cmake_common_options+=("-DBUILD_SHARED_LIBS=OFF")
-    compiler="${rocm_path}/bin/hipcc" #force hipcc for static libs, g++ doesn't work
-    printf "Forcing compiler to hipcc for static library.\n"
+    compiler="${rocm_path}/bin/amdclang++" #force hipcc for static libs, g++ doesn't work
+    printf "Forcing compiler to amdclang++ for static library.\n"
   fi
 
   # build type
