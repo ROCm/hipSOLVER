@@ -96,10 +96,6 @@ else()
   set(HIP_PATH $ENV{HIP_PATH})
 endif()
 
-# Append our library helper cmake path and the cmake path for hip (for convenience)
-# Users may override HIP path by specifying their own in CMAKE_MODULE_PATH
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ROCM_PATH}/lib/cmake/hip ${HIP_PATH}/cmake)
-
 # NOTE:  workaround until hip cmake modules fixes symlink logic in their config files; remove when fixed
 list(APPEND CMAKE_PREFIX_PATH ${ROCM_PATH}/lib/cmake/hip /opt/rocm /opt/rocm/llvm /opt/rocm/hip)
 
@@ -139,13 +135,7 @@ if(BUILD_ADDRESS_SANITIZER)
   )
 endif()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(DEFAULT_ARMOR_LEVEL 1)
-else()
-  set(DEFAULT_ARMOR_LEVEL 0)
-endif()
-set(ARMOR_LEVEL "${DEFAULT_ARMOR_LEVEL}" CACHE STRING "Enables increasingly expensive runtime correctness checks")
-include(armor-config)
+
 
 # Find CUDA if the user wants a CUDA version.
 if(USE_CUDA)
@@ -154,6 +144,9 @@ endif()
 
 # Hip headers required of all clients; clients use hip to allocate device memory
 if(USE_CUDA)
+  # Append cmake path for hip (for convenience)
+  # Users may override HIP path by specifying their own in CMAKE_MODULE_PATH
+  list(APPEND CMAKE_MODULE_PATH ${ROCM_PATH}/lib/cmake/hip ${HIP_PATH}/cmake)
   find_package(HIP MODULE REQUIRED)
 else()
   find_package(hip REQUIRED CONFIG PATHS ${HIP_PATH} ${ROCM_PATH} /opt/rocm)
@@ -162,6 +155,17 @@ endif()
 if(USE_CUDA)
   list(APPEND HIP_INCLUDE_DIRS "${HIP_ROOT_DIR}/include")
 endif()
+
+# Append our library helper cmake path
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake )
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set(DEFAULT_ARMOR_LEVEL 1)
+else()
+  set(DEFAULT_ARMOR_LEVEL 0)
+endif()
+set(ARMOR_LEVEL "${DEFAULT_ARMOR_LEVEL}" CACHE STRING "Enables increasingly expensive runtime correctness checks")
+include(armor-config)
 
 # FOR OPTIONAL CODE COVERAGE
 if(BUILD_CODE_COVERAGE)
