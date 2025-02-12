@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (C) 2022-2024 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -53,7 +53,7 @@ function display_help()
   echo "    [--hipsparse-path] Set specific path to custom built hipsparse"
   echo "    [--static] Create static library instead of shared library"
   echo "    [--codecoverage] Build with code coverage profiling enabled, excluding release mode."
-  echo "    [--address-sanitizer] Build with address sanitizer enabled. Uses hipcc to compile"
+  echo "    [--address-sanitizer] Build with address sanitizer enabled. Uses amdclang++ to compile"
   echo "    [--sparse] Build with sparse functionality enabled at build time."
   echo "    [--no-sparse] Build with sparse functionality tests disabled."
   echo "    [--docs] (experimental) Pass this flag to build the documentation from source."
@@ -450,7 +450,7 @@ while true; do
         shift ;;
     --address-sanitizer)
         build_address_sanitizer=true
-        compiler=hipcc
+        compiler=amdclang++
         shift ;;
     --sparse)
         build_sparse=true
@@ -609,8 +609,8 @@ fi
       exit 1
     fi
     cmake_common_options+=("-DBUILD_SHARED_LIBS=OFF")
-    compiler="${rocm_path}/bin/hipcc" #force hipcc for static libs, g++ doesn't work
-    printf "Forcing compiler to hipcc for static library.\n"
+    compiler="${rocm_path}/bin/amdclang++" #force amdclang++ for static libs, g++ doesn't work
+    printf "Forcing compiler to amdclang++ for static library.\n"
   fi
 
   # build type
