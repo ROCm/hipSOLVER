@@ -285,7 +285,7 @@ set(HIPSOLVER_CONFIG_DIR "\${CPACK_PACKAGING_INSTALL_PREFIX}/${CMAKE_INSTALL_LIB
 
 rocm_create_package(
     NAME ${package_name}
-    DESCRIPTION "Radeon Open Compute LAPACK marshalling library"
+    DESCRIPTION "ROCm LAPACK marshalling library"
     MAINTAINER "hipSOLVER Maintainer <hipsolver-maintainer@amd.com>"
     LDCONFIG
     LDCONFIG_DIR ${HIPSOLVER_CONFIG_DIR}
