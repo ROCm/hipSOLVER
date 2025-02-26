@@ -42,8 +42,6 @@ prepend_path(".." hipsolver_headers_public relative_hipsolver_headers_public)
 
 if(NOT USE_CUDA)
   set(hipsolver_source
-    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/dlopen/cholmod.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/dlopen/rocsparse.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_conversions.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_dense.cpp"
@@ -52,6 +50,12 @@ if(NOT USE_CUDA)
     "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/hipsolver_sparse.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/common/hipsolver_dense_common.cpp"
   )
+  if(NOT BUILD_WITH_SPARSE)
+    list(APPEND hipsolver_source
+      "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/dlopen/cholmod.cpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/amd_detail/dlopen/rocsparse.cpp"
+    )
+  endif()
 else()
   set(hipsolver_source
     "${CMAKE_CURRENT_SOURCE_DIR}/nvidia_detail/hipsolver_conversions.cpp"
