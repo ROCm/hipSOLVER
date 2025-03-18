@@ -20,7 +20,7 @@
 #
 # ########################################################################
 
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.12)
 
 # Consider removing this in the future
 # This should appear before the project command, because it does not use FORCE
@@ -253,11 +253,8 @@ if(NOT USE_CUDA)
 
     rocm_package_add_dependencies(DEPENDS ${hipsolver_pkgdeps})
   else()
-    list(APPEND CPACK_DEBIAN_RUNTIME_PACKAGE_RECOMMENDS "rocsparse" ${hipsolver_pkgdeps})
-    # Cpack Recommends/Suggests list should be comma separated
-    string(REPLACE ";" "," CPACK_DEBIAN_RUNTIME_PACKAGE_RECOMMENDS "${CPACK_DEBIAN_RUNTIME_PACKAGE_RECOMMENDS}")
-    list(APPEND CPACK_RPM_RUNTIME_PACKAGE_SUGGESTS "rocsparse" ${hipsolver_pkgdeps})
-    string(REPLACE ";" "," CPACK_RPM_RUNTIME_PACKAGE_SUGGESTS "${CPACK_RPM_RUNTIME_PACKAGE_SUGGESTS}")
+    string(JOIN "," CPACK_DEBIAN_RUNTIME_PACKAGE_RECOMMENDS "rocsparse" ${hipsolver_pkgdeps})
+    string(JOIN "," CPACK_RPM_RUNTIME_PACKAGE_SUGGESTS "rocsparse" ${hipsolver_pkgdeps})
   endif()
 endif()
 
