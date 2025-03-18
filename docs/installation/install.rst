@@ -1,6 +1,6 @@
 .. meta::
-  :description: hipSOLVER documentation and API reference library
-  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation
+  :description: hipSOLVER installation guide
+  :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation, install
 
 .. _install-linux:
 
