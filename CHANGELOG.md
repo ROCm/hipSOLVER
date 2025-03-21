@@ -2,15 +2,14 @@
 
 Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/index.html).
 
-## (Unreleased) hipSOLVER
+## hipSOLVER 2.5.0 for ROCm 6.5.0
 
-### Added
-### Changed
-### Removed
-### Optimized
-### Resolved issues
-### Known issues
 ### Upcoming changes
+
+* With the rocSOLVER backend, the bufferSize methods are currently outputting lwork such that the required workspace 
+size (in bytes) is lwork. In ROCm 7.0 this will change to make the rocSOLVER backend consistent with cuSOLVER. The 
+changed bufferSize methods will then return lwork such that the required workspace size (in bytes) is sizeof(T) * lwork,
+where T is the used precision. This change will break ABI backward compatibility.
 
 
 ## hipSOLVER 2.4.0 for ROCm 6.4.0
