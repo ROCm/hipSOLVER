@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2024 Advanced Micro Devices, Inc.
+ * Copyright (C) 2020-2025 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 // HIP = Heterogeneous-compute Interface for Portability
@@ -12,6 +12,8 @@
 //
 #ifndef HIPSOLVER_H
 #define HIPSOLVER_H
+
+#define HIPSOLVER_SIZE_UNIT_ELEMENTS 1
 
 #include "internal/hipsolver-export.h"
 #include "internal/hipsolver-version.h"
