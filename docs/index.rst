@@ -28,6 +28,7 @@ The hipSOLVER documentation is structured as follows:
   .. grid-item-card:: Reference
 
     * :ref:`api-intro`
+    * :ref:`precision-support`
     * :ref:`library_api`
     * :ref:`library_dense`
     * :ref:`library_sparse`
