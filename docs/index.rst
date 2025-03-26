@@ -34,6 +34,7 @@ The hipSOLVER public repository is located at `<https://github.com/ROCm/hipSOLVE
   .. grid-item-card:: Reference
 
     * :ref:`api-intro`
+    * :ref:`precision-support`
     * :ref:`library_api`
     * :ref:`library_dense`
     * :ref:`library_sparse`

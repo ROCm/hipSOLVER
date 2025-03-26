@@ -20,7 +20,7 @@
 #
 # ########################################################################
 
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.12)
 
 # Consider removing this in the future
 # This should appear before the project command, because it does not use FORCE
@@ -87,7 +87,7 @@ include(ROCMInstallSymlinks)
 include(ROCMClients)
 include(ROCMHeaderWrapper)
 
-set(VERSION_STRING "2.5.0")
+set(VERSION_STRING "3.0.0")
 rocm_setup_version(VERSION ${VERSION_STRING})
 
 if(NOT DEFINED ENV{HIP_PATH})
@@ -232,7 +232,7 @@ endif()
 # Package specific CPACK vars
 if(NOT USE_CUDA)
   set(rocblas_minimum 4.2.0)
-  set(rocsolver_minimum 3.29.0)
+  set(rocsolver_minimum 3.30.0)
   rocm_package_add_dependencies(SHARED_DEPENDS "rocblas >= ${rocblas_minimum}" "rocsolver >= ${rocsolver_minimum}")
   rocm_package_add_rpm_dependencies(STATIC_DEPENDS "rocblas-static-devel >= ${rocblas_minimum}" "rocsolver-static-devel >= ${rocsolver_minimum}")
   rocm_package_add_deb_dependencies(STATIC_DEPENDS "rocblas-static-dev >= ${rocblas_minimum}" "rocsolver-static-dev >= ${rocsolver_minimum}")
@@ -253,11 +253,8 @@ if(NOT USE_CUDA)
 
     rocm_package_add_dependencies(DEPENDS ${hipsolver_pkgdeps})
   else()
-    list(APPEND CPACK_DEBIAN_RUNTIME_PACKAGE_RECOMMENDS "rocsparse" ${hipsolver_pkgdeps})
-    # Cpack Recommends/Suggests list should be comma separated
-    string(REPLACE ";" "," CPACK_DEBIAN_RUNTIME_PACKAGE_RECOMMENDS "${CPACK_DEBIAN_RUNTIME_PACKAGE_RECOMMENDS}")
-    list(APPEND CPACK_RPM_RUNTIME_PACKAGE_SUGGESTS "rocsparse" ${hipsolver_pkgdeps})
-    string(REPLACE ";" "," CPACK_RPM_RUNTIME_PACKAGE_SUGGESTS "${CPACK_RPM_RUNTIME_PACKAGE_SUGGESTS}")
+    string(JOIN "," CPACK_DEBIAN_RUNTIME_PACKAGE_RECOMMENDS "rocsparse" ${hipsolver_pkgdeps})
+    string(JOIN "," CPACK_RPM_RUNTIME_PACKAGE_SUGGESTS "rocsparse" ${hipsolver_pkgdeps})
   endif()
 endif()
 
