@@ -1,5 +1,5 @@
 # ########################################################################
-# Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,10 @@ This module defines the following variables:
 
 #]=======================================================================]
 
-find_path(SUITESPARSE_CONFIG_INCLUDE_DIR suitesparse/SuiteSparse_config.h)
+find_path(SUITESPARSE_CONFIG_INCLUDE_DIR
+    NAMES SuiteSparse_config.h
+    PATH_SUFFIXES suitesparse
+    )
 find_library(SUITESPARSE_CONFIG_LIBRARY suitesparseconfig)
 
 include(FindPackageHandleStandardArgs)

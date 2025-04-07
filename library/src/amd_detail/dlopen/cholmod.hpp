@@ -24,7 +24,7 @@
 #include "lib_macros.hpp"
 
 #ifdef HAVE_ROCSPARSE
-#include <suitesparse/cholmod.h>
+#include <cholmod.h>
 #else
 
 // constants
