@@ -74,9 +74,9 @@ Library dependencies
 
 The hipSOLVER library has two separate sets of dependencies, depending on the backend being used.
 
-The cuSOLVER backend has a dependency on cuSOLVER.
+The NVIDIA CUDA backend has a dependency on cuSOLVER.
 
-The rocSOLVER backend has the following dependencies:
+The ROCm (rocSOLVER) backend has the following dependencies:
 
 *  `rocSOLVER <https://github.com/ROCm/rocSOLVER>`_
 *  `rocBLAS <https://github.com/ROCm/rocBLAS>`_
@@ -88,7 +88,7 @@ rocSOLVER itself depends on rocBLAS and rocSPARSE, therefore all three libraries
 as part of a standard rocSOLVER installation. For more information
 about building and installing rocSOLVER, see the :doc:`rocSOLVER installation guide <rocsolver:installation/installlinux>`.
 
-SuiteSparse is a third-party library, which can be installed using the package managers of most distributions.
+SuiteSparse is a third-party library which can be installed using the package managers of most distributions.
 Together with rocSPARSE, it is used to provide
 functionality for the ``hipsolverSp`` API. By default, both libraries are run-time dependencies.
 They are dynamically loaded by ``dlopen`` if they are
