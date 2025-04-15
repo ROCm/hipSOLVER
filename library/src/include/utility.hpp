@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,14 +33,10 @@ inline rocblas_status hipsolverManageWorkspace(rocblas_handle handle, size_t new
     if(new_size < 0)
         return rocblas_status_memory_error;
 
-    size_t current_size = 0;
-    if(rocblas_is_user_managing_device_memory(handle))
-        rocblas_get_device_memory_size(handle, &current_size);
+    if(!rocblas_is_managing_device_memory(handle))
+        return rocblas_set_workspace(handle, nullptr, 0);
 
-    if(new_size > current_size)
-        return rocblas_set_device_memory_size(handle, new_size);
-    else
-        return rocblas_status_success;
+    return rocblas_status_success;
 }
 
 inline rocblas_status
