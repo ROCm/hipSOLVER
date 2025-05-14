@@ -11,11 +11,11 @@ hipSOLVER helper functions
 These are helper functions that control aspects of the hipSOLVER library. They are divided
 into the following categories:
 
-* :ref:`initialize` functions initialize and cleanup the library handle.
-* :ref:`stream` functions manipulate streams.
-* :ref:`determinism` functions manipulate function determinism.
-* :ref:`gesvdj_info` functions manipulate gesvdj parameters.
-* :ref:`syevj_info` functions manipulate syevj parameters.
+* :ref:`initialize`: Functions to initialize and cleanup the library handle.
+* :ref:`stream`: Functions to manipulate streams.
+* :ref:`determinism`: Functions to manipulate function determinism.
+* :ref:`gesvdj_info`: Functions to manipulate gesvdj parameters.
+* :ref:`syevj_info`: Functions to manipulate syevj parameters.
 
 
 .. _initialize:

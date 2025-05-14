@@ -11,10 +11,10 @@ Refactorization helper functions
 These helper functions control aspects of the hipSOLVER library. They are divided 
 into the following categories:
 
-* :ref:`refactor_initialize` functions to initialize and cleanup the library handle.
-* :ref:`refactor_input` functions to manipulate function input.
-* :ref:`refactor_output` functions to access function output.
-* :ref:`refactor_parameters` functions to manipulate parameters.
+* :ref:`refactor_initialize`: Functions to initialize and cleanup the library handle.
+* :ref:`refactor_input`: Functions to manipulate function input.
+* :ref:`refactor_output`: Functions to access function output.
+* :ref:`refactor_parameters`: Functions to manipulate parameters.
 
 
 .. _refactor_initialize:

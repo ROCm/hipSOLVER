@@ -11,8 +11,8 @@ Sparse matrix helper functions
 These helper functions control aspects of the hipSOLVER library. They are divided
 into the following categories:
 
-* :ref:`sparse_initialize` functions initialize and cleanup the library handle.
-* :ref:`sparse_stream` functions provide functionality to manipulate streams.
+* :ref:`sparse_initialize`: Functions to initialize and cleanup the library handle.
+* :ref:`sparse_stream`: Functions to manipulate streams.
 
 
 .. _sparse_initialize:

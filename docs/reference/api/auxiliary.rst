@@ -1,5 +1,5 @@
 .. meta::
-  :description: hipSOLVER hipSOLVER LAPACK auxiliary functions API documentation
+  :description: hipSOLVER LAPACK auxiliary functions API documentation
   :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation, auxiliary functions
 
 .. _library_auxiliary:

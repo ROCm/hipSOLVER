@@ -1,5 +1,5 @@
 .. meta::
-  :description: hipSOLVER dense matrix helper functionsdocumentation and API reference library
+  :description: hipSOLVER dense matrix helper functions API documentation
   :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation, dense matrix
 
 .. _dense_helpers:

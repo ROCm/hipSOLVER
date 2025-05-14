@@ -1,5 +1,5 @@
 .. meta::
-  :description: hipSOLVER dense matrix datatypes documentation
+  :description: hipSOLVER dense matrix data types documentation
   :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation, data types
 
 .. _dense_types:

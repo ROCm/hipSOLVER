@@ -8,7 +8,8 @@
 hipSOLVER LAPACK-like functions
 ********************************
 
-The other LAPACK-like routines provided by hipSOLVER are divided into the following subcategories:
+LAPACK routines solve complex numerical linear algebra problems. These functions are organized
+into the following categories:
 
 * :ref:`likeeigens`: Eigenproblems for symmetric matrices.
 * :ref:`likesvds`: Singular values and related problems for general matrices.

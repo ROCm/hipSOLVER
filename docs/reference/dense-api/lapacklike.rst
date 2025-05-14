@@ -1,5 +1,5 @@
 .. meta::
-  :description: hipSOLVER Dense matrix LAPACK-like functions API documentation
+  :description: hipSOLVER dense matrix LAPACK-like functions API documentation
   :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation, dense matrix, Lapack-like
 
 .. _dense_lapacklike:

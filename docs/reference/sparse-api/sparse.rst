@@ -1,5 +1,5 @@
 .. meta::
-  :description: hipSOLVER Sparse matrix functions API documentation
+  :description: hipSOLVER sparse matrix functions API documentation
   :keywords: hipSOLVER, rocSOLVER, ROCm, API, documentation, sparse matrix
 
 .. _sparse_sparsefunc:
