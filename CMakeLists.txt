@@ -93,7 +93,7 @@ rocm_setup_version(VERSION ${VERSION_STRING})
 if(NOT DEFINED ENV{HIP_PATH})
   set(HIP_PATH "/opt/rocm/hip")
 else()
-  set(HIP_PATH $ENV{HIP_PATH})
+  file(TO_CMAKE_PATH "$ENV{HIP_PATH}" HIP_PATH)
 endif()
 
 # NOTE:  workaround until hip cmake modules fixes symlink logic in their config files; remove when fixed
