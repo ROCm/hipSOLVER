@@ -22,7 +22,12 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 ### Upcoming changes
 
 
-## hipSOLVER 2.5.0 for ROCm 6.5.0
+## hipSOLVER 2.4.0 for ROCm 6.4.0
+
+### Added
+* Added compatibility-only functions
+  * csrlsvqr
+    * hipsolverSpScsrlsvqr, hipsolverSpDcsrlsvqr, hipsolverSpCcsrlsvqr, hipsolverSpZcsrlsvqr
 
 ### Upcoming changes
 
@@ -30,14 +35,6 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
   size (in bytes) is lwork. In ROCm 7.0 this will change to make the rocSOLVER backend consistent with cuSOLVER. The
   changed bufferSize methods will then return lwork such that the required workspace size (in bytes) is sizeof(T) * lwork,
   where T is the used precision. This change will break ABI backward compatibility.
-
-
-## hipSOLVER 2.4.0 for ROCm 6.4.0
-
-### Added
-* Added compatibility-only functions
-  * csrlsvqr
-    * hipsolverSpScsrlsvqr, hipsolverSpDcsrlsvqr, hipsolverSpCcsrlsvqr, hipsolverSpZcsrlsvqr
 
 
 ## hipSOLVER 2.3.0 for ROCm 6.3.0
