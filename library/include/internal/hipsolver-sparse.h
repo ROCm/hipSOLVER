@@ -123,7 +123,7 @@ HIPSOLVER_EXPORT hipsolverStatus_t hipsolverSpZcsrlsvqr(hipsolverSpHandle_t     
                                                         const int*                csrRowPts,
                                                         const int*                csrColInd,
                                                         const hipDoubleComplex*   b,
-                                                        double                    tdoubleolerance,
+                                                        double                    tolerance,
                                                         int                       reorder,
                                                         hipDoubleComplex*         x,
                                                         int*                      singularity);

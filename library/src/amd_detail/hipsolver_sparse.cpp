@@ -1341,7 +1341,7 @@ try
     CHECK_HIP_ERROR(hipMemcpy((void*)x, b, sizeof(hipDoubleComplex) * n, hipMemcpyDeviceToDevice));
 
     // convert A to dense matrix
-    hipFloatComplex* denseA;
+    hipDoubleComplex* denseA;
     CHECK_HIP_ERROR(hipMalloc(&denseA, sizeof(hipDoubleComplex) * n * n));
     rocsparse_zcsr2dense(sp->sphandle,
                          n,
