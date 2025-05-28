@@ -5,6 +5,11 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 ## (Unreleased) hipSOLVER
 
 ### Added
+
+* Added compatibility-only functions
+  * csrlsvqr
+    * hipsolverSpCcsrlsvqr, hipsolverSpZcsrlsvqr
+
 ### Changed
 ### Removed
 ### Optimized
@@ -17,9 +22,6 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
     hipsolverXgesvd_bufferSize, hipsolverXgesvdj_bufferSize, hipsolverXgesvdBatched_bufferSize, hipsolverXgesvdaStridedBatched_bufferSize,
     hipsolverXsyevd_bufferSize, hipsolverXsyevdx_bufferSize, hipsolverXsyevj_bufferSize, hipsolverXsyevjBatched_bufferSize,
     hipsolverXsygvd_bufferSize, hipsolverXsygvdx_bufferSize, hipsolverXsygvj_bufferSize, hipsolverXsytrd_bufferSize, hipsolverXsytrf_bufferSize
-* Added compatibility-only functions
-  * csrlsvqr
-    * hipsolverSpCcsrlsvqr, hipsolverSpZcsrlsvqr
 
 ### Known issues
 ### Upcoming changes
