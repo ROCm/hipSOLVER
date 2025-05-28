@@ -5,20 +5,23 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 ## (Unreleased) hipSOLVER
 
 ### Added
+
+* Added compatibility-only functions
+  * csrlsvqr
+    * hipsolverSpCcsrlsvqr, hipsolverSpZcsrlsvqr
+
 ### Changed
 ### Removed
 ### Optimized
 ### Resolved issues
 
 * Corrected the value of `lwork` returned by various `bufferSize` functions to be consistent with NVIDIA cuSOLVER. The following functions will
-  now return `lwork` such that the workspace size (in bytes) is `sizeof(T) * lwork`, rather than `lwork`:
+  now return `lwork` such that the workspace size (in bytes) is `sizeof(T) * lwork`, rather than `lwork`. To restore the original behavior, set
+  environment variable `HIPSOLVER_BUFFERSIZE_RETURN_BYTES`.
   * hipsolverXorgbr_bufferSize, hipsolverXorgqr_bufferSize, hipsolverXorgtr_bufferSize, hipsolverXormqr_bufferSize, hipsolverXormtr_bufferSize,
     hipsolverXgesvd_bufferSize, hipsolverXgesvdj_bufferSize, hipsolverXgesvdBatched_bufferSize, hipsolverXgesvdaStridedBatched_bufferSize,
     hipsolverXsyevd_bufferSize, hipsolverXsyevdx_bufferSize, hipsolverXsyevj_bufferSize, hipsolverXsyevjBatched_bufferSize,
     hipsolverXsygvd_bufferSize, hipsolverXsygvdx_bufferSize, hipsolverXsygvj_bufferSize, hipsolverXsytrd_bufferSize, hipsolverXsytrf_bufferSize
-* Added compatibility-only functions
-  * csrlsvqr
-    * hipsolverSpCcsrlsvqr, hipsolverSpZcsrlsvqr
 
 ### Known issues
 ### Upcoming changes
@@ -40,6 +43,13 @@ where T is the used precision. This change will break ABI backward compatibility
 * Added compatibility-only functions
   * csrlsvqr
     * hipsolverSpScsrlsvqr, hipsolverSpDcsrlsvqr
+
+### Upcoming changes
+
+* With the rocSOLVER backend, the bufferSize methods are currently outputting lwork such that the required workspace
+  size (in bytes) is lwork. In ROCm 7.0 this will change to make the rocSOLVER backend consistent with cuSOLVER. The
+  changed bufferSize methods will then return lwork such that the required workspace size (in bytes) is sizeof(T) * lwork,
+  where T is the used precision. This change will break ABI backward compatibility.
 
 
 ## hipSOLVER 2.3.0 for ROCm 6.3.0
