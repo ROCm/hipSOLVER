@@ -55,7 +55,6 @@ set(hipsolverDn_test_source
   gesvd_gtest.cpp
   gesvda_gtest.cpp
   gesvdj_gtest.cpp
-  gesvdj_dn_gtest.cpp
   potrf_gtest.cpp
   potri_gtest.cpp
   potrs_gtest.cpp
