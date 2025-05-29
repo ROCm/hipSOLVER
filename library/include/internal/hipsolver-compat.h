@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2020-2024 Advanced Micro Devices, Inc.
+ * Copyright (C) 2020-2025 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #ifndef HIPSOLVER_COMPAT_H

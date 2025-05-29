@@ -21,7 +21,7 @@
  *
  * ************************************************************************ */
 
-#include "testing_gesvdj.hpp"
+#include "testing_gesvdj_dn.hpp"
 
 using ::testing::Combine;
 using ::testing::TestWithParam;

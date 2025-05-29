@@ -1,5 +1,5 @@
 /* ************************************************************************
- * Copyright (C) 2023-2024 Advanced Micro Devices, Inc.
+ * Copyright (C) 2023-2025 Advanced Micro Devices, Inc.
  * ************************************************************************ */
 
 #ifndef HIPSOLVER_REFACTOR_H
