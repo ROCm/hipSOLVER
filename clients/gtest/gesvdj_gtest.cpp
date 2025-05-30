@@ -190,6 +190,26 @@ TEST_P(GESVDJ_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
+TEST_P(GESVDJ_COMPAT, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(GESVDJ_COMPAT, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(GESVDJ_COMPAT, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(GESVDJ_COMPAT, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
 // strided_batched tests
 
 TEST_P(GESVDJ, strided_batched__float)
