@@ -113,6 +113,10 @@ class GEBRD_FORTRAN : public GEBRD_BASE<API_FORTRAN>
 {
 };
 
+class GEBRD_COMPAT : public GEBRD_BASE<API_COMPAT>
+{
+};
+
 // non-batch tests
 
 TEST_P(GEBRD, __float)
@@ -155,6 +159,26 @@ TEST_P(GEBRD_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
+TEST_P(GEBRD_COMPAT, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(GEBRD_COMPAT, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(GEBRD_COMPAT, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(GEBRD_COMPAT, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          GEBRD,
 //                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(large_n_size_range)));
@@ -170,3 +194,11 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GEBRD_FORTRAN,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(n_size_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GEBRD_COMPAT,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         GEBRD_COMPAT,
+                         Combine(ValuesIn(size_range), ValuesIn(opt_range)));

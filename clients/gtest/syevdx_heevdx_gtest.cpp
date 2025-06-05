@@ -116,6 +116,14 @@ class HEEVDX : public SYEVDX_HEEVDX<API_NORMAL>
 {
 };
 
+class SYEVDX_COMPAT : public SYEVDX_BASE<API_COMPAT>
+{
+};
+
+class HEEVDX_COMPAT : public HEEVDX_BASE<API_COMPAT>
+{
+};
+
 // non-batch tests
 
 TEST_P(SYEVDX, __float)
@@ -138,6 +146,46 @@ TEST_P(HEEVDX, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
+TEST_P(SYEVDX_COMPAT, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(SYEVDX_COMPAT, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(SYEVDX_COMPAT, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(SYEVDX_COMPAT, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
+TEST_P(HEEVDX_COMPAT, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(HEEVDX_COMPAT, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(HEEVDX_COMPAT, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(HEEVDX_COMPAT, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          SYEVDX,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
@@ -149,3 +197,19 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack, SYEVDX, Combine(ValuesIn(size_range), V
 //                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack, HEEVDX, Combine(ValuesIn(size_range), ValuesIn(op_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          SYEVDX_COMPAT,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         SYEVDX_COMPAT,
+                         Combine(ValuesIn(size_range), ValuesIn(opt_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          HEEVDX_COMPAT,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         HEEVDX_COMPAT,
+                         Combine(ValuesIn(size_range), ValuesIn(opt_range)));
