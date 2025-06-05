@@ -90,6 +90,11 @@ set(others_test_source
 
 add_executable(hipsolver-test ${others_test_source} ${hipsolverDn_test_source} ${hipsolverRf_test_source})
 
+if(BUILD_COVERAGE)
+	target_compile_options(hipsolver-test PRIVATE -g -O0 -fgenerate-instr-profile -fcoverage-mapping)
+	target_link_options(hipsolver-test PUBLIC -g -O0 -fgenerate-instr-profile)
+endif()
+
 target_include_directories(hipsolver-test
   PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
