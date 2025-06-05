@@ -192,8 +192,8 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          SYTRF_COMPAT,
-//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(uplo_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          SYTRF_COMPAT,
-                         Combine(ValuesIn(size_range), ValuesIn(opt_range)));
+                         Combine(ValuesIn(matrix_size_range), ValuesIn(uplo_range)));

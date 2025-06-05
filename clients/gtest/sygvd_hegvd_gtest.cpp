@@ -123,11 +123,11 @@ class HEGVD_FORTRAN : public SYGVD_HEGVD<API_FORTRAN>
 {
 };
 
-class SYGVD_COMPAT : public SYGVD_BASE<API_COMPAT>
+class SYGVD_COMPAT : public SYGVD_HEGVD<API_COMPAT>
 {
 };
 
-class HEGVD_COMPAT : public HEGVD_BASE<API_COMPAT>
+class HEGVD_COMPAT : public SYGVD_HEGVD<API_COMPAT>
 {
 };
 
@@ -183,26 +183,6 @@ TEST_P(SYGVD_COMPAT, __double)
     run_tests<false, false, double>();
 }
 
-TEST_P(SYGVD_COMPAT, __float_complex)
-{
-    run_tests<false, false, rocblas_float_complex>();
-}
-
-TEST_P(SYGVD_COMPAT, __double_complex)
-{
-    run_tests<false, false, rocblas_double_complex>();
-}
-
-TEST_P(HEGVD_COMPAT, __float)
-{
-    run_tests<false, false, float>();
-}
-
-TEST_P(HEGVD_COMPAT, __double)
-{
-    run_tests<false, false, double>();
-}
-
 TEST_P(HEGVD_COMPAT, __float_complex)
 {
     run_tests<false, false, rocblas_float_complex>();
@@ -247,16 +227,16 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          SYGVD_COMPAT,
-//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          SYGVD_COMPAT,
-                         Combine(ValuesIn(size_range), ValuesIn(opt_range)));
+                         Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
 
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          HEGVD_COMPAT,
-//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+//                          Combine(ValuesIn(large_matrix_size_range), ValuesIn(type_range)));
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          HEGVD_COMPAT,
-                         Combine(ValuesIn(size_range), ValuesIn(opt_range)));
+                         Combine(ValuesIn(matrix_size_range), ValuesIn(type_range)));
