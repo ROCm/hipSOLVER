@@ -100,6 +100,8 @@ inline hipsolverStatus_t hipsolver_orgbr_ungbr_bufferSize(testAPI_t           AP
         return hipsolverSorgbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork);
     case API_FORTRAN:
         return hipsolverSorgbr_bufferSizeFortran(handle, side, m, n, k, A, lda, tau, lwork);
+    case API_COMPAT:
+        return hipsolverDnSorgbr_bufferSizeFortran(handle, side, m, n, k, A, lda, tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -122,6 +124,8 @@ inline hipsolverStatus_t hipsolver_orgbr_ungbr_bufferSize(testAPI_t           AP
         return hipsolverDorgbr_bufferSize(handle, side, m, n, k, A, lda, tau, lwork);
     case API_FORTRAN:
         return hipsolverDorgbr_bufferSizeFortran(handle, side, m, n, k, A, lda, tau, lwork);
+    case API_COMPAT:
+        return hipsolverDnDorgbr_bufferSizeFortran(handle, side, m, n, k, A, lda, tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -146,6 +150,8 @@ inline hipsolverStatus_t hipsolver_orgbr_ungbr_bufferSize(testAPI_t           AP
     case API_FORTRAN:
         return hipsolverCungbr_bufferSizeFortran(
             handle, side, m, n, k, (hipFloatComplex*)A, lda, (hipFloatComplex*)tau, lwork);
+    case API_COMPAT:
+        return hipsolverDnCorgbr_bufferSizeFortran(handle, side, m, n, k, (hipFloatComplex*)A, lda,(hipFloatComplex*) tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -170,6 +176,8 @@ inline hipsolverStatus_t hipsolver_orgbr_ungbr_bufferSize(testAPI_t             
     case API_FORTRAN:
         return hipsolverZungbr_bufferSizeFortran(
             handle, side, m, n, k, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)tau, lwork);
+    case API_COMPAT:
+        return hipsolverDnCorgbr_bufferSizeFortran(handle, side, m, n, k, (hipDoubleComplex*)A, lda,(hipDoubleComplex*) tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -194,6 +202,8 @@ inline hipsolverStatus_t hipsolver_orgbr_ungbr(testAPI_t           API,
         return hipsolverSorgbr(handle, side, m, n, k, A, lda, tau, work, lwork, info);
     case API_FORTRAN:
         return hipsolverSorgbrFortran(handle, side, m, n, k, A, lda, tau, work, lwork, info);
+    case API_COMPAT:
+        return hipsolverDnSorgbr(handle, side, m, n, k, A, lda, tau, work, lwork, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -218,6 +228,8 @@ inline hipsolverStatus_t hipsolver_orgbr_ungbr(testAPI_t           API,
         return hipsolverDorgbr(handle, side, m, n, k, A, lda, tau, work, lwork, info);
     case API_FORTRAN:
         return hipsolverDorgbrFortran(handle, side, m, n, k, A, lda, tau, work, lwork, info);
+    case API_COMPAT:
+        return hipsolverDnDorgbr(handle, side, m, n, k, A, lda, tau, work, lwork, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -252,6 +264,18 @@ inline hipsolverStatus_t hipsolver_orgbr_ungbr(testAPI_t           API,
                                info);
     case API_FORTRAN:
         return hipsolverCungbrFortran(handle,
+                                      side,
+                                      m,
+                                      n,
+                                      k,
+                                      (hipFloatComplex*)A,
+                                      lda,
+                                      (hipFloatComplex*)tau,
+                                      (hipFloatComplex*)work,
+                                      lwork,
+                                      info);
+    case API_COMPAT:
+        return hipsolverDnCungbr(handle,
                                       side,
                                       m,
                                       n,
@@ -306,6 +330,18 @@ inline hipsolverStatus_t hipsolver_orgbr_ungbr(testAPI_t               API,
                                       (hipDoubleComplex*)work,
                                       lwork,
                                       info);
+    case API_FORTRAN:
+        return hipsolverDnZungbr(handle,
+                                      side,
+                                      m,
+                                      n,
+                                      k,
+                                      (hipDoubleComplex*)A,
+                                      lda,
+                                      (hipDoubleComplex*)tau,
+                                      (hipDoubleComplex*)work,
+                                      lwork,
+                                      info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -330,6 +366,8 @@ inline hipsolverStatus_t hipsolver_orgqr_ungqr_bufferSize(testAPI_t         API,
         return hipsolverSorgqr_bufferSize(handle, m, n, k, A, lda, tau, lwork);
     case API_FORTRAN:
         return hipsolverSorgqr_bufferSizeFortran(handle, m, n, k, A, lda, tau, lwork);
+    case API_COMPAT:
+        return hipsolverDnSorgqr_bufferSize(handle, m, n, k, A, lda, tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -351,6 +389,8 @@ inline hipsolverStatus_t hipsolver_orgqr_ungqr_bufferSize(testAPI_t         API,
         return hipsolverDorgqr_bufferSize(handle, m, n, k, A, lda, tau, lwork);
     case API_FORTRAN:
         return hipsolverDorgqr_bufferSizeFortran(handle, m, n, k, A, lda, tau, lwork);
+    case API_COMPAT:
+        return hipsolverDnDorgqr_bufferSize(handle, m, n, k, A, lda, tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -373,6 +413,9 @@ inline hipsolverStatus_t hipsolver_orgqr_ungqr_bufferSize(testAPI_t         API,
             handle, m, n, k, (hipFloatComplex*)A, lda, (hipFloatComplex*)tau, lwork);
     case API_FORTRAN:
         return hipsolverCungqr_bufferSizeFortran(
+            handle, m, n, k, (hipFloatComplex*)A, lda, (hipFloatComplex*)tau, lwork);
+    case API_COMPAT:
+        return hipsolverDnCungqr_bufferSize(
             handle, m, n, k, (hipFloatComplex*)A, lda, (hipFloatComplex*)tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
@@ -397,6 +440,9 @@ inline hipsolverStatus_t hipsolver_orgqr_ungqr_bufferSize(testAPI_t             
     case API_FORTRAN:
         return hipsolverZungqr_bufferSizeFortran(
             handle, m, n, k, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)tau, lwork);
+    case API_COMPAT:
+        return hipsolverDnZungqr_bufferSize(
+            handle, m, n, k, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -420,6 +466,8 @@ inline hipsolverStatus_t hipsolver_orgqr_ungqr(testAPI_t         API,
         return hipsolverSorgqr(handle, m, n, k, A, lda, tau, work, lwork, info);
     case API_FORTRAN:
         return hipsolverSorgqrFortran(handle, m, n, k, A, lda, tau, work, lwork, info);
+    case API_COMPAT:
+        return hipsolverSorgqr(handle, m, n, k, A, lda, tau, work, lwork, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -443,6 +491,8 @@ inline hipsolverStatus_t hipsolver_orgqr_ungqr(testAPI_t         API,
         return hipsolverDorgqr(handle, m, n, k, A, lda, tau, work, lwork, info);
     case API_FORTRAN:
         return hipsolverDorgqrFortran(handle, m, n, k, A, lda, tau, work, lwork, info);
+    case API_COMPAT:
+        return hipsolverDnDorgqr(handle, m, n, k, A, lda, tau, work, lwork, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -484,6 +534,17 @@ inline hipsolverStatus_t hipsolver_orgqr_ungqr(testAPI_t         API,
                                       (hipFloatComplex*)work,
                                       lwork,
                                       info);
+    case API_COMPAT:
+        return hipsolverDnCungqr(handle,
+                                      m,
+                                      n,
+                                      k,
+                                      (hipFloatComplex*)A,
+                                      lda,
+                                      (hipFloatComplex*)tau,
+                                      (hipFloatComplex*)work,
+                                      lwork,
+                                      info); 
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -525,6 +586,17 @@ inline hipsolverStatus_t hipsolver_orgqr_ungqr(testAPI_t               API,
                                       (hipDoubleComplex*)work,
                                       lwork,
                                       info);
+    case API_COMPAT:
+        return hipsolverDnZungqr(handle,
+                                      m,
+                                      n,
+                                      k,
+                                      (hipDoubleComplex*)A,
+                                      lda,
+                                      (hipDoubleComplex*)tau,
+                                      (hipDoubleComplex*)work,
+                                      lwork,
+                                      info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -548,6 +620,8 @@ inline hipsolverStatus_t hipsolver_orgtr_ungtr_bufferSize(testAPI_t           AP
         return hipsolverSorgtr_bufferSize(handle, uplo, n, A, lda, tau, lwork);
     case API_FORTRAN:
         return hipsolverSorgtr_bufferSizeFortran(handle, uplo, n, A, lda, tau, lwork);
+    case API_COMPAT:
+        return hipsolverDnSorgtr_bufferSize(handle, uplo, n, A, lda, tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -568,6 +642,8 @@ inline hipsolverStatus_t hipsolver_orgtr_ungtr_bufferSize(testAPI_t           AP
         return hipsolverDorgtr_bufferSize(handle, uplo, n, A, lda, tau, lwork);
     case API_FORTRAN:
         return hipsolverDorgtr_bufferSizeFortran(handle, uplo, n, A, lda, tau, lwork);
+    case API_FORTRAN:
+        return hipsolverDnDorgtr_bufferSize(handle, uplo, n, A, lda, tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -589,6 +665,9 @@ inline hipsolverStatus_t hipsolver_orgtr_ungtr_bufferSize(testAPI_t           AP
             handle, uplo, n, (hipFloatComplex*)A, lda, (hipFloatComplex*)tau, lwork);
     case API_FORTRAN:
         return hipsolverCungtr_bufferSizeFortran(
+            handle, uplo, n, (hipFloatComplex*)A, lda, (hipFloatComplex*)tau, lwork);
+    case API_COMPAT:
+        return hipsolverDnCungtr_bufferSize(
             handle, uplo, n, (hipFloatComplex*)A, lda, (hipFloatComplex*)tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
@@ -612,6 +691,9 @@ inline hipsolverStatus_t hipsolver_orgtr_ungtr_bufferSize(testAPI_t             
     case API_FORTRAN:
         return hipsolverZungtr_bufferSizeFortran(
             handle, uplo, n, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)tau, lwork);
+    case API_COMPAT:
+        return hipsolverDnZungtr_bufferSize(
+            handle, uplo, n, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -634,6 +716,8 @@ inline hipsolverStatus_t hipsolver_orgtr_ungtr(testAPI_t           API,
         return hipsolverSorgtr(handle, uplo, n, A, lda, tau, work, lwork, info);
     case API_FORTRAN:
         return hipsolverSorgtrFortran(handle, uplo, n, A, lda, tau, work, lwork, info);
+    case API_COMPAT:
+        return hipsolverDnSorgtr(handle, uplo, n, A, lda, tau, work, lwork, info);        
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -656,6 +740,8 @@ inline hipsolverStatus_t hipsolver_orgtr_ungtr(testAPI_t           API,
         return hipsolverDorgtr(handle, uplo, n, A, lda, tau, work, lwork, info);
     case API_FORTRAN:
         return hipsolverDorgtrFortran(handle, uplo, n, A, lda, tau, work, lwork, info);
+    case API_COMPAT:
+        return hipsolverDnDorgtr(handle, uplo, n, A, lda, tau, work, lwork, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -694,6 +780,16 @@ inline hipsolverStatus_t hipsolver_orgtr_ungtr(testAPI_t           API,
                                       (hipFloatComplex*)work,
                                       lwork,
                                       info);
+    case API_COMPAT:
+        return hipsolverDnCungtr(handle,
+                                      uplo,
+                                      n,
+                                      (hipFloatComplex*)A,
+                                      lda,
+                                      (hipFloatComplex*)tau,
+                                      (hipFloatComplex*)work,
+                                      lwork,
+                                      info);                                      
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -732,6 +828,16 @@ inline hipsolverStatus_t hipsolver_orgtr_ungtr(testAPI_t               API,
                                       (hipDoubleComplex*)work,
                                       lwork,
                                       info);
+    case API_COMPAT
+        return hipsolverDnZungtr(handle,
+                                      uplo,
+                                      n,
+                                      (hipDoubleComplex*)A,
+                                      lda,
+                                      (hipDoubleComplex*)tau,
+                                      (hipDoubleComplex*)work,
+                                      lwork,
+                                      info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -761,6 +867,9 @@ inline hipsolverStatus_t hipsolver_ormqr_unmqr_bufferSize(testAPI_t            A
     case API_FORTRAN:
         return hipsolverSormqr_bufferSizeFortran(
             handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
+    case API_COMPAT:
+        return hipsolverDnSormqr_bufferSize(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -786,6 +895,9 @@ inline hipsolverStatus_t hipsolver_ormqr_unmqr_bufferSize(testAPI_t            A
         return hipsolverDormqr_bufferSize(handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
     case API_FORTRAN:
         return hipsolverDormqr_bufferSizeFortran(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
+    case API_COMPAT:
+        return hipsolverDnDormqr_bufferSize(
             handle, side, trans, m, n, k, A, lda, tau, C, ldc, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
@@ -823,6 +935,19 @@ inline hipsolverStatus_t hipsolver_ormqr_unmqr_bufferSize(testAPI_t            A
                                           lwork);
     case API_FORTRAN:
         return hipsolverCunmqr_bufferSizeFortran(handle,
+                                                 side,
+                                                 trans,
+                                                 m,
+                                                 n,
+                                                 k,
+                                                 (hipFloatComplex*)A,
+                                                 lda,
+                                                 (hipFloatComplex*)tau,
+                                                 (hipFloatComplex*)C,
+                                                 ldc,
+                                                 lwork);
+    case API_COMPAT:
+        return hipsolverDnCunmqr_bufferSize(handle,
                                                  side,
                                                  trans,
                                                  m,
@@ -881,6 +1006,19 @@ inline hipsolverStatus_t hipsolver_ormqr_unmqr_bufferSize(testAPI_t             
                                                  (hipDoubleComplex*)C,
                                                  ldc,
                                                  lwork);
+    case API_COMPAT:
+        return hipsolverDnZunmqr_bufferSize(handle,
+                                                 side,
+                                                 trans,
+                                                 m,
+                                                 n,
+                                                 k,
+                                                 (hipDoubleComplex*)A,
+                                                 lda,
+                                                 (hipDoubleComplex*)tau,
+                                                 (hipDoubleComplex*)C,
+                                                 ldc,
+                                                 lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -910,6 +1048,9 @@ inline hipsolverStatus_t hipsolver_ormqr_unmqr(testAPI_t            API,
     case API_FORTRAN:
         return hipsolverSormqrFortran(
             handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info);
+    case API_COMPAT:
+        return hipsolverDnSormqr(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -938,6 +1079,9 @@ inline hipsolverStatus_t hipsolver_ormqr_unmqr(testAPI_t            API,
             handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info);
     case API_FORTRAN:
         return hipsolverDormqrFortran(
+            handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info);
+    case API_COMPAT:
+        return hipsolverDnDormqr(
             handle, side, trans, m, n, k, A, lda, tau, C, ldc, work, lwork, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
@@ -979,6 +1123,21 @@ inline hipsolverStatus_t hipsolver_ormqr_unmqr(testAPI_t            API,
                                info);
     case API_FORTRAN:
         return hipsolverCunmqrFortran(handle,
+                                      side,
+                                      trans,
+                                      m,
+                                      n,
+                                      k,
+                                      (hipFloatComplex*)A,
+                                      lda,
+                                      (hipFloatComplex*)tau,
+                                      (hipFloatComplex*)C,
+                                      ldc,
+                                      (hipFloatComplex*)work,
+                                      lwork,
+                                      info);
+case API_COMPAT:
+        return hipsolverDnCunmqr(handle,
                                       side,
                                       trans,
                                       m,
@@ -1045,6 +1204,21 @@ inline hipsolverStatus_t hipsolver_ormqr_unmqr(testAPI_t               API,
                                       (hipDoubleComplex*)work,
                                       lwork,
                                       info);
+    case API_COMPAT:
+        return hipsolverDnZunmqr(handle,
+                                      side,
+                                      trans,
+                                      m,
+                                      n,
+                                      k,
+                                      (hipDoubleComplex*)A,
+                                      lda,
+                                      (hipDoubleComplex*)tau,
+                                      (hipDoubleComplex*)C,
+                                      ldc,
+                                      (hipDoubleComplex*)work,
+                                      lwork,
+                                      info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -1075,6 +1249,9 @@ inline hipsolverStatus_t hipsolver_ormtr_unmtr_bufferSize(testAPI_t            A
     case API_FORTRAN:
         return hipsolverSormtr_bufferSizeFortran(
             handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork);
+    case API_COMPAT:
+        return hipsolverDnSormtr_bufferSize(
+            handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -1101,6 +1278,9 @@ inline hipsolverStatus_t hipsolver_ormtr_unmtr_bufferSize(testAPI_t            A
             handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork);
     case API_FORTRAN:
         return hipsolverDormtr_bufferSizeFortran(
+            handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork);
+    case API_COMPAT:
+        return hipsolverDnDormtr_bufferSize(
             handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
@@ -1138,6 +1318,19 @@ inline hipsolverStatus_t hipsolver_ormtr_unmtr_bufferSize(testAPI_t            A
                                           lwork);
     case API_FORTRAN:
         return hipsolverCunmtr_bufferSizeFortran(handle,
+                                                 side,
+                                                 uplo,
+                                                 trans,
+                                                 m,
+                                                 n,
+                                                 (hipFloatComplex*)A,
+                                                 lda,
+                                                 (hipFloatComplex*)tau,
+                                                 (hipFloatComplex*)C,
+                                                 ldc,
+                                                 lwork);
+    case API_COMPAT:
+        return hipsolverDnCunmtr_bufferSize(handle,
                                                  side,
                                                  uplo,
                                                  trans,
@@ -1196,6 +1389,19 @@ inline hipsolverStatus_t hipsolver_ormtr_unmtr_bufferSize(testAPI_t             
                                                  (hipDoubleComplex*)C,
                                                  ldc,
                                                  lwork);
+    case API_COMPAT
+        return hipsolverDnZunmtr_bufferSize(handle,
+                                                 side,
+                                                 uplo,
+                                                 trans,
+                                                 m,
+                                                 n,
+                                                 (hipDoubleComplex*)A,
+                                                 lda,
+                                                 (hipDoubleComplex*)tau,
+                                                 (hipDoubleComplex*)C,
+                                                 ldc,
+                                                 lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -1225,6 +1431,9 @@ inline hipsolverStatus_t hipsolver_ormtr_unmtr(testAPI_t            API,
     case API_FORTRAN:
         return hipsolverSormtrFortran(
             handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, work, lwork, info);
+    case API_COMPAT:
+        return hipsolverDnSormtr(
+            handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, work, lwork, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -1253,6 +1462,9 @@ inline hipsolverStatus_t hipsolver_ormtr_unmtr(testAPI_t            API,
             handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, work, lwork, info);
     case API_FORTRAN:
         return hipsolverDormtrFortran(
+            handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, work, lwork, info);
+    case API_COMPAT:
+        return hipsolverDnDormtr(
             handle, side, uplo, trans, m, n, A, lda, tau, C, ldc, work, lwork, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
