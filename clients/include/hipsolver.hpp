@@ -151,7 +151,8 @@ inline hipsolverStatus_t hipsolver_orgbr_ungbr_bufferSize(testAPI_t           AP
         return hipsolverCungbr_bufferSizeFortran(
             handle, side, m, n, k, (hipFloatComplex*)A, lda, (hipFloatComplex*)tau, lwork);
     case API_COMPAT:
-        return hipsolverDnCungbr_bufferSize(handle, side, m, n, k, (hipFloatComplex*)A, lda,(hipFloatComplex*) tau, lwork);
+        return hipsolverDnCungbr_bufferSize(
+            handle, side, m, n, k, (hipFloatComplex*)A, lda, (hipFloatComplex*)tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -177,7 +178,8 @@ inline hipsolverStatus_t hipsolver_orgbr_ungbr_bufferSize(testAPI_t             
         return hipsolverZungbr_bufferSizeFortran(
             handle, side, m, n, k, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)tau, lwork);
     case API_COMPAT:
-        return hipsolverDnZungbr_bufferSize(handle, side, m, n, k, (hipDoubleComplex*)A, lda,(hipDoubleComplex*) tau, lwork);
+        return hipsolverDnZungbr_bufferSize(
+            handle, side, m, n, k, (hipDoubleComplex*)A, lda, (hipDoubleComplex*)tau, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -276,16 +278,16 @@ inline hipsolverStatus_t hipsolver_orgbr_ungbr(testAPI_t           API,
                                       info);
     case API_COMPAT:
         return hipsolverDnCungbr(handle,
-                                      side,
-                                      m,
-                                      n,
-                                      k,
-                                      (hipFloatComplex*)A,
-                                      lda,
-                                      (hipFloatComplex*)tau,
-                                      (hipFloatComplex*)work,
-                                      lwork,
-                                      info);
+                                 side,
+                                 m,
+                                 n,
+                                 k,
+                                 (hipFloatComplex*)A,
+                                 lda,
+                                 (hipFloatComplex*)tau,
+                                 (hipFloatComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -332,16 +334,16 @@ inline hipsolverStatus_t hipsolver_orgbr_ungbr(testAPI_t               API,
                                       info);
     case API_COMPAT:
         return hipsolverDnZungbr(handle,
-                                      side,
-                                      m,
-                                      n,
-                                      k,
-                                      (hipDoubleComplex*)A,
-                                      lda,
-                                      (hipDoubleComplex*)tau,
-                                      (hipDoubleComplex*)work,
-                                      lwork,
-                                      info);
+                                 side,
+                                 m,
+                                 n,
+                                 k,
+                                 (hipDoubleComplex*)A,
+                                 lda,
+                                 (hipDoubleComplex*)tau,
+                                 (hipDoubleComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -536,15 +538,15 @@ inline hipsolverStatus_t hipsolver_orgqr_ungqr(testAPI_t         API,
                                       info);
     case API_COMPAT:
         return hipsolverDnCungqr(handle,
-                                      m,
-                                      n,
-                                      k,
-                                      (hipFloatComplex*)A,
-                                      lda,
-                                      (hipFloatComplex*)tau,
-                                      (hipFloatComplex*)work,
-                                      lwork,
-                                      info);
+                                 m,
+                                 n,
+                                 k,
+                                 (hipFloatComplex*)A,
+                                 lda,
+                                 (hipFloatComplex*)tau,
+                                 (hipFloatComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -588,15 +590,15 @@ inline hipsolverStatus_t hipsolver_orgqr_ungqr(testAPI_t               API,
                                       info);
     case API_COMPAT:
         return hipsolverDnZungqr(handle,
-                                      m,
-                                      n,
-                                      k,
-                                      (hipDoubleComplex*)A,
-                                      lda,
-                                      (hipDoubleComplex*)tau,
-                                      (hipDoubleComplex*)work,
-                                      lwork,
-                                      info);
+                                 m,
+                                 n,
+                                 k,
+                                 (hipDoubleComplex*)A,
+                                 lda,
+                                 (hipDoubleComplex*)tau,
+                                 (hipDoubleComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -782,14 +784,14 @@ inline hipsolverStatus_t hipsolver_orgtr_ungtr(testAPI_t           API,
                                       info);
     case API_COMPAT:
         return hipsolverDnCungtr(handle,
-                                      uplo,
-                                      n,
-                                      (hipFloatComplex*)A,
-                                      lda,
-                                      (hipFloatComplex*)tau,
-                                      (hipFloatComplex*)work,
-                                      lwork,
-                                      info);
+                                 uplo,
+                                 n,
+                                 (hipFloatComplex*)A,
+                                 lda,
+                                 (hipFloatComplex*)tau,
+                                 (hipFloatComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -830,14 +832,14 @@ inline hipsolverStatus_t hipsolver_orgtr_ungtr(testAPI_t               API,
                                       info);
     case API_COMPAT:
         return hipsolverDnZungtr(handle,
-                                      uplo,
-                                      n,
-                                      (hipDoubleComplex*)A,
-                                      lda,
-                                      (hipDoubleComplex*)tau,
-                                      (hipDoubleComplex*)work,
-                                      lwork,
-                                      info);
+                                 uplo,
+                                 n,
+                                 (hipDoubleComplex*)A,
+                                 lda,
+                                 (hipDoubleComplex*)tau,
+                                 (hipDoubleComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -948,17 +950,17 @@ inline hipsolverStatus_t hipsolver_ormqr_unmqr_bufferSize(testAPI_t            A
                                                  lwork);
     case API_COMPAT:
         return hipsolverDnCunmqr_bufferSize(handle,
-                                                 side,
-                                                 trans,
-                                                 m,
-                                                 n,
-                                                 k,
-                                                 (hipFloatComplex*)A,
-                                                 lda,
-                                                 (hipFloatComplex*)tau,
-                                                 (hipFloatComplex*)C,
-                                                 ldc,
-                                                 lwork);
+                                            side,
+                                            trans,
+                                            m,
+                                            n,
+                                            k,
+                                            (hipFloatComplex*)A,
+                                            lda,
+                                            (hipFloatComplex*)tau,
+                                            (hipFloatComplex*)C,
+                                            ldc,
+                                            lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -1008,17 +1010,17 @@ inline hipsolverStatus_t hipsolver_ormqr_unmqr_bufferSize(testAPI_t             
                                                  lwork);
     case API_COMPAT:
         return hipsolverDnZunmqr_bufferSize(handle,
-                                                 side,
-                                                 trans,
-                                                 m,
-                                                 n,
-                                                 k,
-                                                 (hipDoubleComplex*)A,
-                                                 lda,
-                                                 (hipDoubleComplex*)tau,
-                                                 (hipDoubleComplex*)C,
-                                                 ldc,
-                                                 lwork);
+                                            side,
+                                            trans,
+                                            m,
+                                            n,
+                                            k,
+                                            (hipDoubleComplex*)A,
+                                            lda,
+                                            (hipDoubleComplex*)tau,
+                                            (hipDoubleComplex*)C,
+                                            ldc,
+                                            lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -1136,21 +1138,21 @@ inline hipsolverStatus_t hipsolver_ormqr_unmqr(testAPI_t            API,
                                       (hipFloatComplex*)work,
                                       lwork,
                                       info);
-case API_COMPAT:
+    case API_COMPAT:
         return hipsolverDnCunmqr(handle,
-                                      side,
-                                      trans,
-                                      m,
-                                      n,
-                                      k,
-                                      (hipFloatComplex*)A,
-                                      lda,
-                                      (hipFloatComplex*)tau,
-                                      (hipFloatComplex*)C,
-                                      ldc,
-                                      (hipFloatComplex*)work,
-                                      lwork,
-                                      info);
+                                 side,
+                                 trans,
+                                 m,
+                                 n,
+                                 k,
+                                 (hipFloatComplex*)A,
+                                 lda,
+                                 (hipFloatComplex*)tau,
+                                 (hipFloatComplex*)C,
+                                 ldc,
+                                 (hipFloatComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -1206,19 +1208,19 @@ inline hipsolverStatus_t hipsolver_ormqr_unmqr(testAPI_t               API,
                                       info);
     case API_COMPAT:
         return hipsolverDnZunmqr(handle,
-                                      side,
-                                      trans,
-                                      m,
-                                      n,
-                                      k,
-                                      (hipDoubleComplex*)A,
-                                      lda,
-                                      (hipDoubleComplex*)tau,
-                                      (hipDoubleComplex*)C,
-                                      ldc,
-                                      (hipDoubleComplex*)work,
-                                      lwork,
-                                      info);
+                                 side,
+                                 trans,
+                                 m,
+                                 n,
+                                 k,
+                                 (hipDoubleComplex*)A,
+                                 lda,
+                                 (hipDoubleComplex*)tau,
+                                 (hipDoubleComplex*)C,
+                                 ldc,
+                                 (hipDoubleComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -1331,17 +1333,17 @@ inline hipsolverStatus_t hipsolver_ormtr_unmtr_bufferSize(testAPI_t            A
                                                  lwork);
     case API_COMPAT:
         return hipsolverDnCunmtr_bufferSize(handle,
-                                                 side,
-                                                 uplo,
-                                                 trans,
-                                                 m,
-                                                 n,
-                                                 (hipFloatComplex*)A,
-                                                 lda,
-                                                 (hipFloatComplex*)tau,
-                                                 (hipFloatComplex*)C,
-                                                 ldc,
-                                                 lwork);
+                                            side,
+                                            uplo,
+                                            trans,
+                                            m,
+                                            n,
+                                            (hipFloatComplex*)A,
+                                            lda,
+                                            (hipFloatComplex*)tau,
+                                            (hipFloatComplex*)C,
+                                            ldc,
+                                            lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -1391,17 +1393,17 @@ inline hipsolverStatus_t hipsolver_ormtr_unmtr_bufferSize(testAPI_t             
                                                  lwork);
     case API_COMPAT:
         return hipsolverDnZunmtr_bufferSize(handle,
-                                                 side,
-                                                 uplo,
-                                                 trans,
-                                                 m,
-                                                 n,
-                                                 (hipDoubleComplex*)A,
-                                                 lda,
-                                                 (hipDoubleComplex*)tau,
-                                                 (hipDoubleComplex*)C,
-                                                 ldc,
-                                                 lwork);
+                                            side,
+                                            uplo,
+                                            trans,
+                                            m,
+                                            n,
+                                            (hipDoubleComplex*)A,
+                                            lda,
+                                            (hipDoubleComplex*)tau,
+                                            (hipDoubleComplex*)C,
+                                            ldc,
+                                            lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -1521,19 +1523,19 @@ inline hipsolverStatus_t hipsolver_ormtr_unmtr(testAPI_t            API,
                                       info);
     case API_COMPAT:
         return hipsolverDnCunmtr(handle,
-                                      side,
-                                      uplo,
-                                      trans,
-                                      m,
-                                      n,
-                                      (hipFloatComplex*)A,
-                                      lda,
-                                      (hipFloatComplex*)tau,
-                                      (hipFloatComplex*)C,
-                                      ldc,
-                                      (hipFloatComplex*)work,
-                                      lwork,
-                                      info);
+                                 side,
+                                 uplo,
+                                 trans,
+                                 m,
+                                 n,
+                                 (hipFloatComplex*)A,
+                                 lda,
+                                 (hipFloatComplex*)tau,
+                                 (hipFloatComplex*)C,
+                                 ldc,
+                                 (hipFloatComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -1589,19 +1591,19 @@ inline hipsolverStatus_t hipsolver_ormtr_unmtr(testAPI_t               API,
                                       info);
     case API_COMPAT:
         return hipsolverDnZunmtr(handle,
-                                      side,
-                                      uplo,
-                                      trans,
-                                      m,
-                                      n,
-                                      (hipDoubleComplex*)A,
-                                      lda,
-                                      (hipDoubleComplex*)tau,
-                                      (hipDoubleComplex*)C,
-                                      ldc,
-                                      (hipDoubleComplex*)work,
-                                      lwork,
-                                      info);
+                                 side,
+                                 uplo,
+                                 trans,
+                                 m,
+                                 n,
+                                 (hipDoubleComplex*)A,
+                                 lda,
+                                 (hipDoubleComplex*)tau,
+                                 (hipDoubleComplex*)C,
+                                 ldc,
+                                 (hipDoubleComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -1794,7 +1796,18 @@ inline hipsolverStatus_t hipsolver_gebrd(testAPI_t         API,
                                       lwork,
                                       info);
     case API_COMPAT:
-        return hipsolverDnCgebrd(handle, m, n,(hipFloatComplex*) A, lda, D, E,(hipFloatComplex*) tauq,(hipFloatComplex*) taup,(hipFloatComplex*) work, lwork, info);
+        return hipsolverDnCgebrd(handle,
+                                 m,
+                                 n,
+                                 (hipFloatComplex*)A,
+                                 lda,
+                                 D,
+                                 E,
+                                 (hipFloatComplex*)tauq,
+                                 (hipFloatComplex*)taup,
+                                 (hipFloatComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -1849,7 +1862,18 @@ inline hipsolverStatus_t hipsolver_gebrd(testAPI_t               API,
                                       lwork,
                                       info);
     case API_COMPAT:
-        return hipsolverDnZgebrd(handle, m, n, (hipDoubleComplex*)A, lda, D, E,(hipDoubleComplex*) tauq,(hipDoubleComplex*) taup,(hipDoubleComplex*) work, lwork, info);
+        return hipsolverDnZgebrd(handle,
+                                 m,
+                                 n,
+                                 (hipDoubleComplex*)A,
+                                 lda,
+                                 D,
+                                 E,
+                                 (hipDoubleComplex*)tauq,
+                                 (hipDoubleComplex*)taup,
+                                 (hipDoubleComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -7190,15 +7214,15 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(testAPI_t           API,
                                       info);
     case API_COMPAT:
         return hipsolverDnCheevd(handle,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      (hipFloatComplex*)A,
-                                      lda,
-                                      W,
-                                      (hipFloatComplex*)work,
-                                      lwork,
-                                      info);
+                                 jobz,
+                                 uplo,
+                                 n,
+                                 (hipFloatComplex*)A,
+                                 lda,
+                                 W,
+                                 (hipFloatComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -7245,15 +7269,15 @@ inline hipsolverStatus_t hipsolver_syevd_heevd(testAPI_t               API,
                                       info);
     case API_COMPAT:
         return hipsolverDnZheevd(handle,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      (hipDoubleComplex*)A,
-                                      lda,
-                                      W,
-                                      (hipDoubleComplex*)work,
-                                      lwork,
-                                      info);
+                                 jobz,
+                                 uplo,
+                                 n,
+                                 (hipDoubleComplex*)A,
+                                 lda,
+                                 W,
+                                 (hipDoubleComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -8019,8 +8043,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(testAPI_t           AP
         return hipsolverSsygvd_bufferSizeFortran(
             handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
     case API_COMPAT:
-        return hipsolverDnSsygvd_bufferSize(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
+        return hipsolverDnSsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -8047,8 +8070,7 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(testAPI_t           AP
         return hipsolverDsygvd_bufferSizeFortran(
             handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
     case API_COMPAT:
-        return hipsolverDnDsygvd_bufferSize(
-            handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
+        return hipsolverDnDsygvd_bufferSize(handle, itype, jobz, uplo, n, A, lda, B, ldb, W, lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -8095,16 +8117,16 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(testAPI_t           AP
                                                  lwork);
     case API_COMPAT:
         return hipsolverDnChegvd_bufferSize(handle,
-                                                 itype,
-                                                 jobz,
-                                                 uplo,
-                                                 n,
-                                                 (hipFloatComplex*)A,
-                                                 lda,
-                                                 (hipFloatComplex*)B,
-                                                 ldb,
-                                                 W,
-                                                 lwork);
+                                            itype,
+                                            jobz,
+                                            uplo,
+                                            n,
+                                            (hipFloatComplex*)A,
+                                            lda,
+                                            (hipFloatComplex*)B,
+                                            ldb,
+                                            W,
+                                            lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -8151,16 +8173,16 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd_bufferSize(testAPI_t             
                                                  lwork);
     case API_COMPAT:
         return hipsolverDnZhegvd_bufferSize(handle,
-                                                 itype,
-                                                 jobz,
-                                                 uplo,
-                                                 n,
-                                                 (hipDoubleComplex*)A,
-                                                 lda,
-                                                 (hipDoubleComplex*)B,
-                                                 ldb,
-                                                 W,
-                                                 lwork);
+                                            itype,
+                                            jobz,
+                                            uplo,
+                                            n,
+                                            (hipDoubleComplex*)A,
+                                            lda,
+                                            (hipDoubleComplex*)B,
+                                            ldb,
+                                            W,
+                                            lwork);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -8285,18 +8307,18 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(testAPI_t           API,
                                       info);
     case API_COMPAT:
         return hipsolverDnChegvd(handle,
-                                      itype,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      (hipFloatComplex*)A,
-                                      lda,
-                                      (hipFloatComplex*)B,
-                                      ldb,
-                                      W,
-                                      (hipFloatComplex*)work,
-                                      lwork,
-                                      info);
+                                 itype,
+                                 jobz,
+                                 uplo,
+                                 n,
+                                 (hipFloatComplex*)A,
+                                 lda,
+                                 (hipFloatComplex*)B,
+                                 ldb,
+                                 W,
+                                 (hipFloatComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -8353,18 +8375,18 @@ inline hipsolverStatus_t hipsolver_sygvd_hegvd(testAPI_t               API,
                                       info);
     case API_COMPAT:
         return hipsolverDnZhegvd(handle,
-                                      itype,
-                                      jobz,
-                                      uplo,
-                                      n,
-                                      (hipDoubleComplex*)A,
-                                      lda,
-                                      (hipDoubleComplex*)B,
-                                      ldb,
-                                      W,
-                                      (hipDoubleComplex*)work,
-                                      lwork,
-                                      info);
+                                 itype,
+                                 jobz,
+                                 uplo,
+                                 n,
+                                 (hipDoubleComplex*)A,
+                                 lda,
+                                 (hipDoubleComplex*)B,
+                                 ldb,
+                                 W,
+                                 (hipDoubleComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -9461,16 +9483,16 @@ inline hipsolverStatus_t hipsolver_sytrd_hetrd(testAPI_t           API,
                                       info);
     case API_COMPAT:
         return hipsolverDnChetrd(handle,
-                                      uplo,
-                                      n,
-                                      (hipFloatComplex*)A,
-                                      lda,
-                                      D,
-                                      E,
-                                      (hipFloatComplex*)tau,
-                                      (hipFloatComplex*)work,
-                                      lwork,
-                                      info);
+                                 uplo,
+                                 n,
+                                 (hipFloatComplex*)A,
+                                 lda,
+                                 D,
+                                 E,
+                                 (hipFloatComplex*)tau,
+                                 (hipFloatComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
@@ -9522,16 +9544,16 @@ inline hipsolverStatus_t hipsolver_sytrd_hetrd(testAPI_t               API,
                                       info);
     case API_COMPAT:
         return hipsolverDnZhetrd(handle,
-                                      uplo,
-                                      n,
-                                      (hipDoubleComplex*)A,
-                                      lda,
-                                      D,
-                                      E,
-                                      (hipDoubleComplex*)tau,
-                                      (hipDoubleComplex*)work,
-                                      lwork,
-                                      info);
+                                 uplo,
+                                 n,
+                                 (hipDoubleComplex*)A,
+                                 lda,
+                                 D,
+                                 E,
+                                 (hipDoubleComplex*)tau,
+                                 (hipDoubleComplex*)work,
+                                 lwork,
+                                 info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
