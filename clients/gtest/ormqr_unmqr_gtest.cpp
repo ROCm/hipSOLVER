@@ -150,7 +150,7 @@ class ORMQR_COMPAT : public ORMQR_UNMQR<API_COMPAT>
 {
 };
 
-class UNMQR_COMPAT  : public ORMQR_UNMQR<API_COMPAT>
+class UNMQR_COMPAT : public ORMQR_UNMQR<API_COMPAT>
 {
 };
 

@@ -239,7 +239,7 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          UNGBR_FORTRAN,
                          Combine(ValuesIn(size_range), ValuesIn(store_range)));
 
-                         // INSTANTIATE_TEST_SUITE_P(daily_lapack,
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          ORGBR_COMPAT,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(store_range)));
 

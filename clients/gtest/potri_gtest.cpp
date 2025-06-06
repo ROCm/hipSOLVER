@@ -193,4 +193,3 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          POTRI_COMPAT,
                          Combine(ValuesIn(matrix_size_range), ValuesIn(uplo_range)));
-

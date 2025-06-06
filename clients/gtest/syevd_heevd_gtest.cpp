@@ -227,4 +227,3 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          HEEVD_COMPAT,
                          Combine(ValuesIn(size_range), ValuesIn(op_range)));
-
