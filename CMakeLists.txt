@@ -178,10 +178,6 @@ if(BUILD_CODE_COVERAGE)
 	target_link_options(hipsolver-common
 		INTERFACE
 		-fprofile-instr-generate)
-	#add_compile_options(-fprofile-instr-generate -fcoverage_mapping)
-	#add_link_options(-fprofile-instr-generate)
-	#add_compile_options(-fprofile-arcs -ftest-coverage)
-	#add_link_options(--coverage)
 endif()
 
 include(CMakeDependentOption)
@@ -310,11 +306,7 @@ rocm_create_package(
 
 # ADDITIONAL TARGETS FOR CODE COVERAGE
 #
-# > make coverage_cleanup (clean coverage related files.)
-# > make coverage GTEST_FILTER=<>
-# will run:
-#  > make coverage_analysis GTEST_FILTER=<> (analyze tests)
-#  > make coverage_output (generate html documentation)
+# make coverage
 if(BUILD_CODE_COVERAGE)
   set(coverage_test ./clients/staging/hipsolver-test)
 
@@ -352,28 +344,6 @@ if(BUILD_CODE_COVERAGE)
     COMMAND ${LLVM_COV} show -object ./library/src/libhipsolver.so -instr-profile=./coverage-report/hipSOLVER.profdata -format=html -output-dir=coverage-report
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
   )
-
-  # add_dependencies(coverage_analysis hipsolver)
-
-  # # Prepare coverage output
-  # # This little script is generated because the option '--gcov-tool <program name>' of lcov cannot take arguments.
-  # add_custom_target(coverage_output
-  #     DEPENDS coverage_analysis
-  #     COMMAND mkdir -p lcoverage
-  #     COMMAND echo "\\#!/bin/bash" > llvm-gcov.sh
-  #     COMMAND echo "\\# THIS FILE HAS BEEN GENERATED" >> llvm-gcov.sh
-  #     COMMAND printf "exec /usr/bin/llvm-cov gcov $$\\@" >> llvm-gcov.sh
-  #     COMMAND chmod +x llvm-gcov.sh
-  # )
-
-  # # Generate coverage output.
-  # add_custom_command(TARGET coverage_output
-  #   COMMAND lcov --directory . --base-directory . --gcov-tool ${CMAKE_BINARY_DIR}/llvm-gcov.sh --capture -o lcoverage/raw_main_coverage.info
-  #   COMMAND lcov --remove lcoverage/raw_main_coverage.info "'/opt/*'" "'/usr/*'" -o lcoverage/main_coverage.info
-  #   COMMAND genhtml --ignore-errors source lcoverage/main_coverage.info --output-directory lcoverage
-  # )
-
-  # add_custom_target(coverage DEPENDS coverage_output)
 
   # Coverage cleanup
   add_custom_target(coverage_cleanup
