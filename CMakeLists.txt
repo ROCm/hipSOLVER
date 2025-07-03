@@ -312,7 +312,7 @@ if(BUILD_CODE_COVERAGE)
 
   add_custom_target(
     code_cov_tests
-    DEPENDS hipsolver
+    DEPENDS hipsolver-test
     COMMAND echo Coverage GTEST_FILTER=\${GTEST_FILTER}
     COMMAND ${CMAKE_COMMAND} -E rm -rf ./coverage-report
     COMMAND ${CMAKE_COMMAND} -E make_directory ./coverage-report/profraw
