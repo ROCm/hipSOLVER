@@ -316,7 +316,7 @@ if(BUILD_CODE_COVERAGE)
     COMMAND echo Coverage GTEST_FILTER=\${GTEST_FILTER}
     COMMAND ${CMAKE_COMMAND} -E rm -rf ./coverage-report
     COMMAND ${CMAKE_COMMAND} -E make_directory ./coverage-report/profraw
-    COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="./coverage-report/profraw/hipSOLVER-coverage_%p.profraw" GTEST_LISTENER=NO_PASS_LINE_IN_LOG ${coverage_test} --gtest_filter=\"\${GTEST_FILTER}\" --precompile=./clients/staging/hipsolver-test-precompile.db
+    COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="./coverage-report/profraw/hipSOLVER-coverage_%p.profraw" GTEST_LISTENER=NO_PASS_LINE_IN_LOG ${coverage_test} --gtest_filter=\"\${GTEST_FILTER}\"
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
   )
 
