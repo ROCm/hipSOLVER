@@ -9,6 +9,11 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 * Added compatibility-only functions
   * csrlsvqr
     * hipsolverSpCcsrlsvqr, hipsolverSpZcsrlsvqr
+* Extended test suites for hipsolverDn compatibility functions
+
+### Changed
+
+* Changed code coverage to use llvm-cov instead of gcov
 
 ### Resolved issues
 
