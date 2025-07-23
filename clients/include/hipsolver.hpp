@@ -469,7 +469,7 @@ inline hipsolverStatus_t hipsolver_orgqr_ungqr(testAPI_t         API,
     case API_FORTRAN:
         return hipsolverSorgqrFortran(handle, m, n, k, A, lda, tau, work, lwork, info);
     case API_COMPAT:
-        return hipsolverSorgqr(handle, m, n, k, A, lda, tau, work, lwork, info);
+        return hipsolverDnSorgqr(handle, m, n, k, A, lda, tau, work, lwork, info);
     default:
         return HIPSOLVER_STATUS_NOT_SUPPORTED;
     }
