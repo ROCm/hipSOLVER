@@ -169,15 +169,15 @@ include(armor-config)
 
 # FOR OPTIONAL CODE COVERAGE
 if(BUILD_CODE_COVERAGE)
-	target_compile_options(hipsolver-common
-		INTERFACE
-		-g
-		-O0
-		-fprofile-instr-generate
-		-fcoverage-mapping)
-	target_link_options(hipsolver-common
-		INTERFACE
-		-fprofile-instr-generate)
+  target_compile_options(hipsolver-common
+    INTERFACE
+    -g
+    -O0
+    -fprofile-instr-generate
+    -fcoverage-mapping)
+  target_link_options(hipsolver-common
+    INTERFACE
+    -fprofile-instr-generate)
 endif()
 
 if(WIN32)

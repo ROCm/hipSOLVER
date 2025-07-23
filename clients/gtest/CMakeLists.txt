@@ -91,8 +91,8 @@ set(others_test_source
 add_executable(hipsolver-test ${others_test_source} ${hipsolverDn_test_source} ${hipsolverRf_test_source})
 
 if(BUILD_COVERAGE)
-	target_compile_options(hipsolver-test PRIVATE -g -O0 -fgenerate-instr-profile -fcoverage-mapping)
-	target_link_options(hipsolver-test PUBLIC -g -O0 -fgenerate-instr-profile)
+  target_compile_options(hipsolver-test PRIVATE -g -O0 -fgenerate-instr-profile -fcoverage-mapping)
+  target_link_options(hipsolver-test PUBLIC -g -O0 -fgenerate-instr-profile)
 endif()
 
 target_include_directories(hipsolver-test
@@ -104,7 +104,7 @@ add_armor_flags(hipsolver-test "${ARMOR_LEVEL}")
 
 target_compile_definitions(hipsolver-test PRIVATE GOOGLE_TEST)
 
-#External header includes included as SYSTEM files
+# External header includes included as SYSTEM files
 target_include_directories(hipsolver-test
   SYSTEM PRIVATE
     $<BUILD_INTERFACE:${CBLAS_INCLUDE_DIRS}>
@@ -140,7 +140,7 @@ if(NOT USE_CUDA)
   endif()
 
   if(CMAKE_CXX_COMPILER MATCHES ".*/hipcc$")
-#hip - clang needs specific flag to turn on pthread and m
+    #hip-clang needs specific flag to turn on pthread and m
     target_link_libraries(hipsolver-test PRIVATE -lpthread -lm)
   endif()
 else()
