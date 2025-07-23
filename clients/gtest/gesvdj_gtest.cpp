@@ -148,6 +148,7 @@ class GESVDJ_FORTRAN : public GESVDJ_BASE<API_FORTRAN>
 class GESVDJ_COMPAT : public GESVDJ_BASE<API_COMPAT>
 {
 };
+
 // non-batch tests
 
 TEST_P(GESVDJ, __float)
