@@ -122,6 +122,14 @@ class UNGQR_FORTRAN : public ORGQR_UNGQR<API_FORTRAN>
 {
 };
 
+class ORGQR_COMPAT : public ORGQR_UNGQR<API_COMPAT>
+{
+};
+
+class UNGQR_COMPAT : public ORGQR_UNGQR<API_COMPAT>
+{
+};
+
 // non-batch tests
 
 TEST_P(ORGQR, __float)
@@ -164,6 +172,26 @@ TEST_P(UNGQR_FORTRAN, __double_complex)
     run_tests<rocblas_double_complex>();
 }
 
+TEST_P(ORGQR_COMPAT, __float)
+{
+    run_tests<float>();
+}
+
+TEST_P(ORGQR_COMPAT, __double)
+{
+    run_tests<double>();
+}
+
+TEST_P(UNGQR_COMPAT, __float_complex)
+{
+    run_tests<rocblas_float_complex>();
+}
+
+TEST_P(UNGQR_COMPAT, __double_complex)
+{
+    run_tests<rocblas_double_complex>();
+}
+
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          ORGQR,
 //                          Combine(ValuesIn(large_m_size_range), ValuesIn(large_n_size_range)));
@@ -194,4 +222,20 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          UNGQR_FORTRAN,
+                         Combine(ValuesIn(m_size_range), ValuesIn(n_size_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          ORGQR_COMPAT,
+//                          Combine(ValuesIn(large_m_size_range), ValuesIn(large_n_size_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         ORGQR_COMPAT,
+                         Combine(ValuesIn(m_size_range), ValuesIn(n_size_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          UNGQR_COMPAT,
+//                          Combine(ValuesIn(large_m_size_range), ValuesIn(large_n_size_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         UNGQR_COMPAT,
                          Combine(ValuesIn(m_size_range), ValuesIn(n_size_range)));

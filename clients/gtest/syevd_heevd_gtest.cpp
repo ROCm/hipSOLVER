@@ -114,6 +114,14 @@ class HEEVD_FORTRAN : public SYEVD_HEEVD<API_FORTRAN>
 {
 };
 
+class SYEVD_COMPAT : public SYEVD_HEEVD<API_COMPAT>
+{
+};
+
+class HEEVD_COMPAT : public SYEVD_HEEVD<API_COMPAT>
+{
+};
+
 // non-batch tests
 
 TEST_P(SYEVD, __float)
@@ -156,6 +164,26 @@ TEST_P(HEEVD_FORTRAN, __double_complex)
     run_tests<false, false, rocblas_double_complex>();
 }
 
+TEST_P(SYEVD_COMPAT, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(SYEVD_COMPAT, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(HEEVD_COMPAT, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(HEEVD_COMPAT, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          SYEVD,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
@@ -182,4 +210,20 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          HEEVD_FORTRAN,
+                         Combine(ValuesIn(size_range), ValuesIn(op_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          SYEVD_COMPAT,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         SYEVD_COMPAT,
+                         Combine(ValuesIn(size_range), ValuesIn(op_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          HEEVD_COMPAT,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         HEEVD_COMPAT,
                          Combine(ValuesIn(size_range), ValuesIn(op_range)));

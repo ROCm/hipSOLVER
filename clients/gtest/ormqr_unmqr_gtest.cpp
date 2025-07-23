@@ -146,6 +146,14 @@ class UNMQR_FORTRAN : public ORMQR_UNMQR<API_FORTRAN>
 {
 };
 
+class ORMQR_COMPAT : public ORMQR_UNMQR<API_COMPAT>
+{
+};
+
+class UNMQR_COMPAT : public ORMQR_UNMQR<API_COMPAT>
+{
+};
+
 // non-batch tests
 
 TEST_P(ORMQR, __float)
@@ -188,6 +196,26 @@ TEST_P(UNMQR_FORTRAN, __double_complex)
     run_tests<rocblas_double_complex>();
 }
 
+TEST_P(ORMQR_COMPAT, __float)
+{
+    run_tests<float>();
+}
+
+TEST_P(ORMQR_COMPAT, __double)
+{
+    run_tests<double>();
+}
+
+TEST_P(UNMQR_COMPAT, __float_complex)
+{
+    run_tests<rocblas_float_complex>();
+}
+
+TEST_P(UNMQR_COMPAT, __double_complex)
+{
+    run_tests<rocblas_double_complex>();
+}
+
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          ORMQR,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
@@ -214,4 +242,20 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          UNMQR_FORTRAN,
+                         Combine(ValuesIn(size_range), ValuesIn(op_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          ORMQR_COMPAT,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         ORMQR_COMPAT,
+                         Combine(ValuesIn(size_range), ValuesIn(op_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          UNMQR_COMPAT,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(op_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         UNMQR_COMPAT,
                          Combine(ValuesIn(size_range), ValuesIn(op_range)));

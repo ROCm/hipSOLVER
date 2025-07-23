@@ -145,6 +145,9 @@ class GESVDJ_FORTRAN : public GESVDJ_BASE<API_FORTRAN>
 {
 };
 
+class GESVDJ_COMPAT : public GESVDJ_BASE<API_COMPAT>
+{
+};
 // non-batch tests
 
 TEST_P(GESVDJ, __float)
@@ -183,6 +186,26 @@ TEST_P(GESVDJ_FORTRAN, __float_complex)
 }
 
 TEST_P(GESVDJ_FORTRAN, __double_complex)
+{
+    run_tests<false, false, rocblas_double_complex>();
+}
+
+TEST_P(GESVDJ_COMPAT, __float)
+{
+    run_tests<false, false, float>();
+}
+
+TEST_P(GESVDJ_COMPAT, __double)
+{
+    run_tests<false, false, double>();
+}
+
+TEST_P(GESVDJ_COMPAT, __float_complex)
+{
+    run_tests<false, false, rocblas_float_complex>();
+}
+
+TEST_P(GESVDJ_COMPAT, __double_complex)
 {
     run_tests<false, false, rocblas_double_complex>();
 }
@@ -229,6 +252,25 @@ TEST_P(GESVDJ_FORTRAN, strided_batched__double_complex)
     run_tests<false, true, rocblas_double_complex>();
 }
 
+TEST_P(GESVDJ_COMPAT, strided_batched__float)
+{
+    run_tests<false, true, float>();
+}
+
+TEST_P(GESVDJ_COMPAT, strided_batched__double)
+{
+    run_tests<false, true, double>();
+}
+
+TEST_P(GESVDJ_COMPAT, strided_batched__float_complex)
+{
+    run_tests<false, true, rocblas_float_complex>();
+}
+
+TEST_P(GESVDJ_COMPAT, strided_batched__double_complex)
+{
+    run_tests<false, true, rocblas_double_complex>();
+}
 // INSTANTIATE_TEST_SUITE_P(daily_lapack,
 //                          GESVDJ,
 //                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
@@ -243,4 +285,12 @@ INSTANTIATE_TEST_SUITE_P(checkin_lapack,
 
 INSTANTIATE_TEST_SUITE_P(checkin_lapack,
                          GESVDJ_FORTRAN,
+                         Combine(ValuesIn(size_range), ValuesIn(opt_range)));
+
+// INSTANTIATE_TEST_SUITE_P(daily_lapack,
+//                          GESVDJ_COMPAT,
+//                          Combine(ValuesIn(large_size_range), ValuesIn(large_opt_range)));
+
+INSTANTIATE_TEST_SUITE_P(checkin_lapack,
+                         GESVDJ_COMPAT,
                          Combine(ValuesIn(size_range), ValuesIn(opt_range)));
