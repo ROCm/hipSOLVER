@@ -6,6 +6,13 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 
 ### Added
 ### Changed
+
+* Extended test suites for hipsolverDn compatibility functions
+
+### Changed
+
+* Changed code coverage to use llvm-cov instead of gcov
+
 ### Removed
 ### Optimized
 ### Resolved issues
