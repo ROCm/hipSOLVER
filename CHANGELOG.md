@@ -5,7 +5,6 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 ## (Unreleased) hipSOLVER
 
 ### Added
-### Changed
 
 * Extended test suites for hipsolverDn compatibility functions
 
@@ -18,7 +17,6 @@ Full documentation for hipSOLVER is available at the [hipSOLVER Documentation](h
 ### Resolved issues
 ### Known issues
 ### Upcoming changes
-
 
 
 ## hipSOLVER 3.0.0 for ROCm 7.0.0
