@@ -37,7 +37,7 @@ For more information on building and installing hipSOLVER, see the [hipSOLVER in
 
 ### Building hipSOLVER for the NVIDIA CUDA platform
 
-For the purpose of porting an application from NVIDIA to CUDA, it's possible to build hipSOLVER to run on NVIDIA hardware.
+For the purpose of porting an application from NVIDIA to ROCm, it's possible to build hipSOLVER to run on NVIDIA hardware.
 To build the library on a NVIDIA CUDA-enabled machine, with CUDA cuSOLVER as the backend, run the following install command.
 The NVIDIA CUDA backend has a dependency on cuSOLVER. Consult the [hipSOLVER install guide](https://rocm.docs.amd.com/projects/hipSOLVER/en/latest/installation/install.html) for more information.
 
